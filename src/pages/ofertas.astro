@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
-import { getTrips, getDestinations, getCountries, getTripExtra } from "@/lib/data-provider";
+import { getTrips, getDestinations, getCountries } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 const [trips, destinations, countries] = await Promise.all([
   getTrips(), getDestinations(), getCountries()
@@ -15,7 +15,7 @@ const now = new Date();
 
 const promoTrips = trips
   .map((t) => {
-    const resolved = resolvePrice(t, getTripExtra(t.id));
+    const resolved = resolvePrice(t);
     return { trip: t, resolved, discount: resolved.hasDiscount ? Math.round((1 - resolved.price / resolved.originalPrice) * 100) : 0 };
   })
   .filter(({ resolved, trip }) =>

@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
-import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents, getTripExtra } from "@/lib/data-provider";
+import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
@@ -35,7 +35,7 @@ const destTrips = destTripsRaw
   .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
 
 const minPrice = destTrips.length > 0
-  ? Math.min(...destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price))
+  ? Math.min(...destTrips.map((t) => resolvePrice(t).price))
   : 0;
 
 const faqs = [
@@ -88,7 +88,7 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
           </h2>
           <div class="space-y-4">
             {destTrips.map((trip) => {
-              const { price } = resolvePrice(trip, getTripExtra(trip.id));
+              const { price } = resolvePrice(trip);
               return (
                 <a href={`/destino/${destination.slug}/`} class="flex items-center justify-between rounded-xl border border-border/40 bg-background p-5 hover:shadow-md transition-all">
                   <div>

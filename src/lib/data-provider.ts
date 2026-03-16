@@ -68,7 +68,7 @@ import {
 } from './travel-data'
 import { blogPosts as hardBlogPosts, type BlogPost } from './blog-data'
 import { comparisons as hardComparisons, type Comparison } from './comparisons'
-import { getDestinationFaqs, getDestinationPhotos, getTripExtra, lookupCoords } from './destination-details'
+import { lookupCoords } from './destination-details'
 
 const isSanityConfigured = (): boolean => {
   try {
@@ -218,6 +218,18 @@ export async function getDestinationsByContinent(continentSlugOrId: string): Pro
 export async function getDestinationRaw(slug: string): Promise<SanityDestination | null> {
   if (!isSanityConfigured()) return null
   return sanityFetch<SanityDestination | null>(destinationBySlugQuery, { slug })
+}
+
+export async function getDestinationGallery(slug: string): Promise<string[]> {
+  const raw = await getDestinationRaw(slug)
+  if (!raw?.gallery?.length) return []
+  return raw.gallery.map((img) => resolveImageThumb(img, 800))
+}
+
+export async function getDestinationSanityFaqs(slug: string): Promise<{ question: string; answer: string }[]> {
+  const raw = await getDestinationRaw(slug)
+  if (!raw?.faqs?.length) return []
+  return raw.faqs.map((f) => ({ question: f.question, answer: f.answer }))
 }
 
 // ── Trips ──
@@ -521,4 +533,4 @@ export async function getLandingBySlug(slug: string): Promise<SanityLandingPage 
 
 // ── Re-export helpers that don't change ──
 
-export { getDestinationFaqs, getDestinationPhotos, getTripExtra, lookupCoords }
+export { lookupCoords }

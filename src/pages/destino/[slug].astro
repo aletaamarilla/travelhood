@@ -12,11 +12,10 @@ import {
   getCoordinators,
   getCountries,
   getContinents,
-  getDestinationPhotos,
-  getDestinationFaqs,
-  getTripExtra,
-  lookupCoords,
+  getDestinationGallery,
+  getDestinationSanityFaqs,
 } from "@/lib/data-provider";
+import { lookupCoords } from "@/lib/destination-details";
 import { resolvePrice } from "@/lib/utils";
 import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateAggregateRatingSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
 
@@ -48,19 +47,13 @@ const destTrips = tripsRaw
     (a, b) =>
       new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
   )
-  .map((t) => {
-    const extra = getTripExtra(t.id);
-    const resolved = resolvePrice(t, extra);
-    return {
-      ...t,
-      promoPrice: resolved.hasDiscount ? resolved.price : undefined,
-      promoLabel: resolved.promoLabel,
-      itinerary: extra.itinerary || t.itinerary.map((d) => {
-        const coords = lookupCoords(d.title);
-        return { ...d, lat: coords?.[0] ?? 0, lng: coords?.[1] ?? 0 };
-      }),
-    };
-  });
+  .map((t) => ({
+    ...t,
+    itinerary: t.itinerary.map((d) => {
+      const coords = lookupCoords(d.title);
+      return { ...d, lat: d.lat ?? coords?.[0] ?? 0, lng: d.lng ?? coords?.[1] ?? 0 };
+    }),
+  }));
 
 const destTestimonials = testimonials;
 const coordIds = [...new Set(destTrips.map((t) => t.coordinatorId))];
@@ -68,8 +61,9 @@ const destCoordinators = coordIds
   .map((id) => coordinators.find((c) => c.id === id))
   .filter(Boolean) as typeof coordinators;
 
-const photos = getDestinationPhotos(destination.id);
-const faqs = getDestinationFaqs(destination.id);
+const galleryPhotos = await getDestinationGallery(slug!);
+const photos = galleryPhotos.length > 0 ? galleryPhotos : [destination.heroImage];
+const faqs = await getDestinationSanityFaqs(slug!);
 
 const pageTitle = `${destination.name} — Viaje en grupo | Travelhood`;
 const pageDescription = `${destination.shortDescription} Viaja en grupo con Travelhood. Coordinador y alojamiento incluidos.`;
@@ -86,7 +80,7 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
         startDate: trip.departureDate,
         endDate: trip.returnDate,
         location: destination.name,
-        price: resolvePrice(trip, getTripExtra(trip.id)).price,
+        price: resolvePrice(trip).price,
         url: `/destino/${destination.slug}/`,
         image: destination.heroImage,
         availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
@@ -110,7 +104,7 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
       title={`Viaje en grupo a ${destination.name} — Datos clave`}
       subtitle={`Información actualizada sobre viajes organizados a ${destination.name} con Travelhood`}
       dataPoints={[
-        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => resolvePrice(t, getTripExtra(t.id)).price))}€ (sin vuelo)` : "Próximamente" },
+        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => resolvePrice(t).price))}€ (sin vuelo)` : "Próximamente" },
         { label: "Duración", value: destTrips.length > 0 ? `${destTrips[0].durationDays} días` : "Variable" },
         { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
         { label: "Clima", value: destination.climate },

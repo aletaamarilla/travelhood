@@ -5,8 +5,10 @@ import SearchPage from "@/components/SearchPage";
 import InternalLinks from "@/components/InternalLinks.astro";
 import Footer from "@/components/Footer.astro";
 import { generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
-import { getDestinations } from "@/lib/data-provider";
-const destinations = await getDestinations();
+import { getDestinations, getTrips, getContinents, getCountries } from "@/lib/data-provider";
+const [destinations, trips, continents, countries] = await Promise.all([
+  getDestinations(), getTrips(), getContinents(), getCountries()
+]);
 ---
 
 <Layout
@@ -20,7 +22,7 @@ const destinations = await getDestinations();
   </Fragment>
   <main>
     <Navbar client:load />
-    <SearchPage client:load />
+    <SearchPage trips={trips} destinations={destinations} continents={continents} countries={countries} client:load />
     <InternalLinks />
     <Footer />
   </main>

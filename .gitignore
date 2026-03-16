@@ -23,3 +23,5 @@ studio/dist/
 _extracted/
 *.zip
 *.zip:*
+.vercel
+.env*.local

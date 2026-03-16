@@ -131,15 +131,7 @@ async function seed() {
     const _id = `destination-${d.slug}`
     destIdMap.set(d.id, _id)
 
-    let faqs: { _key: string; question: string; answer: string }[] = []
-    try {
-      const rawFaqs = detailsData.getDestinationFaqs(d.id)
-      faqs = rawFaqs.map((f: { question: string; answer: string }) => ({
-        _key: makeKey(),
-        question: f.question,
-        answer: f.answer,
-      }))
-    } catch { /* no faqs */ }
+    const faqs: { _key: string; question: string; answer: string }[] = []
 
     tx.createOrReplace({
       _type: 'destination',
@@ -196,19 +188,6 @@ async function seed() {
       description: d.description,
     }))
 
-    try {
-      const extra = detailsData.getTripExtra(t.id)
-      if (extra.itinerary) {
-        enrichedItinerary = extra.itinerary.map((d: { day: number; title: string; description: string; lat?: number; lng?: number }) => ({
-          _key: makeKey(),
-          day: d.day,
-          title: d.title,
-          description: d.description,
-          lat: d.lat,
-          lng: d.lng,
-        }))
-      }
-    } catch { /* no extra */ }
 
     tx.createOrReplace({
       _type: 'trip',

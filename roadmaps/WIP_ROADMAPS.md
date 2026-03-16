@@ -4,3 +4,4 @@
 - [ ] ROADMAP_mapSEO.md
 - [x] ROADMAP_addSanity.md ✅ Completado
 - [ ] ROADMAP_fixPages.md
+- [x] ROADMAP_fixHardcodedData.md ✅ Completado

@@ -1,10 +1,6 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { Search, MapPin, Calendar, X } from "lucide-react"
-import {
-  destinations,
-  continents,
-  searchDestinations,
-} from "@/lib/travel-data"
+import type { Destination, Continent } from "@/lib/travel-data"
 
 // ── Periods ──
 const periods = [
@@ -24,7 +20,10 @@ const continentEmoji: Record<string, string> = {
   europe: "🌍", asia: "🌏", africa: "🌍", "south-america": "🌎", "central-america": "🌎", oceania: "🌏",
 }
 
-const popularDestinations = destinations.slice(0, 4)
+interface SearchIslandProps {
+  destinations: Destination[]
+  continents: Continent[]
+}
 
 // ── Hook: close on outside click ──
 function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () => void, active: boolean) {
@@ -38,7 +37,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () =
   }, [ref, handler, active])
 }
 
-export default function SearchIsland() {
+export default function SearchIsland({ destinations, continents }: SearchIslandProps) {
   const [query, setQuery] = useState("")
   const [selectedWhere, setSelectedWhere] = useState<{ type: "continent" | "destination"; id: string; label: string } | null>(null)
   const [selectedWhen, setSelectedWhen] = useState<{ type: "period" | "month"; id: string; label: string } | null>(null)
@@ -53,7 +52,18 @@ export default function SearchIsland() {
   useClickOutside(whereRef, () => setWhereOpen(false), whereOpen)
   useClickOutside(whenRef, () => setWhenOpen(false), whenOpen)
 
-  const suggestions = query.length >= 1 ? searchDestinations(query) : []
+  const popularDestinations = useMemo(() => destinations.slice(0, 4), [destinations])
+
+  const suggestions = useMemo(() => {
+    if (query.length < 1) return []
+    const q = query.toLowerCase().trim()
+    return destinations.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        d.slug.toLowerCase().includes(q) ||
+        d.categories.some((c) => c.toLowerCase().includes(q))
+    )
+  }, [query, destinations])
 
   const displayWhere = selectedWhere?.label || query || ""
   const displayWhen = selectedWhen?.label || ""

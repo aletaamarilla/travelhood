@@ -1,11 +1,5 @@
 import { useState } from "react"
-import {
-  trips,
-  destinations,
-  getTripsByCategory,
-  getTripsByTag,
-  type Trip,
-} from "@/lib/travel-data"
+import type { Trip, Destination } from "@/lib/travel-data"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -18,36 +12,48 @@ interface CategoryFilter {
   getTrips: () => Trip[]
 }
 
-const allTrips = () =>
-  trips
-    .filter((t) => t.status !== "full")
-    .sort(
+interface SeasonExplorerProps {
+  trips: Trip[]
+  destinations: Destination[]
+}
+
+export default function SeasonExplorer({ trips, destinations }: SeasonExplorerProps) {
+  const sortByDate = (list: Trip[]) =>
+    list.sort(
       (a, b) =>
         new Date(a.departureDate).getTime() -
         new Date(b.departureDate).getTime()
     )
 
-const combineTags = (...tags: Trip["tags"][number][]) =>
-  tags
-    .flatMap((tag) => getTripsByTag(tag))
-    .sort(
-      (a, b) =>
-        new Date(a.departureDate).getTime() -
-        new Date(b.departureDate).getTime()
+  const allTrips = () =>
+    sortByDate(trips.filter((t) => t.status !== "full"))
+
+  const getTripsByCategory = (cat: string) =>
+    sortByDate(
+      trips.filter((t) => {
+        const dest = destinations.find((d) => d.id === t.destinationId)
+        return dest?.categories.includes(cat as Destination["categories"][number])
+      })
     )
 
-const categories: CategoryFilter[] = [
-  { id: "all", label: "Todos", emoji: "✨", getTrips: allTrips },
-  { id: "playa", label: "Playa & Sol", emoji: "🏖️", getTrips: () => getTripsByCategory("playa") },
-  { id: "aventura", label: "Safari & Aventura", emoji: "🌿", getTrips: () => getTripsByCategory("aventura") },
-  { id: "auroras", label: "Auroras & Nieve", emoji: "🌌", getTrips: () => getTripsByCategory("nieve") },
-  { id: "puentes", label: "Puentes", emoji: "🎒", getTrips: () => combineTags("puente-mayo", "puente-octubre", "puente-noviembre") },
-  { id: "verano", label: "Verano", emoji: "☀️", getTrips: () => getTripsByTag("verano") },
-  { id: "cultural", label: "Cultura & Historia", emoji: "🏛️", getTrips: () => getTripsByCategory("cultural") },
-  { id: "navidad", label: "Navidad & Fin de Año", emoji: "🎄", getTrips: () => combineTags("navidad", "fin-de-anio") },
-]
+  const getTripsByTag = (tag: string) =>
+    sortByDate(trips.filter((t) => t.tags.includes(tag as Trip["tags"][number])))
 
-export default function SeasonExplorer() {
+  const combineTags = (...tags: string[]) =>
+    sortByDate(
+      [...new Map(tags.flatMap((tag) => getTripsByTag(tag)).map((t) => [t.id, t])).values()]
+    )
+
+  const categories: CategoryFilter[] = [
+    { id: "all", label: "Todos", emoji: "✨", getTrips: allTrips },
+    { id: "playa", label: "Playa & Sol", emoji: "🏖️", getTrips: () => getTripsByCategory("playa") },
+    { id: "aventura", label: "Safari & Aventura", emoji: "🌿", getTrips: () => getTripsByCategory("aventura") },
+    { id: "auroras", label: "Auroras & Nieve", emoji: "🌌", getTrips: () => getTripsByCategory("nieve") },
+    { id: "puentes", label: "Puentes", emoji: "🎒", getTrips: () => combineTags("puente-mayo", "puente-octubre", "puente-noviembre") },
+    { id: "verano", label: "Verano", emoji: "☀️", getTrips: () => getTripsByTag("verano") },
+    { id: "cultural", label: "Cultura & Historia", emoji: "🏛️", getTrips: () => getTripsByCategory("cultural") },
+    { id: "navidad", label: "Navidad & Fin de Año", emoji: "🎄", getTrips: () => combineTags("navidad", "fin-de-anio") },
+  ]
   const [activeId, setActiveId] = useState("all")
   const current = categories.find((c) => c.id === activeId)!
   const allFiltered = current.getTrips()

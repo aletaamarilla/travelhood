@@ -15,9 +15,9 @@ import CTAFooter from "@/components/CTAFooter.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
 import Footer from "@/components/Footer.astro";
 import { generateTravelAgencySchema, generateAggregateRatingSchema, generateWebSiteSchema, toJsonLd } from "@/lib/schemas";
-import { getTestimonials, getDestinations, getTrips } from "@/lib/data-provider";
-const [testimonials, destinations, trips] = await Promise.all([
-  getTestimonials(), getDestinations(), getTrips()
+import { getTestimonials, getDestinations, getTrips, getContinents } from "@/lib/data-provider";
+const [testimonials, destinations, trips, continents] = await Promise.all([
+  getTestimonials(), getDestinations(), getTrips(), getContinents()
 ]);
 import GEODataBlock from "@/components/GEODataBlock.astro";
 
@@ -36,10 +36,10 @@ const webSiteSchema = generateWebSiteSchema();
   </Fragment>
   <main>
     <Navbar client:load />
-    <SearchIsland client:load />
+    <SearchIsland destinations={destinations} continents={continents} client:load />
     <LastChance />
     <WhyUsSection />
-    <SeasonExplorer client:load />
+    <SeasonExplorer trips={trips} destinations={destinations} client:load />
     <HowItWorksSection />
     <TestimonialsSection />
     <AboutSection />

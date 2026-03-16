@@ -11,7 +11,6 @@ import {
   getDestinations,
   getTrips,
   getContinents,
-  getTripExtra,
 } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
@@ -43,7 +42,7 @@ const countryTrips = trips
   .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
 
 const minPrice = countryTrips.length > 0
-  ? Math.min(...countryTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price))
+  ? Math.min(...countryTrips.map((t) => resolvePrice(t).price))
   : 0;
 
 const faqs = [
@@ -134,7 +133,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {countryDestinations.map((dest) => {
               const destTrips = countryTrips.filter((t) => t.destinationId === dest.id);
-              const destMinPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price)) : 0;
+              const destMinPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => resolvePrice(t).price)) : 0;
               return (
                 <a href={`/destino/${dest.slug}/`} class="group relative overflow-hidden rounded-2xl border border-border/40 bg-background transition-all hover:shadow-lg hover:-translate-y-0.5">
                   <div class="aspect-[16/10] overflow-hidden">
@@ -168,7 +167,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {countryTrips.slice(0, 6).map((trip) => {
               const dest = destinations.find((d) => d.id === trip.destinationId)!;
-              const tripPrice = resolvePrice(trip, getTripExtra(trip.id)).price;
+              const tripPrice = resolvePrice(trip).price;
               return (
                 <a href={`/destino/${dest.slug}/`} class="rounded-xl border border-border/40 bg-card p-5 transition-all hover:shadow-md hover:-translate-y-0.5">
                   <div class="flex items-center justify-between mb-2">

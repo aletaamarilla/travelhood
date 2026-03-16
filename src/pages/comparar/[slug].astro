@@ -6,7 +6,7 @@ import GEODataBlock from "@/components/GEODataBlock.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import CTASection from "@/components/CTASection.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
-import { getDestinations, getTrips, getCountries, getComparisons, getTripExtra } from "@/lib/data-provider";
+import { getDestinations, getTrips, getCountries, getComparisons } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
@@ -32,7 +32,7 @@ function getDestData(dest: typeof destA) {
   const destTrips = trips
     .filter((t) => t.destinationId === dest.id && t.status !== "full" && new Date(t.departureDate) > now)
     .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
-  const prices = destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price);
+  const prices = destTrips.map((t) => resolvePrice(t).price);
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
   const avgFlight = destTrips.length > 0 ? Math.round(destTrips.reduce((sum, t) => sum + t.flightEstimate, 0) / destTrips.length) : 0;
   const duration = destTrips.length > 0 ? destTrips[0].durationDays : 0;

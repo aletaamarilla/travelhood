@@ -11,7 +11,6 @@ import {
   getDestinations,
   getTrips,
   getCountries,
-  getTripExtra,
 } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateEventSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
@@ -50,7 +49,7 @@ const hasTrips = seasonTrips.length > 0;
 const seasonTripCards = seasonTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
   const country = countries.find((c) => c.id === dest.countryId);
-  const resolved = resolvePrice(trip, getTripExtra(trip.id));
+  const resolved = resolvePrice(trip);
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
   return {
     destSlug: dest.slug,
@@ -83,7 +82,7 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
     {season.faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(season.faqs))} />}
     {seasonTrips.map((trip) => {
       const dest = destinations.find((d) => d.id === trip.destinationId)!;
-      const schemaPrice = resolvePrice(trip, getTripExtra(trip.id)).price;
+      const schemaPrice = resolvePrice(trip).price;
       return (
         <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({
           name: trip.title,

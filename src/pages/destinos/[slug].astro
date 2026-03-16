@@ -11,7 +11,6 @@ import {
   getTrips,
   getCountries,
   getDestinationsByContinent,
-  getTripExtra,
 } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
@@ -55,7 +54,7 @@ const continentTrips = trips
 
 const continentTripCards = continentTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
-  const resolved = resolvePrice(trip, getTripExtra(trip.id));
+  const resolved = resolvePrice(trip);
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
   return {
     destSlug: dest.slug,

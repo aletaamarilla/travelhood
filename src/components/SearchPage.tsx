@@ -1,16 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { Search, MapPin, Calendar, X, Users, Shield, Compass } from "lucide-react"
-import {
-  trips,
-  destinations,
-  continents,
-  countries,
-  searchDestinations,
-  filterTripsAdvanced,
-  type Trip,
-  type DestinationCategory,
-  type TripTag,
-} from "@/lib/travel-data"
+import type { Trip, Destination, Continent, Country, DestinationCategory, TripTag } from "@/lib/travel-data"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -41,8 +31,6 @@ const continentEmoji: Record<string, string> = {
   europe: "🌍", asia: "🌏", africa: "🌍", "south-america": "🌎", "central-america": "🌎", oceania: "🌏",
 }
 
-const popularDestinations = destinations.slice(0, 6)
-
 function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () => void, active: boolean) {
   useEffect(() => {
     if (!active) return
@@ -54,7 +42,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () =
   }, [ref, handler, active])
 }
 
-function parseUrlParams(): {
+function parseUrlParams(allContinents: Continent[], allDestinations: Destination[]): {
   donde?: string
   dondeTipo?: "continent" | "destination"
   dondeLabel?: string
@@ -70,13 +58,13 @@ function parseUrlParams(): {
 
   const donde = params.get("donde")
   if (donde) {
-    const continent = continents.find((c) => c.id === donde || c.slug === donde)
+    const continent = allContinents.find((c) => c.id === donde || c.slug === donde)
     if (continent) {
       result.donde = continent.id
       result.dondeTipo = "continent"
       result.dondeLabel = continent.name
     } else {
-      const dest = destinations.find((d) => d.id === donde || d.slug === donde)
+      const dest = allDestinations.find((d) => d.id === donde || d.slug === donde)
       if (dest) {
         result.donde = dest.id
         result.dondeTipo = "destination"
@@ -111,10 +99,10 @@ function parseUrlParams(): {
   return result
 }
 
-function TripCard({ trip }: { trip: Trip }) {
-  const dest = destinations.find((d) => d.id === trip.destinationId)
+function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDestinations: Destination[]; allCountries: Country[] }) {
+  const dest = allDestinations.find((d) => d.id === trip.destinationId)
   if (!dest) return null
-  const country = countries.find((c) => c.id === dest.countryId)
+  const country = allCountries.find((c) => c.id === dest.countryId)
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4
 
   return (
@@ -211,8 +199,15 @@ function TripCard({ trip }: { trip: Trip }) {
   )
 }
 
-export default function SearchPage() {
-  const urlParams = useMemo(() => parseUrlParams(), [])
+interface SearchPageProps {
+  trips: Trip[]
+  destinations: Destination[]
+  continents: Continent[]
+  countries: Country[]
+}
+
+export default function SearchPage({ trips, destinations, continents, countries }: SearchPageProps) {
+  const urlParams = useMemo(() => parseUrlParams(continents, destinations), [continents, destinations])
 
   const [whereValue, setWhereValue] = useState<{ type: "continent" | "destination"; id: string; label: string } | null>(
     urlParams.donde ? { type: urlParams.dondeTipo!, id: urlParams.donde, label: urlParams.dondeLabel! } : null
@@ -234,17 +229,36 @@ export default function SearchPage() {
   useClickOutside(whereRef, () => setWhereOpen(false), whereOpen)
   useClickOutside(whenRef, () => setWhenOpen(false), whenOpen)
 
-  const suggestions = searchQuery.length >= 1 ? searchDestinations(searchQuery) : []
+  const popularDestinations = useMemo(() => destinations.slice(0, 6), [destinations])
+
+  const suggestions = useMemo(() => {
+    if (searchQuery.length < 1) return []
+    const q = searchQuery.toLowerCase().trim()
+    return destinations.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        d.slug.toLowerCase().includes(q) ||
+        d.categories.some((c) => c.toLowerCase().includes(q))
+    )
+  }, [searchQuery, destinations])
 
   const filteredTrips = useMemo(() => {
-    return filterTripsAdvanced({
-      destinationId: whereValue?.type === "destination" ? whereValue.id : undefined,
-      continentId: whereValue?.type === "continent" ? whereValue.id : undefined,
-      tag: whenValue?.type === "period" ? (whenValue.id as TripTag) : undefined,
-      monthIndex: whenValue?.type === "month" ? parseInt(whenValue.id) : undefined,
-      category: categoryValue !== "all" ? (categoryValue as DestinationCategory) : undefined,
-    })
-  }, [whereValue, whenValue, categoryValue])
+    return trips
+      .filter((t) => t.status !== "full")
+      .filter((t) => {
+        const dest = destinations.find((d) => d.id === t.destinationId)
+        if (whereValue?.type === "destination" && t.destinationId !== whereValue.id) return false
+        if (whereValue?.type === "continent" && dest?.continentId !== whereValue.id) return false
+        if (whenValue?.type === "period" && !t.tags.includes(whenValue.id as TripTag)) return false
+        if (whenValue?.type === "month") {
+          const depMonth = new Date(t.departureDate).getMonth()
+          if (depMonth !== parseInt(whenValue.id)) return false
+        }
+        if (categoryValue !== "all" && !dest?.categories.includes(categoryValue as DestinationCategory)) return false
+        return true
+      })
+      .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
+  }, [whereValue, whenValue, categoryValue, trips, destinations])
 
   const TRIPS_PER_PAGE = 9
   const [currentPage, setCurrentPage] = useState(1)
@@ -266,7 +280,7 @@ export default function SearchPage() {
     })
   }, [])
 
-  const totalAvailableTrips = trips.filter((t) => t.status !== "full").length
+  const totalAvailableTrips = useMemo(() => trips.filter((t) => t.status !== "full").length, [trips])
   const activeFilterCount = [whereValue, whenValue, categoryValue !== "all" ? categoryValue : null].filter(Boolean).length
 
   const scrollToResults = useCallback(() => {
@@ -635,7 +649,7 @@ export default function SearchPage() {
           <>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {paginatedTrips.map((trip) => (
-                <TripCard key={trip.id} trip={trip} />
+                <TripCard key={trip.id} trip={trip} allDestinations={destinations} allCountries={countries} />
               ))}
             </div>
 
