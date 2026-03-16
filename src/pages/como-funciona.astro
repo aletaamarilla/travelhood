@@ -2,8 +2,13 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import HeroSection from "@/components/HeroSection.astro";
+import CTASection from "@/components/CTASection.astro";
+import FAQWrapper from "@/components/FAQWrapper.astro";
+import { getSiteSettings } from "@/lib/data-provider";
 import { generateHowToSchema, generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+const settings = await getSiteSettings();
 
 const pageTitle = "Cómo funciona un viaje con Travelhood | Viajes en grupo para jóvenes";
 const pageDescription = "Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. Descubre el proceso paso a paso.";
@@ -41,7 +46,7 @@ const steps = [
   },
 ];
 
-const includes = [
+const fallbackIncludes = [
   "Alojamiento completo (hoteles, hostels boutique o alojamientos únicos)",
   "Transporte interno (furgonetas, trenes, barcos según destino)",
   "Actividades y experiencias del itinerario",
@@ -50,12 +55,15 @@ const includes = [
   "Extras según destino (Japan Rail Pass, crucero por el Nilo, noche en jaima...)",
 ];
 
-const notIncludes = [
+const fallbackNotIncludes = [
   "Vuelo internacional (te asesoramos para encontrar la mejor oferta)",
   "Comidas no especificadas en el itinerario (algunas incluidas, otras libres)",
   "Gastos personales (souvenirs, propinas, excursiones opcionales extra)",
   "Visados (te guiamos con los trámites si es necesario)",
 ];
+
+const includes = settings?.defaultIncluded?.length ? settings.defaultIncluded : fallbackIncludes;
+const notIncludes = settings?.defaultNotIncluded?.length ? settings.defaultNotIncluded : fallbackNotIncludes;
 
 const faqs = [
   { question: "¿Puedo ir solo/a?", answer: "Por supuesto. El 70% de nuestros viajeros reservan solos. Esa es precisamente la gracia: llegas sin conocer a nadie y vuelves con un grupo de amigos. El coordinador se encarga de que todos se integren desde el primer momento." },
@@ -78,32 +86,17 @@ const faqs = [
   <main>
     <Navbar client:load solid />
 
-    <!-- Hero -->
-    <section class="relative flex min-h-[55vh] items-center justify-center overflow-hidden">
-      <img
-        src="/images/hero-brasil.jpg"
-        alt="Grupo de jóvenes viajeros Travelhood — cómo funcionan los viajes en grupo"
-        class="absolute inset-0 h-full w-full object-cover"
-        width="1920"
-        height="1080"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
-      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
-        <nav class="mb-6 text-sm text-white/70">
-          <a href="/" class="hover:text-white transition-colors">Home</a>
-          <span class="mx-2">/</span>
-          <span class="text-white font-medium">Cómo funciona</span>
-        </nav>
-        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
-          Así funciona un viaje con Travelhood
-        </h1>
-        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. De pensarlo a vivirlo en 5 pasos.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      image="/images/hero-brasil.jpg"
+      imageAlt="Grupo de jóvenes viajeros Travelhood — cómo funcionan los viajes en grupo"
+      breadcrumbs={[
+        { label: "Home", href: "/" },
+        { label: "Cómo funciona" },
+      ]}
+      title="Así funciona un viaje con Travelhood"
+      subtitle="Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. De pensarlo a vivirlo en 5 pasos."
+      minHeight="55vh"
+    />
 
     <!-- Steps -->
     <section class="bg-background py-16">
@@ -268,38 +261,20 @@ const faqs = [
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section class="bg-background py-14">
-      <div class="mx-auto max-w-3xl px-6">
-        <div class="mb-10 text-center">
-          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-            Preguntas frecuentes
-          </span>
-          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            Todo lo que necesitas saber
-          </h2>
-        </div>
-        <ContinentFAQ client:load faqs={faqs} />
-      </div>
-    </section>
+    <FAQWrapper
+      title="Todo lo que necesitas saber"
+      subtitle="Preguntas frecuentes"
+      faqs={faqs}
+      bg="background"
+    />
 
-    <!-- CTA -->
-    <section class="bg-card py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl text-balance">
-          Elige tu primer viaje
-        </h2>
-        <p class="mt-4 text-muted-foreground max-w-lg mx-auto">
-          Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. El grupo ya se está formando.
-        </p>
-        <a
-          href="/viajes/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
-        >
-          Ver viajes disponibles
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title="Elige tu primer viaje"
+      subtitle="Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. El grupo ya se está formando."
+      ctaText="Ver viajes disponibles"
+      ctaHref="/viajes/"
+      variant="card"
+    />
 
     <Footer />
   </main>

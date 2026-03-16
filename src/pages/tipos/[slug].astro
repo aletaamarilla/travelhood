@@ -2,7 +2,8 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import FAQWrapper from "@/components/FAQWrapper.astro";
+import CTASection from "@/components/CTASection.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import {
   getTripCategories,
@@ -11,6 +12,7 @@ import {
   getCountries,
   getTripExtra,
 } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -51,8 +53,7 @@ const categoryTrips = trips
 
 const categoryTripCards = categoryTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
-  const extra = getTripExtra(trip.id);
-  const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+  const resolved = resolvePrice(trip, getTripExtra(trip.id));
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
   return {
     destSlug: dest.slug,
@@ -60,9 +61,9 @@ const categoryTripCards = categoryTrips.map((trip) => {
     title: trip.title,
     dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
     durationDays: trip.durationDays,
-    price,
-    originalPrice: trip.priceFrom,
-    hasDiscount: extra.promoPrice != null && extra.promoPrice < trip.priceFrom,
+    price: resolved.price,
+    originalPrice: resolved.originalPrice,
+    hasDiscount: resolved.hasDiscount,
     isUrgent,
   };
 });
@@ -278,40 +279,21 @@ const categoryEmoji: Record<string, string> = {
       ]}
     />
 
-    <!-- FAQ -->
     {category.faqs.length > 0 && (
-      <section class="bg-background py-14">
-        <div class="mx-auto max-w-3xl px-6">
-          <div class="mb-10 text-center">
-            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-              Preguntas frecuentes
-            </span>
-            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-              Sobre viajes de {category.name.toLowerCase()}
-            </h2>
-          </div>
-          <ContinentFAQ client:load faqs={category.faqs} />
-        </div>
-      </section>
+      <FAQWrapper
+        title={`Sobre viajes de ${category.name.toLowerCase()}`}
+        subtitle="Preguntas frecuentes"
+        faqs={category.faqs}
+        bg="background"
+      />
     )}
 
-    <!-- CTA -->
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          ¿Listo para un viaje de {category.name.toLowerCase()}?
-        </h2>
-        <p class="mt-4 text-white/70 max-w-lg mx-auto">
-          Elige tu destino, reserva tu plaza y prepárate para la experiencia de tu vida.
-        </p>
-        <a
-          href="/viajes/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
-        >
-          Ver viajes disponibles
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title={`¿Listo para un viaje de ${category.name.toLowerCase()}?`}
+      subtitle="Elige tu destino, reserva tu plaza y prepárate para la experiencia de tu vida."
+      ctaText="Ver viajes disponibles"
+      ctaHref="/viajes/"
+    />
 
     <Footer />
   </main>

@@ -6,7 +6,8 @@ import GEODataBlock from "@/components/GEODataBlock.astro";
 import Footer from "@/components/Footer.astro";
 import {
   getDestinations,
-  getTrips,
+  getDestinationBySlug,
+  getTripsByDestination,
   getTestimonials,
   getCoordinators,
   getCountries,
@@ -16,6 +17,7 @@ import {
   getTripExtra,
   lookupCoords,
 } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateAggregateRatingSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
 
 export async function getStaticPaths() {
@@ -26,25 +28,33 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [destinations, trips, testimonials, coordinators, countries, continents] = await Promise.all([
-  getDestinations(), getTrips(), getTestimonials(), getCoordinators(), getCountries(), getContinents()
+const [destination, tripsRaw, testimonials, coordinators, countries, continents] = await Promise.all([
+  getDestinationBySlug(slug!),
+  getTripsByDestination(slug!),
+  getTestimonials(),
+  getCoordinators(),
+  getCountries(),
+  getContinents(),
 ]);
-const destination = destinations.find((d) => d.slug === slug)!;
+
+if (!destination) return Astro.redirect("/404");
+
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
 
-const destTrips = trips
-  .filter((t) => t.destinationId === destination.id && t.status !== "full")
+const destTrips = tripsRaw
+  .filter((t) => t.status !== "full")
   .sort(
     (a, b) =>
       new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
   )
   .map((t) => {
     const extra = getTripExtra(t.id);
+    const resolved = resolvePrice(t, extra);
     return {
       ...t,
-      promoPrice: extra.promoPrice,
-      promoLabel: extra.promoLabel,
+      promoPrice: resolved.hasDiscount ? resolved.price : undefined,
+      promoLabel: resolved.promoLabel,
       itinerary: extra.itinerary || t.itinerary.map((d) => {
         const coords = lookupCoords(d.title);
         return { ...d, lat: coords?.[0] ?? 0, lng: coords?.[1] ?? 0 };
@@ -76,7 +86,7 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
         startDate: trip.departureDate,
         endDate: trip.returnDate,
         location: destination.name,
-        price: trip.promoPrice ?? trip.priceFrom,
+        price: resolvePrice(trip, getTripExtra(trip.id)).price,
         url: `/destino/${destination.slug}/`,
         image: destination.heroImage,
         availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
@@ -100,7 +110,7 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
       title={`Viaje en grupo a ${destination.name} — Datos clave`}
       subtitle={`Información actualizada sobre viajes organizados a ${destination.name} con Travelhood`}
       dataPoints={[
-        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => t.promoPrice ?? t.priceFrom))}€ (sin vuelo)` : "Próximamente" },
+        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => resolvePrice(t, getTripExtra(t.id)).price))}€ (sin vuelo)` : "Próximamente" },
         { label: "Duración", value: destTrips.length > 0 ? `${destTrips[0].durationDays} días` : "Variable" },
         { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
         { label: "Clima", value: destination.climate },

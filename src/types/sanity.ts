@@ -41,6 +41,8 @@ export interface SanitySiteSettings {
   contactEmail?: string
   socialLinks?: {platform: string; url: string}[]
   defaultSeoImage?: SanityImageSource
+  defaultIncluded?: string[]
+  defaultNotIncluded?: string[]
 }
 
 // ── Continent ──
@@ -118,6 +120,9 @@ export interface SanityDestination {
   coordinates?: SanityGeopoint
   country?: SanityRef & Pick<SanityCountry, 'name' | 'slug' | 'flag' | 'currency' | 'currencyRate' | 'language' | 'timezone' | 'visaRequired' | 'visaInfo' | 'vaccinesRecommended'>
   continent?: SanityRef & Pick<SanityContinent, 'name' | 'slug'>
+  extraIncluded?: string[]
+  extraNotIncluded?: string[]
+  itinerary?: SanityItineraryDay[]
   faqs?: SanityFaq[]
   seo?: SanityDestinationSeo
 }
@@ -162,10 +167,10 @@ export interface SanityTrip {
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'
   tags?: string[]
-  included?: string[]
-  notIncluded?: string[]
-  itinerary?: SanityItineraryDay[]
-  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription'> & {
+  extraIncluded?: string[]
+  extraNotIncluded?: string[]
+  itineraryOverride?: SanityItineraryDay[]
+  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'extraIncluded' | 'extraNotIncluded' | 'itinerary'> & {
     country?: Pick<SanityCountry, 'name' | 'flag'>
     continent?: Pick<SanityContinent, 'name' | 'slug'>
   }

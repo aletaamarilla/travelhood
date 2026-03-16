@@ -2,7 +2,8 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import FAQWrapper from "@/components/FAQWrapper.astro";
+import CTASection from "@/components/CTASection.astro";
 import LeadMagnet from "@/components/LeadMagnet";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import {
@@ -12,6 +13,7 @@ import {
   getCountries,
   getTripExtra,
 } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateEventSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -48,8 +50,7 @@ const hasTrips = seasonTrips.length > 0;
 const seasonTripCards = seasonTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
   const country = countries.find((c) => c.id === dest.countryId);
-  const extra = getTripExtra(trip.id);
-  const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+  const resolved = resolvePrice(trip, getTripExtra(trip.id));
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
   return {
     destSlug: dest.slug,
@@ -60,10 +61,10 @@ const seasonTripCards = seasonTrips.map((trip) => {
     title: trip.title,
     dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
     durationDays: trip.durationDays,
-    price,
-    originalPrice: trip.priceFrom,
-    hasDiscount: extra.promoPrice != null && extra.promoPrice < trip.priceFrom,
-    promoLabel: extra.promoLabel ?? trip.promoLabel,
+    price: resolved.price,
+    originalPrice: resolved.originalPrice,
+    hasDiscount: resolved.hasDiscount,
+    promoLabel: resolved.promoLabel,
     isUrgent,
     placesLeft: trip.placesLeft,
     flightEstimate: trip.flightEstimate,
@@ -82,15 +83,14 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
     {season.faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(season.faqs))} />}
     {seasonTrips.map((trip) => {
       const dest = destinations.find((d) => d.id === trip.destinationId)!;
-      const extra = getTripExtra(trip.id);
-      const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+      const schemaPrice = resolvePrice(trip, getTripExtra(trip.id)).price;
       return (
         <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({
           name: trip.title,
           startDate: trip.departureDate,
           endDate: trip.returnDate,
           location: dest?.name ?? trip.title,
-          price,
+          price: schemaPrice,
           url: `/destino/${dest?.slug}/`,
           image: dest?.heroImage,
         }))} />
@@ -297,44 +297,24 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
       ]}
     />
 
-    <!-- FAQ -->
     {season.faqs.length > 0 && (
-      <section class="bg-card py-14">
-        <div class="mx-auto max-w-3xl px-6">
-          <div class="mb-10 text-center">
-            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-              Preguntas frecuentes
-            </span>
-            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-              Sobre viajes en {season.name}
-            </h2>
-          </div>
-          <ContinentFAQ client:load faqs={season.faqs} />
-        </div>
-      </section>
+      <FAQWrapper
+        title={`Sobre viajes en ${season.name}`}
+        subtitle="Preguntas frecuentes"
+        faqs={season.faqs}
+      />
     )}
 
-    <!-- CTA -->
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          {hasTrips
-            ? `Las plazas para ${season.name} 2026 se están agotando`
-            : `¿Quieres viajar en ${season.name} 2026?`}
-        </h2>
-        <p class="mt-4 text-white/70 max-w-lg mx-auto">
-          {hasTrips
-            ? "No te quedes sin tu viaje. Reserva ahora y asegura tu plaza."
-            : "Apúntate a la lista de espera y serás el primero en enterarte cuando abramos plazas."}
-        </p>
-        <a
-          href="/viajes/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
-        >
-          {hasTrips ? "Ver viajes disponibles" : "Ver todos los viajes"}
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title={hasTrips
+        ? `Las plazas para ${season.name} 2026 se están agotando`
+        : `¿Quieres viajar en ${season.name} 2026?`}
+      subtitle={hasTrips
+        ? "No te quedes sin tu viaje. Reserva ahora y asegura tu plaza."
+        : "Apúntate a la lista de espera y serás el primero en enterarte cuando abramos plazas."}
+      ctaText={hasTrips ? "Ver viajes disponibles" : "Ver todos los viajes"}
+      ctaHref="/viajes/"
+    />
 
     <Footer />
   </main>

@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string
+  subtitle?: string
+  ctaText: string
+  ctaHref: string
+  variant?: 'teal' | 'card'
+}
+
+const { title, subtitle, ctaText, ctaHref, variant = 'teal' } = Astro.props
+const bgClass = variant === 'teal' ? 'bg-teal-deep' : 'bg-card'
+const titleClass = variant === 'teal' ? 'text-white' : 'text-foreground'
+const subtitleClass = variant === 'teal' ? 'text-white/70' : 'text-muted-foreground'
+---
+
+<section class={`${bgClass} py-16`}>
+  <div class="mx-auto max-w-3xl px-6 text-center">
+    <h2 class={`font-serif text-2xl font-extrabold sm:text-3xl text-balance ${titleClass}`}>
+      {title}
+    </h2>
+    {subtitle && (
+      <p class={`mt-4 max-w-lg mx-auto ${subtitleClass}`}>
+        {subtitle}
+      </p>
+    )}
+    <a
+      href={ctaHref}
+      class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+    >
+      {ctaText}
+    </a>
+  </div>
+</section>

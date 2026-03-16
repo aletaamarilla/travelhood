@@ -1,0 +1,29 @@
+---
+import ContinentFAQ from './ContinentFAQ.tsx'
+
+interface Props {
+  title: string
+  subtitle?: string
+  faqs: { question: string; answer: string }[]
+  bg?: 'card' | 'background'
+}
+
+const { title, subtitle, faqs, bg = 'card' } = Astro.props
+const bgClass = bg === 'card' ? 'bg-card' : 'bg-background'
+---
+
+<section class={`${bgClass} py-14`}>
+  <div class="mx-auto max-w-3xl px-6">
+    <div class="mb-10 text-center">
+      {subtitle && (
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+          {subtitle}
+        </span>
+      )}
+      <h2 class={`font-serif text-2xl font-extrabold text-foreground sm:text-3xl ${subtitle ? 'mt-3' : ''}`}>
+        {title}
+      </h2>
+    </div>
+    <ContinentFAQ client:load faqs={faqs} />
+  </div>
+</section>

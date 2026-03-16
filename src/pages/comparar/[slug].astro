@@ -3,9 +3,11 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import FAQWrapper from "@/components/FAQWrapper.astro";
+import CTASection from "@/components/CTASection.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
 import { getDestinations, getTrips, getCountries, getComparisons, getTripExtra } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
 export async function getStaticPaths() {
@@ -30,10 +32,7 @@ function getDestData(dest: typeof destA) {
   const destTrips = trips
     .filter((t) => t.destinationId === dest.id && t.status !== "full" && new Date(t.departureDate) > now)
     .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
-  const prices = destTrips.map((t) => {
-    const extra = getTripExtra(t.id);
-    return extra.promoPrice ?? t.promoPrice ?? t.priceFrom;
-  });
+  const prices = destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price);
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
   const avgFlight = destTrips.length > 0 ? Math.round(destTrips.reduce((sum, t) => sum + t.flightEstimate, 0) / destTrips.length) : 0;
   const duration = destTrips.length > 0 ? destTrips[0].durationDays : 0;
@@ -157,28 +156,18 @@ const criteria = [
       ]}
     />
 
-    <section class="bg-background py-14">
-      <div class="mx-auto max-w-3xl px-6">
-        <div class="mb-10 text-center">
-          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            Preguntas sobre {destA.name} vs {destB.name}
-          </h2>
-        </div>
-        <ContinentFAQ client:load faqs={faqs} />
-      </div>
-    </section>
+    <FAQWrapper
+      title={`Preguntas sobre ${destA.name} vs ${destB.name}`}
+      faqs={faqs}
+      bg="background"
+    />
 
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          ¿Ya te has decidido?
-        </h2>
-        <p class="mt-4 text-white/70">El grupo ya se está formando para ambos destinos.</p>
-        <a href="/viajes/" class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90">
-          Ver todos los viajes
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title="¿Ya te has decidido?"
+      subtitle="El grupo ya se está formando para ambos destinos."
+      ctaText="Ver todos los viajes"
+      ctaHref="/viajes/"
+    />
 
     <InternalLinks />
     <Footer />

@@ -26,6 +26,7 @@ export const countryBySlugQuery = `*[_type == "country" && slug.current == $slug
 export const allDestinationsQuery = `*[_type == "destination"] | order(name asc) {
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   highlights, idealFor, climate, categories,
+  extraIncluded, extraNotIncluded,
   country->{_id, name, slug, flag},
   continent->{_id, name, slug},
   seo
@@ -35,6 +36,7 @@ export const destinationBySlugQuery = `*[_type == "destination" && slug.current 
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   gallery, highlights, idealFor, climate, categories,
   climateByMonth, budgetPerDay, coordinates,
+  extraIncluded, extraNotIncluded, itinerary,
   country->{_id, name, slug, flag, currency, currencyRate, language, timezone, visaRequired, visaInfo, vaccinesRecommended},
   continent->{_id, name, slug},
   faqs, seo
@@ -51,8 +53,8 @@ export const allTripsQuery = `*[_type == "trip" && status != "full"] | order(dep
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  included, notIncluded,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, country->{name, flag}, continent->{name, slug}},
+  extraIncluded, extraNotIncluded,
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, extraIncluded, extraNotIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -60,7 +62,8 @@ export const tripsByDestinationQuery = `*[_type == "trip" && destination->slug.c
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  included, notIncluded, itinerary,
+  extraIncluded, extraNotIncluded, itineraryOverride,
+  destination->{_id, name, slug, extraIncluded, extraNotIncluded, itinerary},
   coordinator->{_id, name, slug, image, imageAlt, role, bio, quote}
 }`
 
@@ -68,7 +71,8 @@ export const tripsByTagQuery = `*[_type == "trip" && $tag in tags] | order(depar
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, country->{name, flag}, continent->{name, slug}},
+  extraIncluded, extraNotIncluded,
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, extraIncluded, extraNotIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -172,5 +176,5 @@ export const landingBySlugQuery = `*[_type == "landingPage" && slug == $slug][0]
 // ── Site Settings ──
 export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   _id, siteName, siteUrl, orgLogo, priceRange, contactEmail,
-  socialLinks, defaultSeoImage
+  socialLinks, defaultSeoImage, defaultIncluded, defaultNotIncluded
 }`

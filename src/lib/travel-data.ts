@@ -36,6 +36,9 @@ export interface Destination {
   idealFor: string
   climate: string
   categories: DestinationCategory[]
+  extraIncluded?: string[]
+  extraNotIncluded?: string[]
+  itinerary?: ItineraryDay[]
 }
 
 export type TripTag =
@@ -65,7 +68,10 @@ export interface Trip {
   status: "open" | "almost-full" | "full"
   included: string[]
   notIncluded: string[]
+  extraIncluded?: string[]
+  extraNotIncluded?: string[]
   itinerary: ItineraryDay[]
+  itineraryOverride?: ItineraryDay[]
   tags: TripTag[]
 }
 
@@ -276,6 +282,8 @@ export const destinations: Destination[] = [
     idealFor: "Quienes buscan experiencias únicas e irrepetibles",
     climate: "Ártico, -15 a -5°C",
     categories: ["nieve", "aventura", "naturaleza"],
+    extraIncluded: ["Actividades árticas", "Trineo de huskies"],
+    extraNotIncluded: ["Ropa térmica (alquilable)"],
   },
   {
     id: "maldivas",
@@ -306,6 +314,7 @@ export const destinations: Destination[] = [
     idealFor: "Curiosos culturales y foodies empedernidos",
     climate: "Templado, 10-25°C según temporada",
     categories: ["cultural", "aventura"],
+    extraIncluded: ["Japan Rail Pass"],
   },
   {
     id: "zanzibar",
@@ -351,6 +360,7 @@ export const destinations: Destination[] = [
     idealFor: "Exploradores culturales que quieren algo cercano pero exótico",
     climate: "Árido-templado, 15-35°C",
     categories: ["cultural", "aventura"],
+    extraIncluded: ["Noche en jaima del desierto"],
   },
   {
     id: "islandia",
@@ -366,6 +376,7 @@ export const destinations: Destination[] = [
     idealFor: "Amantes de la naturaleza salvaje y los paisajes dramáticos",
     climate: "Subártico, 0-15°C",
     categories: ["naturaleza", "aventura", "nieve"],
+    extraNotIncluded: ["Ropa térmica (alquilable)"],
   },
   {
     id: "peru",
@@ -381,6 +392,7 @@ export const destinations: Destination[] = [
     idealFor: "Viajeros que buscan historia, trekking y experiencias gastronómicas",
     climate: "Variado, 10-28°C según altitud",
     categories: ["aventura", "cultural"],
+    extraIncluded: ["Tren a Machu Picchu"],
   },
   {
     id: "bali",
@@ -426,6 +438,7 @@ export const destinations: Destination[] = [
     idealFor: "Apasionados de la historia y las civilizaciones antiguas",
     climate: "Desértico, 20-40°C",
     categories: ["cultural", "aventura"],
+    extraIncluded: ["Crucero por el Nilo"],
   },
   {
     id: "grecia",
@@ -628,13 +641,13 @@ export const destinations: Destination[] = [
 const makeItinerary = (days: [string, string][]): ItineraryDay[] =>
   days.map(([title, description], i) => ({ day: i + 1, title, description }))
 
-const defaultIncluded = [
+export const defaultIncluded = [
   "Alojamiento",
   "Transporte interno",
   "Actividades incluidas",
   "Coordinador Travelhood",
 ]
-const defaultNotIncluded = ["Vuelo internacional", "Comidas no especificadas", "Gastos personales"]
+export const defaultNotIncluded = ["Vuelo internacional", "Comidas no especificadas", "Gastos personales"]
 
 export const trips: Trip[] = [
   // ─── SEMANA SANTA 2026 ───

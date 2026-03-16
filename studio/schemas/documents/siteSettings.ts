@@ -55,6 +55,20 @@ export default defineType({
         'Imagen por defecto cuando se comparte en redes sociales y no hay otra específica. Tamaño ideal: 1200x630px.',
       options: {hotspot: true},
     }),
+    defineField({
+      name: 'defaultIncluded',
+      title: 'Incluye (por defecto)',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Lo que incluyen TODOS los viajes de Travelhood por defecto.',
+    }),
+    defineField({
+      name: 'defaultNotIncluded',
+      title: 'No incluye (por defecto)',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Lo que NO incluye ningún viaje por defecto.',
+    }),
   ],
   preview: {
     prepare() {

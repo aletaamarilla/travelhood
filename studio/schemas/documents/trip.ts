@@ -149,33 +149,33 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-    // --- Incluye / No incluye ---
+    // --- Incluye / No incluye (overrides) ---
     defineField({
-      name: 'included',
-      title: 'Incluye',
+      name: 'extraIncluded',
+      title: 'Extras que incluye (override)',
       type: 'array',
       of: [{type: 'string'}],
       description:
-        'Lista de lo que incluye el viaje (ej: "Alojamiento", "Transporte interno"). Un elemento por línea.',
+        'Solo si este viaje incluye algo DISTINTO al destino. Normalmente vacío.',
     }),
     defineField({
-      name: 'notIncluded',
-      title: 'No incluye',
+      name: 'extraNotIncluded',
+      title: 'Extras que NO incluye (override)',
       type: 'array',
       of: [{type: 'string'}],
       description:
-        'Lista de lo que NO incluye (ej: "Vuelo internacional", "Comidas no especificadas"). Un elemento por línea.',
+        'Solo si este viaje NO incluye algo DISTINTO al destino. Normalmente vacío.',
     }),
 
-    // --- Itinerario ---
+    // --- Itinerario (override) ---
     defineField({
-      name: 'itinerary',
-      title: 'Itinerario',
+      name: 'itineraryOverride',
+      title: 'Itinerario (override)',
       type: 'array',
       of: [{type: 'itineraryDay'}],
       fieldset: 'itineraryFieldset',
       description:
-        'Itinerario día a día del viaje. Cada día con título, descripción y opcionalmente coordenadas para el mapa.',
+        'Solo si la ruta de este viaje difiere del itinerario base del destino. Normalmente vacío.',
     }),
 
     // --- Tags de temporada ---

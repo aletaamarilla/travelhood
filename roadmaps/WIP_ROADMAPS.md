@@ -3,3 +3,4 @@
 - [x] ROADMAP_refactor.md ✅ Completado
 - [ ] ROADMAP_mapSEO.md
 - [x] ROADMAP_addSanity.md ✅ Completado
+- [ ] ROADMAP_fixPages.md

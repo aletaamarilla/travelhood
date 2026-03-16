@@ -3,7 +3,8 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import FAQWrapper from "@/components/FAQWrapper.astro";
+import CTASection from "@/components/CTASection.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
 import {
   getCountries,
@@ -12,6 +13,7 @@ import {
   getContinents,
   getTripExtra,
 } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -41,10 +43,7 @@ const countryTrips = trips
   .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
 
 const minPrice = countryTrips.length > 0
-  ? Math.min(...countryTrips.map((t) => {
-      const extra = getTripExtra(t.id);
-      return extra.promoPrice ?? t.promoPrice ?? t.priceFrom;
-    }))
+  ? Math.min(...countryTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price))
   : 0;
 
 const faqs = [
@@ -135,7 +134,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {countryDestinations.map((dest) => {
               const destTrips = countryTrips.filter((t) => t.destinationId === dest.id);
-              const destMinPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => { const extra = getTripExtra(t.id); return extra.promoPrice ?? t.promoPrice ?? t.priceFrom; })) : 0;
+              const destMinPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price)) : 0;
               return (
                 <a href={`/destino/${dest.slug}/`} class="group relative overflow-hidden rounded-2xl border border-border/40 bg-background transition-all hover:shadow-lg hover:-translate-y-0.5">
                   <div class="aspect-[16/10] overflow-hidden">
@@ -169,13 +168,12 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {countryTrips.slice(0, 6).map((trip) => {
               const dest = destinations.find((d) => d.id === trip.destinationId)!;
-              const extra = getTripExtra(trip.id);
-              const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+              const tripPrice = resolvePrice(trip, getTripExtra(trip.id)).price;
               return (
                 <a href={`/destino/${dest.slug}/`} class="rounded-xl border border-border/40 bg-card p-5 transition-all hover:shadow-md hover:-translate-y-0.5">
                   <div class="flex items-center justify-between mb-2">
                     <span class="font-serif font-bold text-foreground">{dest.name}</span>
-                    <span class="text-sm font-semibold text-teal-vivid">{price}€</span>
+                    <span class="text-sm font-semibold text-teal-vivid">{tripPrice}€</span>
                   </div>
                   <p class="text-sm text-muted-foreground">{trip.title}</p>
                   <p class="mt-1 text-xs text-muted-foreground">{format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es })} · {trip.durationDays} días</p>
@@ -201,38 +199,19 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
       ]}
     />
 
-    <!-- FAQ -->
-    <section class="bg-background py-14">
-      <div class="mx-auto max-w-3xl px-6">
-        <div class="mb-10 text-center">
-          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-            Preguntas frecuentes
-          </span>
-          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            Sobre viajar a {country.name}
-          </h2>
-        </div>
-        <ContinentFAQ client:load faqs={faqs} />
-      </div>
-    </section>
+    <FAQWrapper
+      title={`Sobre viajar a ${country.name}`}
+      subtitle="Preguntas frecuentes"
+      faqs={faqs}
+      bg="background"
+    />
 
-    <!-- CTA -->
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          ¿Listo para descubrir {country.name}?
-        </h2>
-        <p class="mt-4 text-white/70 max-w-lg mx-auto">
-          El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote.
-        </p>
-        <a
-          href="/viajes/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
-        >
-          Reserva tu viaje a {country.name}
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title={`¿Listo para descubrir ${country.name}?`}
+      subtitle="El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote."
+      ctaText={`Reserva tu viaje a ${country.name}`}
+      ctaHref="/viajes/"
+    />
 
     <InternalLinks />
     <Footer />

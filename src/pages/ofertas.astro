@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
 import { getTrips, getDestinations, getCountries, getTripExtra } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 const [trips, destinations, countries] = await Promise.all([
   getTrips(), getDestinations(), getCountries()
 ]);
@@ -13,21 +14,16 @@ import { es } from "date-fns/locale";
 const now = new Date();
 
 const promoTrips = trips
-  .filter((t) => {
-    const extra = getTripExtra(t.id);
-    const hasPromo = (extra.promoPrice && extra.promoPrice < t.priceFrom) ||
-                     (t.promoPrice && t.promoPrice < t.priceFrom);
-    return hasPromo && t.status !== "full" && new Date(t.departureDate) > now;
-  })
   .map((t) => {
-    const extra = getTripExtra(t.id);
-    const promoPrice = extra.promoPrice ?? t.promoPrice!;
-    const discount = Math.round((1 - promoPrice / t.priceFrom) * 100);
-    return { trip: t, promoPrice, discount, promoLabel: extra.promoLabel ?? t.promoLabel ?? "" };
+    const resolved = resolvePrice(t, getTripExtra(t.id));
+    return { trip: t, resolved, discount: resolved.hasDiscount ? Math.round((1 - resolved.price / resolved.originalPrice) * 100) : 0 };
   })
+  .filter(({ resolved, trip }) =>
+    resolved.hasDiscount && trip.status !== "full" && new Date(trip.departureDate) > now
+  )
   .sort((a, b) => b.discount - a.discount);
 
-const promoCards = promoTrips.map(({ trip, promoPrice, discount, promoLabel }) => {
+const promoCards = promoTrips.map(({ trip, resolved, discount }) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
   const country = countries.find((c) => c.id === dest.countryId);
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
@@ -40,10 +36,10 @@ const promoCards = promoTrips.map(({ trip, promoPrice, discount, promoLabel }) =
     title: trip.title,
     dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
     durationDays: trip.durationDays,
-    originalPrice: trip.priceFrom,
-    promoPrice,
+    originalPrice: resolved.originalPrice,
+    promoPrice: resolved.price,
     discount,
-    promoLabel,
+    promoLabel: resolved.promoLabel ?? "",
     isUrgent,
     placesLeft: trip.placesLeft,
     flightEstimate: trip.flightEstimate,
@@ -56,12 +52,12 @@ const pageDescription = "Últimas plazas con descuento en viajes en grupo para j
 const offerCatalogSchema = generateOfferCatalogSchema({
   name: "Ofertas Travelhood — Viajes en grupo con descuento",
   description: pageDescription,
-  offers: promoTrips.map(({ trip, promoPrice }) => {
+  offers: promoTrips.map(({ trip, resolved }) => {
     const dest = destinations.find((d) => d.id === trip.destinationId)!;
     return {
       name: trip.title,
-      price: trip.priceFrom,
-      promoPrice,
+      price: resolved.originalPrice,
+      promoPrice: resolved.price,
       url: `/destino/${dest.slug}/`,
       image: dest.heroImage,
     };

@@ -54,6 +54,8 @@ import {
   testimonials as hardTestimonials,
   tripCategories as hardTripCategories,
   seasons as hardSeasons,
+  defaultIncluded as hardDefaultIncluded,
+  defaultNotIncluded as hardDefaultNotIncluded,
   getDestinationsByContinent as hardGetDestsByContinent,
   type Continent,
   type Country,
@@ -74,6 +76,23 @@ const isSanityConfigured = (): boolean => {
     return Boolean(pid && pid !== 'YOUR_PROJECT_ID')
   } catch {
     return false
+  }
+}
+
+// ── Settings Cache ──
+
+let cachedSettings: SanitySiteSettings | null = null
+
+async function ensureSettings(): Promise<{ defaultIncluded: string[]; defaultNotIncluded: string[] }> {
+  if (!isSanityConfigured()) {
+    return { defaultIncluded: hardDefaultIncluded, defaultNotIncluded: hardDefaultNotIncluded }
+  }
+  if (!cachedSettings) {
+    cachedSettings = await sanityFetch<SanitySiteSettings | null>(siteSettingsQuery)
+  }
+  return {
+    defaultIncluded: cachedSettings?.defaultIncluded ?? hardDefaultIncluded,
+    defaultNotIncluded: cachedSettings?.defaultNotIncluded ?? hardDefaultNotIncluded,
   }
 }
 
@@ -165,6 +184,13 @@ function mapDestination(s: SanityDestination): Destination {
     idealFor: s.idealFor ?? '',
     climate: s.climate,
     categories: (s.categories ?? []) as Destination['categories'],
+    extraIncluded: s.extraIncluded ?? [],
+    extraNotIncluded: s.extraNotIncluded ?? [],
+    itinerary: (s.itinerary ?? []).map((d) => ({
+      day: d.day,
+      title: d.title,
+      description: d.description ?? '',
+    })),
   }
 }
 
@@ -196,7 +222,49 @@ export async function getDestinationRaw(slug: string): Promise<SanityDestination
 
 // ── Trips ──
 
-function mapTrip(s: SanityTrip): Trip {
+interface MergeContext {
+  defaultIncluded: string[]
+  defaultNotIncluded: string[]
+  destinationData?: {
+    extraIncluded?: string[]
+    extraNotIncluded?: string[]
+    itinerary?: { day: number; title: string; description?: string }[]
+  }
+}
+
+function mapItineraryDay(d: { day: number; title: string; description?: string }) {
+  return { day: d.day, title: d.title, description: d.description ?? '' }
+}
+
+function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
+  const destData = ctx?.destinationData ?? {
+    extraIncluded: s.destination?.extraIncluded,
+    extraNotIncluded: s.destination?.extraNotIncluded,
+    itinerary: s.destination?.itinerary,
+  }
+
+  const included = ctx
+    ? [...new Set([
+        ...ctx.defaultIncluded,
+        ...(destData?.extraIncluded ?? []),
+        ...(s.extraIncluded ?? []),
+      ])]
+    : s.extraIncluded ?? []
+
+  const notIncluded = ctx
+    ? [...new Set([
+        ...ctx.defaultNotIncluded,
+        ...(destData?.extraNotIncluded ?? []),
+        ...(s.extraNotIncluded ?? []),
+      ])]
+    : s.extraNotIncluded ?? []
+
+  const destItinerary = Array.isArray(destData?.itinerary) ? destData.itinerary : []
+  const overrideItinerary = s.itineraryOverride ?? []
+  const resolvedItinerary = overrideItinerary.length > 0
+    ? overrideItinerary.map(mapItineraryDay)
+    : destItinerary.map(mapItineraryDay)
+
   return {
     id: s._id,
     destinationId: s.destination?._id ?? '',
@@ -212,21 +280,23 @@ function mapTrip(s: SanityTrip): Trip {
     placesLeft: s.placesLeft,
     coordinatorId: s.coordinator?._id ?? '',
     status: s.status,
-    included: s.included ?? [],
-    notIncluded: s.notIncluded ?? [],
-    itinerary: (s.itinerary ?? []).map((d) => ({
-      day: d.day,
-      title: d.title,
-      description: d.description ?? '',
-    })),
+    included,
+    notIncluded,
+    extraIncluded: s.extraIncluded ?? [],
+    extraNotIncluded: s.extraNotIncluded ?? [],
+    itinerary: resolvedItinerary,
+    itineraryOverride: overrideItinerary.map(mapItineraryDay),
     tags: (s.tags ?? []) as Trip['tags'],
   }
 }
 
 export async function getTrips(): Promise<Trip[]> {
   if (!isSanityConfigured()) return hardTrips
-  const data = await sanityFetch<SanityTrip[]>(allTripsQuery)
-  return data.map(mapTrip)
+  const [data, settings] = await Promise.all([
+    sanityFetch<SanityTrip[]>(allTripsQuery),
+    ensureSettings(),
+  ])
+  return data.map((s) => mapTrip(s, settings))
 }
 
 export async function getTripsByDestination(slug: string): Promise<Trip[]> {
@@ -234,14 +304,23 @@ export async function getTripsByDestination(slug: string): Promise<Trip[]> {
     const dest = hardDestinations.find((d) => d.slug === slug)
     return dest ? hardTrips.filter((t) => t.destinationId === dest.id) : []
   }
-  const data = await sanityFetch<SanityTrip[]>(tripsByDestinationQuery, { slug })
-  return data.map(mapTrip)
+  const [data, settings] = await Promise.all([
+    sanityFetch<SanityTrip[]>(tripsByDestinationQuery, { slug }),
+    ensureSettings(),
+  ])
+  return data.map((s) => {
+    const destData = s.destination as unknown as MergeContext['destinationData']
+    return mapTrip(s, { ...settings, destinationData: destData ?? undefined })
+  })
 }
 
 export async function getTripsByTag(tag: string): Promise<Trip[]> {
   if (!isSanityConfigured()) return hardTrips.filter((t) => t.tags.includes(tag as Trip['tags'][number]))
-  const data = await sanityFetch<SanityTrip[]>(tripsByTagQuery, { tag })
-  return data.map(mapTrip)
+  const [data, settings] = await Promise.all([
+    sanityFetch<SanityTrip[]>(tripsByTagQuery, { tag }),
+    ensureSettings(),
+  ])
+  return data.map((s) => mapTrip(s, settings))
 }
 
 // ── Coordinators ──

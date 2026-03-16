@@ -3,9 +3,12 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import HeroSection from "@/components/HeroSection.astro";
+import CTASection from "@/components/CTASection.astro";
+import FAQWrapper from "@/components/FAQWrapper.astro";
 import InternalLinks from "@/components/InternalLinks.astro";
-import { getDestinations, getTrips, getCountries, getContinents, getTripExtra } from "@/lib/data-provider";
+import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents, getTripExtra } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
 export async function getStaticPaths() {
@@ -14,19 +17,26 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [destinations, trips, countries, continents] = await Promise.all([
-  getDestinations(), getTrips(), getCountries(), getContinents()
+const [destination, destTripsRaw, countries, continents] = await Promise.all([
+  getDestinationBySlug(slug!),
+  getTripsByDestination(slug!),
+  getCountries(),
+  getContinents(),
 ]);
-const destination = destinations.find((d) => d.slug === slug)!;
+
+if (!destination) return Astro.redirect("/404");
+
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
 
 const now = new Date();
-const destTrips = trips
-  .filter((t) => t.destinationId === destination.id && t.status !== "full" && new Date(t.departureDate) > now)
+const destTrips = destTripsRaw
+  .filter((t) => t.status !== "full" && new Date(t.departureDate) > now)
   .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
 
-const minPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => { const extra = getTripExtra(t.id); return extra.promoPrice ?? t.promoPrice ?? t.priceFrom; })) : 0;
+const minPrice = destTrips.length > 0
+  ? Math.min(...destTrips.map((t) => resolvePrice(t, getTripExtra(t.id)).price))
+  : 0;
 
 const faqs = [
   { question: `¿Cuál es la mejor época para viajar a ${destination.name}?`, answer: `${destination.climate} Consulta las fechas de los viajes disponibles para elegir la temporada que mejor se adapte a tu preferencia.` },
@@ -46,25 +56,17 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
   <main>
     <Navbar client:load solid />
 
-    <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
-      <img src={destination.heroImage} alt={`Mejor época para viajar a ${destination.name}`} class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
-      <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
-        <nav class="mb-6 text-sm text-white/70">
-          <a href="/" class="hover:text-white transition-colors">Home</a>
-          <span class="mx-2">/</span>
-          <a href={`/destino/${destination.slug}/`} class="hover:text-white transition-colors">{destination.name}</a>
-          <span class="mx-2">/</span>
-          <span class="text-white font-medium">Cuándo viajar</span>
-        </nav>
-        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
-          ¿Cuándo es la mejor época para viajar a {destination.name}?
-        </h1>
-        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          {destination.climate}
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      image={destination.heroImage}
+      imageAlt={`Mejor época para viajar a ${destination.name}`}
+      breadcrumbs={[
+        { label: "Home", href: "/" },
+        { label: destination.name, href: `/destino/${destination.slug}/` },
+        { label: "Cuándo viajar" },
+      ]}
+      title={`¿Cuándo es la mejor época para viajar a ${destination.name}?`}
+      subtitle={destination.climate}
+    />
 
     <section class="bg-background py-16">
       <div class="mx-auto max-w-3xl px-6">
@@ -86,8 +88,7 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
           </h2>
           <div class="space-y-4">
             {destTrips.map((trip) => {
-              const extra = getTripExtra(trip.id);
-              const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+              const { price } = resolvePrice(trip, getTripExtra(trip.id));
               return (
                 <a href={`/destino/${destination.slug}/`} class="flex items-center justify-between rounded-xl border border-border/40 bg-background p-5 hover:shadow-md transition-all">
                   <div>
@@ -115,28 +116,17 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
       ]}
     />
 
-    <section class="bg-card py-14">
-      <div class="mx-auto max-w-3xl px-6">
-        <div class="mb-10 text-center">
-          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            Preguntas sobre cuándo viajar a {destination.name}
-          </h2>
-        </div>
-        <ContinentFAQ client:load faqs={faqs} />
-      </div>
-    </section>
+    <FAQWrapper
+      title={`Preguntas sobre cuándo viajar a ${destination.name}`}
+      faqs={faqs}
+    />
 
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          ¿Listo para viajar a {destination.name}?
-        </h2>
-        <p class="mt-4 text-white/70">El grupo ya se está formando.</p>
-        <a href={`/destino/${destination.slug}/`} class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90">
-          Ver viajes a {destination.name}
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title={`¿Listo para viajar a ${destination.name}?`}
+      subtitle="El grupo ya se está formando."
+      ctaText={`Ver viajes a ${destination.name}`}
+      ctaHref={`/destino/${destination.slug}/`}
+    />
 
     <InternalLinks />
     <Footer />

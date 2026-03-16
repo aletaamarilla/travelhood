@@ -1,0 +1,47 @@
+---
+interface Props {
+  image: string
+  imageAlt: string
+  breadcrumbs: { label: string; href?: string }[]
+  title: string
+  subtitle?: string
+  minHeight?: string
+}
+
+const { image, imageAlt, breadcrumbs, title, subtitle, minHeight = '50vh' } = Astro.props
+---
+
+<section class={`relative flex items-center justify-center overflow-hidden`} style={`min-height: ${minHeight}`}>
+  <img
+    src={image}
+    alt={imageAlt}
+    class="absolute inset-0 h-full w-full object-cover"
+    width="1920"
+    height="1080"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+  <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
+    <nav class="mb-6 text-sm text-white/70">
+      {breadcrumbs.map((crumb, i) => (
+        <>
+          {i > 0 && <span class="mx-2">/</span>}
+          {crumb.href ? (
+            <a href={crumb.href} class="hover:text-white transition-colors">{crumb.label}</a>
+          ) : (
+            <span class="text-white font-medium">{crumb.label}</span>
+          )}
+        </>
+      ))}
+    </nav>
+    <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>

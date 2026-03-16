@@ -10,6 +10,12 @@ export default defineType({
     {name: 'geo', title: 'Datos GEO', options: {collapsible: true, collapsed: true}},
     {name: 'climate', title: 'Clima', options: {collapsible: true, collapsed: true}},
     {name: 'budget', title: 'Presupuesto', options: {collapsible: true, collapsed: true}},
+    {name: 'includes', title: 'Incluye / No incluye', options: {collapsible: true, collapsed: true}},
+    {
+      name: 'itineraryFieldset',
+      title: 'Itinerario',
+      options: {collapsible: true, collapsed: true},
+    },
     {name: 'seoFieldset', title: 'SEO', options: {collapsible: true, collapsed: true}},
   ],
   fields: [
@@ -181,6 +187,36 @@ export default defineType({
       title: 'Presupuesto diario',
       type: 'budgetPerDay',
       fieldset: 'budget',
+    }),
+
+    // --- Incluye / No incluye ---
+    defineField({
+      name: 'extraIncluded',
+      title: 'Extras que incluye',
+      type: 'array',
+      of: [{type: 'string'}],
+      fieldset: 'includes',
+      description:
+        'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo").',
+    }),
+    defineField({
+      name: 'extraNotIncluded',
+      title: 'Extras que NO incluye',
+      type: 'array',
+      of: [{type: 'string'}],
+      fieldset: 'includes',
+      description: 'No-incluidos extra del destino (ej: "Ropa térmica").',
+    }),
+
+    // --- Itinerario ---
+    defineField({
+      name: 'itinerary',
+      title: 'Itinerario',
+      type: 'array',
+      of: [{type: 'itineraryDay'}],
+      fieldset: 'itineraryFieldset',
+      description:
+        'Itinerario base del destino. Los viajes lo heredan automáticamente.',
     }),
 
     // --- FAQs ---

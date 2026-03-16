@@ -2,7 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer.astro";
-import ContinentFAQ from "@/components/ContinentFAQ";
+import HeroSection from "@/components/HeroSection.astro";
+import CTASection from "@/components/CTASection.astro";
+import FAQWrapper from "@/components/FAQWrapper.astro";
 import {
   getContinents,
   getDestinations,
@@ -11,6 +13,7 @@ import {
   getDestinationsByContinent,
   getTripExtra,
 } from "@/lib/data-provider";
+import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import { format } from "date-fns";
@@ -52,8 +55,7 @@ const continentTrips = trips
 
 const continentTripCards = continentTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
-  const extra = getTripExtra(trip.id);
-  const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+  const resolved = resolvePrice(trip, getTripExtra(trip.id));
   const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
   return {
     destSlug: dest.slug,
@@ -61,9 +63,9 @@ const continentTripCards = continentTrips.map((trip) => {
     title: trip.title,
     dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
     durationDays: trip.durationDays,
-    price,
-    originalPrice: trip.priceFrom,
-    hasDiscount: extra.promoPrice != null && extra.promoPrice < trip.priceFrom,
+    price: resolved.price,
+    originalPrice: resolved.originalPrice,
+    hasDiscount: resolved.hasDiscount,
     isUrgent,
   };
 });
@@ -94,34 +96,18 @@ const geoData = [
   <main>
     <Navbar client:load solid />
 
-    <!-- Hero -->
-    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
-      <img
-        src={continent.heroImage}
-        alt={`Viajes en grupo a ${continent.name} — destinos para jóvenes`}
-        class="absolute inset-0 h-full w-full object-cover"
-        width="1920"
-        height="1080"
-        loading="eager"
-        fetchpriority="high"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
-      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
-        <nav class="mb-6 text-sm text-white/70">
-          <a href="/" class="hover:text-white transition-colors">Home</a>
-          <span class="mx-2">/</span>
-          <span>Destinos</span>
-          <span class="mx-2">/</span>
-          <span class="text-white font-medium">{continent.name}</span>
-        </nav>
-        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
-          Viajes en grupo a {continent.name} para jóvenes de 20 a 35 años
-        </h1>
-        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Grupos reducidos con coordinador en destino, alojamiento incluido e itinerarios de aventura.
-        </p>
-      </div>
-    </section>
+    <HeroSection
+      image={continent.heroImage}
+      imageAlt={`Viajes en grupo a ${continent.name} — destinos para jóvenes`}
+      breadcrumbs={[
+        { label: "Home", href: "/" },
+        { label: "Destinos" },
+        { label: continent.name },
+      ]}
+      title={`Viajes en grupo a ${continent.name} para jóvenes de 20 a 35 años`}
+      subtitle="Grupos reducidos con coordinador en destino, alojamiento incluido e itinerarios de aventura."
+      minHeight="60vh"
+    />
 
     <!-- Editorial Intro -->
     <section class="bg-background py-16">
@@ -310,40 +296,21 @@ const geoData = [
       dataPoints={geoData}
     />
 
-    <!-- FAQ -->
     {continent.faqs.length > 0 && (
-      <section class="bg-background py-14">
-        <div class="mx-auto max-w-3xl px-6">
-          <div class="mb-10 text-center">
-            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-              Preguntas frecuentes
-            </span>
-            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-              Sobre viajar a {continent.name}
-            </h2>
-          </div>
-          <ContinentFAQ client:load faqs={continent.faqs} />
-        </div>
-      </section>
+      <FAQWrapper
+        title={`Sobre viajar a ${continent.name}`}
+        subtitle="Preguntas frecuentes"
+        faqs={continent.faqs}
+        bg="background"
+      />
     )}
 
-    <!-- CTA -->
-    <section class="bg-teal-deep py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
-          ¿Listo para descubrir {continent.name}?
-        </h2>
-        <p class="mt-4 text-white/70 max-w-lg mx-auto">
-          El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote.
-        </p>
-        <a
-          href="/viajes/"
-          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
-        >
-          Ver viajes disponibles
-        </a>
-      </div>
-    </section>
+    <CTASection
+      title={`¿Listo para descubrir ${continent.name}?`}
+      subtitle="El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote."
+      ctaText="Ver viajes disponibles"
+      ctaHref="/viajes/"
+    />
 
     <Footer />
   </main>
