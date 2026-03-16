@@ -1,0 +1,150 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+const pageTitle = "Preguntas frecuentes — Viajes en grupo para jóvenes | Travelhood";
+const pageDescription = "Todas las preguntas sobre viajes en grupo con Travelhood: reservas, pagos, cancelaciones, el grupo, el coordinador y los seguros. Resolvemos tus dudas.";
+
+const faqBlocks = [
+  {
+    title: "El viaje",
+    faqs: [
+      { question: "¿Qué incluye el precio del viaje?", answer: "Alojamiento completo, transporte interno, actividades del itinerario, coordinador Travelhood en destino y seguro de viaje básico. Los extras específicos de cada destino se detallan en la página del viaje (Japan Rail Pass, crucero por el Nilo, noche en jaima, etc.)." },
+      { question: "¿El vuelo está incluido?", answer: "No. Cada viajero reserva su propio vuelo para encontrar la mejor oferta desde su aeropuerto. Te asesoramos y te indicamos los vuelos recomendados." },
+      { question: "¿Cuántos días duran los viajes?", answer: "Entre 5 días (puentes) y 14 días (viajes largos). La mayoría son de 10-12 días. Cada viaje tiene sus fechas concretas en la página del destino." },
+      { question: "¿Cómo son los alojamientos?", answer: "Varían según el destino: hoteles, hostels boutique, riads, guest houses locales. Siempre con buena valoración y ubicación estratégica. No es lujo de resort, pero tampoco mochilero puro. Buscamos el equilibrio perfecto." },
+      { question: "¿Hay tiempo libre en el itinerario?", answer: "Sí. Combinamos actividades organizadas con tiempo libre para que explores a tu ritmo. Normalmente hay 2-3 horas al día o medias jornadas libres según el destino." },
+    ],
+  },
+  {
+    title: "Reservas y pagos",
+    faqs: [
+      { question: "¿Cómo reservo?", answer: "Desde la página del destino que te interese, rellena el formulario de reserva. Necesitas pagar una señal de 150€ para confirmar tu plaza. El resto se paga 30 días antes de la fecha de salida." },
+      { question: "¿Qué métodos de pago aceptáis?", answer: "Tarjeta de crédito/débito y transferencia bancaria. Todos los pagos son seguros y recibes confirmación por email." },
+      { question: "¿Puedo pagar a plazos?", answer: "Sí. La señal de 150€ se paga al reservar, y el resto 30 días antes del viaje. Si lo necesitas, podemos hablarlo para encontrar una solución." },
+      { question: "¿Cuánto cuesta un viaje con Travelhood?", answer: "Los viajes cuestan entre 590€ y 1.590€ sin vuelo, dependiendo del destino y la duración. Marruecos en puente desde 590€, Japón desde 1.490€. Consulta los precios de cada viaje en su página." },
+    ],
+  },
+  {
+    title: "El grupo",
+    faqs: [
+      { question: "¿Puedo ir solo/a?", answer: "¡Por supuesto! El 70% de nuestros viajeros reservan solos. Esa es la esencia de Travelhood: llegas sin conocer a nadie y vuelves con amigos de verdad. Lee más en nuestra página <a href='/viajar-sola' class='text-teal-vivid hover:underline'>Viajar sola</a>." },
+      { question: "¿Qué edad tiene la gente?", answer: "Todos los viajeros tienen entre 20 y 35 años. Es un rango donde todos conectan fácilmente y comparten el mismo momento vital." },
+      { question: "¿Cuántas personas van en cada grupo?", answer: "Entre 12 y 18 personas. Lo suficientemente grande para variedad, lo suficientemente pequeño para intimidad y conexión real." },
+      { question: "¿Y si no conozco a nadie?", answer: "Es lo normal. El coordinador facilita la integración desde el primer momento. Al segundo día ya hay bromas internas y planes improvisados. El grupo medio tiene 14 personas y el 98% repetirían." },
+      { question: "¿Puedo ir con un amigo/a?", answer: "Sí, podéis reservar juntos. Pero no necesitas ir acompañado/a — la mayoría vienen solos y lo pasan increíble." },
+    ],
+  },
+  {
+    title: "Seguro y cancelaciones",
+    faqs: [
+      { question: "¿Qué pasa si tengo que cancelar?", answer: "Si cancelas con más de 30 días de antelación, te devolvemos el 100% de la señal. Entre 15-30 días, el 50%. Menos de 15 días no es reembolsable. Recomendamos contratar un seguro de cancelación." },
+      { question: "¿Incluye seguro de viaje?", answer: "Sí. Todos los viajes incluyen un seguro de viaje básico con cobertura médica. Si quieres un seguro más completo (cancelación, equipaje), podemos recomendarte opciones." },
+      { question: "¿Qué pasa si me pongo enfermo durante el viaje?", answer: "El seguro incluido cubre asistencia médica. El coordinador te acompañará y gestionará todo lo necesario. Nunca estás solo ante un imprevisto." },
+      { question: "¿Qué pasa si Travelhood cancela el viaje?", answer: "Si no se alcanza el mínimo de participantes o por fuerza mayor, te ofrecemos cambiar a otra fecha/destino o la devolución íntegra del importe." },
+    ],
+  },
+  {
+    title: "El coordinador",
+    faqs: [
+      { question: "¿Quién es el coordinador?", answer: "Un miembro del equipo Travelhood con experiencia en el destino. No es un guía turístico: es alguien que viaja contigo, gestiona la logística, resuelve imprevistos y se asegura de que todo el mundo se sienta integrado. Conoce más en <a href='/como-funciona' class='text-teal-vivid hover:underline'>Cómo funciona</a>." },
+      { question: "¿El coordinador habla español?", answer: "Sí. Todos nuestros coordinadores son hispanohablantes. Además, la mayoría hablan inglés y conocen bien el destino." },
+      { question: "¿El coordinador está disponible 24h?", answer: "Durante el viaje, sí. El coordinador está accesible en todo momento para cualquier necesidad o imprevisto." },
+    ],
+  },
+];
+
+const allFaqs = faqBlocks.flatMap((block) => block.faqs);
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords="preguntas frecuentes viajes grupo, dudas viaje organizado, cancelación viaje, seguro viaje grupo, travelhood faq">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(allFaqs))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Preguntas frecuentes",url:"/preguntas-frecuentes/"}]))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="bg-teal-deep py-24">
+      <div class="mx-auto max-w-4xl px-6 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">Preguntas frecuentes</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          Preguntas frecuentes
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          {allFaqs.length} preguntas con respuestas claras. Sin letra pequeña.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Blocks -->
+    {faqBlocks.map((block, blockIdx) => (
+      <section class={blockIdx % 2 === 0 ? "bg-background py-14" : "bg-card py-14"}>
+        <div class="mx-auto max-w-3xl px-6">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground mb-8 text-center">
+            {block.title}
+          </h2>
+          <ContinentFAQ client:load faqs={block.faqs} />
+        </div>
+
+        {blockIdx === 1 && (
+          <div class="mx-auto max-w-3xl px-6 mt-8 text-center">
+            <a
+              href="/viajes/"
+              class="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+            >
+              Ver viajes y precios
+            </a>
+          </div>
+        )}
+
+        {blockIdx === 2 && (
+          <div class="mx-auto max-w-3xl px-6 mt-8 text-center">
+            <a
+              href="/viajar-sola/"
+              class="inline-flex items-center gap-2 text-sm font-semibold text-teal-vivid hover:underline"
+            >
+              Leer más sobre viajar sola →
+            </a>
+          </div>
+        )}
+      </section>
+    ))}
+
+    <!-- CTA -->
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          ¿Todavía tienes dudas?
+        </h2>
+        <p class="mt-4 text-white/70 max-w-lg mx-auto">
+          Escríbenos y te respondemos en menos de 24 horas. O mejor aún, echa un vistazo a los viajes y decide por ti mismo/a.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/viajes/"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+          >
+            Ver viajes disponibles
+          </a>
+          <a
+            href="/como-funciona/"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 px-8 py-4 text-base font-bold text-white transition-all hover:bg-white/20"
+          >
+            Cómo funciona
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

@@ -1,0 +1,25 @@
+# build
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# vercel
+.vercel/
+
+# sanity
+studio/node_modules/
+studio/dist/
+.sanity/
+
+# misc
+.DS_Store
+_extracted/
+*.zip
+*.zip:*

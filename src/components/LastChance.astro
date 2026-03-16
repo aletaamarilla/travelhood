@@ -1,0 +1,134 @@
+---
+import { getTrips, getDestinations } from "@/lib/data-provider";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+const [allTrips, destinations] = await Promise.all([getTrips(), getDestinations()]);
+const now = new Date();
+const rawTrips = allTrips
+  .filter((t) => new Date(t.departureDate) > now && t.status !== "full")
+  .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
+  .slice(0, 6);
+
+const cards = rawTrips
+  .map((trip) => {
+    const dest = destinations.find((d) => d.id === trip.destinationId);
+    if (!dest) return null;
+    return {
+      slug: dest.slug,
+      name: dest.name,
+      heroImage: dest.heroImage,
+      priceFrom: trip.priceFrom,
+      promoPrice: trip.promoPrice,
+      promoLabel: trip.promoLabel,
+      dateLabel: format(new Date(trip.departureDate), "d MMM", { locale: es }),
+      durationDays: trip.durationDays,
+      placesLeft: trip.placesLeft,
+      isUrgent: trip.status === "almost-full" || trip.placesLeft <= 4,
+    };
+  })
+  .filter(Boolean) as {
+    slug: string; name: string; heroImage: string; priceFrom: number;
+    promoPrice?: number; promoLabel?: string;
+    dateLabel: string; durationDays: number; placesLeft: number; isUrgent: boolean;
+  }[];
+
+const hasCards = cards.length > 0;
+---
+
+{hasCards && (
+  <section class="bg-background pt-32 sm:pt-28 pb-14">
+    <div class="mx-auto max-w-5xl px-6">
+      <div class="mb-6 text-center">
+        <span class="inline-block rounded-full bg-coral/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-coral">
+          No te los pierdas
+        </span>
+        <h2 class="mt-2 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+          Próximas salidas
+        </h2>
+        <p class="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground leading-relaxed">
+          Los viajes más cercanos en el calendario. Reserva tu plaza antes de que se agoten.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((card) => (
+          <a
+            href={`/destino/${card.slug}`}
+            class:list={[
+              "group relative flex flex-col overflow-hidden rounded-2xl transition-all hover:-translate-y-1 hover:shadow-lg",
+              card.isUrgent
+                ? "border-2 border-coral/50 bg-card shadow-md shadow-coral/10 ring-1 ring-coral/15"
+                : "border border-border/50 bg-card shadow-md",
+            ]}
+          >
+            <div class="relative h-36 sm:h-40 w-full overflow-hidden">
+              <img
+                src={card.heroImage}
+                alt={`Viaje en grupo a ${card.name} — Travelhood`}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                width="400"
+                height="250"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+
+              {card.isUrgent && (
+                <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-coral px-2.5 py-1 shadow-lg">
+                  <span class="relative flex h-2 w-2">
+                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+                  </span>
+                  <span class="text-[11px] font-bold text-white tracking-wide">
+                    ¡Últimas plazas!
+                  </span>
+                </div>
+              )}
+
+              <div class="absolute bottom-2.5 left-3 right-3 flex items-end justify-between">
+                <h3 class="text-base font-bold text-white drop-shadow-md">{card.name}</h3>
+                <span class="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
+                  {card.dateLabel}
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between p-3.5">
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-lg font-extrabold text-foreground">
+                  {card.promoPrice ?? card.priceFrom}€
+                </span>
+                {card.promoPrice && (
+                  <span class="text-xs text-muted-foreground line-through">
+                    {card.priceFrom}€
+                  </span>
+                )}
+                <span class="text-xs text-muted-foreground">/ persona</span>
+              </div>
+              <div class="flex flex-col items-end gap-0.5">
+                {card.promoLabel && (
+                  <span class="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
+                    {card.promoLabel}
+                  </span>
+                )}
+                <span class="text-xs text-muted-foreground">
+                  {card.durationDays} días
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-8 text-center">
+        <a
+          href="/viajes/#resultados"
+          class="inline-flex items-center gap-1.5 rounded-full bg-teal-vivid/10 px-5 py-2 text-sm font-bold text-teal-vivid transition-colors hover:bg-teal-vivid/20 hover:text-teal-deep"
+        >
+          Ver todos los viajes
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+)}

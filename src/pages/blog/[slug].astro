@@ -1,0 +1,508 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import { getRelatedPosts } from "@/lib/blog-data";
+import { getBlogPosts, getDestinations, getTrips, getTestimonials } from "@/lib/data-provider";
+import { generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+export async function getStaticPaths() {
+  const allPosts = await getBlogPosts();
+  return allPosts.map((p) => ({
+    params: { slug: p.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const [blogPosts, destinations, trips, testimonials] = await Promise.all([
+  getBlogPosts(), getDestinations(), getTrips(), getTestimonials()
+]);
+const post = blogPosts.find((p) => p.slug === slug)!;
+const relatedPosts = getRelatedPosts(slug);
+
+const relatedDests = post.relatedDestinations
+  .map((id) => destinations.find((d) => d.slug === id || d.id === id))
+  .filter((d): d is (typeof destinations)[number] => d !== undefined);
+
+const relatedTrips = relatedDests.flatMap((d) =>
+  trips
+    .filter((t) => t.destinationId === d.id && t.status !== "full")
+    .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
+    .slice(0, 1)
+).slice(0, 3);
+
+const destTestimonials = testimonials
+  .filter((t) => post.relatedDestinations.includes(t.destinationId))
+  .slice(0, 2);
+
+const canonicalUrl = `https://travelhood.es/blog/${post.slug}`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.metaDescription,
+  image: `https://travelhood.es${post.image}`,
+  datePublished: post.dateISO,
+  dateModified: post.dateISO,
+  author: {
+    "@type": "Organization",
+    name: post.author.name,
+    url: "https://travelhood.es",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Travelhood",
+    url: "https://travelhood.es",
+    logo: { "@type": "ImageObject", url: "https://travelhood.es/images/logo.jpeg" },
+  },
+  mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+  articleSection: post.category,
+  keywords: post.tags.join(", "),
+};
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://travelhood.es" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://travelhood.es/blog" },
+    { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl },
+  ],
+};
+---
+
+<Layout title={`${post.title} | Blog Travelhood`} description={post.metaDescription} keywords={post.tags.join(', ')}>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={post.title} />
+    <meta property="og:description" content={post.metaDescription} />
+    <meta property="og:image" content={`https://travelhood.es${post.image}`} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="article:published_time" content={post.dateISO} />
+    <meta property="article:section" content={post.category} />
+    {post.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={post.title} />
+    <meta name="twitter:description" content={post.metaDescription} />
+    <meta name="twitter:image" content={`https://travelhood.es${post.image}`} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+  </Fragment>
+
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Breadcrumbs (SEO + UX) -->
+    <div class="bg-background pt-20 pb-0">
+      <div class="mx-auto max-w-4xl px-6">
+        <nav aria-label="Breadcrumb" class="py-4">
+          <ol class="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+            <li><a href="/" class="hover:text-foreground transition-colors">Inicio</a></li>
+            <li class="text-border">/</li>
+            <li><a href="/blog/" class="hover:text-foreground transition-colors">Blog</a></li>
+            <li class="text-border">/</li>
+            <li>
+              <a href={`/blog?cat=${encodeURIComponent(post.category)}`} class="hover:text-foreground transition-colors">{post.category}</a>
+            </li>
+            <li class="text-border">/</li>
+            <li class="text-foreground font-medium truncate max-w-[200px] sm:max-w-none">{post.title}</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Article Header -->
+    <header class="bg-background pb-10">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="flex flex-wrap items-center gap-3 mb-5">
+          <span class="rounded-full bg-coral/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-coral">
+            {post.category}
+          </span>
+          <span class="text-xs text-muted-foreground">{post.date}</span>
+          <span class="text-xs text-border">·</span>
+          <span class="text-xs text-muted-foreground">{post.readTime} lectura</span>
+        </div>
+
+        <h1 class="font-serif text-3xl font-extrabold text-foreground sm:text-4xl lg:text-[2.75rem] leading-tight text-balance">
+          {post.title}
+        </h1>
+
+        <p class="mt-5 text-lg text-muted-foreground leading-relaxed max-w-3xl">
+          {post.excerpt}
+        </p>
+
+        <!-- Author + Share -->
+        <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between border-t border-border pt-6">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-deep">
+              <img src="/images/logo.jpeg" alt="Travelhood" width="24" height="24" class="rounded-sm" />
+            </div>
+            <div>
+              <p class="text-sm font-bold text-foreground">{post.author.name}</p>
+              <p class="text-xs text-muted-foreground">{post.author.role}</p>
+            </div>
+          </div>
+
+          <!-- Share buttons -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-muted-foreground mr-1">Compartir:</span>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(canonicalUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-card hover:bg-teal-deep/10 transition-colors"
+              aria-label="Compartir en X / Twitter"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="text-foreground">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-card hover:bg-teal-deep/10 transition-colors"
+              aria-label="Compartir en Facebook"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="text-foreground">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(post.title + ' ' + canonicalUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-card hover:bg-teal-deep/10 transition-colors"
+              aria-label="Compartir por WhatsApp"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="text-foreground">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero image -->
+    <div class="bg-background pb-8">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="aspect-[21/9] overflow-hidden rounded-2xl shadow-lg">
+          <img
+            src={post.image}
+            alt={post.imageAlt}
+            class="h-full w-full object-cover"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Content area: Article + Sidebar -->
+    <section class="bg-background pb-16">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="flex flex-col gap-12 lg:flex-row">
+
+          <!-- Article body -->
+          <article class="lg:w-2/3 xl:w-[65%]">
+            {post.sections.map((section, idx) => (
+              <div class:list={["mb-10", idx > 0 && "border-t border-border pt-10"]}>
+                <h2 class="font-serif text-xl font-extrabold text-foreground sm:text-2xl leading-snug mb-5">
+                  {section.heading}
+                </h2>
+
+                {section.body.split("\n\n").map((paragraph) => {
+                  if (paragraph.startsWith("•")) {
+                    const items = paragraph.split("\n").filter((l) => l.startsWith("•"));
+                    return (
+                      <ul class="my-4 flex flex-col gap-3">
+                        {items.map((item) => {
+                          const parts = item.replace("• ", "").split(" — ");
+                          return (
+                            <li class="flex items-start gap-3">
+                              <span class="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-coral/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-coral"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              </span>
+                              <span class="text-base text-foreground/85 leading-relaxed">
+                                {parts.length > 1 ? (
+                                  <><strong class="text-foreground">{parts[0]}</strong> — {parts.slice(1).join(" — ")}</>
+                                ) : (
+                                  item.replace("• ", "")
+                                )}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    );
+                  }
+
+                  const isQuote = paragraph.includes(": \"") && (paragraph.includes("años") || paragraph.includes("Madrid") || paragraph.includes("Barcelona") || paragraph.includes("Bilbao") || paragraph.includes("Sevilla") || paragraph.includes("Málaga") || paragraph.includes("Valencia"));
+
+                  if (isQuote && !paragraph.startsWith("Según")) {
+                    const lines = paragraph.split("\n").filter(Boolean);
+                    return (
+                      <div class="my-6 flex flex-col gap-4">
+                        {lines.map((line) => {
+                          const match = line.match(/^(.+?):\s*"(.+)"$/);
+                          if (match) {
+                            return (
+                              <blockquote class="rounded-xl bg-card border-l-4 border-coral pl-5 pr-5 py-4">
+                                <p class="font-serif text-base font-semibold text-foreground italic leading-relaxed">"{match[2]}"</p>
+                                <footer class="mt-2 text-sm text-muted-foreground">— {match[1]}</footer>
+                              </blockquote>
+                            );
+                          }
+                          return <p class="text-base text-foreground/85 leading-relaxed">{line}</p>;
+                        })}
+                      </div>
+                    );
+                  }
+
+                  return <p class="text-base text-foreground/85 leading-relaxed mb-4">{paragraph}</p>;
+                })}
+
+                {section.image && (
+                  <div class="my-8 aspect-[16/9] overflow-hidden rounded-xl shadow-md">
+                    <img
+                      src={section.image}
+                      alt={section.imageAlt || ""}
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
+                {section.cta && (
+                  <div class="mt-8 rounded-2xl bg-teal-deep p-6 sm:p-8 text-center">
+                    <p class="text-sm text-sand/70 mb-3">¿Listo para dar el paso?</p>
+                    <a
+                      href={section.cta.href}
+                      class="inline-flex items-center gap-2 rounded-full bg-coral px-7 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                    >
+                      {section.cta.text}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            <!-- Tags (SEO internal linking) -->
+            <div class="mt-10 border-t border-border pt-8">
+              <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Etiquetas</p>
+              <div class="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span class="rounded-full bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+
+          <!-- Sidebar (sticky on desktop) -->
+          <aside class="lg:w-1/3 xl:w-[35%]">
+            <div class="lg:sticky lg:top-24 flex flex-col gap-8">
+
+              <!-- CTA Card (BOFU) -->
+              <div class="rounded-2xl bg-teal-deep p-6 text-center">
+                <p class="text-xs font-bold uppercase tracking-widest text-yellow-sun mb-3">Tu próximo viaje</p>
+                <h3 class="font-serif text-lg font-extrabold text-sand leading-snug mb-3">
+                  El grupo ya se está formando. Solo falta tu nombre.
+                </h3>
+                <p class="text-sm text-sand/70 mb-5 leading-relaxed">
+                  Viajes en grupo para 20-35 años. Coordinador, alojamiento y experiencias incluidas.
+                </p>
+                <a
+                  href="/viajes/#resultados"
+                  class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                >
+                  Ver próximos viajes
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+                </a>
+              </div>
+
+              <!-- Related destinations (GEO linking) -->
+              {relatedDests.length > 0 && (
+                <div class="rounded-2xl bg-card p-6">
+                  <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-4">Destinos relacionados</p>
+                  <div class="flex flex-col gap-3">
+                    {relatedDests.map((dest) => {
+                      const trip = relatedTrips.find((t) => t.destinationId === dest.id);
+                      return (
+                        <a href={`/destino/${dest.slug}`} class="group flex items-center gap-3 rounded-xl bg-muted/50 p-3 transition-all hover:shadow-md">
+                          <div class="h-14 w-14 shrink-0 overflow-hidden rounded-lg">
+                            <img
+                              src={dest.heroImage}
+                              alt={`Viaje en grupo a ${dest.name}`}
+                              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              loading="lazy"
+                            />
+                          </div>
+                          <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-foreground group-hover:text-secondary transition-colors">{dest.name}</p>
+                            {trip ? (
+                              <p class="text-xs text-muted-foreground mt-0.5">
+                                Desde <span class="font-bold text-coral">{trip.promoPrice || trip.priceFrom}€</span>
+                                {trip.placesLeft <= 4 && (
+                                  <span class="ml-1 text-coral">· {trip.placesLeft} plazas</span>
+                                )}
+                              </p>
+                            ) : (
+                              <p class="text-xs text-muted-foreground mt-0.5">{dest.shortDescription.slice(0, 50)}...</p>
+                            )}
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground group-hover:text-secondary transition-colors"><path d="m9 18 6-6-6-6"></path></svg>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <!-- Social proof -->
+              {destTestimonials.length > 0 && (
+                <div class="rounded-2xl bg-card p-6">
+                  <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-4">Lo dicen ellos</p>
+                  {destTestimonials.map((t) => (
+                    <blockquote class="mb-4 last:mb-0">
+                      <div class="flex gap-0.5 mb-2">
+                        {Array.from({ length: t.rating }).map(() => (
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-yellow-sun">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                          </svg>
+                        ))}
+                      </div>
+                      <p class="text-sm text-foreground italic leading-relaxed">"{t.quote}"</p>
+                      <p class="mt-1 text-xs text-muted-foreground">{t.name}, {t.age} años — {t.city}</p>
+                    </blockquote>
+                  ))}
+                </div>
+              )}
+
+              <!-- Newsletter (Lead capture) -->
+              <div class="rounded-2xl border border-border bg-muted/40 p-6">
+                <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-3">No te pierdas nada</p>
+                <p class="text-sm text-muted-foreground leading-relaxed mb-4">
+                  Recibe cada semana consejos, destinos y ofertas exclusivas directamente en tu email.
+                </p>
+                <form class="flex flex-col gap-2.5">
+                  <input
+                    type="email"
+                    placeholder="tu@email.com"
+                    class="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-coral focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    class="w-full rounded-lg bg-teal-deep px-4 py-2.5 text-sm font-bold text-sand transition-all hover:bg-teal-vivid"
+                  >
+                    Suscribirme
+                  </button>
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related articles (Internal linking SEO) -->
+    {relatedPosts.length > 0 && (
+      <section class="bg-card py-14">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="mb-8 text-center">
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+              Sigue leyendo
+            </span>
+            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground">
+              Artículos que también te interesan
+            </h2>
+          </div>
+
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedPosts.map((rp) => (
+              <a href={`/blog/${rp.slug}`} class="group">
+                <article class="flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <div class="aspect-[16/9] overflow-hidden">
+                    <img
+                      src={rp.image}
+                      alt={rp.imageAlt}
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="flex flex-1 flex-col p-5">
+                    <span class="mb-2 inline-block w-fit rounded-full bg-coral/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-coral">
+                      {rp.category}
+                    </span>
+                    <h3 class="font-serif text-base font-bold text-foreground leading-snug group-hover:text-secondary transition-colors">
+                      {rp.title}
+                    </h3>
+                    <p class="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                      {rp.excerpt}
+                    </p>
+                    <div class="mt-auto flex items-center gap-3 pt-4 text-xs text-muted-foreground">
+                      <span>{rp.date}</span>
+                      <span>·</span>
+                      <span>{rp.readTime} lectura</span>
+                    </div>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Bottom CTA (Last chance conversion) -->
+    <section class="bg-teal-deep py-16">
+      <div class="relative mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 text-center">
+        <div class="absolute top-0 right-0 h-48 w-48 rounded-full bg-coral/10 blur-3xl"></div>
+        <span class="text-xs font-bold uppercase tracking-widest text-yellow-sun">
+          ¿Te ha gustado este artículo?
+        </span>
+        <h2 class="font-serif text-2xl font-extrabold text-sand sm:text-3xl text-balance leading-tight">
+          Deja de leer sobre viajes.<br />Empieza a vivirlos.
+        </h2>
+        <p class="max-w-xl text-base text-sand/80 leading-relaxed">
+          El grupo ya se está formando. Coordinador en destino, itinerarios únicos y personas de tu edad. Solo falta tu nombre.
+        </p>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a
+            href="/viajes/#resultados"
+            class="inline-flex items-center justify-center rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+          >
+            Ver próximos viajes
+          </a>
+          <a
+            href="https://wa.me/34600000000"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Preguntar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+
+  <a
+    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Escríbenos por WhatsApp"
+    class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+  >
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</Layout>

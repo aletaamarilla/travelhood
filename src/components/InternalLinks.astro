@@ -1,0 +1,83 @@
+---
+import { getContinents, getTripCategories, getSeasons, getDestinations } from "@/lib/data-provider";
+const [continents, tripCategories, seasons, destinations] = await Promise.all([
+  getContinents(), getTripCategories(), getSeasons(), getDestinations()
+]);
+
+const popularDestinations = destinations
+  .filter((d) => ["tailandia", "japon", "marruecos", "bali", "grecia", "laponia", "costa-rica", "peru"].includes(d.slug))
+  .map((d) => ({ label: d.name, href: `/destino/${d.slug}/` }));
+
+const continentLinks = continents
+  .filter((c) => destinations.some((d) => d.continentId === c.id))
+  .map((c) => ({ label: c.name, href: `/destinos/${c.slug}/` }));
+
+const categoryLinks = tripCategories.map((c) => ({
+  label: c.name,
+  href: `/tipos/${c.slug}/`,
+}));
+
+const seasonLinks = seasons.map((s) => ({
+  label: s.name,
+  href: `/temporada/${s.slug}/`,
+}));
+
+const editorialLinks = [
+  { label: "Cómo funciona", href: "/como-funciona/" },
+  { label: "Viajar sola", href: "/viajar-sola/" },
+  { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
+  { label: "Ofertas", href: "/ofertas/" },
+  { label: "Blog", href: "/blog/" },
+];
+---
+
+<section class="bg-card py-14 border-t border-border/30">
+  <div class="mx-auto max-w-6xl px-6">
+    <h2 class="font-serif text-xl font-extrabold text-foreground mb-8 text-center">
+      Explora Travelhood
+    </h2>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 text-sm">
+      <div>
+        <h3 class="font-bold text-foreground mb-3">Destinos populares</h3>
+        <ul class="flex flex-col gap-1.5">
+          {popularDestinations.map((d) => (
+            <li><a href={d.href} class="text-muted-foreground hover:text-teal-vivid transition-colors">{d.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-foreground mb-3">Por continente</h3>
+        <ul class="flex flex-col gap-1.5">
+          {continentLinks.map((c) => (
+            <li><a href={c.href} class="text-muted-foreground hover:text-teal-vivid transition-colors">{c.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-foreground mb-3">Tipo de viaje</h3>
+        <ul class="flex flex-col gap-1.5">
+          {categoryLinks.map((c) => (
+            <li><a href={c.href} class="text-muted-foreground hover:text-teal-vivid transition-colors">{c.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-foreground mb-3">Por temporada</h3>
+        <ul class="flex flex-col gap-1.5">
+          {seasonLinks.map((s) => (
+            <li><a href={s.href} class="text-muted-foreground hover:text-teal-vivid transition-colors">{s.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-foreground mb-3">Recursos</h3>
+        <ul class="flex flex-col gap-1.5">
+          {editorialLinks.map((e) => (
+            <li><a href={e.href} class="text-muted-foreground hover:text-teal-vivid transition-colors">{e.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

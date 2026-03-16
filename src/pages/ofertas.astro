@@ -1,0 +1,229 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import { getTrips, getDestinations, getCountries, getTripExtra } from "@/lib/data-provider";
+const [trips, destinations, countries] = await Promise.all([
+  getTrips(), getDestinations(), getCountries()
+]);
+import { generateBreadcrumbSchema, generateOfferCatalogSchema, toJsonLd } from "@/lib/schemas";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+const now = new Date();
+
+const promoTrips = trips
+  .filter((t) => {
+    const extra = getTripExtra(t.id);
+    const hasPromo = (extra.promoPrice && extra.promoPrice < t.priceFrom) ||
+                     (t.promoPrice && t.promoPrice < t.priceFrom);
+    return hasPromo && t.status !== "full" && new Date(t.departureDate) > now;
+  })
+  .map((t) => {
+    const extra = getTripExtra(t.id);
+    const promoPrice = extra.promoPrice ?? t.promoPrice!;
+    const discount = Math.round((1 - promoPrice / t.priceFrom) * 100);
+    return { trip: t, promoPrice, discount, promoLabel: extra.promoLabel ?? t.promoLabel ?? "" };
+  })
+  .sort((a, b) => b.discount - a.discount);
+
+const promoCards = promoTrips.map(({ trip, promoPrice, discount, promoLabel }) => {
+  const dest = destinations.find((d) => d.id === trip.destinationId)!;
+  const country = countries.find((c) => c.id === dest.countryId);
+  const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
+  return {
+    destSlug: dest.slug,
+    destName: dest.name,
+    destImage: dest.heroImage,
+    countryFlag: country?.flag.toLowerCase() ?? "",
+    countryName: country?.name ?? "",
+    title: trip.title,
+    dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
+    durationDays: trip.durationDays,
+    originalPrice: trip.priceFrom,
+    promoPrice,
+    discount,
+    promoLabel,
+    isUrgent,
+    placesLeft: trip.placesLeft,
+    flightEstimate: trip.flightEstimate,
+  };
+});
+
+const pageTitle = "Ofertas y últimas plazas — Viajes en grupo con descuento | Travelhood";
+const pageDescription = "Últimas plazas con descuento en viajes en grupo para jóvenes de 20-35 años. Ofertas exclusivas con coordinador y alojamiento incluidos.";
+
+const offerCatalogSchema = generateOfferCatalogSchema({
+  name: "Ofertas Travelhood — Viajes en grupo con descuento",
+  description: pageDescription,
+  offers: promoTrips.map(({ trip, promoPrice }) => {
+    const dest = destinations.find((d) => d.id === trip.destinationId)!;
+    return {
+      name: trip.title,
+      price: trip.priceFrom,
+      promoPrice,
+      url: `/destino/${dest.slug}/`,
+      image: dest.heroImage,
+    };
+  }),
+});
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords="ofertas viajes grupo, viajes baratos jóvenes, últimas plazas, descuento viajes, travelhood ofertas">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Ofertas",url:"/ofertas/"}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(offerCatalogSchema)} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-teal-deep">
+      <div class="absolute inset-0 bg-gradient-to-br from-teal-deep via-teal-deep/90 to-coral/20"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-coral/20 px-4 py-1.5 text-sm font-bold text-coral mb-6">
+          🔥 Últimas plazas con descuento
+        </span>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          Últimas plazas con descuento — Viajes en grupo para jóvenes
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          {promoCards.length} viajes con descuento disponibles. Plazas limitadas, precios especiales.
+        </p>
+      </div>
+    </section>
+
+    <!-- Promo Grid -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-6xl px-6">
+        {promoCards.length > 0 ? (
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {promoCards.map((card) => (
+              <a
+                href={`/destino/${card.destSlug}`}
+                class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div class="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={card.destImage}
+                    alt={card.destName}
+                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <div class="absolute top-3 left-3 flex gap-2">
+                    <span class="inline-flex items-center rounded-full bg-coral px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">
+                      -{card.discount}%
+                    </span>
+                    {card.isUrgent && (
+                      <span class="inline-flex items-center rounded-full bg-yellow-500 px-2.5 py-1 text-[11px] font-bold text-black shadow-sm">
+                        Últimas {card.placesLeft}
+                      </span>
+                    )}
+                  </div>
+                  <div class="absolute top-3 right-3">
+                    <span class="inline-flex items-center rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                      {card.durationDays} días
+                    </span>
+                  </div>
+                  {card.countryFlag && (
+                    <div class="absolute bottom-3 left-3">
+                      <span class="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                        <img
+                          src={`https://flagcdn.com/16x12/${card.countryFlag}.png`}
+                          alt={card.countryName}
+                          class="h-3 w-4 rounded-sm object-cover"
+                        />
+                        {card.countryName}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div class="flex flex-1 flex-col p-4">
+                  <h3 class="font-serif text-lg font-bold text-foreground leading-tight group-hover:text-teal-vivid transition-colors">
+                    {card.destName}
+                  </h3>
+                  <p class="mt-1 text-[13px] text-muted-foreground">
+                    {card.dateFormatted} · {card.durationDays} días
+                  </p>
+                  {card.promoLabel && (
+                    <span class="mt-2 inline-flex w-fit rounded-full bg-coral/10 px-2.5 py-0.5 text-[10px] font-bold text-coral">
+                      {card.promoLabel}
+                    </span>
+                  )}
+                  <div class="mt-auto pt-4 flex items-end justify-between border-t border-border/30 mt-3">
+                    <div>
+                      <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-extrabold text-coral">
+                          {card.promoPrice}<span class="text-sm font-semibold"> €</span>
+                        </p>
+                        <span class="text-sm text-muted-foreground line-through">{card.originalPrice}€</span>
+                      </div>
+                      <p class="text-[10px] text-muted-foreground mt-0.5">+ vuelo ~{card.flightEstimate}€</p>
+                    </div>
+                    <span class="inline-flex items-center gap-1 rounded-full bg-coral px-3 py-1.5 text-[11px] font-semibold text-white transition-colors group-hover:bg-teal-vivid">
+                      Ver oferta
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-12">
+            <p class="text-lg text-muted-foreground">No hay ofertas disponibles en este momento.</p>
+            <a href="/viajes/" class="mt-4 inline-flex text-teal-vivid font-semibold hover:underline">
+              Ver todos los viajes →
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- Why Now -->
+    <section class="bg-card py-14">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+          ¿Por qué ahora?
+        </h2>
+        <div class="grid gap-6 sm:grid-cols-3">
+          <div class="rounded-xl bg-background p-6 text-center border border-border/40">
+            <span class="text-3xl mb-3 block">⏳</span>
+            <h3 class="font-serif font-bold text-foreground mb-2">Plazas limitadas</h3>
+            <p class="text-sm text-muted-foreground">Cada grupo tiene 12-18 plazas. Cuando se llenan, no se amplían. Las últimas plazas suelen ser las que tienen descuento.</p>
+          </div>
+          <div class="rounded-xl bg-background p-6 text-center border border-border/40">
+            <span class="text-3xl mb-3 block">💰</span>
+            <h3 class="font-serif font-bold text-foreground mb-2">Precios exclusivos</h3>
+            <p class="text-sm text-muted-foreground">Los descuentos son temporales y exclusivos. No los encontrarás en otra época. Reserva anticipada = mejor precio.</p>
+          </div>
+          <div class="rounded-xl bg-background p-6 text-center border border-border/40">
+            <span class="text-3xl mb-3 block">✈️</span>
+            <h3 class="font-serif font-bold text-foreground mb-2">Vuelos más baratos</h3>
+            <p class="text-sm text-muted-foreground">Cuanto antes reserves, más barato encontrarás el vuelo. Los precios suben conforme se acerca la fecha.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          No dejes escapar tu viaje
+        </h2>
+        <p class="mt-4 text-white/70 max-w-lg mx-auto">
+          Las ofertas tienen fecha de caducidad. El grupo no espera.
+        </p>
+        <a
+          href="/viajes/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+        >
+          Ver todos los viajes
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

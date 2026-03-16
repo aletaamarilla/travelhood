@@ -1,0 +1,57 @@
+---
+import { getContinents, getDestinations, getTrips } from "@/lib/data-provider";
+const [continents, destinations, trips] = await Promise.all([
+  getContinents(), getDestinations(), getTrips()
+]);
+
+const continentData = continents
+  .map((c) => {
+    const dests = destinations.filter((d) => d.continentId === c.id);
+    const tripCount = trips.filter((t) =>
+      dests.some((d) => d.id === t.destinationId)
+    ).length;
+    return { ...c, destinationCount: dests.length, tripCount };
+  })
+  .filter((c) => c.destinationCount > 0);
+---
+
+<section class="bg-card py-16">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mb-10 flex items-center justify-between">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+          Explora por continente
+        </span>
+        <h2 class="mt-2 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+          El mundo te espera
+        </h2>
+      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary/30">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+        <path d="M2 12h20"></path>
+      </svg>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {continentData.map((c) => (
+        <a
+          href="#destinos"
+          class="group flex items-center justify-between rounded-2xl bg-muted/50 p-5 transition-all hover:bg-teal-deep hover:shadow-lg"
+        >
+          <div>
+            <h3 class="font-serif text-lg font-bold text-foreground group-hover:text-sand">
+              {c.name}
+            </h3>
+            <p class="text-sm text-muted-foreground group-hover:text-sand/70">
+              {c.destinationCount} {c.destinationCount === 1 ? "destino" : "destinos"} · {c.tripCount} {c.tripCount === 1 ? "viaje" : "viajes"}
+            </p>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-coral">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

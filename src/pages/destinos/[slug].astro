@@ -1,0 +1,350 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import {
+  getContinents,
+  getDestinations,
+  getTrips,
+  getCountries,
+  getDestinationsByContinent,
+  getTripExtra,
+} from "@/lib/data-provider";
+import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
+import GEODataBlock from "@/components/GEODataBlock.astro";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+export async function getStaticPaths() {
+  const [allContinents, allDestinations] = await Promise.all([getContinents(), getDestinations()]);
+  const validContinents = allContinents.filter((c) => {
+    return allDestinations.some((d) => d.continentId === c.id);
+  });
+  return validContinents.map((c) => ({
+    params: { slug: c.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const [continents, destinations, trips, countries] = await Promise.all([
+  getContinents(), getDestinations(), getTrips(), getCountries()
+]);
+const continent = continents.find((c) => c.slug === slug)!;
+const continentDestinations = destinations.filter((d) => d.continentId === continent.id);
+
+const now = new Date();
+const continentTrips = trips
+  .filter((t) => {
+    const dest = destinations.find((d) => d.id === t.destinationId);
+    return (
+      dest &&
+      dest.continentId === continent.id &&
+      t.status !== "full" &&
+      new Date(t.departureDate) > now
+    );
+  })
+  .sort(
+    (a, b) =>
+      new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
+  )
+  .slice(0, 8);
+
+const continentTripCards = continentTrips.map((trip) => {
+  const dest = destinations.find((d) => d.id === trip.destinationId)!;
+  const extra = getTripExtra(trip.id);
+  const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+  const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
+  return {
+    destSlug: dest.slug,
+    destName: dest.name,
+    title: trip.title,
+    dateFormatted: format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es }),
+    durationDays: trip.durationDays,
+    price,
+    originalPrice: trip.priceFrom,
+    hasDiscount: extra.promoPrice != null && extra.promoPrice < trip.priceFrom,
+    isUrgent,
+  };
+});
+
+const allContinentTrips = trips.filter((t) => {
+  const dest = destinations.find((d) => d.id === t.destinationId);
+  return dest && dest.continentId === continent.id && t.status !== "full";
+});
+const minContinentPrice = allContinentTrips.length
+  ? Math.min(...allContinentTrips.map((t) => t.promoPrice ?? t.priceFrom))
+  : 0;
+const geoData = [
+  { label: "Destinos", value: `${continentDestinations.length} destinos` },
+  { label: "Viajes disponibles", value: `${allContinentTrips.length} viajes` },
+  { label: "Desde", value: minContinentPrice > 0 ? `${minContinentPrice}€ (sin vuelo)` : "Próximamente" },
+  { label: "Grupo", value: "12-18 personas" },
+  { label: "Edad", value: "20-35 años" },
+  { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+];
+---
+
+<Layout title={continent.seoTitle} description={continent.seoDescription} ogImage={continent.heroImage} heroImage={continent.heroImage} keywords={`viajes en grupo a ${continent.name}, destinos ${continent.name}, viajes ${continent.name} jóvenes, travelhood`}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Destinos",url:"/viajes/"},{name:continent.name,url:`/destinos/${continent.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:`Destinos en ${continent.name}`,items:continentDestinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
+    {continent.faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(continent.faqs))} />}
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
+      <img
+        src={continent.heroImage}
+        alt={`Viajes en grupo a ${continent.name} — destinos para jóvenes`}
+        class="absolute inset-0 h-full w-full object-cover"
+        width="1920"
+        height="1080"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span>Destinos</span>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">{continent.name}</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          Viajes en grupo a {continent.name} para jóvenes de 20 a 35 años
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Grupos reducidos con coordinador en destino, alojamiento incluido e itinerarios de aventura.
+        </p>
+      </div>
+    </section>
+
+    <!-- Editorial Intro -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-3xl px-6">
+        <p class="text-base leading-relaxed text-muted-foreground whitespace-pre-line">
+          {continent.editorialIntro}
+        </p>
+      </div>
+    </section>
+
+    <!-- Best Months Table -->
+    <section class="bg-card py-14">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+          Mejor época para cada destino en {continent.name}
+        </h2>
+        <div class="overflow-x-auto rounded-xl border border-border/40">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-teal-deep/5">
+                <th class="px-6 py-3 text-left font-bold text-foreground">Destino</th>
+                <th class="px-6 py-3 text-left font-bold text-foreground">Mejor época</th>
+                <th class="px-6 py-3 text-left font-bold text-foreground">Clima</th>
+              </tr>
+            </thead>
+            <tbody>
+              {continentDestinations.map((dest) => (
+                <tr class="border-t border-border/30 hover:bg-muted/30 transition-colors">
+                  <td class="px-6 py-3">
+                    <a href={`/destino/${dest.slug}`} class="font-semibold text-teal-vivid hover:underline">
+                      {dest.name}
+                    </a>
+                  </td>
+                  <td class="px-6 py-3 text-muted-foreground">{dest.idealFor}</td>
+                  <td class="px-6 py-3 text-muted-foreground">{dest.climate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-sm text-muted-foreground text-center">{continent.bestMonths}</p>
+      </div>
+    </section>
+
+    <!-- Destinations Grid -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Destinos
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Nuestros destinos en {continent.name}
+          </h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {continentDestinations.map((dest) => {
+            const country = countries.find((c) => c.id === dest.countryId);
+            const destTrips = trips.filter(
+              (t) => t.destinationId === dest.id && t.status !== "full"
+            );
+            const minPrice = destTrips.length
+              ? Math.min(...destTrips.map((t) => t.promoPrice ?? t.priceFrom))
+              : null;
+
+            return (
+              <a
+                href={`/destino/${dest.slug}`}
+                class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div class="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={dest.heroImage}
+                    alt={dest.name}
+                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  {country && (
+                    <div class="absolute bottom-3 left-3">
+                      <span class="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                        <img
+                          src={`https://flagcdn.com/16x12/${country.flag.toLowerCase()}.png`}
+                          alt={country.name}
+                          class="h-3 w-4 rounded-sm object-cover"
+                        />
+                        {country.name}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div class="flex flex-1 flex-col p-4">
+                  <h3 class="font-serif text-lg font-bold text-foreground leading-tight group-hover:text-teal-vivid transition-colors">
+                    {dest.name}
+                  </h3>
+                  <p class="mt-1 text-[13px] text-muted-foreground leading-relaxed line-clamp-2">
+                    {dest.shortDescription}
+                  </p>
+                  <div class="mt-3 flex flex-wrap gap-1.5">
+                    {dest.categories.map((cat) => (
+                      <span class="inline-flex rounded-full bg-teal-deep/5 px-2 py-0.5 text-[10px] font-semibold text-teal-deep">
+                        {cat === "playa" ? "🏖️ Playa" : cat === "aventura" ? "🌿 Aventura" : cat === "cultural" ? "🏛️ Cultural" : cat === "nieve" ? "🌌 Nieve" : "🌴 Naturaleza"}
+                      </span>
+                    ))}
+                  </div>
+                  <div class="mt-auto pt-4 flex items-end justify-between border-t border-border/30 mt-4">
+                    {minPrice ? (
+                      <p class="text-lg font-extrabold text-foreground">
+                        Desde {minPrice}<span class="text-sm font-semibold text-muted-foreground"> €</span>
+                      </p>
+                    ) : (
+                      <p class="text-sm text-muted-foreground">Próximamente</p>
+                    )}
+                    <span class="inline-flex items-center gap-1 rounded-full bg-teal-deep/8 px-2.5 py-1 text-[11px] font-semibold text-teal-deep transition-colors group-hover:bg-coral group-hover:text-white">
+                      Ver destino
+                    </span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Trips -->
+    {continentTrips.length > 0 && (
+      <section class="bg-card py-16">
+        <div class="mx-auto max-w-6xl px-6">
+          <div class="mb-10 text-center">
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+              Próximas salidas
+            </span>
+            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+              Viajes próximos en {continent.name}
+            </h2>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {continentTripCards.map((card) => (
+                <a
+                  href={`/destino/${card.destSlug}`}
+                  class="group rounded-xl border border-border/40 bg-background p-4 transition-all hover:shadow-md hover:-translate-y-0.5"
+                >
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-teal-vivid uppercase tracking-wide">
+                      {card.destName}
+                    </span>
+                    {card.isUrgent && (
+                      <span class="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
+                        Últimas plazas
+                      </span>
+                    )}
+                  </div>
+                  <p class="text-sm font-medium text-foreground">{card.title}</p>
+                  <p class="mt-1 text-xs text-muted-foreground">
+                    {card.dateFormatted} · {card.durationDays} días
+                  </p>
+                  <div class="mt-3 flex items-baseline gap-1.5">
+                    <span class="text-lg font-extrabold text-foreground">{card.price}€</span>
+                    {card.hasDiscount && (
+                      <span class="text-xs text-muted-foreground line-through">{card.originalPrice}€</span>
+                    )}
+                  </div>
+                </a>
+            ))}
+          </div>
+
+          <div class="mt-8 text-center">
+            <a
+              href="/viajes/"
+              class="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+            >
+              Ver todos los viajes
+            </a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- GEO Data Block -->
+    <GEODataBlock
+      title={`Viajes en grupo a ${continent.name} — Datos clave`}
+      subtitle={`Información actualizada sobre viajes organizados para jóvenes a ${continent.name}`}
+      dataPoints={geoData}
+    />
+
+    <!-- FAQ -->
+    {continent.faqs.length > 0 && (
+      <section class="bg-background py-14">
+        <div class="mx-auto max-w-3xl px-6">
+          <div class="mb-10 text-center">
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+              Preguntas frecuentes
+            </span>
+            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+              Sobre viajar a {continent.name}
+            </h2>
+          </div>
+          <ContinentFAQ client:load faqs={continent.faqs} />
+        </div>
+      </section>
+    )}
+
+    <!-- CTA -->
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          ¿Listo para descubrir {continent.name}?
+        </h2>
+        <p class="mt-4 text-white/70 max-w-lg mx-auto">
+          El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote.
+        </p>
+        <a
+          href="/viajes/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+        >
+          Ver viajes disponibles
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

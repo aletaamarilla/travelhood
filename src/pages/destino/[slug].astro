@@ -1,0 +1,113 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import TripDetailPage from "@/components/TripDetailPage";
+import GEODataBlock from "@/components/GEODataBlock.astro";
+import Footer from "@/components/Footer.astro";
+import {
+  getDestinations,
+  getTrips,
+  getTestimonials,
+  getCoordinators,
+  getCountries,
+  getContinents,
+  getDestinationPhotos,
+  getDestinationFaqs,
+  getTripExtra,
+  lookupCoords,
+} from "@/lib/data-provider";
+import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateAggregateRatingSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
+
+export async function getStaticPaths() {
+  const allDestinations = await getDestinations();
+  return allDestinations.map((d) => ({
+    params: { slug: d.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const [destinations, trips, testimonials, coordinators, countries, continents] = await Promise.all([
+  getDestinations(), getTrips(), getTestimonials(), getCoordinators(), getCountries(), getContinents()
+]);
+const destination = destinations.find((d) => d.slug === slug)!;
+const country = countries.find((c) => c.id === destination.countryId)!;
+const continent = continents.find((c) => c.id === destination.continentId)!;
+
+const destTrips = trips
+  .filter((t) => t.destinationId === destination.id && t.status !== "full")
+  .sort(
+    (a, b) =>
+      new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
+  )
+  .map((t) => {
+    const extra = getTripExtra(t.id);
+    return {
+      ...t,
+      promoPrice: extra.promoPrice,
+      promoLabel: extra.promoLabel,
+      itinerary: extra.itinerary || t.itinerary.map((d) => {
+        const coords = lookupCoords(d.title);
+        return { ...d, lat: coords?.[0] ?? 0, lng: coords?.[1] ?? 0 };
+      }),
+    };
+  });
+
+const destTestimonials = testimonials;
+const coordIds = [...new Set(destTrips.map((t) => t.coordinatorId))];
+const destCoordinators = coordIds
+  .map((id) => coordinators.find((c) => c.id === id))
+  .filter(Boolean) as typeof coordinators;
+
+const photos = getDestinationPhotos(destination.id);
+const faqs = getDestinationFaqs(destination.id);
+
+const pageTitle = `${destination.name} — Viaje en grupo | Travelhood`;
+const pageDescription = `${destination.shortDescription} Viaja en grupo con Travelhood. Coordinador y alojamiento incluidos.`;
+---
+
+<Layout title={pageTitle} description={pageDescription} ogImage={destination.heroImage} heroImage={destination.heroImage} keywords={`viaje en grupo a ${destination.name}, viajes ${country.name}, ${destination.categories.map(c => `viajes de ${c}`).join(', ')}, travelhood`}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:continent.name,url:`/destinos/${continent.slug}/`},{name:destination.name,url:`/destino/${destination.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd({...generateTouristDestinationSchema({name:destination.name,description:destination.description,url:`/destino/${destination.slug}/`,image:destination.heroImage}), aggregateRating: generateAggregateRatingSchema(testimonials.length)})} />
+    {faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
+    {destTrips.map((trip) => (
+      <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({
+        name: trip.title,
+        startDate: trip.departureDate,
+        endDate: trip.returnDate,
+        location: destination.name,
+        price: trip.promoPrice ?? trip.priceFrom,
+        url: `/destino/${destination.slug}/`,
+        image: destination.heroImage,
+        availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      }))} />
+    ))}
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+    <TripDetailPage
+      client:load
+      destination={destination}
+      photos={photos}
+      faqs={faqs}
+      trips={destTrips}
+      testimonials={destTestimonials}
+      coordinators={destCoordinators}
+      country={country}
+      continent={continent}
+    />
+    <GEODataBlock
+      title={`Viaje en grupo a ${destination.name} — Datos clave`}
+      subtitle={`Información actualizada sobre viajes organizados a ${destination.name} con Travelhood`}
+      dataPoints={[
+        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => t.promoPrice ?? t.priceFrom))}€ (sin vuelo)` : "Próximamente" },
+        { label: "Duración", value: destTrips.length > 0 ? `${destTrips[0].durationDays} días` : "Variable" },
+        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+        { label: "Clima", value: destination.climate },
+        { label: "País", value: country.name },
+        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+      ]}
+    />
+    <Footer />
+  </main>
+</Layout>

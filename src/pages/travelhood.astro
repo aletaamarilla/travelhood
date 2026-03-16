@@ -1,0 +1,281 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import CTAFooter from "@/components/CTAFooter.astro";
+import Footer from "@/components/Footer.astro";
+import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/lib/schemas";
+---
+
+<Layout
+  title="Travelhood — Quiénes somos"
+  description="Conoce la historia de Travelhood. Viajes en grupo para jóvenes de 20 a 35 años que quieren explorar el mundo sin miedo y sin excusas."
+  keywords="travelhood, quiénes somos, agencia viajes grupo, viajes jóvenes España, sobre travelhood"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Travelhood",url:"/travelhood/"}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateAboutPageSchema())} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[70vh] items-center overflow-hidden bg-teal-deep pt-16">
+      <div class="absolute inset-0">
+        <img
+          src="/images/hero-brasil.jpg"
+          alt="Grupo de viajeros Travelhood — quiénes somos"
+          class="h-full w-full object-cover opacity-30"
+          width="1920"
+          height="1080"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-teal-deep/60 via-teal-deep/80 to-teal-deep"></div>
+      </div>
+      <div class="absolute top-20 right-0 h-80 w-80 rounded-full bg-coral/10 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-teal-vivid/15 blur-3xl"></div>
+
+      <div class="relative mx-auto max-w-4xl px-6 py-24 text-center">
+        <span class="inline-block rounded-full bg-coral/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-coral">
+          Nuestra historia
+        </span>
+        <h1 class="mt-6 font-serif text-4xl font-extrabold text-sand sm:text-5xl lg:text-6xl text-balance leading-tight">
+          Nadie debería quedarse en casa
+          <br class="hidden sm:block" />
+          por falta de compañía.
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-sand/80 leading-relaxed">
+          Somos viajeros que organizan viajes para viajeros.
+          Creamos experiencias compartidas que impulsan a la gente a atreverse.
+        </p>
+      </div>
+    </section>
+
+    <!-- Propósito -->
+    <section class="bg-background py-20">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="flex flex-col items-center gap-14 lg:flex-row lg:gap-20">
+          <div class="lg:w-1/2">
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+              Nuestro propósito
+            </span>
+            <h2 class="mt-4 font-serif text-3xl font-extrabold text-foreground sm:text-4xl text-balance leading-tight">
+              Transformamos el "ojalá" en "me voy".
+            </h2>
+            <p class="mt-6 text-base text-muted-foreground leading-relaxed">
+              Travelhood nace de una verdad simple: hay miles de personas de 20 a 35 años que quieren viajar pero no tienen con quién. El freno no es el dinero, es el miedo. La soledad. No atreverse.
+            </p>
+            <p class="mt-4 text-base text-muted-foreground leading-relaxed">
+              Nosotros rompemos esa barrera. Organizamos viajes en grupo con itinerarios únicos, un coordinador que viaja contigo y una comunidad que convierte a desconocidos en amigos antes de pisar el aeropuerto.
+            </p>
+            <blockquote class="mt-8 border-l-4 border-coral pl-5">
+              <p class="text-lg font-medium text-foreground italic leading-relaxed">
+                "No vendemos viajes. Activamos decisiones que la gente no se atreve a tomar sola."
+              </p>
+            </blockquote>
+          </div>
+          <div class="relative w-full max-w-lg lg:w-1/2">
+            <div class="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl">
+              <img
+                src="/images/hero-zanzibar.jpg"
+                alt="Viajeros disfrutando en destino"
+                class="h-full w-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-teal-deep/30 via-transparent to-transparent"></div>
+            </div>
+            <div class="absolute -bottom-4 -left-4 z-10 rounded-2xl bg-card px-5 py-4 shadow-xl">
+              <p class="font-serif text-2xl font-extrabold text-coral">98%</p>
+              <p class="text-xs text-muted-foreground">repetirían la experiencia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Valores -->
+    <section class="bg-teal-deep py-20">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mb-14 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-coral">
+            Lo que nos define
+          </span>
+          <h2 class="mt-4 font-serif text-3xl font-extrabold text-sand sm:text-4xl text-balance">
+            Nuestros valores no están en un póster. Están en cada viaje.
+          </h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { icon: "users", title: "Comunidad", description: "No vendemos plazas. Construimos grupos. Cada viaje es el inicio de relaciones reales que duran más allá del aeropuerto." },
+            { icon: "shield", title: "Seguridad", description: "Viajas solo pero nunca estás solo. Coordinador en destino, grupo organizado y cero sorpresas desagradables." },
+            { icon: "compass", title: "Exploración", description: "Destinos que no están en todos los catálogos. Itinerarios diseñados para vivir, no para tachar." },
+            { icon: "zap", title: "Energía", description: "Comunicación directa, visual activa, tono real. Somos una marca con actitud y movimiento." },
+            { icon: "leaf", title: "Naturaleza", description: "Montaña, agua, paisajes. La naturaleza está presente en cada experiencia que diseñamos." },
+            { icon: "heart", title: "Autenticidad", description: "Personas reales, experiencias reales, fotos reales. Sin filtros de stock. Sin promesas vacías." },
+          ].map((value) => (
+            <div class="group rounded-2xl bg-sand/5 p-6 transition-all duration-300 hover:bg-sand/10">
+              <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-coral/15">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-coral">
+                  {value.icon === "users" && <Fragment><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></Fragment>}
+                  {value.icon === "shield" && <Fragment><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></Fragment>}
+                  {value.icon === "compass" && <Fragment><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></Fragment>}
+                  {value.icon === "zap" && <Fragment><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></Fragment>}
+                  {value.icon === "leaf" && <Fragment><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></Fragment>}
+                  {value.icon === "heart" && <Fragment><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></Fragment>}
+                </svg>
+              </div>
+              <h3 class="font-serif text-lg font-bold text-sand">{value.title}</h3>
+              <p class="mt-2 text-sm text-sand/70 leading-relaxed">{value.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Diferenciación -->
+    <section class="bg-background py-20">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="flex flex-col items-center gap-14 lg:flex-row-reverse lg:gap-20">
+          <div class="lg:w-1/2">
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+              Lo que nos hace diferentes
+            </span>
+            <h2 class="mt-4 font-serif text-3xl font-extrabold text-foreground sm:text-4xl text-balance leading-tight">
+              No somos una agencia más. Somos la que elegirías si fueras sola.
+            </h2>
+            <div class="mt-8 flex flex-col gap-5">
+              {[
+                { label: "Coordinador propio", text: "Alguien de nuestro equipo viaja contigo. Gestiona, resuelve y se asegura de que todo fluya." },
+                { label: "Itinerarios únicos", text: "No copiamos rutas. Diseñamos experiencias locales que no están en los catálogos habituales." },
+                { label: "Grupo de tu edad", text: "20-35 años. Gente con ganas de vivir algo real, no turistas buscando selfies." },
+                { label: "Precio transparente", text: "Sabes lo que pagas y lo que incluye. Sin sorpresas, sin letra pequeña." },
+              ].map((item) => (
+                <div class="flex items-start gap-4">
+                  <div class="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-coral/15">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-coral">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-foreground">{item.label}</p>
+                    <p class="mt-1 text-sm text-muted-foreground leading-relaxed">{item.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div class="relative w-full max-w-lg lg:w-1/2">
+            <div class="relative aspect-square overflow-hidden rounded-3xl shadow-2xl">
+              <img
+                src="/images/hero-japon.jpg"
+                alt="Experiencia Travelhood en destino"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <div class="absolute -bottom-4 -right-4 z-10 rounded-2xl bg-card px-5 py-4 shadow-xl">
+              <p class="font-serif text-2xl font-extrabold text-coral">+500</p>
+              <p class="text-xs text-muted-foreground">viajeros felices</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visión / Misión -->
+    <section class="relative overflow-hidden bg-teal-deep py-20">
+      <div class="absolute top-0 right-0 h-80 w-80 rounded-full bg-coral/8 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-yellow-sun/8 blur-3xl"></div>
+
+      <div class="relative mx-auto max-w-4xl px-6 text-center">
+        <span class="text-xs font-bold uppercase tracking-widest text-yellow-sun">
+          Nuestra visión
+        </span>
+        <h2 class="mt-4 font-serif text-3xl font-extrabold text-sand sm:text-4xl text-balance leading-tight">
+          Ser la comunidad de viajes en grupo referente en España para jóvenes de 20 a 35 años.
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-base text-sand/80 leading-relaxed">
+          No desde el lujo. No desde lo corporativo. Desde itinerarios únicos, precio competitivo y una comunidad fuerte y reconocible. Queremos que la gente diga:
+        </p>
+        <p class="mt-6 font-serif text-2xl font-extrabold text-coral italic">
+          "Si voy sola, me voy con ellos."
+        </p>
+
+        <div class="mt-12 grid gap-6 sm:grid-cols-3">
+          <div class="rounded-2xl bg-sand/5 p-6">
+            <p class="font-serif text-3xl font-extrabold text-coral">15+</p>
+            <p class="mt-2 text-sm text-sand/70">Destinos únicos</p>
+          </div>
+          <div class="rounded-2xl bg-sand/5 p-6">
+            <p class="font-serif text-3xl font-extrabold text-yellow-sun">20-35</p>
+            <p class="mt-2 text-sm text-sand/70">Edad del grupo</p>
+          </div>
+          <div class="rounded-2xl bg-sand/5 p-6">
+            <p class="font-serif text-3xl font-extrabold text-teal-vivid">100%</p>
+            <p class="mt-2 text-sm text-sand/70">Coordinador en destino</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Equipo / Comunidad -->
+    <section class="bg-sand/50 py-20">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="mb-14 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            La comunidad
+          </span>
+          <h2 class="mt-4 font-serif text-3xl font-extrabold text-foreground sm:text-4xl text-balance">
+            Llegas sin conocer a nadie. Vuelves con una familia.
+          </h2>
+          <p class="mx-auto mt-4 max-w-2xl text-base text-muted-foreground leading-relaxed">
+            Cada viaje es el inicio de algo. No organizamos tours, creamos conexiones reales entre personas con las mismas ganas de vivir.
+          </p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { img: "/images/hero-laponia.jpg", alt: "Aventura en Laponia" },
+            { img: "/images/hero-maldivas.jpg", alt: "Grupo en Maldivas" },
+            { img: "/images/hero-main.jpg", alt: "Comunidad Travelhood" },
+          ].map((photo) => (
+            <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+              <img
+                src={photo.img}
+                alt={photo.alt}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-teal-deep/40 via-transparent to-transparent"></div>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-10 flex flex-col items-center gap-4 text-center">
+          <blockquote class="max-w-xl">
+            <p class="font-serif text-xl font-bold text-foreground italic leading-relaxed">
+              "Fui sin conocer a nadie. Volví con gente que ya considero amigos."
+            </p>
+            <footer class="mt-3 text-sm text-muted-foreground">
+              — Laura, 28 años, Madrid
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Final -->
+    <CTAFooter />
+    <Footer />
+  </main>
+
+  <a
+    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Escríbenos por WhatsApp"
+    class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+  >
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</Layout>

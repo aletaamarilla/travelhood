@@ -1,0 +1,146 @@
+---
+import { getTripsByTag, getDestinations } from "@/lib/data-provider";
+import type { Trip } from "@/lib/travel-data";
+const destinations = await getDestinations();
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+const now = new Date();
+const month = now.getMonth();
+
+type Season = {
+  tag: Trip["tags"][number];
+  title: string;
+  subtitle: string;
+  label: string;
+};
+
+const seasonMap: Season[] = [
+  { tag: "semana-santa", title: "Semana Santa bajo otro cielo", subtitle: "Deja la rutina y cambia las procesiones por aventuras. Estos viajes se llenan rápido.", label: "🌴 Temporada" },
+  { tag: "puente-mayo", title: "Este puente, cambia de planes", subtitle: "5 días bastan para volver siendo otro. Destinos cortos, experiencias largas.", label: "🎒 Escapada" },
+  { tag: "verano", title: "Verano: tu momento", subtitle: "Los mejores destinos del mundo te esperan. Grupos reducidos, experiencias gigantes.", label: "☀️ Temporada" },
+  { tag: "septiembre", title: "Septiembre: viaja a tu aire", subtitle: "Menos turistas, mejores precios, misma aventura. La época inteligente de viajar.", label: "✨ Temporada" },
+  { tag: "puente-octubre", title: "Puente de octubre: escápate", subtitle: "Un fin de semana largo puede cambiarte la perspectiva. Elige destino.", label: "🎒 Escapada" },
+  { tag: "puente-noviembre", title: "Puente de noviembre: sal de aquí", subtitle: "Mientras todos se quedan, tú te vas. Destinos que merecen cada puente.", label: "🎒 Escapada" },
+  { tag: "navidad", title: "Navidad lejos de casa", subtitle: "La mejor Navidad es la que pillas con la mochila puesta y un grupo que mola.", label: "❄️ Temporada" },
+  { tag: "fin-de-anio", title: "Fin de Año: empieza viajando", subtitle: "¿Y si este año lo empiezas en otro continente? Nochevieja con tu nuevo grupo.", label: "✨ Temporada" },
+];
+
+function getCurrentSeason(): Season {
+  if (month <= 2) return seasonMap.find((s) => s.tag === "semana-santa")!;
+  if (month === 3) return seasonMap.find((s) => s.tag === "puente-mayo")!;
+  if (month >= 4 && month <= 7) return seasonMap.find((s) => s.tag === "verano")!;
+  if (month === 8) return seasonMap.find((s) => s.tag === "septiembre")!;
+  if (month === 9) return seasonMap.find((s) => s.tag === "puente-noviembre")!;
+  if (month === 10) return seasonMap.find((s) => s.tag === "navidad")!;
+  return seasonMap.find((s) => s.tag === "fin-de-anio")!;
+}
+
+const season = getCurrentSeason();
+const rawTrips = (await getTripsByTag(season.tag)).slice(0, 4);
+
+// Pre-compute card data in frontmatter to avoid complex template logic
+const cards = rawTrips
+  .map((trip) => {
+    const dest = destinations.find((d) => d.id === trip.destinationId);
+    if (!dest) return null;
+    return {
+      slug: dest.slug,
+      name: dest.name,
+      heroImage: dest.heroImage,
+      dateLabel: format(new Date(trip.departureDate), "d MMM", { locale: es }),
+      durationDays: trip.durationDays,
+      priceFrom: trip.priceFrom,
+      promoPrice: trip.promoPrice,
+      promoLabel: trip.promoLabel,
+      flightEstimate: trip.flightEstimate,
+      placesLeft: trip.placesLeft,
+      isUrgent: trip.status === "almost-full" || trip.placesLeft <= 4,
+    };
+  })
+  .filter(Boolean) as NonNullable<(typeof rawTrips)[number] & {
+    slug: string; name: string; heroImage: string; dateLabel: string;
+    durationDays: number; priceFrom: number; promoPrice?: number; promoLabel?: string;
+    flightEstimate: number; placesLeft: number; isUrgent: boolean;
+  }>[];
+---
+
+<section class="bg-background py-20">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-coral">
+          {season.label}
+        </span>
+        <h2 class="mt-2 font-serif text-2xl font-extrabold text-foreground sm:text-3xl lg:text-4xl text-balance">
+          {season.title}
+        </h2>
+        <p class="mt-2 max-w-lg text-sm text-muted-foreground leading-relaxed">
+          {season.subtitle}
+        </p>
+      </div>
+      <a
+        href="#todos-los-viajes"
+        class="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-teal-vivid transition-colors hover:text-teal-deep sm:mt-0"
+      >
+        Ver todos
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+
+    <div class="season-scroll -mx-6 flex gap-5 overflow-x-auto px-6 pb-4 snap-x snap-mandatory scrollbar-hide">
+      {cards.map((card) => (
+        <a
+          href={`#destino-${card.slug}`}
+          class="group flex w-[280px] shrink-0 flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all hover:shadow-xl hover:-translate-y-1 snap-start sm:w-[300px]"
+        >
+          <div class="relative aspect-[3/2] overflow-hidden">
+            <img
+              src={card.heroImage}
+              alt={card.name}
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            {card.isUrgent && (
+              <div class="absolute top-3 left-3">
+                <span class="inline-flex items-center rounded-full bg-coral px-2.5 py-1 text-[11px] font-bold text-white">
+                  Últimas plazas
+                </span>
+              </div>
+            )}
+          </div>
+          <div class="flex flex-1 flex-col gap-2 p-5">
+            <h3 class="font-serif text-lg font-bold text-foreground">{card.name}</h3>
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+              <span>{card.dateLabel}</span>
+              <span class="text-border">·</span>
+              <span>{card.durationDays} días</span>
+            </div>
+            <div class="mt-auto flex items-baseline justify-between pt-2">
+              <div class="flex items-baseline gap-1.5">
+                <p class="text-xl font-extrabold text-foreground">
+                  {card.promoPrice ?? card.priceFrom}<span class="text-sm font-semibold text-muted-foreground"> €</span>
+                </p>
+                {card.promoPrice && (
+                  <span class="text-sm text-muted-foreground line-through">{card.priceFrom}€</span>
+                )}
+              </div>
+              <div class="flex flex-col items-end gap-0.5">
+                {card.promoLabel && (
+                  <span class="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
+                    {card.promoLabel}
+                  </span>
+                )}
+                <span class="text-xs text-muted-foreground">+ vuelo ~{card.flightEstimate}€</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import SearchPage from "@/components/SearchPage";
+import InternalLinks from "@/components/InternalLinks.astro";
+import Footer from "@/components/Footer.astro";
+import { generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
+import { getDestinations } from "@/lib/data-provider";
+const destinations = await getDestinations();
+---
+
+<Layout
+  title="Viajes en grupo 2026 — Encuentra tu aventura | Travelhood"
+  description="Explora todos los viajes en grupo de Travelhood para jóvenes de 20-35 años. Filtra por destino, fecha y tipo de experiencia. Coordinador y alojamiento incluidos."
+  keywords="viajes en grupo 2026, viajes organizados jóvenes, viajes para singles, buscar viaje grupo, travelhood viajes"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajes",url:"/viajes/"}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:"Todos los destinos Travelhood",items:destinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
+  </Fragment>
+  <main>
+    <Navbar client:load />
+    <SearchPage client:load />
+    <InternalLinks />
+    <Footer />
+  </main>
+</Layout>

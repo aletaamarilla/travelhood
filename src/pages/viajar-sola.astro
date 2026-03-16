@@ -1,0 +1,228 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import { getDestinations, getTestimonials, getCountries } from "@/lib/data-provider";
+const [destinations, testimonials, countries] = await Promise.all([
+  getDestinations(), getTestimonials(), getCountries()
+]);
+import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+const pageTitle = "Viajar sola sin miedo — Viajes en grupo para jóvenes | Travelhood";
+const pageDescription = "¿No tienes con quién viajar? El 70% de viajeros de Travelhood reservan solos. Grupos de 20-35 años con coordinador en destino. El 98% repiten.";
+
+const recommendedSlugs = ["tailandia", "bali", "marruecos", "grecia", "costa-rica"];
+const recommendedDestinations = recommendedSlugs
+  .map((slug) => destinations.find((d) => d.slug === slug)!)
+  .filter(Boolean);
+
+const relevantTestimonials = testimonials.filter((t) =>
+  ["brasil", "zanzibar", "japon", "maldivas", "laponia"].includes(t.destinationId)
+);
+
+const faqs = [
+  { question: "¿Es seguro viajar sola?", answer: "Totalmente. Viajas con un grupo reducido de 12-18 personas de tu misma edad y un coordinador Travelhood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
+  { question: "¿Haré amigos de verdad?", answer: "El 80% de los viajeros mantiene el grupo de WhatsApp activo meses después. El 35% planifica otro viaje juntos. Las experiencias compartidas crean lazos muy fuertes." },
+  { question: "¿Y si no conozco a nadie del grupo?", answer: "Esa es la norma, no la excepción. El 70% de nuestros viajeros reservan solos. El coordinador facilita la integración desde el primer momento y al segundo día ya hay bromas internas." },
+  { question: "¿Hay muchas más mujeres que hombres?", answer: "Los grupos suelen estar bastante equilibrados, con una ligera mayoría femenina (55-60%). El rango de edad 20-35 asegura que todos estéis en un momento vital similar." },
+  { question: "¿Qué pasa si no me gusta el grupo?", answer: "En más de 500 viajeros, no hemos tenido ningún caso de alguien que no conectara con el grupo. La selección por edad y el tipo de viaje hacen que haya mucha afinidad natural." },
+  { question: "¿Tengo tiempo para mí?", answer: "Sí. Los itinerarios incluyen tiempo libre para que explores a tu ritmo, te relajes o hagas lo que te apetezca. No es un campamento militar." },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords="viajar sola, viajes para mujeres solas, viajes sin acompañante, viajes grupo mujeres, travelhood" heroImage="/images/hero-zanzibar.jpg">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajar sola",url:"/viajar-sola/"}]))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
+      <img
+        src="/images/hero-zanzibar.jpg"
+        alt="Viajera joven disfrutando de un viaje en grupo con Travelhood — viajar sola segura"
+        class="absolute inset-0 h-full w-full object-cover"
+        width="1920"
+        height="1080"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">Viajar sola</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          ¿No tienes con quién ir? Nosotros tenemos el grupo.
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          El 70% de los viajeros de Travelhood reservan solos. El 98% repiten.
+        </p>
+      </div>
+    </section>
+
+    <!-- No estás sola -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
+          No estás sola. Solo no has encontrado tu grupo.
+        </h2>
+        <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
+          <p>
+            Hay un miedo que no se dice en voz alta: querer viajar pero no tener con quién. No es falta de ganas. No es falta de dinero. Es no tener a alguien que diga "yo me apunto". Y ese miedo paraliza a miles de personas cada año.
+          </p>
+          <p>
+            Según un estudio de Booking.com, el 72% de las mujeres jóvenes en España quieren viajar pero no lo hacen por falta de compañía. No es que no puedan. Es que no se atreven solas. Y lo entendemos.
+          </p>
+          <p>
+            Pero hay una opción que elimina ese miedo: un viaje en grupo con personas de tu misma edad (20-35 años), un itinerario diseñado para vivir experiencias reales y un coordinador que se encarga de todo. Llegas al aeropuerto sin conocer a nadie. A los dos días, no quieres separarte del grupo.
+          </p>
+          <p>
+            Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. El grupo medio tiene 14 personas de 20-35 años. Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. Los viajes cuestan entre 590€ y 1.590€, sin vuelo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Points -->
+    <section class="bg-teal-deep py-14">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="grid gap-8 sm:grid-cols-3 text-center">
+          <div>
+            <p class="font-serif text-5xl font-extrabold text-white">70%</p>
+            <p class="mt-2 text-base text-white/70">de los viajeros reservan solos</p>
+          </div>
+          <div>
+            <p class="font-serif text-5xl font-extrabold text-white">98%</p>
+            <p class="mt-2 text-base text-white/70">repetirían la experiencia</p>
+          </div>
+          <div>
+            <p class="font-serif text-5xl font-extrabold text-white">14</p>
+            <p class="mt-2 text-base text-white/70">personas de media por grupo</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="bg-card py-16">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Historias reales
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Ellas y ellos ya se lanzaron
+          </h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          {relevantTestimonials.map((t) => {
+            const dest = destinations.find((d) => d.id === t.destinationId);
+            return (
+              <div class="rounded-xl bg-background p-6 border border-border/40">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="h-10 w-10 rounded-full bg-teal-deep/10 flex items-center justify-center text-teal-vivid font-bold text-sm">
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <p class="font-semibold text-foreground">{t.name}, {t.age} años</p>
+                    <p class="text-xs text-muted-foreground">{t.city} · {dest?.name}</p>
+                  </div>
+                  <div class="ml-auto flex gap-0.5">
+                    {Array.from({ length: t.rating }).map((_, i) => (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F0A800" stroke="#F0A800" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    ))}
+                  </div>
+                </div>
+                <p class="text-sm text-muted-foreground italic leading-relaxed">"{t.quote}"</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommended Destinations -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Para empezar
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Destinos perfectos para tu primer viaje solo/a
+          </h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          {recommendedDestinations.map((dest) => {
+            const country = countries.find((c) => c.id === dest.countryId);
+            return (
+              <a
+                href={`/destino/${dest.slug}`}
+                class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <div class="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={dest.heroImage}
+                    alt={dest.name}
+                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div class="absolute bottom-3 left-3">
+                    <h3 class="font-serif text-lg font-bold text-white">{dest.name}</h3>
+                    {country && (
+                      <p class="text-xs text-white/70 mt-0.5">{country.name}</p>
+                    )}
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-card py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Preguntas frecuentes
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Dudas que todos tenemos antes de lanzarnos
+          </h2>
+        </div>
+        <ContinentFAQ client:load faqs={faqs} />
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          Tu primera aventura empieza aquí
+        </h2>
+        <p class="mt-4 text-white/70 max-w-lg mx-auto">
+          No necesitas compañía. No necesitas experiencia. Solo necesitas decidir que este año vas a dejar de pensarlo y vas a vivirlo.
+        </p>
+        <a
+          href="/viajes/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+        >
+          Elige tu viaje
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

@@ -1,0 +1,23 @@
+{
+  "name": "travelhood-studio",
+  "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "start": "sanity start"
+  },
+  "dependencies": {
+    "@sanity/vision": "^4.22.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sanity": "^4.22.0",
+    "styled-components": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

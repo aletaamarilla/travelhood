@@ -1,0 +1,240 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import GEODataBlock from "@/components/GEODataBlock.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import InternalLinks from "@/components/InternalLinks.astro";
+import {
+  getCountries,
+  getDestinations,
+  getTrips,
+  getContinents,
+  getTripExtra,
+} from "@/lib/data-provider";
+import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+
+export async function getStaticPaths() {
+  const allCountries = await getCountries();
+  return allCountries.map((c) => ({
+    params: { slug: c.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const [countries, destinations, trips, continents] = await Promise.all([
+  getCountries(), getDestinations(), getTrips(), getContinents()
+]);
+const country = countries.find((c) => c.slug === slug)!;
+const continent = continents.find((c) => c.id === country.continentId)!;
+
+const countryDestinations = destinations.filter((d) => d.countryId === country.id);
+
+const now = new Date();
+const countryTrips = trips
+  .filter((t) => {
+    const dest = countryDestinations.find((d) => d.id === t.destinationId);
+    return dest && t.status !== "full" && new Date(t.departureDate) > now;
+  })
+  .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
+
+const minPrice = countryTrips.length > 0
+  ? Math.min(...countryTrips.map((t) => {
+      const extra = getTripExtra(t.id);
+      return extra.promoPrice ?? t.promoPrice ?? t.priceFrom;
+    }))
+  : 0;
+
+const faqs = [
+  { question: `¿Cuánto cuesta viajar a ${country.name} en grupo?`, answer: `Un viaje en grupo a ${country.name} con Travelhood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno, coordinador y seguro.` },
+  { question: `¿Es seguro viajar a ${country.name} en grupo?`, answer: `Sí. Todos los viajes a ${country.name} incluyen un coordinador Travelhood con experiencia en el destino, seguro de viaje y un grupo reducido de 12-18 personas. Nunca estás solo/a.` },
+  { question: `¿Cuál es la mejor época para viajar a ${country.name}?`, answer: `La mejor época depende del destino específico dentro de ${country.name}. Consulta las páginas de cada destino para ver las fechas recomendadas y la información climática.` },
+];
+
+const pageTitle = `Viajes en grupo a ${country.name} para jóvenes — Travelhood`;
+const pageDescription = `Descubre todos los viajes en grupo a ${country.name} con Travelhood. Grupos de 12-18 personas de 20-35 años con coordinador, alojamiento y seguro incluidos.`;
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords={`viaje en grupo a ${country.name}, viajes ${country.name} jóvenes, ${country.name} grupo organizado, travelhood ${country.name}`}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:continent.name,url:`/destinos/${continent.slug}/`},{name:country.name,url:`/pais/${country.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:`Destinos en ${country.name}`,items:countryDestinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
+      {countryDestinations[0] && (
+        <img
+          src={countryDestinations[0].heroImage}
+          alt={`Viaje en grupo a ${country.name} — Travelhood`}
+          class="absolute inset-0 h-full w-full object-cover"
+          width="1920"
+          height="1080"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )}
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <a href={`/destinos/${continent.slug}/`} class="hover:text-white transition-colors">{continent.name}</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">{country.name}</span>
+        </nav>
+        <div class="inline-flex items-center gap-2 mb-4">
+          <img
+            src={`https://flagcdn.com/48x36/${country.flag.toLowerCase()}.png`}
+            alt={`Bandera de ${country.name}`}
+            width="32"
+            height="24"
+            loading="eager"
+            class="rounded-sm"
+          />
+        </div>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          Viajes en grupo a {country.name} para jóvenes
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Descubre {country.name} con un grupo de 12-18 personas de tu edad. Coordinador en destino, alojamiento y seguro incluidos.
+          {minPrice > 0 && ` Desde ${minPrice}€ por persona (sin vuelo).`}
+        </p>
+      </div>
+    </section>
+
+    <!-- Editorial -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
+          ¿Por qué viajar a {country.name} con Travelhood?
+        </h2>
+        <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
+          <p>
+            {country.name} es uno de los destinos más solicitados por los viajeros de Travelhood. Con itinerarios diseñados para jóvenes de 20 a 35 años, cada viaje combina aventura, cultura y momentos únicos en grupo.
+          </p>
+          <p>
+            El 70% de los viajeros de Travelhood reservan solos. El grupo medio tiene 14 personas y el 98% de los viajeros repiten. Los viajes cuestan entre 590€ y 1.590€, sin vuelo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinations grid -->
+    {countryDestinations.length > 0 && (
+      <section class="bg-card py-14">
+        <div class="mx-auto max-w-6xl px-6">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+            Destinos en {country.name}
+          </h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {countryDestinations.map((dest) => {
+              const destTrips = countryTrips.filter((t) => t.destinationId === dest.id);
+              const destMinPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => { const extra = getTripExtra(t.id); return extra.promoPrice ?? t.promoPrice ?? t.priceFrom; })) : 0;
+              return (
+                <a href={`/destino/${dest.slug}/`} class="group relative overflow-hidden rounded-2xl border border-border/40 bg-background transition-all hover:shadow-lg hover:-translate-y-0.5">
+                  <div class="aspect-[16/10] overflow-hidden">
+                    <img src={dest.heroImage} alt={`Viaje en grupo a ${dest.name} — Travelhood`} width="400" height="250" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  </div>
+                  <div class="p-5">
+                    <h3 class="font-serif text-lg font-bold text-foreground">{dest.name}</h3>
+                    <p class="mt-1 text-sm text-muted-foreground line-clamp-2">{dest.shortDescription}</p>
+                    {destMinPrice > 0 && (
+                      <p class="mt-2 text-sm font-semibold text-teal-vivid">Desde {destMinPrice}€</p>
+                    )}
+                    {destTrips.length > 0 && (
+                      <p class="mt-1 text-xs text-muted-foreground">{destTrips.length} {destTrips.length === 1 ? 'viaje disponible' : 'viajes disponibles'}</p>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Upcoming trips -->
+    {countryTrips.length > 0 && (
+      <section class="bg-background py-14">
+        <div class="mx-auto max-w-6xl px-6">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+            Próximos viajes a {country.name}
+          </h2>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {countryTrips.slice(0, 6).map((trip) => {
+              const dest = destinations.find((d) => d.id === trip.destinationId)!;
+              const extra = getTripExtra(trip.id);
+              const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+              return (
+                <a href={`/destino/${dest.slug}/`} class="rounded-xl border border-border/40 bg-card p-5 transition-all hover:shadow-md hover:-translate-y-0.5">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="font-serif font-bold text-foreground">{dest.name}</span>
+                    <span class="text-sm font-semibold text-teal-vivid">{price}€</span>
+                  </div>
+                  <p class="text-sm text-muted-foreground">{trip.title}</p>
+                  <p class="mt-1 text-xs text-muted-foreground">{format(new Date(trip.departureDate), "d 'de' MMMM yyyy", { locale: es })} · {trip.durationDays} días</p>
+                  {trip.status === "almost-full" && <span class="mt-2 inline-block text-xs font-bold text-coral">Últimas plazas</span>}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- GEO Data Block -->
+    <GEODataBlock
+      title={`Viajes en grupo a ${country.name} — Datos clave`}
+      subtitle={`Información actualizada sobre viajes organizados a ${country.name} con Travelhood`}
+      dataPoints={[
+        { label: "Destinos", value: `${countryDestinations.length} destinos en ${country.name}` },
+        { label: "Precio desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
+        { label: "Viajes disponibles", value: `${countryTrips.length} viajes` },
+        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+      ]}
+    />
+
+    <!-- FAQ -->
+    <section class="bg-background py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Preguntas frecuentes
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Sobre viajar a {country.name}
+          </h2>
+        </div>
+        <ContinentFAQ client:load faqs={faqs} />
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          ¿Listo para descubrir {country.name}?
+        </h2>
+        <p class="mt-4 text-white/70 max-w-lg mx-auto">
+          El grupo ya se está formando. Elige tu destino y reserva tu plaza antes de que se agote.
+        </p>
+        <a
+          href="/viajes/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+        >
+          Reserva tu viaje a {country.name}
+        </a>
+      </div>
+    </section>
+
+    <InternalLinks />
+    <Footer />
+  </main>
+</Layout>

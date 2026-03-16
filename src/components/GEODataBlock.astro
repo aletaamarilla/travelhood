@@ -1,0 +1,35 @@
+---
+interface DataPoint {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  dataPoints: DataPoint[];
+  sourceLabel?: string;
+}
+
+const { title, subtitle, dataPoints, sourceLabel = "Datos de Travelhood · travelhood.es" } = Astro.props;
+---
+
+<section class="geo-data-block bg-teal-deep/5 py-10 border-y border-teal-deep/10">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2 class="font-serif text-xl font-extrabold text-foreground mb-2 text-center">
+      {title}
+    </h2>
+    {subtitle && (
+      <p class="text-sm text-muted-foreground text-center mb-6">{subtitle}</p>
+    )}
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {dataPoints.map((dp) => (
+        <div class="rounded-lg bg-background p-4 border border-border/40 text-center">
+          <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">{dp.label}</p>
+          <p class="text-lg font-extrabold text-foreground">{dp.value}</p>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4 text-[10px] text-muted-foreground/60 text-center">{sourceLabel}</p>
+  </div>
+</section>

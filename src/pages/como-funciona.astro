@@ -1,0 +1,306 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import { generateHowToSchema, generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+const pageTitle = "Cómo funciona un viaje con Travelhood | Viajes en grupo para jóvenes";
+const pageDescription = "Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. Descubre el proceso paso a paso.";
+
+const steps = [
+  {
+    number: "01",
+    title: "Elige tu destino",
+    description: "Explora nuestros destinos y fechas. Filtra por continente, tipo de viaje o temporada. Cada viaje tiene su itinerario detallado, lo que incluye y lo que no, y las plazas disponibles.",
+    icon: '<circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path>',
+  },
+  {
+    number: "02",
+    title: "Reserva tu plaza",
+    description: "Rellena el formulario de reserva y paga una señal de 150€ para asegurar tu sitio. El resto lo pagas 30 días antes de la salida. Política de cancelación flexible.",
+    icon: '<path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path>',
+  },
+  {
+    number: "03",
+    title: "Conoce tu grupo",
+    description: "Antes del viaje te añadimos al grupo de WhatsApp con tus compañeros de aventura. Os presentáis, compartís expectativas y empezáis a generar la ilusión del viaje.",
+    icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+  },
+  {
+    number: "04",
+    title: "Tu coordinador te guía",
+    description: "Un coordinador Travelhood viaja contigo. No es un guía turístico: es alguien del equipo que gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione.",
+    icon: '<path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path>',
+  },
+  {
+    number: "05",
+    title: "Viaja y disfruta",
+    description: "Llegas al aeropuerto de destino, conoces a tu grupo y desde ese momento todo está organizado. Alojamiento, transporte, actividades... Tú solo preocúpate de vivirlo.",
+    icon: '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>',
+  },
+];
+
+const includes = [
+  "Alojamiento completo (hoteles, hostels boutique o alojamientos únicos)",
+  "Transporte interno (furgonetas, trenes, barcos según destino)",
+  "Actividades y experiencias del itinerario",
+  "Coordinador Travelhood en destino durante todo el viaje",
+  "Seguro de viaje básico",
+  "Extras según destino (Japan Rail Pass, crucero por el Nilo, noche en jaima...)",
+];
+
+const notIncludes = [
+  "Vuelo internacional (te asesoramos para encontrar la mejor oferta)",
+  "Comidas no especificadas en el itinerario (algunas incluidas, otras libres)",
+  "Gastos personales (souvenirs, propinas, excursiones opcionales extra)",
+  "Visados (te guiamos con los trámites si es necesario)",
+];
+
+const faqs = [
+  { question: "¿Puedo ir solo/a?", answer: "Por supuesto. El 70% de nuestros viajeros reservan solos. Esa es precisamente la gracia: llegas sin conocer a nadie y vuelves con un grupo de amigos. El coordinador se encarga de que todos se integren desde el primer momento." },
+  { question: "¿Qué edad tiene la gente que va?", answer: "Todos los viajeros tienen entre 20 y 35 años. Es un rango cómodo donde todos conectan fácilmente. El grupo medio tiene 14 personas." },
+  { question: "¿Cuánto cuesta un viaje?", answer: "Los viajes cuestan entre 590€ y 1.590€ sin vuelo, dependiendo del destino y la duración. El vuelo se reserva aparte y te asesoramos para encontrar la mejor oferta." },
+  { question: "¿Cómo es el alojamiento?", answer: "Varía según el destino: hoteles, hostels boutique, riads, guest houses... Siempre con buena valoración y ubicación estratégica. No es lujo, pero tampoco mochilero puro." },
+  { question: "¿Qué pasa si necesito cancelar?", answer: "Si cancelas con más de 30 días de antelación, te devolvemos el 100% de la señal. Entre 15-30 días, el 50%. Menos de 15 días no es reembolsable." },
+  { question: "¿Quién es el coordinador?", answer: "Un miembro del equipo Travelhood con experiencia en el destino. No es un guía turístico: es alguien que viaja contigo, gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione y todo el mundo se sienta integrado." },
+  { question: "¿Son viajes seguros?", answer: "Totalmente. Todos los viajes incluyen coordinador con experiencia, protocolos de seguridad y seguro de viaje. Trabajamos con proveedores locales verificados." },
+  { question: "¿Hay tiempo libre?", answer: "Sí. Los itinerarios combinan actividades organizadas con tiempo libre para explorar a tu ritmo. Normalmente 2-3 horas al día o medias jornadas libres." },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords="cómo funciona viaje en grupo, qué incluye viaje organizado, coordinador viaje, travelhood funcionamiento" heroImage="/images/hero-brasil.jpg">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Cómo funciona",url:"/como-funciona/"}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateHowToSchema({name:"Cómo funciona un viaje con Travelhood",description:pageDescription,steps:steps.map(s=>({name:s.title,text:s.description}))}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[55vh] items-center justify-center overflow-hidden">
+      <img
+        src="/images/hero-brasil.jpg"
+        alt="Grupo de jóvenes viajeros Travelhood — cómo funcionan los viajes en grupo"
+        class="absolute inset-0 h-full w-full object-cover"
+        width="1920"
+        height="1080"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">Cómo funciona</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          Así funciona un viaje con Travelhood
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. De pensarlo a vivirlo en 5 pasos.
+        </p>
+      </div>
+    </section>
+
+    <!-- Steps -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="mb-12 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Paso a paso
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            ¿Cómo funciona un viaje en grupo con Travelhood?
+          </h2>
+          <p class="mt-3 text-muted-foreground max-w-2xl mx-auto">
+            Un viaje con Travelhood cuesta entre 590€ y 1.590€ sin vuelo. El grupo medio tiene 14 personas de 20 a 35 años. El 70% de los viajeros reservan solos y el 98% repiten.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          {steps.map((step, i) => (
+            <div class="flex gap-6 items-start rounded-2xl bg-card p-6 border border-border/40 transition-all hover:shadow-md">
+              <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-teal-deep/10 text-teal-vivid">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={step.icon} />
+              </div>
+              <div>
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-coral text-xs font-bold text-white">
+                    {step.number}
+                  </span>
+                  <h3 class="font-serif text-xl font-bold text-foreground">{step.title}</h3>
+                </div>
+                <p class="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- What's included -->
+    <section class="bg-card py-16">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="grid gap-8 md:grid-cols-2">
+          <div>
+            <h2 class="font-serif text-2xl font-extrabold text-foreground mb-6">
+              ¿Qué incluye un viaje?
+            </h2>
+            <ul class="space-y-3">
+              {includes.map((item) => (
+                <li class="flex items-start gap-3">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-vivid/15 text-teal-vivid">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </span>
+                  <span class="text-sm text-foreground leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 class="font-serif text-2xl font-extrabold text-foreground mb-6">
+              ¿Qué NO incluye?
+            </h2>
+            <ul class="space-y-3">
+              {notIncludes.map((item) => (
+                <li class="flex items-start gap-3">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-coral/15 text-coral">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </span>
+                  <span class="text-sm text-muted-foreground leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+          ¿Cómo se compara con otras opciones?
+        </h2>
+        <div class="overflow-x-auto rounded-xl border border-border/40">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-teal-deep/5">
+                <th class="px-6 py-4 text-left font-bold text-foreground"></th>
+                <th class="px-6 py-4 text-center font-bold text-foreground">Viajar solo/a</th>
+                <th class="px-6 py-4 text-center font-bold text-foreground">Agencia tradicional</th>
+                <th class="px-6 py-4 text-center font-bold text-coral bg-coral/5">Travelhood</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Precio</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Variable, a veces caro</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Alto (margen agencia)</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">Competitivo (precio grupo)</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Edad del grupo</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">N/A</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Todas las edades</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">20-35 años</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Tamaño grupo</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">1 persona</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">30-50 personas</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">12-18 personas</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Coordinador</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">No</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Guía turístico</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">Coordinador propio</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Experiencia</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Total libertad</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Monumentos y bus</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">Aventura + libertad</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Conexiones</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Difícil</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Superficiales</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">Amistades reales</td>
+              </tr>
+              <tr class="border-t border-border/30">
+                <td class="px-6 py-3 font-medium text-foreground">Planificación</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Todo tú</td>
+                <td class="px-6 py-3 text-center text-muted-foreground">Todo la agencia</td>
+                <td class="px-6 py-3 text-center font-semibold text-teal-vivid bg-coral/5">Equilibrio perfecto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Points -->
+    <section class="bg-teal-deep py-14">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-center">
+          <div>
+            <p class="font-serif text-4xl font-extrabold text-white">14</p>
+            <p class="mt-1 text-sm text-white/70">personas por grupo de media</p>
+          </div>
+          <div>
+            <p class="font-serif text-4xl font-extrabold text-white">70%</p>
+            <p class="mt-1 text-sm text-white/70">reservan solos</p>
+          </div>
+          <div>
+            <p class="font-serif text-4xl font-extrabold text-white">98%</p>
+            <p class="mt-1 text-sm text-white/70">repetirían la experiencia</p>
+          </div>
+          <div>
+            <p class="font-serif text-4xl font-extrabold text-white">590-1.590€</p>
+            <p class="mt-1 text-sm text-white/70">rango de precios sin vuelo</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-background py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <div class="mb-10 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">
+            Preguntas frecuentes
+          </span>
+          <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Todo lo que necesitas saber
+          </h2>
+        </div>
+        <ContinentFAQ client:load faqs={faqs} />
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-card py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl text-balance">
+          Elige tu primer viaje
+        </h2>
+        <p class="mt-4 text-muted-foreground max-w-lg mx-auto">
+          Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. El grupo ya se está formando.
+        </p>
+        <a
+          href="/viajes/"
+          class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
+        >
+          Ver viajes disponibles
+        </a>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

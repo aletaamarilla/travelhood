@@ -1,0 +1,79 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  heroImage?: string;
+  ogImage?: string;
+  ogUrl?: string;
+  canonical?: string;
+  noIndex?: boolean;
+}
+
+const SITE_URL = "https://travelhood.es";
+const DEFAULT_OG_IMAGE = "/images/hero-main.jpg";
+
+const {
+  title = 'Travelhood — Viajes en grupo para 20-35 años',
+  description = 'Nadie debería quedarse en casa por falta de compañía. Viajes en grupo organizados con itinerarios únicos, coordinador en destino y comunidad real.',
+  keywords = 'viajes en grupo, viajar solo, viajes jóvenes, viajes organizados, travelhood',
+  heroImage,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogUrl,
+  canonical,
+  noIndex = false,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const canonicalUrl = canonical ?? `${SITE_URL}${currentPath.endsWith('/') ? currentPath : currentPath + '/'}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
+const ogPageUrl = ogUrl ?? canonicalUrl;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#143D4A" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="es" href={canonicalUrl} />
+    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={ogPageUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Travelhood" />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-icon.png" />
+    <link rel="dns-prefetch" href="https://flagcdn.com" />
+    {heroImage && <link rel="preload" as="image" href={heroImage} fetchpriority="high" />}
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: title,
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: [".geo-data-block", "#faq"]
+      }
+    })} />
+    <slot name="head" />
+  </head>
+  <body class="font-sans antialiased">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/globals.css';
+</style>

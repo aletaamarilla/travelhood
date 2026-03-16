@@ -1,0 +1,30 @@
+---
+import { generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+interface Props {
+  items: { name: string; url: string }[];
+}
+
+const { items } = Astro.props;
+const breadcrumbItems = [{ name: "Home", url: "/" }, ...items];
+const schema = generateBreadcrumbSchema(breadcrumbItems);
+---
+
+<nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+  <ol class="flex flex-wrap items-center gap-1">
+    {breadcrumbItems.map((item, i) => (
+      <li class="flex items-center gap-1">
+        {i > 0 && <span class="mx-1 text-muted-foreground/50">/</span>}
+        {i < breadcrumbItems.length - 1 ? (
+          <a href={item.url} class="hover:text-teal-vivid transition-colors">
+            {item.name}
+          </a>
+        ) : (
+          <span class="font-medium text-foreground">{item.name}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={toJsonLd(schema)} />

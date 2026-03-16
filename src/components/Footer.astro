@@ -1,0 +1,146 @@
+---
+const destinationLinks = [
+  { label: "Brasil", href: "/destino/brasil/" },
+  { label: "Japón", href: "/destino/japon/" },
+  { label: "Tailandia", href: "/destino/tailandia/" },
+  { label: "Marruecos", href: "/destino/marruecos/" },
+  { label: "Grecia", href: "/destino/grecia/" },
+  { label: "Bali", href: "/destino/bali/" },
+  { label: "Laponia", href: "/destino/laponia/" },
+  { label: "Costa Rica", href: "/destino/costa-rica/" },
+];
+const navLinks = [
+  { label: "Todos los viajes", href: "/viajes/" },
+  { label: "Cómo funciona", href: "/como-funciona/" },
+  { label: "Viajar sola", href: "/viajar-sola/" },
+  { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
+  { label: "Ofertas", href: "/ofertas/" },
+  { label: "Travelhood", href: "/travelhood/" },
+  { label: "Blog", href: "/blog/" },
+];
+const continentLinks = [
+  { label: "Europa", href: "/destinos/europa/" },
+  { label: "Asia", href: "/destinos/asia/" },
+  { label: "África", href: "/destinos/africa/" },
+  { label: "Sudamérica", href: "/destinos/sudamerica/" },
+  { label: "Centroamérica", href: "/destinos/centroamerica/" },
+];
+const seasonLinks = [
+  { label: "Semana Santa", href: "/temporada/semana-santa/" },
+  { label: "Puentes", href: "/temporada/puentes/" },
+  { label: "Verano", href: "/temporada/verano/" },
+  { label: "Navidad", href: "/temporada/navidad/" },
+  { label: "Fin de Año", href: "/temporada/fin-de-anio/" },
+];
+---
+
+<footer class="bg-[#0e2c35] py-12 text-primary-foreground">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-2 gap-10 lg:grid-cols-5">
+      <!-- Brand -->
+      <div class="flex flex-col gap-4">
+        <a href="/" class="flex items-center gap-2">
+          <img
+            src="/images/logo.jpeg"
+            alt="Travelhood logo"
+            width="40"
+            height="40"
+            class="rounded-lg brightness-200"
+          />
+          <span class="font-serif text-lg font-bold text-sand">Travelhood</span>
+        </a>
+        <p class="text-sm text-sand/60 leading-relaxed">
+          Viajes en grupo para 20-35 años. Nadie debería quedarse en casa por falta de compañía.
+        </p>
+      </div>
+
+      <!-- Destination Links -->
+      <div>
+        <h4 class="mb-4 text-sm font-bold text-sand">Destinos populares</h4>
+        <ul class="flex flex-col gap-2">
+          {destinationLinks.map((d) => (
+            <li>
+              <a href={d.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
+                {d.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Nav Links -->
+      <div>
+        <h4 class="mb-4 text-sm font-bold text-sand">Travelhood</h4>
+        <ul class="flex flex-col gap-2">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Continents & Seasons -->
+      <div>
+        <h4 class="mb-4 text-sm font-bold text-sand">Por continente</h4>
+        <ul class="flex flex-col gap-2 mb-6">
+          {continentLinks.map((c) => (
+            <li>
+              <a href={c.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
+                {c.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <h4 class="mb-4 text-sm font-bold text-sand">Por temporada</h4>
+        <ul class="flex flex-col gap-2">
+          {seasonLinks.map((s) => (
+            <li>
+              <a href={s.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Social / Contact -->
+      <div>
+        <h4 class="mb-4 text-sm font-bold text-sand">Contacto</h4>
+        <div class="flex flex-col gap-3">
+          <a
+            href="https://instagram.com/travelhood"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
+            @travelhood
+          </a>
+          <a
+            href="mailto:hola@travelhood.es"
+            class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            hola@travelhood.es
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 border-t border-sand/10 pt-6 text-center">
+      <p class="text-xs text-sand/40">
+        © Travelhood 2026. Todos los derechos reservados. Agencia registrada.
+      </p>
+    </div>
+  </div>
+</footer>

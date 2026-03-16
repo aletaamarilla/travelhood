@@ -1,0 +1,5 @@
+# Roadmaps en progreso
+
+- [x] ROADMAP_refactor.md ✅ Completado
+- [ ] ROADMAP_mapSEO.md
+- [x] ROADMAP_addSanity.md ✅ Completado

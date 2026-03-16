@@ -1,0 +1,186 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import GEODataBlock from "@/components/GEODataBlock.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import InternalLinks from "@/components/InternalLinks.astro";
+import { getDestinations, getTrips, getCountries, getComparisons, getTripExtra } from "@/lib/data-provider";
+import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+export async function getStaticPaths() {
+  const allComparisons = await getComparisons();
+  return allComparisons.map((c) => ({
+    params: { slug: `${c.slugA}-vs-${c.slugB}` },
+    props: { slugA: c.slugA, slugB: c.slugB, verdict: c.verdict },
+  }));
+}
+
+const { slugA, slugB, verdict } = Astro.props;
+const [destinations, trips, countries] = await Promise.all([
+  getDestinations(), getTrips(), getCountries()
+]);
+const destA = destinations.find((d) => d.slug === slugA)!;
+const destB = destinations.find((d) => d.slug === slugB)!;
+const countryA = countries.find((c) => c.id === destA.countryId)!;
+const countryB = countries.find((c) => c.id === destB.countryId)!;
+
+const now = new Date();
+function getDestData(dest: typeof destA) {
+  const destTrips = trips
+    .filter((t) => t.destinationId === dest.id && t.status !== "full" && new Date(t.departureDate) > now)
+    .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
+  const prices = destTrips.map((t) => {
+    const extra = getTripExtra(t.id);
+    return extra.promoPrice ?? t.promoPrice ?? t.priceFrom;
+  });
+  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
+  const avgFlight = destTrips.length > 0 ? Math.round(destTrips.reduce((sum, t) => sum + t.flightEstimate, 0) / destTrips.length) : 0;
+  const duration = destTrips.length > 0 ? destTrips[0].durationDays : 0;
+  return { destTrips, minPrice, avgFlight, duration };
+}
+
+const dataA = getDestData(destA);
+const dataB = getDestData(destB);
+
+const faqs = [
+  { question: `¿Es más barato ${destA.name} o ${destB.name}?`, answer: `${dataA.minPrice > 0 && dataB.minPrice > 0 ? (dataA.minPrice <= dataB.minPrice ? `${destA.name} es más económico (desde ${dataA.minPrice}€ vs ${dataB.minPrice}€ sin vuelo)` : `${destB.name} es más económico (desde ${dataB.minPrice}€ vs ${dataA.minPrice}€ sin vuelo)`) : 'Consulta los precios actualizados en cada página de destino'}.` },
+  { question: `¿Cuál es más seguro, ${destA.name} o ${destB.name}?`, answer: `Ambos destinos son seguros para viajes en grupo con Travelhood. Viajas con coordinador, transporte privado y alojamientos verificados. La seguridad nunca es un problema en nuestros viajes.` },
+  { question: `¿Puedo hacer los dos viajes?`, answer: `Muchos de nuestros viajeros hacen exactamente eso. Puedes ir a ${destA.name} en una temporada y a ${destB.name} en otra. El 35% de nuestros viajeros repiten destino o prueban uno nuevo.` },
+];
+
+const pageTitle = `¿${destA.name} o ${destB.name}? — Comparativa para viajeros | Travelhood`;
+const pageDescription = `Compara ${destA.name} y ${destB.name}: precios, duración, clima y experiencia. ${verdict.split('.')[0]}.`;
+
+const criteria = [
+  { label: "País", a: countryA.name, b: countryB.name },
+  { label: "Precio desde", a: dataA.minPrice > 0 ? `${dataA.minPrice}€` : "—", b: dataB.minPrice > 0 ? `${dataB.minPrice}€` : "—" },
+  { label: "Vuelo estimado", a: dataA.avgFlight > 0 ? `${dataA.avgFlight}€` : "—", b: dataB.avgFlight > 0 ? `${dataB.avgFlight}€` : "—" },
+  { label: "Duración", a: dataA.duration > 0 ? `${dataA.duration} días` : "—", b: dataB.duration > 0 ? `${dataB.duration} días` : "—" },
+  { label: "Clima", a: destA.climate, b: destB.climate },
+  { label: "Tipo de experiencia", a: destA.categories.join(", "), b: destB.categories.join(", ") },
+  { label: "Ideal para", a: destA.idealFor, b: destB.idealFor },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription} heroImage={destA.heroImage} keywords={`${destA.name} o ${destB.name}, ${destA.name} vs ${destB.name}, comparar destinos, ${destA.name} ${destB.name}`}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Comparar",url:"/comparar/"},{name:`${destA.name} vs ${destB.name}`,url:`/comparar/${slugA}-vs-${slugB}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 flex">
+        <div class="w-1/2 overflow-hidden">
+          <img src={destA.heroImage} alt={destA.name} class="h-full w-full object-cover" width="960" height="1080" loading="eager" fetchpriority="high" />
+        </div>
+        <div class="w-1/2 overflow-hidden">
+          <img src={destB.heroImage} alt={destB.name} class="h-full w-full object-cover" width="960" height="1080" loading="eager" />
+        </div>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">Comparar</span>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">{destA.name} vs {destB.name}</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          ¿{destA.name} o {destB.name}? — Comparativa para viajeros
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          Te ayudamos a decidir con datos reales, precios y experiencias de viajeros.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-4xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+          Tabla comparativa: {destA.name} vs {destB.name}
+        </h2>
+        <div class="overflow-x-auto rounded-2xl border border-border/40">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="bg-card">
+                <th class="p-4 font-bold text-muted-foreground">Criterio</th>
+                <th class="p-4 font-bold text-teal-vivid">{destA.name}</th>
+                <th class="p-4 font-bold text-coral">{destB.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {criteria.map((row, i) => (
+                <tr class={i % 2 === 0 ? "bg-background" : "bg-card/50"}>
+                  <td class="p-4 font-medium text-foreground">{row.label}</td>
+                  <td class="p-4 text-muted-foreground">{row.a}</td>
+                  <td class="p-4 text-muted-foreground">{row.b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-card py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
+          ¿Cuál elegir?
+        </h2>
+        <p class="text-base leading-relaxed text-muted-foreground text-center max-w-2xl mx-auto">
+          {verdict}
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href={`/destino/${destA.slug}/`} class="rounded-full bg-teal-vivid px-6 py-3 text-sm font-bold text-white transition-all hover:bg-teal-vivid/90">
+            Ver viajes a {destA.name}
+          </a>
+          <a href={`/destino/${destB.slug}/`} class="rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:bg-coral/90">
+            Ver viajes a {destB.name}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <GEODataBlock
+      title={`${destA.name} vs ${destB.name} — Datos clave`}
+      subtitle="Comparativa rápida de precios y duración"
+      dataPoints={[
+        { label: `${destA.name} desde`, value: dataA.minPrice > 0 ? `${dataA.minPrice}€` : "—" },
+        { label: `${destB.name} desde`, value: dataB.minPrice > 0 ? `${dataB.minPrice}€` : "—" },
+        { label: `Vuelo ${destA.name}`, value: dataA.avgFlight > 0 ? `~${dataA.avgFlight}€` : "—" },
+        { label: `Vuelo ${destB.name}`, value: dataB.avgFlight > 0 ? `~${dataB.avgFlight}€` : "—" },
+        { label: "Coordinador", value: "Incluido en ambos" },
+      ]}
+    />
+
+    <section class="bg-background py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <div class="mb-10 text-center">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Preguntas sobre {destA.name} vs {destB.name}
+          </h2>
+        </div>
+        <ContinentFAQ client:load faqs={faqs} />
+      </div>
+    </section>
+
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          ¿Ya te has decidido?
+        </h2>
+        <p class="mt-4 text-white/70">El grupo ya se está formando para ambos destinos.</p>
+        <a href="/viajes/" class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90">
+          Ver todos los viajes
+        </a>
+      </div>
+    </section>
+
+    <InternalLinks />
+    <Footer />
+  </main>
+</Layout>

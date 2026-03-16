@@ -1,0 +1,144 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer.astro";
+import GEODataBlock from "@/components/GEODataBlock.astro";
+import ContinentFAQ from "@/components/ContinentFAQ";
+import InternalLinks from "@/components/InternalLinks.astro";
+import { getDestinations, getTrips, getCountries, getContinents, getTripExtra } from "@/lib/data-provider";
+import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+
+export async function getStaticPaths() {
+  const allDestinations = await getDestinations();
+  return allDestinations.map((d) => ({ params: { slug: d.slug } }));
+}
+
+const { slug } = Astro.params;
+const [destinations, trips, countries, continents] = await Promise.all([
+  getDestinations(), getTrips(), getCountries(), getContinents()
+]);
+const destination = destinations.find((d) => d.slug === slug)!;
+const country = countries.find((c) => c.id === destination.countryId)!;
+const continent = continents.find((c) => c.id === destination.continentId)!;
+
+const now = new Date();
+const destTrips = trips
+  .filter((t) => t.destinationId === destination.id && t.status !== "full" && new Date(t.departureDate) > now)
+  .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
+
+const minPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => { const extra = getTripExtra(t.id); return extra.promoPrice ?? t.promoPrice ?? t.priceFrom; })) : 0;
+
+const faqs = [
+  { question: `¿Cuál es la mejor época para viajar a ${destination.name}?`, answer: `${destination.climate} Consulta las fechas de los viajes disponibles para elegir la temporada que mejor se adapte a tu preferencia.` },
+  { question: `¿Cuánto cuesta viajar a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travelhood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte, coordinador y seguro.` },
+  { question: `¿Cuántos días dura un viaje a ${destination.name}?`, answer: destTrips.length > 0 ? `Los viajes a ${destination.name} duran ${destTrips[0].durationDays} días. Incluyen itinerario completo con actividades y tiempo libre.` : `La duración varía según la temporada. Consulta los viajes disponibles para más detalles.` },
+];
+
+const pageTitle = `¿Cuándo es la mejor época para viajar a ${destination.name}? — Travelhood`;
+const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destination.climate} Viajes en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} con coordinador y alojamiento incluidos.`;
+---
+
+<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} keywords={`mejor época viajar ${destination.name}, cuando viajar a ${destination.name}, clima ${destination.name}, temporada ${destination.name}`}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:`/destino/${destination.slug}/`},{name:"Cuándo viajar",url:`/cuando-viajar-a/${destination.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+  </Fragment>
+  <main>
+    <Navbar client:load solid />
+
+    <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
+      <img src={destination.heroImage} alt={`Mejor época para viajar a ${destination.name}`} class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
+      <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <a href={`/destino/${destination.slug}/`} class="hover:text-white transition-colors">{destination.name}</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">Cuándo viajar</span>
+        </nav>
+        <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
+          ¿Cuándo es la mejor época para viajar a {destination.name}?
+        </h1>
+        <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+          {destination.climate}
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-background py-16">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
+          ¿Qué clima encontrarás en {destination.name}?
+        </h2>
+        <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
+          <p>{destination.climate} {destination.name} ofrece experiencias únicas en cada temporada. Travelhood selecciona las mejores fechas para cada destino.</p>
+          <p>Un viaje en grupo a {destination.name} con Travelhood cuesta desde {minPrice > 0 ? `${minPrice}€` : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno, coordinador y seguro de viaje.</p>
+        </div>
+      </div>
+    </section>
+
+    {destTrips.length > 0 && (
+      <section class="bg-card py-14">
+        <div class="mx-auto max-w-4xl px-6">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-8 text-center">
+            Viajes disponibles a {destination.name}
+          </h2>
+          <div class="space-y-4">
+            {destTrips.map((trip) => {
+              const extra = getTripExtra(trip.id);
+              const price = extra.promoPrice ?? trip.promoPrice ?? trip.priceFrom;
+              return (
+                <a href={`/destino/${destination.slug}/`} class="flex items-center justify-between rounded-xl border border-border/40 bg-background p-5 hover:shadow-md transition-all">
+                  <div>
+                    <p class="font-serif font-bold text-foreground">{trip.title}</p>
+                    <p class="text-sm text-muted-foreground">{trip.durationDays} días · {trip.placesLeft} plazas</p>
+                  </div>
+                  <span class="text-lg font-bold text-teal-vivid">{price}€</span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <GEODataBlock
+      title={`${destination.name} — Datos de viaje`}
+      subtitle={`Información clave para planificar tu viaje a ${destination.name}`}
+      dataPoints={[
+        { label: "Clima", value: destination.climate },
+        { label: "Precio desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
+        { label: "País", value: country.name },
+        { label: "Continente", value: continent.name },
+        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+      ]}
+    />
+
+    <section class="bg-card py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        <div class="mb-10 text-center">
+          <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Preguntas sobre cuándo viajar a {destination.name}
+          </h2>
+        </div>
+        <ContinentFAQ client:load faqs={faqs} />
+      </div>
+    </section>
+
+    <section class="bg-teal-deep py-16">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <h2 class="font-serif text-2xl font-extrabold text-white sm:text-3xl text-balance">
+          ¿Listo para viajar a {destination.name}?
+        </h2>
+        <p class="mt-4 text-white/70">El grupo ya se está formando.</p>
+        <a href={`/destino/${destination.slug}/`} class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90">
+          Ver viajes a {destination.name}
+        </a>
+      </div>
+    </section>
+
+    <InternalLinks />
+    <Footer />
+  </main>
+</Layout>
