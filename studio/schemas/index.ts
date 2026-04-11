@@ -20,6 +20,8 @@ import season from './documents/season'
 import comparison from './documents/comparison'
 import blogPost from './documents/blogPost'
 import landingPage from './documents/landingPage'
+import legalPage from './documents/legalPage'
+import globalFaq from './documents/globalFaq'
 
 export const schemaTypes = [
   // Objects (reutilizables)
@@ -47,4 +49,6 @@ export const schemaTypes = [
   comparison,
   blogPost,
   landingPage,
+  legalPage,
+  globalFaq,
 ]

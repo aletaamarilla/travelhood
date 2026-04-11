@@ -1,20 +1,17 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import ContinentFAQ from "@/components/ContinentFAQ";
-import InternalLinks from "@/components/InternalLinks.astro";
-import { getDestinations, getTestimonials, getTrips } from "@/lib/data-provider";
-const [destinations, testimonials, trips] = await Promise.all([
-  getDestinations(), getTestimonials(), getTrips()
+import { getDestinations, getTestimonials, getTrips, getLandingBySlug, resolveImage, calculatePriceRange, getFeaturedDestinations } from "@/lib/data-provider";
+const [destinations, testimonials, trips, landing, featuredDests] = await Promise.all([
+  getDestinations(), getTestimonials(), getTrips(), getLandingBySlug("viajes-para-mujeres"), getFeaturedDestinations(6)
 ]);
+const heroImageUrl = resolveImage(landing?.heroImage);
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
-const recommendedSlugs = ["tailandia", "bali", "grecia", "marruecos", "costa-rica", "japon"];
-const recommendedDestinations = recommendedSlugs
-  .map((slug) => destinations.find((d) => d.slug === slug)!)
-  .filter(Boolean);
+const recommendedDestinations = featuredDests;
 
 const femaleNames = ["Laura", "Ana", "Sara"];
 const femaleTestimonials = testimonials.filter((t) => femaleNames.includes(t.name));
@@ -26,27 +23,28 @@ const upcomingTrips = trips
   .slice(0, 6);
 
 const faqs = [
-  { question: "¿Es seguro viajar sola como mujer?", answer: "Sí. En Travelhood viajas con un grupo reducido de 12-18 personas y un coordinador que se encarga de la logística y la seguridad. Seleccionamos destinos seguros y alojamientos en zonas bien comunicadas." },
-  { question: "¿Cuántas mujeres viajan con Travelhood?", answer: "Aproximadamente el 65% de nuestros viajeros son mujeres. Los grupos suelen estar equilibrados, con una ligera mayoría femenina. El rango de edad 20-35 años asegura afinidad natural." },
+  { question: "¿Es seguro viajar sola como mujer?", answer: "Sí. En Travel Hood viajas con un grupo reducido de 12-18 personas y un coordinador que se encarga de la logística y la seguridad. Seleccionamos destinos seguros y alojamientos en zonas bien comunicadas." },
+  { question: "¿Cuántas mujeres viajan con Travel Hood?", answer: "La mayoría de nuestros viajeros son mujeres. Los grupos suelen estar equilibrados, con una ligera mayoría femenina. El rango de edad 20-35 años asegura afinidad natural." },
   { question: "¿Puedo compartir habitación con otra mujer?", answer: "Sí. Las habitaciones se organizan por género. Si vas sola, compartirás con otra viajera del grupo. Si prefieres habitación individual, consulta disponibilidad." },
-  { question: "¿Qué destinos recomendáis para mujeres que viajan solas?", answer: "Tailandia, Bali y Grecia son los más populares entre viajeras solas. Son seguros, asequibles y ofrecen experiencias muy variadas. Marruecos y Costa Rica también son excelentes opciones." },
-  { question: "¿Es diferente este viaje de la página 'Viajar sola'?", answer: "Sí. La sección 'Viajar sola' está orientada a resolver dudas emocionales sobre lanzarse a viajar. Esta página se centra en los aspectos prácticos: seguridad, destinos recomendados para mujeres y experiencias de viajeras reales." },
+  { question: "¿Qué destinos recomendáis para mujeres que viajan solas?", answer: "Tailandia, Bali e Islandia son los más populares entre viajeras solas. Son seguros, asequibles y ofrecen experiencias muy variadas. Egipto y Colombia también son excelentes opciones." },
+  { question: "¿Es diferente este viaje de la página 'Viajar sola'?", answer: "Sí. La sección 'Viajar sola' está orientada a resolver dudas emocionales sobre lanzarse a viajar. Esta página se centra en los aspectos prácticos: seguridad, destinos recomendados para mujeres y experiencias de viajeras." },
 ];
 
-const pageTitle = "Viajes para mujeres — Viaja en grupo con total confianza | Travelhood";
-const pageDescription = "Viajes en grupo para mujeres de 20-35 años. El 65% de nuestras viajeras reservan solas. Destinos seguros, coordinador en destino y grupos reducidos. Desde 590€.";
+const priceRange = calculatePriceRange(trips);
+const pageTitle = "Viajes para mujeres — Viaja en grupo con total confianza | Travel Hood";
+const pageDescription = `Viajes en grupo para mujeres de 20-35 años. La mayoría de nuestras viajeras reservan solas. Destinos seguros, coordinador en destino y grupos reducidos.${priceRange ? ` Desde ${priceRange.minPrice.toLocaleString('es-ES')}€.` : ''}`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage="/images/hero-zanzibar.jpg" keywords="viajes para mujeres solas, viajes mujeres, viajes grupo mujeres, viajar sola mujer, viajes seguros mujeres">
+<Layout title={pageTitle} description={pageDescription} heroImage={heroImageUrl || ''} ogImage={heroImageUrl || undefined} keywords="viajes para mujeres solas, viajes mujeres, viajes grupo mujeres, viajar sola mujer, viajes seguros mujeres">
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajes para mujeres",url:"/viajes-para-mujeres/"}]))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
-    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
-      <img src="/images/hero-zanzibar.jpg" alt="Grupo de mujeres viajeras disfrutando en la playa" class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
+    <section class={`relative flex min-h-[60vh] items-center justify-center overflow-hidden ${!heroImageUrl ? 'bg-teal-deep' : ''}`}>
+      {heroImageUrl && <img src={heroImageUrl} alt={landing?.heroImageAlt || "Grupo de mujeres viajeras disfrutando en la playa"} class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />}
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
       <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
         <nav class="mb-6 text-sm text-white/70">
@@ -58,7 +56,7 @@ const pageDescription = "Viajes en grupo para mujeres de 20-35 años. El 65% de 
           Viajes para mujeres — Viaja en grupo con total confianza
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          El 65% de nuestras viajeras reservan solas. Seguridad, compañía y experiencias increíbles en cada destino.
+          La mayoría de nuestras viajeras reservan solas. Seguridad, compañía y experiencias increíbles en cada destino.
         </p>
       </div>
     </section>
@@ -66,11 +64,11 @@ const pageDescription = "Viajes en grupo para mujeres de 20-35 años. El 65% de 
     <section class="bg-background py-16">
       <div class="mx-auto max-w-3xl px-6">
         <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
-          ¿Por qué Travelhood es ideal para mujeres que viajan solas?
+          ¿Por qué Travel Hood es ideal para mujeres que viajan solas?
         </h2>
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
-          <p>En Travelhood, más del 65% de los viajeros que reservan solos son mujeres. Esto no es casualidad: nuestros viajes están diseñados con la seguridad, la comodidad y la experiencia como prioridades. Grupos reducidos de 12-18 personas, rango de edad 20-35 años y un coordinador en destino que garantiza que todo funcione.</p>
-          <p>No necesitas experiencia previa viajando sola. El 70% de nuestras viajeras no habían hecho un viaje en grupo antes. Llegas al aeropuerto, conoces a tu grupo y desde ese momento tienes compañía, plan y un equipo que se encarga de todo lo logístico.</p>
+          <p>En Travel Hood, la mayoría de los viajeros que reservan solos son mujeres. Esto no es casualidad: nuestros viajes están diseñados con la seguridad, la comodidad y la experiencia como prioridades. Grupos reducidos de 12-18 personas, rango de edad 20-35 años y un coordinador en destino que toma todas las medidas para que todo funcione.</p>
+          <p>No necesitas experiencia previa viajando sola. Muchas de nuestras viajeras no habían hecho un viaje en grupo antes. Llegas al aeropuerto, conoces a tu grupo y desde ese momento tienes compañía, plan y un equipo que se encarga de todo lo logístico.</p>
           <p>Los destinos que seleccionamos pasan un filtro de seguridad, accesibilidad y calidad de experiencia. Alojamientos en zonas bien comunicadas, transporte privado entre ciudades y actividades donde siempre vas acompañada del grupo y el coordinador.</p>
         </div>
       </div>
@@ -131,13 +129,13 @@ const pageDescription = "Viajes en grupo para mujeres de 20-35 años. El 65% de 
 
     <GEODataBlock
       title="Viajes para mujeres — Datos clave"
-      subtitle="Travelhood en cifras para viajeras"
+      subtitle="Travel Hood en cifras para viajeras"
       dataPoints={[
-        { label: "Viajeras solas", value: "65% del grupo" },
-        { label: "Repetirían", value: "98%" },
+        { label: "Viajeras solas", value: "Mayoría del grupo" },
+        { label: "Satisfacción", value: "Muy alta" },
         { label: "Rango de edad", value: "20-35 años" },
-        { label: "Grupo medio", value: "14 personas" },
-        { label: "Desde", value: "590€ sin vuelo" },
+        { label: "Grupo medio", value: "12-18 personas" },
+        { label: "Desde", value: priceRange ? `${priceRange.minPrice.toLocaleString('es-ES')}€ sin vuelo` : "Consulta precios" },
       ]}
     />
 
@@ -173,7 +171,6 @@ const pageDescription = "Viajes en grupo para mujeres de 20-35 años. El 65% de 
       </div>
     </section>
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

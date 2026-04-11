@@ -1,55 +1,53 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import ContinentFAQ from "@/components/ContinentFAQ";
-import { getDestinations, getTestimonials, getCountries } from "@/lib/data-provider";
-const [destinations, testimonials, countries] = await Promise.all([
-  getDestinations(), getTestimonials(), getCountries()
+import { getDestinations, getTestimonials, getCountries, getTrips, getLandingBySlug, resolveImage, calculatePriceRange, getFeaturedDestinations } from "@/lib/data-provider";
+const [destinations, testimonials, countries, allTrips, landing, featuredDests] = await Promise.all([
+  getDestinations(), getTestimonials(), getCountries(), getTrips(), getLandingBySlug("viajar-sola"), getFeaturedDestinations(5)
 ]);
+const priceRange = calculatePriceRange(allTrips);
+const heroImageUrl = resolveImage(landing?.heroImage);
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
-const pageTitle = "Viajar sola sin miedo — Viajes en grupo para jóvenes | Travelhood";
-const pageDescription = "¿No tienes con quién viajar? El 70% de viajeros de Travelhood reservan solos. Grupos de 20-35 años con coordinador en destino. El 98% repiten.";
+const pageTitle = "Viajar sola sin miedo — Viajes en grupo para jóvenes | Travel Hood";
+const pageDescription = "¿No tienes con quién viajar? La mayoría de viajeros de Travel Hood reservan solos. Grupos de 20-35 años con coordinador en destino. Casi todos repiten.";
 
-const recommendedSlugs = ["tailandia", "bali", "marruecos", "grecia", "costa-rica"];
-const recommendedDestinations = recommendedSlugs
-  .map((slug) => destinations.find((d) => d.slug === slug)!)
-  .filter(Boolean);
+const recommendedDestinations = featuredDests;
 
-const relevantTestimonials = testimonials.filter((t) =>
-  ["brasil", "zanzibar", "japon", "maldivas", "laponia"].includes(t.destinationId)
-);
+const featuredDestIds = new Set(featuredDests.map((d) => d.id));
+const relevantTestimonials = testimonials.filter((t) => featuredDestIds.has(t.destinationId)).slice(0, 4);
 
 const faqs = [
-  { question: "¿Es seguro viajar sola?", answer: "Totalmente. Viajas con un grupo reducido de 12-18 personas de tu misma edad y un coordinador Travelhood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
-  { question: "¿Haré amigos de verdad?", answer: "El 80% de los viajeros mantiene el grupo de WhatsApp activo meses después. El 35% planifica otro viaje juntos. Las experiencias compartidas crean lazos muy fuertes." },
-  { question: "¿Y si no conozco a nadie del grupo?", answer: "Esa es la norma, no la excepción. El 70% de nuestros viajeros reservan solos. El coordinador facilita la integración desde el primer momento y al segundo día ya hay bromas internas." },
+  { question: "¿Es seguro viajar sola?", answer: "Sí, con las medidas adecuadas y coordinadores experimentados. Viajas con un grupo reducido de 12-18 personas de tu misma edad y un coordinador Travel Hood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
+  { question: "¿Haré amigos de verdad?", answer: "La gran mayoría de viajeros mantiene el grupo de WhatsApp activo meses después y muchos planifican otro viaje juntos. Las experiencias compartidas crean lazos muy fuertes." },
+  { question: "¿Y si no conozco a nadie del grupo?", answer: "Esa es la norma, no la excepción. La mayoría de nuestros viajeros reservan solos. El coordinador facilita la integración desde el primer momento y al segundo día ya hay bromas internas." },
   { question: "¿Hay muchas más mujeres que hombres?", answer: "Los grupos suelen estar bastante equilibrados, con una ligera mayoría femenina (55-60%). El rango de edad 20-35 asegura que todos estéis en un momento vital similar." },
-  { question: "¿Qué pasa si no me gusta el grupo?", answer: "En más de 500 viajeros, no hemos tenido ningún caso de alguien que no conectara con el grupo. La selección por edad y el tipo de viaje hacen que haya mucha afinidad natural." },
+  { question: "¿Qué pasa si no me gusta el grupo?", answer: "Hasta ahora no hemos tenido ningún caso de alguien que no conectara con el grupo. La selección por edad y el tipo de viaje hacen que haya mucha afinidad natural." },
   { question: "¿Tengo tiempo para mí?", answer: "Sí. Los itinerarios incluyen tiempo libre para que explores a tu ritmo, te relajes o hagas lo que te apetezca. No es un campamento militar." },
 ];
 ---
 
-<Layout title={pageTitle} description={pageDescription} keywords="viajar sola, viajes para mujeres solas, viajes sin acompañante, viajes grupo mujeres, travelhood" heroImage="/images/hero-zanzibar.jpg">
+<Layout title={pageTitle} description={pageDescription} keywords="viajar sola, viajes para mujeres solas, viajes sin acompañante, viajes grupo mujeres, travel hood, travelhood" heroImage={heroImageUrl || ''} ogImage={heroImageUrl || undefined}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajar sola",url:"/viajar-sola/"}]))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
-    <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
-      <img
-        src="/images/hero-zanzibar.jpg"
-        alt="Viajera joven disfrutando de un viaje en grupo con Travelhood — viajar sola segura"
+    <section class={`relative flex min-h-[60vh] items-center justify-center overflow-hidden ${!heroImageUrl ? 'bg-teal-deep' : ''}`}>
+      {heroImageUrl && <img
+        src={heroImageUrl}
+        alt={landing?.heroImageAlt || "Viajera joven disfrutando de un viaje en grupo con Travel Hood — viajar sola segura"}
         class="absolute inset-0 h-full w-full object-cover"
         width="1920"
         height="1080"
         loading="eager"
         fetchpriority="high"
-      />
+      />}
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
       <div class="relative z-10 mx-auto max-w-4xl px-6 py-32 text-center">
         <nav class="mb-6 text-sm text-white/70">
@@ -61,7 +59,7 @@ const faqs = [
           ¿No tienes con quién ir? Nosotros tenemos el grupo.
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          El 70% de los viajeros de Travelhood reservan solos. El 98% repiten.
+          La mayoría de los viajeros de Travel Hood reservan solos. Y casi todos repiten.
         </p>
       </div>
     </section>
@@ -77,13 +75,13 @@ const faqs = [
             Hay un miedo que no se dice en voz alta: querer viajar pero no tener con quién. No es falta de ganas. No es falta de dinero. Es no tener a alguien que diga "yo me apunto". Y ese miedo paraliza a miles de personas cada año.
           </p>
           <p>
-            Según un estudio de Booking.com, el 72% de las mujeres jóvenes en España quieren viajar pero no lo hacen por falta de compañía. No es que no puedan. Es que no se atreven solas. Y lo entendemos.
+            Según un estudio de Booking.com (Fuente: <a href="https://www.booking.com" class="underline">estudio Booking.com, 2023</a>), el 72% de las mujeres jóvenes en España quieren viajar pero no lo hacen por falta de compañía. No es que no puedan. Es que no se atreven solas. Y lo entendemos.
           </p>
           <p>
             Pero hay una opción que elimina ese miedo: un viaje en grupo con personas de tu misma edad (20-35 años), un itinerario diseñado para vivir experiencias reales y un coordinador que se encarga de todo. Llegas al aeropuerto sin conocer a nadie. A los dos días, no quieres separarte del grupo.
           </p>
           <p>
-            Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. El grupo medio tiene 14 personas de 20-35 años. Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. Los viajes cuestan entre 590€ y 1.590€, sin vuelo.
+            Travel Hood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos. El grupo medio tiene 14 personas de 20-35 años. Cada viaje incluye coordinador, alojamiento y transporte interno.{priceRange ? ` Los viajes cuestan entre ${priceRange.minPrice.toLocaleString('es-ES')}€ y ${priceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
           </p>
         </div>
       </div>
@@ -94,16 +92,16 @@ const faqs = [
       <div class="mx-auto max-w-4xl px-6">
         <div class="grid gap-8 sm:grid-cols-3 text-center">
           <div>
-            <p class="font-serif text-5xl font-extrabold text-white">70%</p>
-            <p class="mt-2 text-base text-white/70">de los viajeros reservan solos</p>
+            <p class="font-serif text-5xl font-extrabold text-white">+1</p>
+            <p class="mt-2 text-base text-white/70">solo necesitas tu billete</p>
           </div>
           <div>
-            <p class="font-serif text-5xl font-extrabold text-white">98%</p>
-            <p class="mt-2 text-base text-white/70">repetirían la experiencia</p>
+            <p class="font-serif text-5xl font-extrabold text-white">12-18</p>
+            <p class="mt-2 text-base text-white/70">viajeros por grupo</p>
           </div>
           <div>
-            <p class="font-serif text-5xl font-extrabold text-white">14</p>
-            <p class="mt-2 text-base text-white/70">personas de media por grupo</p>
+            <p class="font-serif text-5xl font-extrabold text-white">20-35</p>
+            <p class="mt-2 text-base text-white/70">años, todos de tu edad</p>
           </div>
         </div>
       </div>
@@ -114,7 +112,7 @@ const faqs = [
       <div class="mx-auto max-w-4xl px-6">
         <div class="mb-10 text-center">
           <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-            Historias reales
+            Experiencias
           </span>
           <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
             Ellas y ellos ya se lanzaron
@@ -165,13 +163,15 @@ const faqs = [
             const country = countries.find((c) => c.id === dest.countryId);
             return (
               <a
-                href={`/destino/${dest.slug}`}
+                href={`/destino/${dest.slug}/`}
                 class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 <div class="relative aspect-[4/3] overflow-hidden">
                   <img
                     src={dest.heroImage}
                     alt={dest.name}
+                    width="400"
+                    height="300"
                     class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />

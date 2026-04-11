@@ -109,6 +109,15 @@ export default defineType({
       description: 'Para quién es ideal este destino (ej: "Amantes de la naturaleza y el ecoturismo"). Una frase.',
     }),
     defineField({
+      name: 'pdfFile',
+      title: 'PDF del viaje',
+      type: 'file',
+      options: {accept: '.pdf'},
+      fieldset: 'basic',
+      description:
+        'PDF con itinerario completo, precios y toda la info del viaje. Si se sube, se habilita el botón de descarga en la web.',
+    }),
+    defineField({
       name: 'categories',
       title: 'Categorías',
       type: 'array',
@@ -191,17 +200,17 @@ export default defineType({
 
     // --- Incluye / No incluye ---
     defineField({
-      name: 'extraIncluded',
-      title: 'Extras que incluye',
+      name: 'included',
+      title: 'Incluido en el destino',
       type: 'array',
       of: [{type: 'string'}],
       fieldset: 'includes',
       description:
-        'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo").',
+        'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo"). Se combinan con los defaults globales.',
     }),
     defineField({
-      name: 'extraNotIncluded',
-      title: 'Extras que NO incluye',
+      name: 'notIncluded',
+      title: 'No incluido en el destino',
       type: 'array',
       of: [{type: 'string'}],
       fieldset: 'includes',

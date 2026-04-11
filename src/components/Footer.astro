@@ -1,145 +1,214 @@
 ---
-const destinationLinks = [
-  { label: "Brasil", href: "/destino/brasil/" },
-  { label: "Japón", href: "/destino/japon/" },
-  { label: "Tailandia", href: "/destino/tailandia/" },
-  { label: "Marruecos", href: "/destino/marruecos/" },
-  { label: "Grecia", href: "/destino/grecia/" },
-  { label: "Bali", href: "/destino/bali/" },
-  { label: "Laponia", href: "/destino/laponia/" },
-  { label: "Costa Rica", href: "/destino/costa-rica/" },
-];
+import { getContinents, getTripCategories, getSeasons, getDestinations, getSiteSettings, resolveSettingsImages, getFeaturedDestinations } from "@/lib/data-provider";
+import { FALLBACK_CONTACT_EMAIL, FALLBACK_INSTAGRAM_URL, FALLBACK_WHATSAPP_PHONE } from "@/lib/config";
+
+const [continents, tripCategories, seasons, destinations, settings, featuredDests] = await Promise.all([
+  getContinents(),
+  getTripCategories(),
+  getSeasons(),
+  getDestinations(),
+  getSiteSettings(),
+  getFeaturedDestinations(8),
+]);
+
+const settingsImages = settings ? resolveSettingsImages(settings) : null;
+const logoUrl = settingsImages?.orgLogoUrl || "/images/logo.svg";
+const contactEmail = settings?.contactEmail ?? FALLBACK_CONTACT_EMAIL;
+const instagramLink = settings?.socialLinks?.find(s => s.platform === 'instagram');
+const instagramUrl = instagramLink?.url ?? FALLBACK_INSTAGRAM_URL;
+const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
+const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+
+const popularDestinations = featuredDests
+  .map((d) => ({ label: d.name, href: `/destino/${d.slug}/` }));
+
+const continentLinks = continents
+  .filter((c) => destinations.some((d) => d.continentId === c.id))
+  .map((c) => ({ label: c.name, href: `/destinos/${c.slug}/` }));
+
+const categoryLinks = tripCategories.map((c) => ({
+  label: c.name,
+  href: `/tipos/${c.slug}/`,
+}));
+
+const seasonLinks = seasons.map((s) => ({
+  label: s.name,
+  href: `/temporada/${s.slug}/`,
+}));
+
+const satelliteLinks = featuredDests
+  .flatMap((d) => [
+    { label: `Cuándo viajar a ${d.name}`, href: `/cuando-viajar-a/${d.slug}/` },
+    { label: `Presupuesto ${d.name}`, href: `/presupuesto/${d.slug}/` },
+  ]);
+
 const navLinks = [
   { label: "Todos los viajes", href: "/viajes/" },
   { label: "Cómo funciona", href: "/como-funciona/" },
   { label: "Viajar sola", href: "/viajar-sola/" },
+  { label: "Opiniones", href: "/opiniones/" },
   { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
   { label: "Ofertas", href: "/ofertas/" },
-  { label: "Travelhood", href: "/travelhood/" },
+  { label: "Travel Hood", href: "/travelhood/" },
   { label: "Blog", href: "/blog/" },
-];
-const continentLinks = [
-  { label: "Europa", href: "/destinos/europa/" },
-  { label: "Asia", href: "/destinos/asia/" },
-  { label: "África", href: "/destinos/africa/" },
-  { label: "Sudamérica", href: "/destinos/sudamerica/" },
-  { label: "Centroamérica", href: "/destinos/centroamerica/" },
-];
-const seasonLinks = [
-  { label: "Semana Santa", href: "/temporada/semana-santa/" },
-  { label: "Puentes", href: "/temporada/puentes/" },
-  { label: "Verano", href: "/temporada/verano/" },
-  { label: "Navidad", href: "/temporada/navidad/" },
-  { label: "Fin de Año", href: "/temporada/fin-de-anio/" },
 ];
 ---
 
 <footer class="bg-[#0e2c35] py-12 text-primary-foreground">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="grid grid-cols-2 gap-10 lg:grid-cols-5">
-      <!-- Brand -->
-      <div class="flex flex-col gap-4">
-        <a href="/" class="flex items-center gap-2">
-          <img
-            src="/images/logo.jpeg"
-            alt="Travelhood logo"
-            width="40"
-            height="40"
-            class="rounded-lg brightness-200"
-          />
-          <span class="font-serif text-lg font-bold text-sand">Travelhood</span>
-        </a>
-        <p class="text-sm text-sand/60 leading-relaxed">
-          Viajes en grupo para 20-35 años. Nadie debería quedarse en casa por falta de compañía.
-        </p>
-      </div>
+    <!-- Brand -->
+    <div class="mb-10 flex flex-col gap-3">
+      <a href="/" class="flex items-center gap-2">
+        <img
+          src={logoUrl}
+          alt="Travel Hood logo"
+          width="40"
+          height="40"
+          class="brightness-200"
+        />
+        <span class="font-serif text-lg font-bold text-sand">Travel Hood</span>
+      </a>
+      <p class="max-w-md text-sm leading-relaxed text-sand/60">
+        Viajes en grupo para 20-35 años. Nadie debería quedarse en casa por falta de compañía.
+      </p>
+    </div>
 
-      <!-- Destination Links -->
+    <!-- Link columns -->
+    <div class="grid gap-8 grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+      <!-- 1. Destinos populares -->
       <div>
-        <h4 class="mb-4 text-sm font-bold text-sand">Destinos populares</h4>
-        <ul class="flex flex-col gap-2">
-          {destinationLinks.map((d) => (
+        <h4 class="mb-3 text-sm font-bold text-sand">Destinos populares</h4>
+        <ul class="flex flex-col gap-1.5">
+          {popularDestinations.map((d) => (
             <li>
-              <a href={d.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
-                {d.label}
-              </a>
+              <a href={d.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{d.label}</a>
             </li>
           ))}
         </ul>
       </div>
 
-      <!-- Nav Links -->
+      <!-- 2. Por continente -->
       <div>
-        <h4 class="mb-4 text-sm font-bold text-sand">Travelhood</h4>
-        <ul class="flex flex-col gap-2">
-          {navLinks.map((link) => (
-            <li>
-              <a href={link.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <!-- Continents & Seasons -->
-      <div>
-        <h4 class="mb-4 text-sm font-bold text-sand">Por continente</h4>
-        <ul class="flex flex-col gap-2 mb-6">
+        <h4 class="mb-3 text-sm font-bold text-sand">Por continente</h4>
+        <ul class="flex flex-col gap-1.5">
           {continentLinks.map((c) => (
             <li>
-              <a href={c.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
-                {c.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <h4 class="mb-4 text-sm font-bold text-sand">Por temporada</h4>
-        <ul class="flex flex-col gap-2">
-          {seasonLinks.map((s) => (
-            <li>
-              <a href={s.href} class="text-sm text-sand/60 hover:text-sand transition-colors">
-                {s.label}
-              </a>
+              <a href={c.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{c.label}</a>
             </li>
           ))}
         </ul>
       </div>
 
-      <!-- Social / Contact -->
+      <!-- 3. Tipo de viaje -->
       <div>
-        <h4 class="mb-4 text-sm font-bold text-sand">Contacto</h4>
+        <h4 class="mb-3 text-sm font-bold text-sand">Tipo de viaje</h4>
+        <ul class="flex flex-col gap-1.5">
+          {categoryLinks.map((c) => (
+            <li>
+              <a href={c.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{c.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- 4. Por temporada -->
+      <div>
+        <h4 class="mb-3 text-sm font-bold text-sand">Por temporada</h4>
+        <ul class="flex flex-col gap-1.5">
+          {seasonLinks.map((s) => (
+            <li>
+              <a href={s.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{s.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- 5. Cuándo ir y presupuesto -->
+      <div>
+        <h4 class="mb-3 text-sm font-bold text-sand">Cuándo ir y presupuesto</h4>
+        <ul class="flex flex-col gap-1.5">
+          {satelliteLinks.map((s) => (
+            <li>
+              <a href={s.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{s.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- 6. Travel Hood -->
+      <div>
+        <h4 class="mb-3 text-sm font-bold text-sand">Travel Hood</h4>
+        <ul class="flex flex-col gap-1.5">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- 7. Contacto -->
+      <div>
+        <h4 class="mb-3 text-sm font-bold text-sand">Contacto</h4>
         <div class="flex flex-col gap-3">
           <a
-            href="https://instagram.com/travelhood"
+            href={`tel:+${waPhone}`}
+            class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill:none;stroke:#F2E8D9;stroke-opacity:0.6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            {`+${waPhone.slice(0,2)} ${waPhone.slice(2,5)} ${waPhone.slice(5,8)} ${waPhone.slice(8)}`}
+          </a>
+          <a
+            href={`mailto:${contactEmail}`}
+            class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill:none;stroke:#F2E8D9;stroke-opacity:0.6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0">
+              <path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+            </svg>
+            {contactEmail}
+          </a>
+          <a
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill:none;stroke:#F2E8D9;stroke-opacity:0.6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0">
+              <path d="M2 7a5 5 0 0 1 5-5h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7z"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" style="fill:#F2E8D9;fill-opacity:0.6;stroke:none"/>
             </svg>
-            @travelhood
+            @{instagramHandle}
           </a>
-          <a
-            href="mailto:hola@travelhood.es"
-            class="flex items-center gap-2 text-sm text-sand/60 hover:text-sand transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          <span class="flex items-center gap-2 text-sm text-sand/60">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill:none;stroke:#F2E8D9;stroke-opacity:0.6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
             </svg>
-            hola@travelhood.es
-          </a>
+            Almería, España
+          </span>
         </div>
       </div>
     </div>
 
-    <div class="mt-10 border-t border-sand/10 pt-6 text-center">
+    <!-- Legal band -->
+    <div class="mt-10 border-t border-sand/10 pt-6 flex flex-col items-center gap-3">
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/legal/aviso-legal/" class="text-xs text-sand/50 hover:text-sand transition-colors">Aviso legal</a>
+        <a href="/legal/politica-de-privacidad/" class="text-xs text-sand/50 hover:text-sand transition-colors">Política de privacidad</a>
+        <a href="/legal/terminos-y-condiciones/" class="text-xs text-sand/50 hover:text-sand transition-colors">Términos y condiciones</a>
+        <a href="/legal/politica-de-cookies/" class="text-xs text-sand/50 hover:text-sand transition-colors">Política de cookies</a>
+        <button id="manage-cookies-btn" type="button" class="text-xs text-sand/50 hover:text-sand transition-colors cursor-pointer bg-transparent border-none p-0">Gestionar cookies</button>
+      </div>
+      <script>
+        document.getElementById('manage-cookies-btn')?.addEventListener('click', () => {
+          window.dispatchEvent(new CustomEvent('openCookieBanner'));
+        });
+      </script>
       <p class="text-xs text-sand/40">
-        © Travelhood 2026. Todos los derechos reservados. Agencia registrada.
+        © Travel Hood 2026. Todos los derechos reservados.
       </p>
     </div>
   </div>

@@ -1,18 +1,27 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import CTASection from "@/components/CTASection.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
 import { getDestinations, getTrips, getCountries, getComparisons } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
 export async function getStaticPaths() {
-  const allComparisons = await getComparisons();
-  return allComparisons.map((c) => ({
+  const [allComparisons, allDestinations] = await Promise.all([getComparisons(), getDestinations()]);
+  const slugSet = new Set(allDestinations.map((d) => d.slug));
+  const valid = allComparisons.filter((c) => {
+    const aExists = slugSet.has(c.slugA);
+    const bExists = slugSet.has(c.slugB);
+    if (!aExists || !bExists) {
+      console.warn(`[comparisons] Par descartado: ${c.slugA} vs ${c.slugB} — slug(s) no encontrado(s) en Sanity`);
+      return false;
+    }
+    return true;
+  });
+  return valid.map((c) => ({
     params: { slug: `${c.slugA}-vs-${c.slugB}` },
     props: { slugA: c.slugA, slugB: c.slugB, verdict: c.verdict },
   }));
@@ -44,11 +53,11 @@ const dataB = getDestData(destB);
 
 const faqs = [
   { question: `¿Es más barato ${destA.name} o ${destB.name}?`, answer: `${dataA.minPrice > 0 && dataB.minPrice > 0 ? (dataA.minPrice <= dataB.minPrice ? `${destA.name} es más económico (desde ${dataA.minPrice}€ vs ${dataB.minPrice}€ sin vuelo)` : `${destB.name} es más económico (desde ${dataB.minPrice}€ vs ${dataA.minPrice}€ sin vuelo)`) : 'Consulta los precios actualizados en cada página de destino'}.` },
-  { question: `¿Cuál es más seguro, ${destA.name} o ${destB.name}?`, answer: `Ambos destinos son seguros para viajes en grupo con Travelhood. Viajas con coordinador, transporte privado y alojamientos verificados. La seguridad nunca es un problema en nuestros viajes.` },
+  { question: `¿Cuál es más seguro, ${destA.name} o ${destB.name}?`, answer: `Ambos destinos son seguros para viajes en grupo con Travel Hood. Viajas con coordinador, transporte privado y alojamientos verificados. La seguridad es siempre nuestra prioridad en cada viaje.` },
   { question: `¿Puedo hacer los dos viajes?`, answer: `Muchos de nuestros viajeros hacen exactamente eso. Puedes ir a ${destA.name} en una temporada y a ${destB.name} en otra. El 35% de nuestros viajeros repiten destino o prueban uno nuevo.` },
 ];
 
-const pageTitle = `¿${destA.name} o ${destB.name}? — Comparativa para viajeros | Travelhood`;
+const pageTitle = `¿${destA.name} o ${destB.name}? — Comparativa para viajeros | Travel Hood`;
 const pageDescription = `Compara ${destA.name} y ${destB.name}: precios, duración, clima y experiencia. ${verdict.split('.')[0]}.`;
 
 const criteria = [
@@ -62,13 +71,13 @@ const criteria = [
 ];
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage={destA.heroImage} keywords={`${destA.name} o ${destB.name}, ${destA.name} vs ${destB.name}, comparar destinos, ${destA.name} ${destB.name}`}>
+<Layout title={pageTitle} description={pageDescription} heroImage={destA.heroImage} ogImage={destA.heroImage} keywords={`${destA.name} o ${destB.name}, ${destA.name} vs ${destB.name}, comparar destinos, ${destA.name} ${destB.name}`}>
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Comparar",url:"/comparar/"},{name:`${destA.name} vs ${destB.name}`,url:`/comparar/${slugA}-vs-${slugB}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajes",url:"/viajes/"},{name:`${destA.name} vs ${destB.name}`,url:`/comparar/${slugA}-vs-${slugB}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
       <div class="absolute inset-0 flex">
@@ -84,7 +93,7 @@ const criteria = [
         <nav class="mb-6 text-sm text-white/70">
           <a href="/" class="hover:text-white transition-colors">Home</a>
           <span class="mx-2">/</span>
-          <span class="text-white font-medium">Comparar</span>
+          <a href="/viajes/" class="hover:text-white transition-colors">Viajes</a>
           <span class="mx-2">/</span>
           <span class="text-white font-medium">{destA.name} vs {destB.name}</span>
         </nav>
@@ -169,7 +178,6 @@ const criteria = [
       ctaHref="/viajes/"
     />
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

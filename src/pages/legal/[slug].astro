@@ -1,0 +1,115 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import LegalContent from "@/components/LegalContent";
+import { getLegalPages, getLegalPageBySlug, getSiteSettings } from "@/lib/data-provider";
+import { generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+import { FALLBACK_CONTACT_EMAIL } from "@/lib/config";
+
+const REQUIRED_LEGAL_SLUGS = [
+  "aviso-legal",
+  "politica-de-privacidad",
+  "terminos-y-condiciones",
+  "politica-de-cookies",
+];
+
+export async function getStaticPaths() {
+  const requiredSlugs = [
+    "aviso-legal",
+    "politica-de-privacidad",
+    "terminos-y-condiciones",
+    "politica-de-cookies",
+  ];
+  const pages = await getLegalPages();
+  const existingSlugs = new Set(pages.map((page) => page.slug.current));
+  const allSlugs = [
+    ...requiredSlugs.filter((s) => !existingSlugs.has(s)),
+    ...pages.map((page) => page.slug.current),
+  ];
+  return allSlugs.map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const page = await getLegalPageBySlug(slug!);
+
+const slugTitleMap: Record<string, string> = {
+  "aviso-legal": "Aviso Legal",
+  "politica-de-privacidad": "Política de Privacidad",
+  "terminos-y-condiciones": "Términos y Condiciones",
+  "politica-de-cookies": "Política de Cookies",
+};
+
+const legalSettings = await getSiteSettings();
+const contactEmail = legalSettings?.contactEmail ?? FALLBACK_CONTACT_EMAIL;
+
+const fallbackTitle = slugTitleMap[slug!] ?? slug!.replace(/-/g, " ");
+const pageTitle = page?.seo?.title ?? `${page?.title ?? fallbackTitle} | Travel Hood`;
+const pageDescription = page?.seo?.description ?? `${page?.title ?? fallbackTitle} de Travel Hood.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  {page && (
+    <Fragment slot="head">
+      <script
+        type="application/ld+json"
+        set:html={toJsonLd(
+          generateBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: page.title, url: `/legal/${slug}/` },
+          ])
+        )}
+      />
+    </Fragment>
+  )}
+  <main>
+    <Navbar solid />
+
+    <section class="bg-teal-deep py-24">
+      <div class="relative mx-auto max-w-4xl px-6 text-center">
+        <nav class="mb-6 text-sm text-white/70">
+          <a href="/" class="hover:text-white transition-colors">Home</a>
+          <span class="mx-2">/</span>
+          <span class="text-white font-medium">{page?.title ?? fallbackTitle}</span>
+        </nav>
+        <h1
+          class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight"
+        >
+          {page?.title ?? fallbackTitle}
+        </h1>
+        {page && (
+          <p class="mt-4 text-sm text-white/60">
+            Versión {page.version} — Vigente desde el{" "}
+            {new Date(page.effectiveDate).toLocaleDateString("es-ES", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+        )}
+      </div>
+    </section>
+
+    <section class="bg-background py-14">
+      <div class="mx-auto max-w-3xl px-6">
+        {page ? (
+          <LegalContent body={page.body} client:load />
+        ) : (
+          <div class="rounded-xl border border-border/40 bg-card p-8 text-center">
+            <p class="text-muted-foreground">
+              Este documento está siendo preparado y estará disponible próximamente.
+            </p>
+            <p class="mt-4 text-sm text-muted-foreground">
+              Si tienes alguna pregunta, contáctanos en{" "}
+              <a href={`mailto:${contactEmail}`} class="text-teal-vivid hover:underline">
+                {contactEmail}
+              </a>
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</Layout>

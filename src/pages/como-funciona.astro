@@ -1,17 +1,22 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
-import { getSiteSettings } from "@/lib/data-provider";
+import { getSiteSettings, resolveSettingsImages, getGlobalFaqs, getDepositAmount } from "@/lib/data-provider";
 import { generateHowToSchema, generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
-const settings = await getSiteSettings();
+const [settings, comoFaqBlocks, depositAmount] = await Promise.all([
+  getSiteSettings(),
+  getGlobalFaqs('como-funciona'),
+  getDepositAmount(),
+]);
+const images = settings ? resolveSettingsImages(settings) : null;
 
-const pageTitle = "Cómo funciona un viaje con Travelhood | Viajes en grupo para jóvenes";
-const pageDescription = "Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. Descubre el proceso paso a paso.";
+const pageTitle = "Cómo funciona un viaje con Travel Hood | Viajes en grupo para jóvenes";
+const pageDescription = "Travel Hood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos. Descubre el proceso paso a paso.";
 
 const steps = [
   {
@@ -23,7 +28,7 @@ const steps = [
   {
     number: "02",
     title: "Reserva tu plaza",
-    description: "Rellena el formulario de reserva y paga una señal de 150€ para asegurar tu sitio. El resto lo pagas 30 días antes de la salida. Política de cancelación flexible.",
+    description: `Rellena el formulario de reserva y paga una señal de ${depositAmount}€ para asegurar tu sitio. El resto lo pagas 30 días antes de la salida. Política de cancelación flexible.`,
     icon: '<path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path>',
   },
   {
@@ -35,7 +40,7 @@ const steps = [
   {
     number: "04",
     title: "Tu coordinador te guía",
-    description: "Un coordinador Travelhood viaja contigo. No es un guía turístico: es alguien del equipo que gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione.",
+    description: "Un coordinador Travel Hood viaja contigo. No es un guía turístico: es alguien del equipo que gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione.",
     icon: '<path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path>',
   },
   {
@@ -50,9 +55,8 @@ const fallbackIncludes = [
   "Alojamiento completo (hoteles, hostels boutique o alojamientos únicos)",
   "Transporte interno (furgonetas, trenes, barcos según destino)",
   "Actividades y experiencias del itinerario",
-  "Coordinador Travelhood en destino durante todo el viaje",
-  "Seguro de viaje básico",
-  "Extras según destino (Japan Rail Pass, crucero por el Nilo, noche en jaima...)",
+  "Coordinador Travel Hood en destino durante todo el viaje",
+  "Extras según destino (crucero por el Nilo, noche en jaima...)",
 ];
 
 const fallbackNotIncludes = [
@@ -65,36 +69,27 @@ const fallbackNotIncludes = [
 const includes = settings?.defaultIncluded?.length ? settings.defaultIncluded : fallbackIncludes;
 const notIncludes = settings?.defaultNotIncluded?.length ? settings.defaultNotIncluded : fallbackNotIncludes;
 
-const faqs = [
-  { question: "¿Puedo ir solo/a?", answer: "Por supuesto. El 70% de nuestros viajeros reservan solos. Esa es precisamente la gracia: llegas sin conocer a nadie y vuelves con un grupo de amigos. El coordinador se encarga de que todos se integren desde el primer momento." },
-  { question: "¿Qué edad tiene la gente que va?", answer: "Todos los viajeros tienen entre 20 y 35 años. Es un rango cómodo donde todos conectan fácilmente. El grupo medio tiene 14 personas." },
-  { question: "¿Cuánto cuesta un viaje?", answer: "Los viajes cuestan entre 590€ y 1.590€ sin vuelo, dependiendo del destino y la duración. El vuelo se reserva aparte y te asesoramos para encontrar la mejor oferta." },
-  { question: "¿Cómo es el alojamiento?", answer: "Varía según el destino: hoteles, hostels boutique, riads, guest houses... Siempre con buena valoración y ubicación estratégica. No es lujo, pero tampoco mochilero puro." },
-  { question: "¿Qué pasa si necesito cancelar?", answer: "Si cancelas con más de 30 días de antelación, te devolvemos el 100% de la señal. Entre 15-30 días, el 50%. Menos de 15 días no es reembolsable." },
-  { question: "¿Quién es el coordinador?", answer: "Un miembro del equipo Travelhood con experiencia en el destino. No es un guía turístico: es alguien que viaja contigo, gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione y todo el mundo se sienta integrado." },
-  { question: "¿Son viajes seguros?", answer: "Totalmente. Todos los viajes incluyen coordinador con experiencia, protocolos de seguridad y seguro de viaje. Trabajamos con proveedores locales verificados." },
-  { question: "¿Hay tiempo libre?", answer: "Sí. Los itinerarios combinan actividades organizadas con tiempo libre para explorar a tu ritmo. Normalmente 2-3 horas al día o medias jornadas libres." },
-];
+const faqs = comoFaqBlocks.flatMap((b) => b.faqs);
 ---
 
-<Layout title={pageTitle} description={pageDescription} keywords="cómo funciona viaje en grupo, qué incluye viaje organizado, coordinador viaje, travelhood funcionamiento" heroImage="/images/hero-brasil.jpg">
+<Layout title={pageTitle} description={pageDescription} keywords="cómo funciona viaje en grupo, qué incluye viaje organizado, coordinador viaje, travel hood funcionamiento, travelhood funcionamiento" heroImage={images?.comoFunciona_heroImage || ''} ogImage={images?.comoFunciona_heroImage || undefined}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Cómo funciona",url:"/como-funciona/"}]))} />
-    <script type="application/ld+json" set:html={toJsonLd(generateHowToSchema({name:"Cómo funciona un viaje con Travelhood",description:pageDescription,steps:steps.map(s=>({name:s.title,text:s.description}))}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateHowToSchema({name:"Cómo funciona un viaje con Travel Hood",description:pageDescription,steps:steps.map(s=>({name:s.title,text:s.description}))}))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <HeroSection
-      image="/images/hero-brasil.jpg"
-      imageAlt="Grupo de jóvenes viajeros Travelhood — cómo funcionan los viajes en grupo"
+      image={images?.comoFunciona_heroImage || ''}
+      imageAlt={images?.comoFunciona_heroImageAlt || "Grupo de jóvenes viajeros Travel Hood — cómo funcionan los viajes en grupo"}
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: "Cómo funciona" },
       ]}
-      title="Así funciona un viaje con Travelhood"
-      subtitle="Travelhood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos. De pensarlo a vivirlo en 5 pasos."
+      title="Así funciona un viaje con Travel Hood"
+      subtitle="Travel Hood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos. De pensarlo a vivirlo en 5 pasos."
       minHeight="55vh"
     />
 
@@ -106,10 +101,10 @@ const faqs = [
             Paso a paso
           </span>
           <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            ¿Cómo funciona un viaje en grupo con Travelhood?
+            ¿Cómo funciona un viaje en grupo con Travel Hood?
           </h2>
           <p class="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            Un viaje con Travelhood cuesta entre 590€ y 1.590€ sin vuelo. El grupo medio tiene 14 personas de 20 a 35 años. El 70% de los viajeros reservan solos y el 98% repiten.
+            Un viaje con Travel Hood incluye alojamiento, transporte y coordinador. El grupo medio tiene 12-18 personas de 20 a 35 años. La mayoría de los viajeros reservan solos y casi todos repiten. Consulta el precio actualizado en la página de cada viaje.
           </p>
         </div>
 
@@ -185,7 +180,7 @@ const faqs = [
                 <th class="px-6 py-4 text-left font-bold text-foreground"></th>
                 <th class="px-6 py-4 text-center font-bold text-foreground">Viajar solo/a</th>
                 <th class="px-6 py-4 text-center font-bold text-foreground">Agencia tradicional</th>
-                <th class="px-6 py-4 text-center font-bold text-coral bg-coral/5">Travelhood</th>
+                <th class="px-6 py-4 text-center font-bold text-coral bg-coral/5">Travel Hood</th>
               </tr>
             </thead>
             <tbody>
@@ -246,16 +241,16 @@ const faqs = [
             <p class="mt-1 text-sm text-white/70">personas por grupo de media</p>
           </div>
           <div>
-            <p class="font-serif text-4xl font-extrabold text-white">70%</p>
-            <p class="mt-1 text-sm text-white/70">reservan solos</p>
+            <p class="font-serif text-4xl font-extrabold text-white">12-18</p>
+            <p class="mt-1 text-sm text-white/70">viajeros por grupo</p>
           </div>
           <div>
-            <p class="font-serif text-4xl font-extrabold text-white">98%</p>
-            <p class="mt-1 text-sm text-white/70">repetirían la experiencia</p>
+            <p class="font-serif text-4xl font-extrabold text-white">20-35</p>
+            <p class="mt-1 text-sm text-white/70">años, todos de tu edad</p>
           </div>
           <div>
-            <p class="font-serif text-4xl font-extrabold text-white">590-1.590€</p>
-            <p class="mt-1 text-sm text-white/70">rango de precios sin vuelo</p>
+            <p class="font-serif text-4xl font-extrabold text-white">Todo</p>
+            <p class="mt-1 text-sm text-white/70">incluido excepto vuelo</p>
           </div>
         </div>
       </div>
@@ -270,7 +265,7 @@ const faqs = [
 
     <CTASection
       title="Elige tu primer viaje"
-      subtitle="Cada viaje incluye coordinador, alojamiento, transporte interno y seguro. El grupo ya se está formando."
+      subtitle="Cada viaje incluye coordinador, alojamiento y transporte interno. El grupo ya se está formando."
       ctaText="Ver viajes disponibles"
       ctaHref="/viajes/"
       variant="card"

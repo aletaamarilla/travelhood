@@ -1,8 +1,58 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import { useState, useEffect, useRef, useMemo, useCallback, Component } from "react"
+import type { ReactNode, ErrorInfo } from "react"
 import { Search, MapPin, Calendar, X, Users, Shield, Compass } from "lucide-react"
 import type { Trip, Destination, Continent, Country, DestinationCategory, TripTag } from "@/lib/travel-data"
+import { deduplicateTripsByDestination } from "@/lib/utils"
+import { buildWhatsAppUrl, FALLBACK_WHATSAPP_PHONE } from "@/lib/config"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+
+function safeFormatDate(dateStr: string | null | undefined, fmt: string, options?: Parameters<typeof format>[2]): string {
+  if (!dateStr) return ''
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return ''
+  return format(d, fmt, options)
+}
+
+interface ErrorBoundaryProps { children: ReactNode; fallback?: ReactNode }
+interface ErrorBoundaryState { hasError: boolean }
+
+class SearchErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true }
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('[SearchPage] Error capturado:', error, info)
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? (
+        <div className="flex flex-col items-center gap-4 py-16 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+            <Compass className="h-10 w-10 text-coral/50" />
+          </div>
+          <h3 className="font-serif text-xl font-bold text-foreground">
+            Ha ocurrido un error al cargar los resultados
+          </h3>
+          <p className="max-w-md text-sm text-muted-foreground">
+            Por favor, recarga la página para intentarlo de nuevo.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+          >
+            Recargar página
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const periods: { id: TripTag; label: string }[] = [
   { id: "semana-santa", label: "Semana Santa" },
@@ -107,13 +157,15 @@ function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDest
 
   return (
     <a
-      href={`/destino/${dest.slug}`}
+      href={`/destino/${dest.slug}/`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <img
           src={dest.heroImage}
           alt={dest.name}
+          width={800}
+          height={500}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
@@ -139,6 +191,8 @@ function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDest
               <img
                 src={`https://flagcdn.com/16x12/${country.flag.toLowerCase()}.png`}
                 alt={country.name}
+                width={16}
+                height={12}
                 className="h-3 w-4 rounded-sm object-cover"
               />
               {country.name}
@@ -169,7 +223,7 @@ function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDest
         <div className="mt-auto pt-4 flex items-end justify-between border-t border-border/30">
           <div>
             <p className="text-[11px] text-muted-foreground">
-              {format(new Date(trip.departureDate), "d 'de' MMMM", { locale: es })}
+              {safeFormatDate(trip.departureDate, "d 'de' MMMM", { locale: es }) || 'Fecha por confirmar'}
             </p>
             <div className="flex items-baseline gap-1.5">
               <p className="text-xl font-extrabold text-foreground">
@@ -204,23 +258,32 @@ interface SearchPageProps {
   destinations: Destination[]
   continents: Continent[]
   countries: Country[]
+  heroImage?: string
+  heroImageAlt?: string
+  whatsappPhone?: string
 }
 
-export default function SearchPage({ trips, destinations, continents, countries }: SearchPageProps) {
-  const urlParams = useMemo(() => parseUrlParams(continents, destinations), [continents, destinations])
-
-  const [whereValue, setWhereValue] = useState<{ type: "continent" | "destination"; id: string; label: string } | null>(
-    urlParams.donde ? { type: urlParams.dondeTipo!, id: urlParams.donde, label: urlParams.dondeLabel! } : null
-  )
-  const [whenValue, setWhenValue] = useState<{ type: "period" | "month"; id: string; label: string } | null>(
-    urlParams.cuando ? { type: urlParams.cuandoTipo!, id: urlParams.cuando, label: urlParams.cuandoLabel! } : null
-  )
-  const [categoryValue, setCategoryValue] = useState<string>(urlParams.tipo || "all")
-
-  const [searchQuery, setSearchQuery] = useState(urlParams.dondeTipo === "destination" ? urlParams.dondeLabel || "" : "")
+function SearchPageInner({ trips, destinations, continents, countries, heroImage, heroImageAlt, whatsappPhone }: SearchPageProps) {
+  const [whereValue, setWhereValue] = useState<{ type: "continent" | "destination"; id: string; label: string } | null>(null)
+  const [whenValue, setWhenValue] = useState<{ type: "period" | "month"; id: string; label: string } | null>(null)
+  const [categoryValue, setCategoryValue] = useState<string>("all")
+  const [searchQuery, setSearchQuery] = useState("")
   const [whereOpen, setWhereOpen] = useState(false)
   const [whenOpen, setWhenOpen] = useState(false)
-  const [whenTab, setWhenTab] = useState<"flexible" | "meses">(urlParams.cuandoTipo === "month" ? "meses" : "flexible")
+  const [whenTab, setWhenTab] = useState<"flexible" | "meses">("flexible")
+
+  useEffect(() => {
+    const params = parseUrlParams(continents, destinations)
+    if (params.donde) {
+      setWhereValue({ type: params.dondeTipo!, id: params.donde, label: params.dondeLabel! })
+      if (params.dondeTipo === "destination") setSearchQuery(params.dondeLabel || "")
+    }
+    if (params.cuando) {
+      setWhenValue({ type: params.cuandoTipo!, id: params.cuando, label: params.cuandoLabel! })
+      if (params.cuandoTipo === "month") setWhenTab("meses")
+    }
+    if (params.tipo) setCategoryValue(params.tipo)
+  }, [])
 
   const whereRef = useRef<HTMLDivElement>(null)
   const whenRef = useRef<HTMLDivElement>(null)
@@ -243,7 +306,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
   }, [searchQuery, destinations])
 
   const filteredTrips = useMemo(() => {
-    return trips
+    const matched = trips
       .filter((t) => t.status !== "full")
       .filter((t) => {
         const dest = destinations.find((d) => d.id === t.destinationId)
@@ -258,6 +321,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
         return true
       })
       .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
+    return deduplicateTripsByDestination(matched)
   }, [whereValue, whenValue, categoryValue, trips, destinations])
 
   const TRIPS_PER_PAGE = 9
@@ -280,7 +344,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
     })
   }, [])
 
-  const totalAvailableTrips = useMemo(() => trips.filter((t) => t.status !== "full").length, [trips])
+  const totalAvailableTrips = useMemo(() => deduplicateTripsByDestination(trips.filter((t) => t.status !== "full")).length, [trips])
   const activeFilterCount = [whereValue, whenValue, categoryValue !== "all" ? categoryValue : null].filter(Boolean).length
 
   const scrollToResults = useCallback(() => {
@@ -304,7 +368,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
     setCategoryValue("all")
     setSearchQuery("")
     if (typeof window !== "undefined") {
-      window.history.replaceState({}, "", "/viajes")
+      window.history.replaceState({}, "", "/viajes/")
     }
   }, [])
 
@@ -315,17 +379,43 @@ export default function SearchPage({ trips, destinations, continents, countries 
     if (whenValue) params.set("cuando", whenValue.id)
     if (categoryValue !== "all") params.set("tipo", categoryValue)
     const qs = params.toString()
-    window.history.replaceState({}, "", qs ? `/viajes?${qs}` : "/viajes")
+    const hash = window.location.hash
+    window.history.replaceState({}, "", qs ? `/viajes/?${qs}${hash}` : `/viajes/${hash}`)
   }, [whereValue, whenValue, categoryValue])
 
   useEffect(() => {
     updateUrl()
   }, [updateUrl])
 
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = parseUrlParams(continents, destinations)
+      setWhereValue(params.donde ? { type: params.dondeTipo!, id: params.donde, label: params.dondeLabel! } : null)
+      setWhenValue(params.cuando ? { type: params.cuandoTipo!, id: params.cuando, label: params.cuandoLabel! } : null)
+      setCategoryValue(params.tipo || "all")
+      setSearchQuery(params.dondeTipo === "destination" ? params.dondeLabel || "" : "")
+    }
+    window.addEventListener("popstate", handlePopState)
+    return () => window.removeEventListener("popstate", handlePopState)
+  }, [continents, destinations])
+
   return (
     <div className="min-h-screen bg-background">
       {/* ─── HERO MINI ─── */}
       <section className="relative overflow-hidden bg-teal-deep pt-20 pb-28">
+        {heroImage && (
+          <img
+            src={heroImage}
+            alt={heroImageAlt || ""}
+            aria-hidden
+            width={1920}
+            height={1080}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
+        )}
+        {heroImage && <div className="absolute inset-0 bg-teal-deep/80" />}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(42,125,148,0.4)_0%,_transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(232,112,74,0.15)_0%,_transparent_50%)]" />
         <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-teal-vivid/10 blur-3xl" />
@@ -334,7 +424,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
         <div className="relative mx-auto max-w-4xl px-6 pt-8 text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-[12px] font-semibold tracking-wide text-yellow-sun backdrop-blur-sm">
             <Compass className="h-3.5 w-3.5" />
-            {totalAvailableTrips} viajes disponibles
+            {totalAvailableTrips} destinos disponibles
           </span>
           <h1 className="mt-5 font-serif text-3xl font-extrabold text-sand sm:text-4xl lg:text-5xl leading-tight text-balance">
             Encuentra tu próximo viaje en grupo
@@ -407,7 +497,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
                             }}
                             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
                           >
-                            <img src={dest.heroImage} alt={dest.name} className="h-9 w-9 shrink-0 rounded-lg object-cover" />
+                            <img src={dest.heroImage} alt={dest.name} width={36} height={36} className="h-9 w-9 shrink-0 rounded-lg object-cover" />
                             <div className="min-w-0">
                               <p className="text-sm font-medium text-foreground">{dest.name}</p>
                               <p className="truncate text-xs text-muted-foreground/70">{dest.shortDescription}</p>
@@ -454,7 +544,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
                             }}
                             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
                           >
-                            <img src={dest.heroImage} alt={dest.name} className="h-8 w-8 shrink-0 rounded-md object-cover" />
+                            <img src={dest.heroImage} alt={dest.name} width={32} height={32} className="h-8 w-8 shrink-0 rounded-md object-cover" />
                             <p className="text-sm text-foreground">{dest.name}</p>
                           </button>
                         ))}
@@ -556,7 +646,13 @@ export default function SearchPage({ trips, destinations, continents, countries 
             {/* SEARCH CTA */}
             <div className="p-1">
               <button
-                onClick={() => { setWhereOpen(false); setWhenOpen(false); scrollToResults() }}
+                onClick={() => {
+                  setWhereOpen(false)
+                  setWhenOpen(false)
+                  scrollToResults()
+                  resultsRef.current?.classList.add('ring-2', 'ring-coral/30')
+                  setTimeout(() => resultsRef.current?.classList.remove('ring-2', 'ring-coral/30'), 1200)
+                }}
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg sm:rounded-full sm:px-7"
               >
                 <Search className="h-4 w-4" />
@@ -635,7 +731,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
           </div>
           <p className="text-sm text-muted-foreground">
             <span className="font-bold text-foreground">{filteredTrips.length}</span>{" "}
-            {filteredTrips.length === 1 ? "viaje encontrado" : "viajes encontrados"}
+            {filteredTrips.length === 1 ? "destino encontrado" : "destinos encontrados"}
             {totalPages > 1 && (
               <span className="text-muted-foreground/60">
                 {" "}· Página {currentPage} de {totalPages}
@@ -691,7 +787,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  Mostrando {(currentPage - 1) * TRIPS_PER_PAGE + 1}–{Math.min(currentPage * TRIPS_PER_PAGE, filteredTrips.length)} de {filteredTrips.length} viajes
+                  Mostrando {(currentPage - 1) * TRIPS_PER_PAGE + 1}–{Math.min(currentPage * TRIPS_PER_PAGE, filteredTrips.length)} de {filteredTrips.length} destinos
                 </p>
               </div>
             )}
@@ -758,7 +854,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
           </h2>
           <div className="mt-5 space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
-              En Travelhood organizamos viajes en grupo para personas de 20 a 35 años que quieren descubrir el mundo sin preocuparse por la logística. Cada viaje incluye alojamiento, transporte interno, actividades y un coordinador que te acompaña en todo momento.
+              En Travel Hood organizamos viajes en grupo para personas de 20 a 35 años que quieren descubrir el mundo sin preocuparse por la logística. Cada viaje incluye alojamiento, transporte interno, actividades y un coordinador que te acompaña en todo momento.
             </p>
             <p>
               Desde playas paradisíacas en Maldivas hasta auroras boreales en Laponia, pasando por safaris en Zanzíbar o templos en Japón. Nuestros itinerarios están diseñados para vivir experiencias auténticas, conocer gente increíble y volver con recuerdos que duran para siempre.
@@ -778,7 +874,7 @@ export default function SearchPage({ trips, destinations, continents, countries 
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
               <a
-                href="https://wa.me/34600000000"
+                href={buildWhatsAppUrl(whatsappPhone || FALLBACK_WHATSAPP_PHONE)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
@@ -797,5 +893,13 @@ export default function SearchPage({ trips, destinations, continents, countries 
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SearchPage(props: SearchPageProps) {
+  return (
+    <SearchErrorBoundary>
+      <SearchPageInner {...props} />
+    </SearchErrorBoundary>
   )
 }

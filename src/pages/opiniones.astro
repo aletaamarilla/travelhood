@@ -1,34 +1,31 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
-import { getTestimonials, getDestinations } from "@/lib/data-provider";
-const [testimonials, destinations] = await Promise.all([getTestimonials(), getDestinations()]);
-import { generateTravelAgencySchema, generateAggregateRatingSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+import { getTestimonials, getDestinations, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+const [testimonials, destinations, settings] = await Promise.all([getTestimonials(), getDestinations(), getSiteSettings()]);
+const images = settings ? resolveSettingsImages(settings) : null;
+import { generateTravelAgencySchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
-const avgRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length;
 const reviewCount = testimonials.length;
 
 const agencySchema = generateTravelAgencySchema();
-const ratingSchema = generateAggregateRatingSchema(reviewCount, avgRating);
-const combinedSchema = { ...agencySchema, aggregateRating: ratingSchema };
 
-const pageTitle = "Opiniones de Travelhood — Lo que dicen nuestros viajeros";
-const pageDescription = `Lee las opiniones reales de viajeros de Travelhood. ${reviewCount} valoraciones con una nota media de ${avgRating} sobre 5. Descubre por qué el 98% repetiría la experiencia.`;
+const pageTitle = "Opiniones de Travel Hood — Lo que dicen nuestros viajeros";
+const pageDescription = `Lee las opiniones de viajeros de Travel Hood. Descubre lo que dicen sobre la experiencia de viajar en grupo con nosotros.`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage="/images/hero-brasil.jpg" keywords="travelhood opiniones, opiniones travelhood, reseñas travelhood, viajes en grupo opiniones, travelhood reviews">
+<Layout title={pageTitle} description={pageDescription} heroImage={images?.opiniones_heroImage || ''} ogImage={images?.opiniones_heroImage || undefined} keywords="travel hood opiniones, travelhood opiniones, opiniones travel hood, opiniones travelhood, reseñas travel hood, reseñas travelhood, viajes en grupo opiniones, travel hood reviews, travelhood reviews">
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(combinedSchema)} />
+    <script type="application/ld+json" set:html={toJsonLd(agencySchema)} />
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Opiniones",url:"/opiniones/"}]))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
-    <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden">
-      <img src="/images/hero-brasil.jpg" alt="Viajeros de Travelhood compartiendo experiencias" class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
+    <section class={`relative flex min-h-[50vh] items-center justify-center overflow-hidden ${!images?.opiniones_heroImage ? 'bg-teal-deep' : ''}`}>
+      {images?.opiniones_heroImage && <img src={images.opiniones_heroImage} alt={images.opiniones_heroImageAlt || "Viajeros de Travel Hood compartiendo experiencias"} class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />}
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"></div>
       <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
         <nav class="mb-6 text-sm text-white/70">
@@ -37,10 +34,10 @@ const pageDescription = `Lee las opiniones reales de viajeros de Travelhood. ${r
           <span class="text-white font-medium">Opiniones</span>
         </nav>
         <h1 class="font-serif text-3xl font-extrabold text-white sm:text-5xl text-balance leading-tight">
-          Opiniones de Travelhood — Lo que dicen nuestros viajeros
+          Opiniones de Travel Hood — Lo que dicen nuestros viajeros
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          {reviewCount} viajeros reales, {avgRating} de media. El 98% repetiría la experiencia.
+          Descubre lo que dicen nuestros viajeros sobre la experiencia Travel Hood.
         </p>
       </div>
     </section>
@@ -49,10 +46,10 @@ const pageDescription = `Lee las opiniones reales de viajeros de Travelhood. ${r
       <div class="mx-auto max-w-5xl px-6">
         <div class="mb-12 text-center">
           <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
-            Testimonios reales de viajeros
+            Lo que dicen nuestros viajeros
           </h2>
           <p class="mt-3 text-muted-foreground max-w-xl mx-auto">
-            Cada opinión es de un viajero real que ha vivido la experiencia Travelhood. Sin filtros, sin edición.
+            Opiniones de viajeros que han vivido la experiencia Travel Hood.
           </p>
         </div>
 
@@ -81,13 +78,12 @@ const pageDescription = `Lee las opiniones reales de viajeros de Travelhood. ${r
     </section>
 
     <GEODataBlock
-      title="Travelhood en números"
-      subtitle="Datos reales de satisfacción de nuestros viajeros"
+      title="Travel Hood en números"
+      subtitle="Datos sobre nuestros viajes en grupo"
       dataPoints={[
-        { label: "Valoración media", value: `${avgRating} / 5` },
         { label: "Opiniones", value: `${reviewCount} viajeros` },
-        { label: "Repetirían", value: "98%" },
-        { label: "Reservan solos", value: "70%" },
+        { label: "Grupo", value: "12-18 personas" },
+        { label: "Reservan solos", value: "La mayoría" },
         { label: "Rango de edad", value: "20-35 años" },
       ]}
     />
@@ -104,7 +100,6 @@ const pageDescription = `Lee las opiniones reales de viajeros de Travelhood. ${r
       </div>
     </section>
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

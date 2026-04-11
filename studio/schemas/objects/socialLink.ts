@@ -27,7 +27,7 @@ export default defineType({
       name: 'url',
       title: 'Enlace',
       type: 'url',
-      description: 'URL completa del perfil (ej: https://instagram.com/travelhood.es).',
+      description: 'URL completa del perfil (ej: https://instagram.com/travelhood_esp).',
       validation: (Rule) => Rule.required().uri({scheme: ['http', 'https']}),
     }),
   ],

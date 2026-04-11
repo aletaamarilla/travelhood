@@ -1,21 +1,22 @@
-const SITE_URL = "https://travelhood.es"
-const ORG_NAME = "Travelhood"
+import { SITE_URL, FALLBACK_SITE_NAME, FALLBACK_INSTAGRAM_URL, FALLBACK_TIKTOK_URL } from "@/lib/config"
+
+const ORG_NAME = FALLBACK_SITE_NAME
 const ORG_LOGO = `${SITE_URL}/icon.svg`
 
-export function generateTravelAgencySchema() {
+export function generateTravelAgencySchema(priceRange?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
     name: ORG_NAME,
     url: SITE_URL,
     logo: ORG_LOGO,
-    description: "Viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino, alojamiento y seguro incluidos.",
-    priceRange: "590€ - 1590€",
+    description: "Viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos.",
+    priceRange: priceRange || "Consulta precios",
     areaServed: { "@type": "Country", name: "España" },
     audience: { "@type": "PeopleAudience", suggestedMinAge: 20, suggestedMaxAge: 35 },
     sameAs: [
-      "https://instagram.com/travelhood.es",
-      "https://tiktok.com/@travelhood.es",
+      FALLBACK_INSTAGRAM_URL,
+      FALLBACK_TIKTOK_URL,
     ],
     contactPoint: {
       "@type": "ContactPoint",
@@ -46,7 +47,7 @@ export function generateWebSiteSchema() {
     url: SITE_URL,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${SITE_URL}/viajes?q={search_term_string}`,
+      target: `${SITE_URL}/viajes/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   }
@@ -140,7 +141,6 @@ export function generateProductSchema(opts: {
     "@type": "Offer",
     price: opts.promoPrice ?? opts.price,
     priceCurrency: opts.currency ?? "EUR",
-    availability: "https://schema.org/InStock",
     url: opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`,
   }
 
@@ -210,7 +210,7 @@ export function generateAboutPageSchema() {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     name: `Sobre ${ORG_NAME}`,
-    description: "Conoce la historia de Travelhood. Viajes en grupo para jóvenes de 20 a 35 años.",
+    description: "Conoce la historia de Travel Hood. Viajes en grupo para jóvenes de 20 a 35 años.",
     url: `${SITE_URL}/travelhood/`,
     mainEntity: {
       "@type": "TravelAgency",
@@ -244,7 +244,6 @@ export function generateOfferCatalogSchema(opts: {
         "@type": "Offer",
         price: offer.promoPrice,
         priceCurrency: "EUR",
-        availability: "https://schema.org/InStock",
         url: offer.url.startsWith("http") ? offer.url : `${SITE_URL}${offer.url}`,
         priceSpecification: [
           {
@@ -297,10 +296,32 @@ export function generateEventSchema(opts: {
       "@type": "Offer",
       price: opts.price,
       priceCurrency: opts.currency ?? "EUR",
-      availability: opts.availability ?? "https://schema.org/InStock",
+      ...(opts.availability ? { availability: opts.availability } : {}),
       url: opts.url ? (opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`) : SITE_URL,
     },
     ...(opts.image ? { image: opts.image.startsWith("http") ? opts.image : `${SITE_URL}${opts.image}` } : {}),
+  }
+}
+
+export function generateSiteNavigationSchema() {
+  const navItems = [
+    { name: "Viajes y destinos", path: "/viajes/" },
+    { name: "Cómo funciona", path: "/como-funciona/" },
+    { name: "Opiniones", path: "/opiniones/" },
+    { name: "Travel Hood", path: "/travelhood/" },
+    { name: "Blog", path: "/blog/" },
+    { name: "Preguntas frecuentes", path: "/preguntas-frecuentes/" },
+  ]
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    name: "Navegación principal",
+    hasPart: navItems.map((item) => ({
+      "@type": "WebPage",
+      name: item.name,
+      url: `${SITE_URL}${item.path}`,
+    })),
   }
 }
 

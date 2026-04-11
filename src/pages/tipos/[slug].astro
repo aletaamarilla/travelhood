@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import CTASection from "@/components/CTASection.astro";
@@ -11,7 +11,7 @@ import {
   getTrips,
   getCountries,
 } from "@/lib/data-provider";
-import { resolvePrice } from "@/lib/utils";
+import { resolvePrice, deduplicateTripsByDestination } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -34,7 +34,7 @@ const categoryDestinations = destinations.filter((d) =>
 );
 
 const now = new Date();
-const categoryTrips = trips
+const allCategoryTrips = trips
   .filter((t) => {
     const dest = destinations.find((d) => d.id === t.destinationId);
     return (
@@ -47,8 +47,8 @@ const categoryTrips = trips
   .sort(
     (a, b) =>
       new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
-  )
-  .slice(0, 8);
+  );
+const categoryTrips = deduplicateTripsByDestination(allCategoryTrips).slice(0, 8);
 
 const categoryTripCards = categoryTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
@@ -76,20 +76,20 @@ const categoryEmoji: Record<string, string> = {
 };
 ---
 
-<Layout title={category.seoTitle} description={category.seoDescription} ogImage={category.heroImage} keywords={`viajes de ${category.name.toLowerCase()} en grupo, viajes ${category.name.toLowerCase()} jóvenes, travelhood ${category.name.toLowerCase()}`}>
+<Layout title={category.seoTitle} description={category.seoDescription} ogImage={category.heroImage} keywords={`viajes de ${category.name.toLowerCase()} en grupo, viajes ${category.name.toLowerCase()} jóvenes, travel hood ${category.name.toLowerCase()}, travelhood ${category.name.toLowerCase()}`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Tipos de viaje",url:"/viajes/"},{name:category.name,url:`/tipos/${category.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:`Destinos de ${category.name.toLowerCase()}`,items:categoryDestinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
     {category.faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(category.faqs))} />}
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
     <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
       <img
         src={category.heroImage}
-        alt={`Viajes de ${category.name.toLowerCase()} en grupo para jóvenes — Travelhood`}
+        alt={`Viajes de ${category.name.toLowerCase()} en grupo para jóvenes — Travel Hood`}
         class="absolute inset-0 h-full w-full object-cover"
         width="1920"
         height="1080"
@@ -161,13 +161,15 @@ const categoryEmoji: Record<string, string> = {
 
             return (
               <a
-                href={`/destino/${dest.slug}`}
+                href={`/destino/${dest.slug}/`}
                 class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 <div class="relative aspect-[16/10] overflow-hidden">
                   <img
                     src={dest.heroImage}
                     alt={dest.name}
+                    width="800"
+                    height="500"
                     class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
@@ -178,6 +180,8 @@ const categoryEmoji: Record<string, string> = {
                         <img
                           src={`https://flagcdn.com/16x12/${country.flag.toLowerCase()}.png`}
                           alt={country.name}
+                          width="16"
+                          height="12"
                           class="h-3 w-4 rounded-sm object-cover"
                         />
                         {country.name}
@@ -228,7 +232,7 @@ const categoryEmoji: Record<string, string> = {
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categoryTripCards.map((card) => (
               <a
-                href={`/destino/${card.destSlug}`}
+                href={`/destino/${card.destSlug}/`}
                 class="group rounded-xl border border-border/40 bg-background p-4 transition-all hover:shadow-md hover:-translate-y-0.5"
               >
                 <div class="flex items-center justify-between mb-2">
@@ -269,12 +273,12 @@ const categoryEmoji: Record<string, string> = {
 
     <GEODataBlock
       title={`Viajes de ${category.name.toLowerCase()} en grupo — Datos clave`}
-      subtitle={`Información actualizada sobre viajes de ${category.name.toLowerCase()} con Travelhood`}
+      subtitle={`Información actualizada sobre viajes de ${category.name.toLowerCase()} con Travel Hood`}
       dataPoints={[
         { label: "Destinos", value: `${categoryDestinations.length} destinos` },
         { label: "Rango de precios", value: categoryTripCards.length > 0 ? `Desde ${Math.min(...categoryTripCards.map(t => t.price))}€` : "Próximamente" },
         { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
-        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+        { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
       ]}
     />
 

@@ -1,0 +1,434 @@
+---
+interface Props {
+  solid?: boolean;
+  logoUrl?: string;
+}
+
+const { solid = false, logoUrl } = Astro.props;
+
+const navLinks = [
+  { label: "Destinos", href: "/viajes/#resultados" },
+  { label: "Cómo funciona", href: "/como-funciona/" },
+  { label: "Testimonios", href: "/opiniones/" },
+  { label: "Travel Hood", href: "/travelhood/" },
+  { label: "Blog", href: "/blog/" },
+  { label: "FAQ", href: "/preguntas-frecuentes/" },
+];
+
+const fallbackLogo = logoUrl || "/images/logo.svg";
+
+import { FALLBACK_INSTAGRAM_URL } from "@/lib/config";
+import { getSiteSettings } from "@/lib/data-provider";
+const navSettings = await getSiteSettings();
+const instagramLink = navSettings?.socialLinks?.find(s => s.platform === 'instagram');
+const instagramUrl = instagramLink?.url ?? FALLBACK_INSTAGRAM_URL;
+const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
+---
+
+<header
+  id="navbar-header"
+  class={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    solid ? "bg-white/90 backdrop-blur-lg shadow-sm" : "bg-transparent"
+  }`}
+  data-solid={solid ? "true" : "false"}
+>
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5">
+    <a href="/" class="relative z-50 flex items-center gap-2">
+      <img
+        id="navbar-logo"
+        src={fallbackLogo}
+        alt="Travel Hood"
+        width={28}
+        height={28}
+      />
+      <span
+        id="navbar-brand"
+        class={`font-serif text-sm font-bold tracking-tight transition-colors duration-300 ${
+          solid ? "text-foreground" : "text-white"
+        }`}
+      >
+        Travel Hood
+      </span>
+    </a>
+
+    <ul class="hidden items-center gap-6 lg:flex" id="navbar-desktop-links">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class={`nav-link text-xs font-medium tracking-wide transition-colors duration-300 hover:opacity-100 ${
+              solid
+                ? "text-foreground/60 hover:text-foreground"
+                : "text-white/65 hover:text-white"
+            }`}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="hidden lg:block">
+      <a
+        id="navbar-desktop-cta"
+        href="/viajes/#resultados"
+        class={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 ${
+          solid
+            ? "bg-coral text-white hover:bg-coral/90"
+            : "bg-white/15 text-white backdrop-blur-sm hover:bg-white/25"
+        }`}
+      >
+        Ver viajes
+      </a>
+    </div>
+
+    <button
+      id="navbar-hamburger"
+      class={`relative z-50 flex h-10 w-10 items-center justify-center lg:hidden transition-colors duration-300 ${
+        solid ? "text-foreground" : "text-white"
+      }`}
+      aria-label="Abrir menú"
+    >
+      <div class="flex h-4 w-5 flex-col justify-between">
+        <span
+          id="hamburger-top"
+          class="block h-[2px] w-full rounded-full bg-current transition-all duration-300 origin-center"
+        ></span>
+        <span
+          id="hamburger-mid"
+          class="block h-[2px] w-full rounded-full bg-current transition-all duration-200"
+        ></span>
+        <span
+          id="hamburger-bot"
+          class="block h-[2px] w-full rounded-full bg-current transition-all duration-300 origin-center"
+        ></span>
+      </div>
+    </button>
+  </nav>
+</header>
+
+<div
+  id="navbar-overlay"
+  class="fixed inset-0 z-40 overflow-hidden transition-all duration-500 ease-in-out lg:pointer-events-none lg:hidden opacity-0 invisible pointer-events-none"
+>
+  <div class="absolute inset-0 bg-gradient-to-br from-teal-deep via-[#1a4f5e] to-teal-deep"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(232,112,74,0.15)_0%,_transparent_60%)]"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(245,200,66,0.1)_0%,_transparent_50%)]"></div>
+
+  <div
+    id="deco-circle-1"
+    class="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-coral/8 transition-all duration-700 ease-out scale-50 opacity-0"
+  ></div>
+  <div
+    id="deco-circle-2"
+    class="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-yellow-sun/8 transition-all duration-700 ease-out scale-50 opacity-0"
+    style="transition-delay: 0ms;"
+  ></div>
+  <div
+    id="deco-circle-3"
+    class="absolute top-1/3 right-8 h-24 w-24 rounded-full border border-sand/8 transition-all duration-700 ease-out scale-75 opacity-0"
+    style="transition-delay: 0ms;"
+  ></div>
+
+  <div class="relative flex h-full flex-col justify-between px-8 pt-24 pb-10">
+    <nav>
+      <ul class="flex flex-col">
+        {navLinks.map((link, i) => (
+          <li
+            class="nav-mobile-item transform transition-all duration-500 ease-out -translate-x-8 opacity-0"
+            style={`transition-delay: 0ms;`}
+            data-open-delay={`${i * 70 + 120}ms`}
+          >
+            <a
+              href={link.href}
+              class="nav-link group flex items-center gap-4 border-b border-sand/8 py-5"
+            >
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sand/10 text-[11px] font-bold tabular-nums text-coral transition-colors duration-200 group-hover:bg-coral group-hover:text-white">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span class="font-serif text-[1.5rem] font-bold text-sand transition-colors duration-200 group-hover:text-white">
+                {link.label}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div
+      id="navbar-mobile-footer"
+      class="flex flex-col gap-5 transform transition-all duration-500 ease-out translate-y-8 opacity-0"
+      style="transition-delay: 0ms;"
+    >
+      <a
+        href="/viajes/#resultados"
+        class="nav-link inline-flex w-full items-center justify-center gap-2 rounded-full bg-coral px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:brightness-110"
+      >
+        Ver próximos viajes
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </a>
+
+      <div class="flex items-center justify-between rounded-xl bg-sand/5 px-4 py-3">
+        <p class="text-[11px] tracking-wide text-sand/50">
+          Viajes en grupo · 20–35 años
+        </p>
+        <a
+          href={instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-1.5 text-[11px] font-medium text-sand/60 transition-colors hover:text-coral"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+          </svg>
+          @{instagramHandle}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    var header = document.getElementById("navbar-header");
+    var hamburger = document.getElementById("navbar-hamburger");
+    var overlay = document.getElementById("navbar-overlay");
+    var brand = document.getElementById("navbar-brand");
+    var logo = document.getElementById("navbar-logo");
+    var desktopCta = document.getElementById("navbar-desktop-cta");
+    var desktopLinks = document.querySelectorAll("#navbar-desktop-links .nav-link");
+    var mobileItems = document.querySelectorAll(".nav-mobile-item");
+    var mobileFooter = document.getElementById("navbar-mobile-footer");
+    var hamburgerTop = document.getElementById("hamburger-top");
+    var hamburgerMid = document.getElementById("hamburger-mid");
+    var hamburgerBot = document.getElementById("hamburger-bot");
+    var decoCircle1 = document.getElementById("deco-circle-1");
+    var decoCircle2 = document.getElementById("deco-circle-2");
+    var decoCircle3 = document.getElementById("deco-circle-3");
+    var allNavLinks = document.querySelectorAll(".nav-link");
+
+    if (!header || !hamburger || !overlay) return;
+
+    var isSolid = header.dataset.solid === "true";
+    var isOpen = false;
+    var isScrolled = isSolid;
+
+    if (logo && !logo.dataset.resolved) {
+      var bodyLogo = document.body.dataset.logo;
+      if (bodyLogo && logo.src.endsWith("/images/logo.svg")) {
+        logo.src = bodyLogo;
+      }
+      logo.dataset.resolved = "true";
+    }
+
+    function applyScrolledState() {
+      if (!header) return;
+      if (isOpen) {
+        header.classList.remove("bg-white/90", "backdrop-blur-lg", "shadow-sm", "bg-transparent");
+        header.classList.add("bg-teal-deep");
+      } else if (isScrolled) {
+        header.classList.remove("bg-transparent", "bg-teal-deep");
+        header.classList.add("bg-white/90", "backdrop-blur-lg", "shadow-sm");
+      } else {
+        header.classList.remove("bg-white/90", "backdrop-blur-lg", "shadow-sm", "bg-teal-deep");
+        header.classList.add("bg-transparent");
+      }
+
+      if (brand) {
+        if (isOpen || !isScrolled) {
+          brand.classList.remove("text-foreground");
+          brand.classList.add("text-white");
+        } else {
+          brand.classList.remove("text-white");
+          brand.classList.add("text-foreground");
+        }
+      }
+
+      if (hamburger) {
+        if (isOpen || !isScrolled) {
+          hamburger.classList.remove("text-foreground");
+          hamburger.classList.add("text-white");
+        } else {
+          hamburger.classList.remove("text-white");
+          hamburger.classList.add("text-foreground");
+        }
+      }
+
+      desktopLinks.forEach(function (link) {
+        if (isScrolled) {
+          link.classList.remove("text-white/65", "hover:text-white");
+          link.classList.add("text-foreground/60", "hover:text-foreground");
+        } else {
+          link.classList.remove("text-foreground/60", "hover:text-foreground");
+          link.classList.add("text-white/65", "hover:text-white");
+        }
+      });
+
+      if (desktopCta) {
+        if (isScrolled) {
+          desktopCta.classList.remove("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
+          desktopCta.classList.add("bg-coral", "text-white", "hover:bg-coral/90");
+        } else {
+          desktopCta.classList.remove("bg-coral", "hover:bg-coral/90");
+          desktopCta.classList.add("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
+        }
+      }
+    }
+
+    function applyOpenState() {
+      if (isOpen) {
+        overlay.classList.remove("opacity-0", "invisible", "pointer-events-none");
+        overlay.classList.add("opacity-100", "visible");
+        hamburger.setAttribute("aria-label", "Cerrar menú");
+      } else {
+        overlay.classList.remove("opacity-100", "visible");
+        overlay.classList.add("opacity-0", "invisible", "pointer-events-none");
+        hamburger.setAttribute("aria-label", "Abrir menú");
+      }
+
+      if (hamburgerTop && hamburgerMid && hamburgerBot) {
+        if (isOpen) {
+          hamburgerTop.classList.add("translate-y-[7px]", "rotate-45");
+          hamburgerMid.classList.add("scale-x-0", "opacity-0");
+          hamburgerBot.classList.add("-translate-y-[7px]", "-rotate-45");
+        } else {
+          hamburgerTop.classList.remove("translate-y-[7px]", "rotate-45");
+          hamburgerMid.classList.remove("scale-x-0", "opacity-0");
+          hamburgerBot.classList.remove("-translate-y-[7px]", "-rotate-45");
+        }
+      }
+
+      if (decoCircle1) {
+        if (isOpen) {
+          decoCircle1.classList.remove("scale-50", "opacity-0");
+          decoCircle1.classList.add("scale-100", "opacity-100");
+        } else {
+          decoCircle1.classList.remove("scale-100", "opacity-100");
+          decoCircle1.classList.add("scale-50", "opacity-0");
+        }
+      }
+      if (decoCircle2) {
+        decoCircle2.style.transitionDelay = isOpen ? "150ms" : "0ms";
+        if (isOpen) {
+          decoCircle2.classList.remove("scale-50", "opacity-0");
+          decoCircle2.classList.add("scale-100", "opacity-100");
+        } else {
+          decoCircle2.classList.remove("scale-100", "opacity-100");
+          decoCircle2.classList.add("scale-50", "opacity-0");
+        }
+      }
+      if (decoCircle3) {
+        decoCircle3.style.transitionDelay = isOpen ? "300ms" : "0ms";
+        if (isOpen) {
+          decoCircle3.classList.remove("scale-75", "opacity-0");
+          decoCircle3.classList.add("scale-100", "opacity-100");
+        } else {
+          decoCircle3.classList.remove("scale-100", "opacity-100");
+          decoCircle3.classList.add("scale-75", "opacity-0");
+        }
+      }
+
+      mobileItems.forEach(function (item) {
+        if (isOpen) {
+          item.style.transitionDelay = item.dataset.openDelay || "0ms";
+          item.classList.remove("-translate-x-8", "opacity-0");
+          item.classList.add("translate-x-0", "opacity-100");
+        } else {
+          item.style.transitionDelay = "0ms";
+          item.classList.remove("translate-x-0", "opacity-100");
+          item.classList.add("-translate-x-8", "opacity-0");
+        }
+      });
+
+      if (mobileFooter) {
+        if (isOpen) {
+          mobileFooter.style.transitionDelay = "550ms";
+          mobileFooter.classList.remove("translate-y-8", "opacity-0");
+          mobileFooter.classList.add("translate-y-0", "opacity-100");
+        } else {
+          mobileFooter.style.transitionDelay = "0ms";
+          mobileFooter.classList.remove("translate-y-0", "opacity-100");
+          mobileFooter.classList.add("translate-y-8", "opacity-0");
+        }
+      }
+
+      document.body.style.overflow = isOpen ? "hidden" : "";
+      applyScrolledState();
+    }
+
+    function toggleMenu() {
+      isOpen = !isOpen;
+      applyOpenState();
+    }
+
+    function closeMenu() {
+      if (!isOpen) return;
+      isOpen = false;
+      applyOpenState();
+    }
+
+    if (!isSolid) {
+      var onScroll = function () {
+        isScrolled = window.scrollY > 40;
+        if (!isOpen) applyScrolledState();
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    hamburger.addEventListener("click", toggleMenu);
+
+    allNavLinks.forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        var anchor = e.currentTarget;
+        var href = anchor.getAttribute("href") || "";
+        var hashIndex = href.indexOf("#");
+        if (hashIndex === -1) {
+          closeMenu();
+          return;
+        }
+
+        var path = href.slice(0, hashIndex) || "/";
+        var hash = href.slice(hashIndex + 1);
+        var isHome = window.location.pathname === "/" || window.location.pathname === "";
+
+        if (path === "/" && isHome) {
+          e.preventDefault();
+          var target = document.getElementById(hash);
+          if (target) {
+            closeMenu();
+            setTimeout(function () { target.scrollIntoView({ behavior: "smooth" }); }, 50);
+          }
+        } else {
+          closeMenu();
+        }
+      });
+    });
+
+    applyScrolledState();
+  });
+</script>

@@ -1,26 +1,23 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
-import { getDestinations, getTrips } from "@/lib/data-provider";
-const [destinations, trips] = await Promise.all([getDestinations(), getTrips()]);
+import { getTrips, getFeaturedDestinations } from "@/lib/data-provider";
+const [trips, featuredDests] = await Promise.all([getTrips(), getFeaturedDestinations(6)]);
 
-const popularSlugs = ["tailandia", "japon", "marruecos", "bali", "grecia", "costa-rica"];
-const popularDestinations = destinations
-  .filter((d) => popularSlugs.includes(d.slug))
-  .map((d) => {
-    const destTrips = trips.filter((t) => t.destinationId === d.id && t.status !== "full");
-    const minPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => t.promoPrice ?? t.priceFrom)) : null;
-    return { ...d, minPrice, tripCount: destTrips.length };
-  });
+const popularDestinations = featuredDests.map((d) => {
+  const destTrips = trips.filter((t) => t.destinationId === d.id && t.status !== "full");
+  const minPrice = destTrips.length > 0 ? Math.min(...destTrips.map((t) => t.promoPrice ?? t.priceFrom)) : null;
+  return { ...d, minPrice, tripCount: destTrips.length };
+});
 ---
 
 <Layout
-  title="Página no encontrada — Travelhood"
+  title="Página no encontrada — Travel Hood"
   description="La página que buscas no existe. Descubre viajes en grupo para jóvenes de 20 a 35 años."
   noIndex={true}
 >
-  <Navbar client:load solid />
+  <Navbar solid />
 
   <main class="min-h-[70vh] bg-background">
     <section class="py-20 sm:py-28">

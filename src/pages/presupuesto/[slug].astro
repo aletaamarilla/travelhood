@@ -1,12 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
 import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
@@ -24,7 +23,7 @@ const [destination, destTripsRaw, countries, continents] = await Promise.all([
   getContinents(),
 ]);
 
-if (!destination) return Astro.redirect("/404");
+if (!destination) return Astro.redirect("/404/");
 
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
@@ -46,25 +45,26 @@ const included = destTrips.length > 0 ? destTrips[0].included : [];
 const notIncluded = destTrips.length > 0 ? destTrips[0].notIncluded : [];
 
 const faqs = [
-  { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travelhood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte, coordinador y seguro.` },
+  { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte y coordinador.` },
   { question: `¿Cuánto cuestan los vuelos a ${destination.name}?`, answer: `Los vuelos desde España a ${destination.name} cuestan aproximadamente ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'} ida y vuelta. El precio varía según la temporada y la antelación de la reserva.` },
   { question: `¿Qué incluye el precio del viaje a ${destination.name}?`, answer: `El precio incluye ${included.slice(0, 3).join(', ').toLowerCase()} y más. No incluye ${notIncluded.slice(0, 2).join(' ni ').toLowerCase()}.` },
 ];
 
 const totalBudget = minPrice > 0 && avgFlightEstimate > 0 ? minPrice + avgFlightEstimate : 0;
 const dailyCost = totalBudget > 0 && destTrips.length > 0 ? Math.round(totalBudget / destTrips[0].durationDays) : 0;
+const currentYear = new Date().getFullYear();
 
-const pageTitle = `¿Cuánto cuesta viajar a ${destination.name}? Presupuesto 2026 — Travelhood`;
-const pageDescription = `Presupuesto detallado para viajar a ${destination.name} en 2026. Viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, vuelos estimados ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'}. Desglose completo de costes.`;
+const pageTitle = `¿Cuánto cuesta viajar a ${destination.name}? Presupuesto ${currentYear} — Travel Hood`;
+const pageDescription = `Presupuesto detallado para viajar a ${destination.name} en ${currentYear}. Viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, vuelos estimados ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'}. Desglose completo de costes.`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} keywords={`cuanto cuesta viajar a ${destination.name}, presupuesto ${destination.name}, precio viaje ${destination.name}, gastos ${destination.name}`}>
+<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={destination.heroImage} keywords={`cuanto cuesta viajar a ${destination.name}, presupuesto ${destination.name}, precio viaje ${destination.name}, gastos ${destination.name}`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:`/destino/${destination.slug}/`},{name:"Presupuesto",url:`/presupuesto/${destination.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <HeroSection
       image={destination.heroImage}
@@ -74,8 +74,8 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
         { label: destination.name, href: `/destino/${destination.slug}/` },
         { label: "Presupuesto" },
       ]}
-      title={`¿Cuánto cuesta viajar a ${destination.name} en grupo? — Presupuesto 2026`}
-      subtitle="Desglose completo de costes para tu viaje en grupo con Travelhood."
+      title={`¿Cuánto cuesta viajar a ${destination.name} en grupo? — Presupuesto ${currentYear}`}
+      subtitle="Desglose completo de costes para tu viaje en grupo con Travel Hood."
     />
 
     <section class="bg-background py-16">
@@ -103,7 +103,7 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
         </div>
 
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
-          <p>El precio de un viaje en grupo a {destination.name} con Travelhood parte desde {minPrice > 0 ? `${minPrice}€` : 'consultar'} por persona{maxPrice > minPrice ? `, pudiendo llegar a ${maxPrice}€ según la temporada y duración` : ''}. Este precio no incluye el vuelo internacional, que desde España ronda los {avgFlightEstimate > 0 ? `${avgFlightEstimate}€` : 'consultar'} ida y vuelta.</p>
+          <p>El precio de un viaje en grupo a {destination.name} con Travel Hood parte desde {minPrice > 0 ? `${minPrice}€` : 'consultar'} por persona{maxPrice > minPrice ? `, pudiendo llegar a ${maxPrice}€ según la temporada y duración` : ''}. Este precio no incluye el vuelo internacional, que desde España ronda los {avgFlightEstimate > 0 ? `${avgFlightEstimate}€` : 'consultar'} ida y vuelta.</p>
           <p>El presupuesto total estimado para {destTrips.length > 0 ? `${destTrips[0].durationDays} días` : 'un viaje'} en {destination.name} es de aproximadamente {totalBudget > 0 ? `${totalBudget}€` : 'consultar'}, incluyendo viaje y vuelo. A esto puedes sumar entre 100-300€ para gastos personales (comidas libres, souvenirs, actividades opcionales).</p>
         </div>
       </div>
@@ -194,7 +194,6 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
       ctaHref={`/destino/${destination.slug}/`}
     />
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

@@ -1,11 +1,11 @@
 import { useState } from "react"
 import type { BlogPost } from "@/lib/blog-data"
 
-const categories = ["Todos", "Inspiración", "Destinos", "Guías", "Comunidad"]
+const categories = ["Todos", "Inspiración", "Destinos", "Guías", "Consejos", "Comunidad"]
 
 function PostCard({ post, featured }: { post: BlogPost; featured?: boolean }) {
   return (
-    <a href={`/blog/${post.slug}`} className="group">
+    <a href={`/blog/${post.slug}/`} className="group">
       <article
         className={`flex h-full flex-col overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
           featured ? "bg-card" : "bg-card"
@@ -15,7 +15,10 @@ function PostCard({ post, featured }: { post: BlogPost; featured?: boolean }) {
           <img
             src={post.image}
             alt={post.imageAlt}
+            width={1920}
+            height={1080}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
           />
         </div>
         <div className="flex flex-1 flex-col p-5">
@@ -83,13 +86,17 @@ export default function BlogContent({ posts }: { posts: BlogPost[] }) {
 
             <div className="grid gap-8 lg:grid-cols-3">
               {/* Main featured */}
-              <a href={`/blog/${featured[0].slug}`} className="group lg:col-span-2">
+              <a href={`/blog/${featured[0].slug}/`} className="group lg:col-span-2">
                 <article className="relative overflow-hidden rounded-3xl bg-card shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div className="aspect-[16/9] overflow-hidden">
                     <img
                       src={featured[0].image}
                       alt={featured[0].imageAlt}
+                      width={1920}
+                      height={1080}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="eager"
+                      fetchPriority="high"
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-teal-deep/80 via-teal-deep/20 to-transparent" />

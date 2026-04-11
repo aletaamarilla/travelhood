@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import SearchIsland from "@/components/SearchIsland";
 import LastChance from "@/components/LastChance.astro";
 import SeasonExplorer from "@/components/SeasonExplorer";
@@ -12,58 +12,89 @@ import LeadMagnet from "@/components/LeadMagnet";
 
 import FAQSection from "@/components/FAQSection";
 import CTAFooter from "@/components/CTAFooter.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
 import Footer from "@/components/Footer.astro";
-import { generateTravelAgencySchema, generateAggregateRatingSchema, generateWebSiteSchema, toJsonLd } from "@/lib/schemas";
-import { getTestimonials, getDestinations, getTrips, getContinents } from "@/lib/data-provider";
-const [testimonials, destinations, trips, continents] = await Promise.all([
-  getTestimonials(), getDestinations(), getTrips(), getContinents()
+import { generateTravelAgencySchema, generateWebSiteSchema, toJsonLd } from "@/lib/schemas";
+import { getDestinations, getTrips, getContinents, getSiteSettings, resolveSettingsImages, getGlobalFaqs, calculatePriceRange } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL, buildWhatsAppUrl } from "@/lib/config";
+import { sanityImgSrcset } from "@/lib/utils";
+const [destinations, trips, continents, settings, faqBlocks] = await Promise.all([
+  getDestinations(), getTrips(), getContinents(), getSiteSettings(), getGlobalFaqs('home')
 ]);
+const homeFaqs = faqBlocks.flatMap((b) => b.faqs);
+const images = settings ? resolveSettingsImages(settings) : null;
+const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+const waCommunityUrl = settings?.whatsappCommunityUrl ?? FALLBACK_WA_COMMUNITY_URL;
 import GEODataBlock from "@/components/GEODataBlock.astro";
 
-const agencySchema = generateTravelAgencySchema();
-const agencyWithRating = {
-  ...agencySchema,
-  aggregateRating: generateAggregateRatingSchema(testimonials.length),
-};
+const priceRange = calculatePriceRange(trips);
+const agencySchema = generateTravelAgencySchema(priceRange?.formatted);
 const webSiteSchema = generateWebSiteSchema();
 ---
 
 <Layout>
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(agencyWithRating)} />
+    <script type="application/ld+json" set:html={toJsonLd(agencySchema)} />
     <script type="application/ld+json" set:html={toJsonLd(webSiteSchema)} />
   </Fragment>
   <main>
-    <Navbar client:load />
-    <SearchIsland destinations={destinations} continents={continents} client:load />
+    <Navbar logoUrl={images?.orgLogoUrl} />
+    <section class={`relative ${!images?.homeHeroImage ? 'bg-gradient-to-br from-teal-deep to-teal-deep/80' : ''}`}>
+      {images?.homeHeroImage && (
+        <img
+          src={images.homeHeroImage}
+          srcset={sanityImgSrcset(images.homeHeroImage)}
+          sizes="100vw"
+          alt={images?.homeHeroImageAlt || "Paisaje de aventura"}
+          width="1920"
+          height="1080"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )}
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/55"></div>
+      <div class="relative z-10 flex min-h-[55vh] flex-col items-center px-6 pt-24 sm:min-h-[58vh] sm:pt-28 lg:min-h-[65vh]">
+        <div class="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-5 text-center">
+          <h1 class="font-serif text-[2.25rem] font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
+            Tú pones las ganas,<br />nosotros el grupo.
+          </h1>
+          <p class="max-w-md text-base text-white/85 leading-relaxed sm:text-lg">
+            Viaja en grupos reducidos con personas de tu edad. Itinerario, alojamiento y coordinador incluidos.
+          </p>
+        </div>
+        <div class="z-20 mx-auto w-full max-w-2xl translate-y-1/2">
+          <p class="mb-3 text-center text-[13px] tracking-wide text-white/65">
+            +500 viajeros · {destinations.length} destinos · Coordinador en destino
+          </p>
+          <SearchIsland destinations={destinations} continents={continents} client:load />
+        </div>
+      </div>
+    </section>
     <LastChance />
-    <WhyUsSection />
-    <SeasonExplorer trips={trips} destinations={destinations} client:load />
-    <HowItWorksSection />
+    <WhyUsSection bgImage={images?.homeWhyUsImage} />
+    <SeasonExplorer trips={trips} destinations={destinations} client:visible />
+    <HowItWorksSection bgImage={images?.homeHowItWorksImage} />
     <TestimonialsSection />
-    <AboutSection />
+    <AboutSection bgImage={images?.homeAboutBgImage} photo={images?.homeAboutPhoto} photoAlt={images?.homeAboutPhotoAlt} />
     <GEODataBlock
       title="Viajes en grupo para jóvenes — Datos clave"
-      subtitle="Información actualizada sobre viajes organizados con Travelhood"
+      subtitle="Información actualizada sobre viajes organizados con Travel Hood"
       dataPoints={[
         { label: "Destinos", value: `${destinations.length} destinos` },
-        { label: "Rango de precios", value: "590€ – 1.590€ (sin vuelo)" },
-        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
-        { label: "Viajan solos", value: "El 70% reservan sin acompañante" },
-        { label: "Repiten", value: "El 98% de los viajeros repiten" },
-        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+        { label: "Rango de precios", value: priceRange ? `${priceRange.formatted} (sin vuelo)` : "Consulta precios" },
+        { label: "Grupo", value: "12-18 personas de 20 a 35 años" },
+        { label: "Viajan solos", value: "La mayoría reservan sin acompañante" },
+        { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
       ]}
     />
-    <LeadMagnet client:visible />
-    <FAQSection client:visible />
+    <LeadMagnet client:visible whatsappCommunityUrl={waCommunityUrl} />
+    <FAQSection client:visible faqs={homeFaqs} />
     <CTAFooter />
-    <InternalLinks />
     <Footer />
   </main>
 
   <!-- Floating bottom bar (mobile only) -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 border-t border-sand/10 bg-teal-deep/95 backdrop-blur-lg px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] lg:hidden">
+  <div class="fixed bottom-0 left-0 right-0 z-50 border-t border-sand/10 bg-teal-deep/95 backdrop-blur-lg will-change-transform px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] lg:hidden">
     <div class="mx-auto flex max-w-lg items-center gap-3">
       <a
         href="/viajes/#resultados"
@@ -73,7 +104,7 @@ const webSiteSchema = generateWebSiteSchema();
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
       </a>
       <a
-        href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+        href={buildWhatsAppUrl(waPhone, "Hola! Me interesa saber más sobre vuestros viajes")}
         target="_blank"
         rel="noopener noreferrer"
         class="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
@@ -88,7 +119,7 @@ const webSiteSchema = generateWebSiteSchema();
 
   <!-- Floating WhatsApp button (desktop only) -->
   <a
-    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    href={buildWhatsAppUrl(waPhone, "Hola! Me interesa saber más sobre vuestros viajes")}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Escríbenos por WhatsApp"

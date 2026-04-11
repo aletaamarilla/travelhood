@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import CTASection from "@/components/CTASection.astro";
@@ -11,8 +11,10 @@ import {
   getDestinations,
   getTrips,
   getCountries,
+  getSiteSettings,
 } from "@/lib/data-provider";
-import { resolvePrice } from "@/lib/utils";
+import { FALLBACK_WA_COMMUNITY_URL } from "@/lib/config";
+import { resolvePrice, deduplicateTripsByDestination } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateEventSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -25,13 +27,14 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [seasons, destinations, trips, countries] = await Promise.all([
-  getSeasons(), getDestinations(), getTrips(), getCountries()
+const [seasons, destinations, trips, countries, siteSettings] = await Promise.all([
+  getSeasons(), getDestinations(), getTrips(), getCountries(), getSiteSettings()
 ]);
+const waCommunityUrl = siteSettings?.whatsappCommunityUrl ?? FALLBACK_WA_COMMUNITY_URL;
 const season = seasons.find((s) => s.slug === slug)!;
 
 const now = new Date();
-const seasonTrips = trips
+const allSeasonTrips = trips
   .filter((t) => {
     return (
       season.tags.some((tag) => t.tags.includes(tag)) &&
@@ -43,6 +46,7 @@ const seasonTrips = trips
     (a, b) =>
       new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
   );
+const seasonTrips = deduplicateTripsByDestination(allSeasonTrips);
 
 const hasTrips = seasonTrips.length > 0;
 
@@ -75,7 +79,7 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
   .filter(Boolean);
 ---
 
-<Layout title={season.seoTitle} description={season.seoDescription} ogImage={season.heroImage} keywords={`viajes ${season.name.toLowerCase()} 2026, viajes grupo ${season.name.toLowerCase()}, travelhood ${season.name.toLowerCase()}`}>
+<Layout title={season.seoTitle} description={season.seoDescription} ogImage={season.heroImage} keywords={`viajes ${season.name.toLowerCase()} 2026, viajes grupo ${season.name.toLowerCase()}, travel hood ${season.name.toLowerCase()}, travelhood ${season.name.toLowerCase()}`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Temporadas",url:"/viajes/"},{name:season.name,url:`/temporada/${season.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:`Viajes ${season.name}`,items:uniqueDestinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
@@ -97,13 +101,13 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
     })}
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
     <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
       <img
         src={season.heroImage}
-        alt={`Viajes en grupo ${season.name} — Travelhood`}
+        alt={`Viajes en grupo ${season.name} — Travel Hood`}
         class="absolute inset-0 h-full w-full object-cover"
         width="1920"
         height="1080"
@@ -156,13 +160,15 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {seasonTripCards.map((card) => (
                 <a
-                  href={`/destino/${card.destSlug}`}
+                  href={`/destino/${card.destSlug}/`}
                   class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-background transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                 >
                   <div class="relative aspect-[16/10] overflow-hidden">
                     <img
                       src={card.destImage}
                       alt={card.destName}
+                      width="800"
+                      height="500"
                       class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
@@ -185,6 +191,8 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
                           <img
                             src={`https://flagcdn.com/16x12/${card.countryFlag}.png`}
                             alt={card.countryName}
+                            width="16"
+                            height="12"
                             class="h-3 w-4 rounded-sm object-cover"
                           />
                           {card.countryName}
@@ -250,7 +258,7 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
                   {seasonTripCards.map((card) => (
                     <tr class="border-t border-border/30 hover:bg-muted/30 transition-colors">
                       <td class="px-6 py-3">
-                        <a href={`/destino/${card.destSlug}`} class="font-semibold text-teal-vivid hover:underline">
+                        <a href={`/destino/${card.destSlug}/`} class="font-semibold text-teal-vivid hover:underline">
                           {card.destName}
                         </a>
                       </td>
@@ -280,19 +288,19 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
     ) : (
       <!-- No trips: lead capture -->
       <section class="py-4">
-        <LeadMagnet client:load />
+        <LeadMagnet client:load whatsappCommunityUrl={waCommunityUrl} />
       </section>
     )}
 
     <GEODataBlock
       title={`Viajes ${season.name} — Datos clave`}
-      subtitle={`Información actualizada sobre viajes en grupo en ${season.name} con Travelhood`}
+      subtitle={`Información actualizada sobre viajes en grupo en ${season.name} con Travel Hood`}
       dataPoints={[
         { label: "Viajes disponibles", value: `${seasonTrips.length} viajes` },
         { label: "Rango de precios", value: seasonTripCards.length > 0 ? `Desde ${Math.min(...seasonTripCards.map(t => t.price))}€` : "Próximamente" },
         { label: "Destinos", value: `${uniqueDestinations.length} destinos` },
         { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
-        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+        { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
       ]}
     />
 

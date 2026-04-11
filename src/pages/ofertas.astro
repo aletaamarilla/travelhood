@@ -1,19 +1,20 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
-import { getTrips, getDestinations, getCountries } from "@/lib/data-provider";
-import { resolvePrice } from "@/lib/utils";
-const [trips, destinations, countries] = await Promise.all([
-  getTrips(), getDestinations(), getCountries()
+import { getTrips, getDestinations, getCountries, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+import { resolvePrice, deduplicateTripsByDestination } from "@/lib/utils";
+const [trips, destinations, countries, ofertasSettings] = await Promise.all([
+  getTrips(), getDestinations(), getCountries(), getSiteSettings()
 ]);
+const ofertasImages = ofertasSettings ? resolveSettingsImages(ofertasSettings) : null;
 import { generateBreadcrumbSchema, generateOfferCatalogSchema, toJsonLd } from "@/lib/schemas";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
 const now = new Date();
 
-const promoTrips = trips
+const allPromoTrips = trips
   .map((t) => {
     const resolved = resolvePrice(t);
     return { trip: t, resolved, discount: resolved.hasDiscount ? Math.round((1 - resolved.price / resolved.originalPrice) * 100) : 0 };
@@ -22,6 +23,13 @@ const promoTrips = trips
     resolved.hasDiscount && trip.status !== "full" && new Date(trip.departureDate) > now
   )
   .sort((a, b) => b.discount - a.discount);
+
+const seenDests = new Set<string>();
+const promoTrips = allPromoTrips.filter(({ trip }) => {
+  if (seenDests.has(trip.destinationId)) return false;
+  seenDests.add(trip.destinationId);
+  return true;
+});
 
 const promoCards = promoTrips.map(({ trip, resolved, discount }) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
@@ -46,11 +54,11 @@ const promoCards = promoTrips.map(({ trip, resolved, discount }) => {
   };
 });
 
-const pageTitle = "Ofertas y últimas plazas — Viajes en grupo con descuento | Travelhood";
+const pageTitle = "Ofertas y últimas plazas — Viajes en grupo con descuento | Travel Hood";
 const pageDescription = "Últimas plazas con descuento en viajes en grupo para jóvenes de 20-35 años. Ofertas exclusivas con coordinador y alojamiento incluidos.";
 
 const offerCatalogSchema = generateOfferCatalogSchema({
-  name: "Ofertas Travelhood — Viajes en grupo con descuento",
+  name: "Ofertas Travel Hood — Viajes en grupo con descuento",
   description: pageDescription,
   offers: promoTrips.map(({ trip, resolved }) => {
     const dest = destinations.find((d) => d.id === trip.destinationId)!;
@@ -65,16 +73,19 @@ const offerCatalogSchema = generateOfferCatalogSchema({
 });
 ---
 
-<Layout title={pageTitle} description={pageDescription} keywords="ofertas viajes grupo, viajes baratos jóvenes, últimas plazas, descuento viajes, travelhood ofertas">
+<Layout title={pageTitle} description={pageDescription} keywords="ofertas viajes grupo, viajes baratos jóvenes, últimas plazas, descuento viajes, travel hood ofertas, travelhood ofertas" noIndex={promoCards.length === 0}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Ofertas",url:"/ofertas/"}]))} />
     <script type="application/ld+json" set:html={toJsonLd(offerCatalogSchema)} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
     <section class="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-teal-deep">
+      {ofertasImages?.ofertas_heroImage && (
+        <img src={ofertasImages.ofertas_heroImage} alt={ofertasImages.ofertas_heroImageAlt || ""} aria-hidden="true" class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
+      )}
       <div class="absolute inset-0 bg-gradient-to-br from-teal-deep via-teal-deep/90 to-coral/20"></div>
       <div class="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
         <span class="inline-flex items-center gap-2 rounded-full bg-coral/20 px-4 py-1.5 text-sm font-bold text-coral mb-6">
@@ -84,7 +95,9 @@ const offerCatalogSchema = generateOfferCatalogSchema({
           Últimas plazas con descuento — Viajes en grupo para jóvenes
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          {promoCards.length} viajes con descuento disponibles. Plazas limitadas, precios especiales.
+          {promoCards.length > 0
+            ? `${promoCards.length} viajes con descuento disponibles. Plazas limitadas, precios especiales.`
+            : "Próximamente nuevas ofertas. Mientras tanto, descubre todos nuestros destinos."}
         </p>
       </div>
     </section>
@@ -96,13 +109,15 @@ const offerCatalogSchema = generateOfferCatalogSchema({
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {promoCards.map((card) => (
               <a
-                href={`/destino/${card.destSlug}`}
+                href={`/destino/${card.destSlug}/`}
                 class="group flex flex-col overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
               >
                 <div class="relative aspect-[16/10] overflow-hidden">
                   <img
                     src={card.destImage}
                     alt={card.destName}
+                    width="800"
+                    height="500"
                     class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
@@ -128,6 +143,8 @@ const offerCatalogSchema = generateOfferCatalogSchema({
                         <img
                           src={`https://flagcdn.com/16x12/${card.countryFlag}.png`}
                           alt={card.countryName}
+                          width="16"
+                          height="12"
                           class="h-3 w-4 rounded-sm object-cover"
                         />
                         {card.countryName}

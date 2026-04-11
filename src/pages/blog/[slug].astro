@@ -1,10 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import { getRelatedPosts } from "@/lib/blog-data";
-import { getBlogPosts, getDestinations, getTrips, getTestimonials } from "@/lib/data-provider";
+import { getBlogPosts, getDestinations, getTrips, getTestimonials, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
 import { generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
+import { SITE_URL, FALLBACK_SITE_NAME, FALLBACK_WHATSAPP_PHONE, buildWhatsAppUrl } from "@/lib/config";
 
 export async function getStaticPaths() {
   const allPosts = await getBlogPosts();
@@ -14,9 +15,12 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [blogPosts, destinations, trips, testimonials] = await Promise.all([
-  getBlogPosts(), getDestinations(), getTrips(), getTestimonials()
+const [blogPosts, destinations, trips, testimonials, blogSettings] = await Promise.all([
+  getBlogPosts(), getDestinations(), getTrips(), getTestimonials(), getSiteSettings()
 ]);
+const blogImages = blogSettings ? resolveSettingsImages(blogSettings) : null;
+const logoUrl = blogImages?.orgLogoUrl || "/images/logo.svg";
+const waPhone = blogSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
 const post = blogPosts.find((p) => p.slug === slug)!;
 const relatedPosts = getRelatedPosts(slug);
 
@@ -35,26 +39,26 @@ const destTestimonials = testimonials
   .filter((t) => post.relatedDestinations.includes(t.destinationId))
   .slice(0, 2);
 
-const canonicalUrl = `https://travelhood.es/blog/${post.slug}`;
+const canonicalUrl = `${SITE_URL}/blog/${post.slug}/`;
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: post.title,
   description: post.metaDescription,
-  image: `https://travelhood.es${post.image}`,
+  image: post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`,
   datePublished: post.dateISO,
   dateModified: post.dateISO,
   author: {
     "@type": "Organization",
     name: post.author.name,
-    url: "https://travelhood.es",
+    url: `${SITE_URL}/`,
   },
   publisher: {
     "@type": "Organization",
-    name: "Travelhood",
-    url: "https://travelhood.es",
-    logo: { "@type": "ImageObject", url: "https://travelhood.es/images/logo.jpeg" },
+    name: FALLBACK_SITE_NAME,
+    url: `${SITE_URL}/`,
+    logo: { "@type": "ImageObject", url: logoUrl.startsWith('http') ? logoUrl : `${SITE_URL}${logoUrl}` },
   },
   mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
   articleSection: post.category,
@@ -65,34 +69,32 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://travelhood.es" },
-    { "@type": "ListItem", position: 2, name: "Blog", item: "https://travelhood.es/blog" },
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog/` },
     { "@type": "ListItem", position: 3, name: post.title, item: canonicalUrl },
   ],
 };
 ---
 
-<Layout title={`${post.title} | Blog Travelhood`} description={post.metaDescription} keywords={post.tags.join(', ')}>
+<Layout
+  title={`${post.title} | Blog Travel Hood`}
+  description={post.metaDescription}
+  keywords={post.tags.join(', ')}
+  canonical={canonicalUrl}
+  ogImage={post.image}
+  ogType="article"
+>
   <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={post.title} />
-    <meta property="og:description" content={post.metaDescription} />
-    <meta property="og:image" content={`https://travelhood.es${post.image}`} />
-    <meta property="og:url" content={canonicalUrl} />
     <meta property="article:published_time" content={post.dateISO} />
+    <meta property="article:modified_time" content={post.dateISO} />
     <meta property="article:section" content={post.category} />
     {post.tags.map((tag) => <meta property="article:tag" content={tag} />)}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={post.title} />
-    <meta name="twitter:description" content={post.metaDescription} />
-    <meta name="twitter:image" content={`https://travelhood.es${post.image}`} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
   </Fragment>
 
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Breadcrumbs (SEO + UX) -->
     <div class="bg-background pt-20 pb-0">
@@ -104,7 +106,7 @@ const breadcrumbLd = {
             <li><a href="/blog/" class="hover:text-foreground transition-colors">Blog</a></li>
             <li class="text-border">/</li>
             <li>
-              <a href={`/blog?cat=${encodeURIComponent(post.category)}`} class="hover:text-foreground transition-colors">{post.category}</a>
+              <a href={`/blog/?cat=${encodeURIComponent(post.category)}`} class="hover:text-foreground transition-colors">{post.category}</a>
             </li>
             <li class="text-border">/</li>
             <li class="text-foreground font-medium truncate max-w-[200px] sm:max-w-none">{post.title}</li>
@@ -137,7 +139,7 @@ const breadcrumbLd = {
         <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between border-t border-border pt-6">
           <div class="flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-deep">
-              <img src="/images/logo.jpeg" alt="Travelhood" width="24" height="24" class="rounded-sm" />
+              <img src={logoUrl} alt="Travel Hood" width="24" height="24" class="rounded-sm" />
             </div>
             <div>
               <p class="text-sm font-bold text-foreground">{post.author.name}</p>
@@ -189,12 +191,15 @@ const breadcrumbLd = {
     <!-- Hero image -->
     <div class="bg-background pb-8">
       <div class="mx-auto max-w-5xl px-6">
-        <div class="aspect-[21/9] overflow-hidden rounded-2xl shadow-lg">
+        <div class="aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
           <img
             src={post.image}
             alt={post.imageAlt}
+            width="1920"
+            height="1080"
             class="h-full w-full object-cover"
             loading="eager"
+            fetchpriority="high"
           />
         </div>
       </div>
@@ -269,6 +274,8 @@ const breadcrumbLd = {
                     <img
                       src={section.image}
                       alt={section.imageAlt || ""}
+                      width="1920"
+                      height="1080"
                       class="h-full w-full object-cover"
                       loading="lazy"
                     />
@@ -333,11 +340,13 @@ const breadcrumbLd = {
                     {relatedDests.map((dest) => {
                       const trip = relatedTrips.find((t) => t.destinationId === dest.id);
                       return (
-                        <a href={`/destino/${dest.slug}`} class="group flex items-center gap-3 rounded-xl bg-muted/50 p-3 transition-all hover:shadow-md">
+                        <a href={`/destino/${dest.slug}/`} class="group flex items-center gap-3 rounded-xl bg-muted/50 p-3 transition-all hover:shadow-md">
                           <div class="h-14 w-14 shrink-0 overflow-hidden rounded-lg">
                             <img
                               src={dest.heroImage}
                               alt={`Viaje en grupo a ${dest.name}`}
+                              width="400"
+                              height="300"
                               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                               loading="lazy"
                             />
@@ -383,26 +392,6 @@ const breadcrumbLd = {
                 </div>
               )}
 
-              <!-- Newsletter (Lead capture) -->
-              <div class="rounded-2xl border border-border bg-muted/40 p-6">
-                <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-3">No te pierdas nada</p>
-                <p class="text-sm text-muted-foreground leading-relaxed mb-4">
-                  Recibe cada semana consejos, destinos y ofertas exclusivas directamente en tu email.
-                </p>
-                <form class="flex flex-col gap-2.5">
-                  <input
-                    type="email"
-                    placeholder="tu@email.com"
-                    class="w-full rounded-lg border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-coral focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    class="w-full rounded-lg bg-teal-deep px-4 py-2.5 text-sm font-bold text-sand transition-all hover:bg-teal-vivid"
-                  >
-                    Suscribirme
-                  </button>
-                </form>
-              </div>
             </div>
           </aside>
         </div>
@@ -424,12 +413,14 @@ const breadcrumbLd = {
 
           <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((rp) => (
-              <a href={`/blog/${rp.slug}`} class="group">
+              <a href={`/blog/${rp.slug}/`} class="group">
                 <article class="flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <div class="aspect-[16/9] overflow-hidden">
                     <img
                       src={rp.image}
                       alt={rp.imageAlt}
+                      width="1920"
+                      height="1080"
                       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
@@ -479,7 +470,7 @@ const breadcrumbLd = {
             Ver próximos viajes
           </a>
           <a
-            href="https://wa.me/34600000000"
+            href={buildWhatsAppUrl(waPhone)}
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
@@ -495,7 +486,7 @@ const breadcrumbLd = {
   </main>
 
   <a
-    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    href={buildWhatsAppUrl(waPhone, "Hola! Me interesa saber más sobre vuestros viajes")}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Escríbenos por WhatsApp"

@@ -38,11 +38,43 @@ export interface SanitySiteSettings {
   siteUrl: string
   orgLogo?: SanityImageSource
   priceRange?: string
+  depositAmount?: number
   contactEmail?: string
   socialLinks?: {platform: string; url: string}[]
+  whatsappPhone?: string
+  whatsappCommunityUrl?: string
   defaultSeoImage?: SanityImageSource
   defaultIncluded?: string[]
   defaultNotIncluded?: string[]
+  // Home images
+  homeHeroImage?: SanityImageSource
+  homeHeroImageAlt?: string
+  homeWhyUsImage?: SanityImageSource
+  homeHowItWorksImage?: SanityImageSource
+  homeAboutBgImage?: SanityImageSource
+  homeAboutPhoto?: SanityImageSource
+  homeAboutPhotoAlt?: string
+  // Travelhood page images
+  travelhood_heroImage?: SanityImageSource
+  travelhood_heroImageAlt?: string
+  travelhood_purposePhoto?: SanityImageSource
+  travelhood_purposePhotoAlt?: string
+  travelhood_diffPhoto?: SanityImageSource
+  travelhood_diffPhotoAlt?: string
+  travelhood_communityPhotos?: (SanityImageSource & {alt?: string})[]
+  // Page hero images
+  blog_heroImage?: SanityImageSource
+  blog_heroImageAlt?: string
+  opiniones_heroImage?: SanityImageSource
+  opiniones_heroImageAlt?: string
+  comoFunciona_heroImage?: SanityImageSource
+  comoFunciona_heroImageAlt?: string
+  viajes_heroImage?: SanityImageSource
+  viajes_heroImageAlt?: string
+  ofertas_heroImage?: SanityImageSource
+  ofertas_heroImageAlt?: string
+  faq_heroImage?: SanityImageSource
+  faq_heroImageAlt?: string
 }
 
 // ── Continent ──
@@ -120,11 +152,12 @@ export interface SanityDestination {
   coordinates?: SanityGeopoint
   country?: SanityRef & Pick<SanityCountry, 'name' | 'slug' | 'flag' | 'currency' | 'currencyRate' | 'language' | 'timezone' | 'visaRequired' | 'visaInfo' | 'vaccinesRecommended'>
   continent?: SanityRef & Pick<SanityContinent, 'name' | 'slug'>
-  extraIncluded?: string[]
-  extraNotIncluded?: string[]
+  included?: string[]
+  notIncluded?: string[]
   itinerary?: SanityItineraryDay[]
   faqs?: SanityFaq[]
   seo?: SanityDestinationSeo
+  pdfUrl?: string
 }
 
 // ── Coordinator ──
@@ -167,10 +200,7 @@ export interface SanityTrip {
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'
   tags?: string[]
-  extraIncluded?: string[]
-  extraNotIncluded?: string[]
-  itineraryOverride?: SanityItineraryDay[]
-  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'extraIncluded' | 'extraNotIncluded' | 'itinerary'> & {
+  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'itinerary'> & {
     country?: Pick<SanityCountry, 'name' | 'flag'>
     continent?: Pick<SanityContinent, 'name' | 'slug'>
   }
@@ -267,6 +297,29 @@ export interface SanityComparison {
   seo?: SanitySeo
   destinationA?: SanityDestination
   destinationB?: SanityDestination
+}
+
+// ── Legal Page ──
+
+export interface SanityLegalPage {
+  _id: string
+  title: string
+  slug: SanitySlug
+  version: string
+  effectiveDate: string
+  lastReviewedAt?: string
+  body: any[]
+  seo?: {title?: string; description?: string}
+}
+
+// ── Global FAQ ──
+
+export interface SanityGlobalFaq {
+  title: string
+  slug: string
+  order: number
+  pages: string[]
+  faqs: Array<{ question: string; answer: string }>
 }
 
 // ── Landing Page ──

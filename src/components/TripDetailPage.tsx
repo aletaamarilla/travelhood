@@ -16,6 +16,7 @@ import {
 } from "lucide-react"
 import type { Destination, Trip, Testimonial, Coordinator, Country, Continent } from "@/lib/travel-data"
 import type { DestinationFAQ } from "@/lib/destination-details"
+import { buildWhatsAppUrl } from "@/lib/config"
 
 // ── Types ──────────────────────────────────────────────
 
@@ -29,11 +30,16 @@ interface TripDetailPageProps {
   destination: Destination
   photos: string[]
   faqs: DestinationFAQ[]
+  generalFaqs?: { question: string; answer: string }[]
   trips: ExtendedTrip[]
   testimonials: Testimonial[]
   coordinators: Coordinator[]
   country: Country
   continent: Continent
+  pdfUrl?: string
+  whatsappPhone: string
+  whatsappCommunityUrl?: string
+  depositAmount?: number
 }
 
 // ── Helpers ────────────────────────────────────────────
@@ -98,28 +104,6 @@ const NOT_INCLUDED_ICONS: Record<string, typeof Plane> = {
   "Ropa térmica": Snowflake,
 }
 
-const GENERAL_FAQS = [
-  {
-    question: "¿Puedo ir solo/a al viaje?",
-    answer: "Por supuesto. La mayoría de nuestros viajeros vienen solos. Esa es precisamente la gracia: llegas sin conocer a nadie y vuelves con un grupo de amigos. El coordinador se encarga de que todos se integren desde el primer momento.",
-  },
-  {
-    question: "¿Qué está incluido en el precio?",
-    answer: "Alojamiento, transporte interno, actividades programadas y coordinador Travelhood en destino. El vuelo internacional no está incluido, pero te asesoramos para encontrar las mejores opciones.",
-  },
-  {
-    question: "¿Qué edad tiene la gente que va?",
-    answer: "Nuestros viajes están diseñados para personas de 20 a 35 años. Es un rango cómodo donde todos conectan fácilmente y comparten el mismo momento vital.",
-  },
-  {
-    question: "¿Cómo reservo y qué pasa si tengo que cancelar?",
-    answer: "Reservas con un formulario simple y una señal inicial. Tenemos política de cancelación flexible: si cancelas con más de 30 días de antelación, te devolvemos el 100% de la señal.",
-  },
-  {
-    question: "¿Son viajes seguros?",
-    answer: "Totalmente. Todos los viajes incluyen un coordinador con experiencia en destino y protocolos de seguridad. Somos agencia registrada y trabajamos con proveedores locales verificados.",
-  },
-]
 
 // ── Photo Gallery Modal ────────────────────────────────
 
@@ -181,6 +165,8 @@ function PhotoModal({
         <img
           src={photos[current]}
           alt={`Foto ${current + 1}`}
+          width={1920}
+          height={1080}
           className="max-h-[80vh] max-w-full rounded-lg object-contain"
           loading="lazy"
         />
@@ -204,7 +190,7 @@ function PhotoModal({
               i === current ? "border-coral opacity-100" : "border-transparent opacity-50 hover:opacity-80"
             }`}
           >
-            <img src={p} alt="" className="h-full w-full object-cover" loading="lazy" />
+            <img src={p} alt="" width={240} height={160} className="h-full w-full object-cover" loading="lazy" />
           </button>
         ))}
       </div>
@@ -219,11 +205,17 @@ function DeparturesModal({
   destinationName,
   isOpen,
   onClose,
+  whatsappPhone,
+  whatsappCommunityUrl,
+  depositAmount = 250,
 }: {
   trips: ExtendedTrip[]
   destinationName: string
   isOpen: boolean
   onClose: () => void
+  whatsappPhone: string
+  whatsappCommunityUrl?: string
+  depositAmount?: number
 }) {
   useEffect(() => {
     if (!isOpen) return
@@ -270,6 +262,11 @@ function DeparturesModal({
         </div>
 
         <div className="flex flex-col gap-3 p-4 pb-24 sm:gap-4 sm:p-6 sm:pb-6 lg:pb-6">
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-teal-vivid/8 px-4 py-3 text-xs font-semibold text-teal-vivid">
+            <Shield size={13} className="shrink-0" />
+            Asegura tu plaza por solo {depositAmount}€ · El resto lo pagas 30 días antes de salir
+          </div>
+
           {trips.map((trip) => {
             const hasPromo = !!trip.promoPrice
             const isAlmostFull = trip.placesLeft <= 4
@@ -327,31 +324,36 @@ function DeparturesModal({
                       </span>
                       <span className="hidden sm:block text-xs text-muted-foreground">+ vuelo ~{formatPrice(trip.flightEstimate)}</span>
                     </div>
-                    <a
-                      href={`https://wa.me/34600000000?text=${encodeURIComponent(`Hola! Me interesa el viaje ${trip.title}. ¿Puedo reservar?`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white transition-all hover:brightness-110"
-                    >
-                      Reservar
-                    </a>
+                    <div className="flex flex-col items-end gap-1">
+                      <a
+                        href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title}. ¿Puedo reservar?`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white transition-all hover:brightness-110"
+                      >
+                        Reservar
+                      </a>
+                      <span className="text-[10px] text-muted-foreground">Señal: {depositAmount}€</span>
+                    </div>
                   </div>
                 </div>
 
-                {isAlmostFull && (
-                  <div className="mt-2 hidden sm:flex items-center gap-1.5 text-xs font-semibold text-coral">
-                    <Zap size={12} />
-                    ¡Últimas plazas!
-                  </div>
-                )}
               </div>
             )
           })}
 
           {trips.length === 0 && (
-            <div className="py-12 text-center">
+            <div className="py-12 text-center flex flex-col items-center gap-4">
               <p className="text-muted-foreground">No hay salidas disponibles en este momento.</p>
-              <p className="mt-1 text-sm text-muted-foreground">Activa la alerta para ser el primero en enterarte.</p>
+              <a
+                href={whatsappCommunityUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Avísame en la comunidad
+              </a>
             </div>
           )}
         </div>
@@ -368,129 +370,122 @@ function RouteMap({ points }: { points: { lat: number; lng: number; label: strin
 
   const validPoints = points.filter((p) => p.lat !== 0 && p.lng !== 0)
 
-  const deduped: typeof validPoints = []
+  const markerPoints: typeof validPoints = []
   for (const p of validPoints) {
-    const isDupe = deduped.some(
-      (d) => Math.abs(d.lat - p.lat) < 0.05 && Math.abs(d.lng - p.lng) < 0.05
+    const isDupe = markerPoints.some(
+      (d) => Math.abs(d.lat - p.lat) < 0.01 && Math.abs(d.lng - p.lng) < 0.01
     )
-    if (!isDupe) deduped.push(p)
+    if (!isDupe) markerPoints.push(p)
   }
 
   useEffect(() => {
-    if (typeof window === "undefined" || !mapRef.current || deduped.length < 2) return
+    if (typeof window === "undefined" || !mapRef.current || validPoints.length < 2) return
 
     let map: any = null
+    let cancelled = false
+
+    if (!document.getElementById("leaflet-css")) {
+      const link = document.createElement("link")
+      link.id = "leaflet-css"
+      link.rel = "stylesheet"
+      link.href = "/styles/leaflet.css"
+      document.head.appendChild(link)
+    }
 
     import("leaflet").then((L) => {
-      if (!mapRef.current) return
+      if (cancelled || !mapRef.current) return
 
-      // Inject Leaflet CSS if not already present
-      if (!document.getElementById("leaflet-css")) {
-        const link = document.createElement("link")
-        link.id = "leaflet-css"
-        link.rel = "stylesheet"
-        link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        document.head.appendChild(link)
-      }
+      const bounds = L.latLngBounds(validPoints.map((p) => [p.lat, p.lng] as [number, number]))
 
-      // Wait a tick for CSS to load
-      setTimeout(() => {
-        if (!mapRef.current) return
+      map = L.map(mapRef.current, {
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        touchZoom: false,
+        boxZoom: false,
+        keyboard: false,
+      }).fitBounds(bounds, { padding: [40, 40] })
 
-        const bounds = L.latLngBounds(deduped.map((p) => [p.lat, p.lng] as [number, number]))
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map)
 
-        map = L.map(mapRef.current, {
-          zoomControl: false,
-          attributionControl: false,
-          dragging: false,
-          scrollWheelZoom: false,
-          doubleClickZoom: false,
-          touchZoom: false,
-          boxZoom: false,
-          keyboard: false,
-        }).fitBounds(bounds, { padding: [40, 40] })
+      const routeCoords = validPoints.map((p) => [p.lat, p.lng] as [number, number])
+      L.polyline(routeCoords, {
+        color: "#2A7D94",
+        weight: 3,
+        dashArray: "8 6",
+        opacity: 0.7,
+      }).addTo(map)
 
-        L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-          maxZoom: 19,
-        }).addTo(map)
-
-        // Route polyline
-        const routeCoords = deduped.map((p) => [p.lat, p.lng] as [number, number])
-        L.polyline(routeCoords, {
-          color: "#2A7D94",
-          weight: 3,
-          dashArray: "8 6",
-          opacity: 0.7,
-        }).addTo(map)
-
-        // Numbered markers
-        deduped.forEach((p, i) => {
-          const icon = L.divIcon({
-            className: "",
-            html: `<div style="
-              width:28px;height:28px;
-              background:#E8704A;
-              border:2px solid white;
-              border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-              color:white;font-size:12px;font-weight:700;
-              box-shadow:0 2px 6px rgba(0,0,0,0.25);
-              font-family:sans-serif;
-            ">${i + 1}</div>`,
-            iconSize: [28, 28],
-            iconAnchor: [14, 14],
-          })
-
-          L.marker([p.lat, p.lng], { icon })
-            .addTo(map)
-            .bindTooltip(p.label, {
-              permanent: deduped.length <= 6,
-              direction: "top",
-              offset: [0, -16],
-              className: "leaflet-tooltip-custom",
-            })
+      markerPoints.forEach((p, i) => {
+        const icon = L.divIcon({
+          className: "",
+          html: `<div style="
+            width:28px;height:28px;
+            background:#E8704A;
+            border:2px solid white;
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            color:white;font-size:12px;font-weight:700;
+            box-shadow:0 2px 6px rgba(0,0,0,0.25);
+            font-family:sans-serif;
+          ">${i + 1}</div>`,
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
         })
 
-        // Inject custom tooltip style
-        if (!document.getElementById("leaflet-custom-css")) {
-          const style = document.createElement("style")
-          style.id = "leaflet-custom-css"
-          style.textContent = `
-            .leaflet-tooltip-custom {
-              background: #143D4A !important;
-              color: white !important;
-              border: none !important;
-              border-radius: 6px !important;
-              padding: 3px 8px !important;
-              font-size: 11px !important;
-              font-weight: 600 !important;
-              font-family: 'DM Sans', sans-serif !important;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-            }
-            .leaflet-tooltip-custom::before {
-              border-top-color: #143D4A !important;
-            }
-          `
-          document.head.appendChild(style)
-        }
+        L.marker([p.lat, p.lng], { icon })
+          .addTo(map!)
+          .bindTooltip(p.label, {
+            permanent: markerPoints.length <= 6,
+            direction: "top",
+            offset: [0, -16],
+            className: "leaflet-tooltip-custom",
+          })
+      })
 
-        setMounted(true)
-      }, 100)
+      if (!document.getElementById("leaflet-custom-css")) {
+        const style = document.createElement("style")
+        style.id = "leaflet-custom-css"
+        style.textContent = `
+          .leaflet-tooltip-custom {
+            background: #143D4A !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 3px 8px !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            font-family: 'DM Sans', sans-serif !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+          }
+          .leaflet-tooltip-custom::before {
+            border-top-color: #143D4A !important;
+          }
+        `
+        document.head.appendChild(style)
+      }
+
+      setMounted(true)
     })
 
     return () => {
+      cancelled = true
       if (map) map.remove()
     }
   }, [])
 
-  if (deduped.length < 2) return null
+  if (validPoints.length < 2) return null
 
   return (
-    <div className="relative z-0 rounded-xl border border-border/40 overflow-hidden">
+    <div className="relative z-0 min-h-[400px] rounded-xl border border-border/40 overflow-hidden">
       <div
         ref={mapRef}
-        style={{ height: "280px", width: "100%" }}
-        className="bg-muted/60"
+        className="min-h-[400px] h-[400px] w-full bg-muted/60"
       />
     </div>
   )
@@ -500,8 +495,8 @@ function RouteMap({ points }: { points: { lat: number; lng: number; label: strin
 
 function ShareButton({ destinationName, slug }: { destinationName: string; slug: string }) {
   const [copied, setCopied] = useState(false)
-  const url = typeof window !== "undefined" ? window.location.href : `https://travelhood.es/destino/${slug}`
-  const text = `Mira este viaje a ${destinationName} con Travelhood 🌍`
+  const url = typeof window !== "undefined" ? window.location.href : `https://travelhood.es/destino/${slug}/`
+  const text = `Mira este viaje a ${destinationName} con Travel Hood 🌍`
 
   const copyLink = useCallback(async () => {
     try {
@@ -541,11 +536,16 @@ export default function TripDetailPage({
   destination,
   photos,
   faqs,
+  generalFaqs,
   trips,
   testimonials,
   coordinators,
   country,
   continent,
+  pdfUrl,
+  whatsappPhone,
+  whatsappCommunityUrl,
+  depositAmount = 250,
 }: TripDetailPageProps) {
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
@@ -604,6 +604,8 @@ export default function TripDetailPage({
       <img
         src={photos[index]}
         alt={`${destination.name} - foto ${index + 1}`}
+        width={1200}
+        height={800}
         className={`object-cover ${className}`}
         loading={index < 3 ? "eager" : "lazy"}
         onError={() => handleImageError(index)}
@@ -618,7 +620,7 @@ export default function TripDetailPage({
         {/* Desktop bento grid */}
         <div className="hidden md:block">
           <div className="mx-auto max-w-7xl px-6 pt-4">
-            <div className="grid grid-cols-4 grid-rows-2 gap-1.5 rounded-xl overflow-hidden" style={{ height: "260px" }}>
+            <div className="grid grid-cols-4 grid-rows-2 gap-1.5 rounded-xl overflow-hidden h-[360px] lg:h-[420px]">
               <button
                 onClick={() => openGallery(0)}
                 className="col-span-2 row-span-2 relative group cursor-pointer overflow-hidden"
@@ -658,8 +660,7 @@ export default function TripDetailPage({
                 <button
                   key={i}
                   onClick={() => openGallery(i)}
-                  className="snap-start shrink-0 w-full"
-                  style={{ height: "240px" }}
+                  className="snap-start shrink-0 w-full h-[280px]"
                 >
                   {renderImage(i, "h-full w-full")}
                 </button>
@@ -928,14 +929,14 @@ export default function TripDetailPage({
                     }`}
                   >
                     <Globe size={12} />
-                    Sobre Travelhood
+                    Sobre Travel Hood
                   </button>
                 </div>
               )}
 
               <div className="mt-4">
                 <Accordion type="single" collapsible className="flex flex-col gap-2">
-                  {(faqTab === "destino" && faqs.length > 0 ? faqs : GENERAL_FAQS).map((faq, i) => (
+                  {(faqTab === "destino" && faqs.length > 0 ? faqs : (generalFaqs ?? [])).map((faq, i) => (
                     <AccordionItem
                       key={`${faqTab}-${i}`}
                       value={`${faqTab}-faq-${i}`}
@@ -954,6 +955,7 @@ export default function TripDetailPage({
             </section>
 
             {/* ── Trust + PDF ───────────────────── */}
+            {pdfUrl && (
             <section className="mt-12 rounded-xl bg-teal-deep p-6 text-sand">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                 <div className="flex-1">
@@ -962,15 +964,19 @@ export default function TripDetailPage({
                     Descarga el PDF con itinerario completo, precios, qué llevar y toda la información del viaje a {destination.name}.
                   </p>
                 </div>
-                <button
-                  onClick={() => alert("La descarga del PDF estará disponible próximamente.")}
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
                   className="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110 shrink-0"
                 >
                   <Download size={16} />
                   Descargar PDF
-                </button>
+                </a>
               </div>
             </section>
+            )}
 
             {/* ── CTA Bottom ───────────────────── */}
             <section className="mt-12 mb-6 lg:mb-0 rounded-xl bg-gradient-to-br from-coral/10 to-yellow-sun/10 p-8 text-center">
@@ -988,7 +994,7 @@ export default function TripDetailPage({
                   Ver salidas y precios
                 </button>
                 <a
-                  href={`https://wa.me/34600000000?text=${encodeURIComponent(`Hola! Me interesa el viaje a ${destination.name}. ¿Podéis darme más info?`)}`}
+                  href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Podéis darme más info?`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
@@ -997,6 +1003,9 @@ export default function TripDetailPage({
                   Preguntar por WhatsApp
                 </a>
               </div>
+              <p className="mt-4 text-xs text-muted-foreground">
+                Solo necesitas <span className="font-semibold text-foreground">{depositAmount}€</span> para asegurar tu plaza · Resto 30 días antes · Cancelación flexible
+              </p>
             </section>
           </div>
 
@@ -1038,6 +1047,13 @@ export default function TripDetailPage({
                   >
                     Ver salidas y precios
                   </button>
+
+                  <div className="mt-3 rounded-lg bg-teal-vivid/8 px-3 py-2.5 text-center">
+                    <p className="text-xs font-bold text-teal-vivid">
+                      Reserva hoy por solo {depositAmount}€
+                    </p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground">El resto, 30 días antes de salir</p>
+                  </div>
                 </div>
 
                 <div className="border-t border-border px-5 py-3.5">
@@ -1057,20 +1073,25 @@ export default function TripDetailPage({
                   </div>
                 </div>
 
+                {pdfUrl && (
                 <div className="border-t border-border px-5 py-3">
-                  <button
-                    onClick={() => alert("La descarga del PDF estará disponible próximamente.")}
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download
                     className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-medium text-foreground/70 transition-colors hover:bg-muted"
                   >
                     <Download size={12} />
                     Descargar PDF
-                  </button>
+                  </a>
                 </div>
+                )}
               </div>
 
               <div className="mt-3 rounded-xl bg-[#25D366]/5 px-4 py-3 text-center">
                 <a
-                  href={`https://wa.me/34600000000?text=${encodeURIComponent(`Hola! Tengo dudas sobre el viaje a ${destination.name}`)}`}
+                  href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#25D366] hover:underline"
@@ -1105,7 +1126,7 @@ export default function TripDetailPage({
             </div>
             <div className="flex items-center gap-1.5">
               <p className="text-[11px] text-muted-foreground">
-                {cheapest?.durationDays} días · {trips.length} {trips.length === 1 ? "salida" : "salidas"}
+                Señal: {depositAmount}€ · {cheapest?.durationDays} días
               </p>
               {cheapest?.promoLabel && (
                 <span className="rounded-full bg-coral/10 px-1.5 py-0.5 text-[9px] font-bold text-coral">
@@ -1116,7 +1137,7 @@ export default function TripDetailPage({
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <a
-              href={`https://wa.me/34600000000?text=${encodeURIComponent(`Hola! Tengo dudas sobre el viaje a ${destination.name}`)}`}
+              href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white transition-all hover:brightness-110"
@@ -1149,6 +1170,9 @@ export default function TripDetailPage({
         destinationName={destination.name}
         isOpen={departuresOpen}
         onClose={() => setDeparturesOpen(false)}
+        whatsappPhone={whatsappPhone}
+        whatsappCommunityUrl={whatsappCommunityUrl}
+        depositAmount={depositAmount}
       />
     </>
   )

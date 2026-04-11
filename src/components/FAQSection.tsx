@@ -5,35 +5,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const faqs = [
-  {
-    question: "¿Puedo ir solo/a al viaje?",
-    answer:
-      "Por supuesto. La mayoría de nuestros viajeros vienen solos. Esa es precisamente la gracia: llegas sin conocer a nadie y vuelves con un grupo de amigos. El coordinador se encarga de que todos se integren desde el primer momento.",
-  },
-  {
-    question: "¿Qué está incluido en el precio?",
-    answer:
-      "Alojamiento, transporte interno, actividades programadas y coordinador Travelhood en destino. El vuelo internacional no está incluido, pero te asesoramos para encontrar las mejores opciones.",
-  },
-  {
-    question: "¿Qué edad tiene la gente que va?",
-    answer:
-      "Nuestros viajes están diseñados para personas de 20 a 35 años. Es un rango cómodo donde todos conectan fácilmente y comparten el mismo momento vital.",
-  },
-  {
-    question: "¿Cómo reservo y qué pasa si tengo que cancelar?",
-    answer:
-      "Reservas con un formulario simple y una señal inicial. Tenemos política de cancelación flexible: si cancelas con más de 30 días de antelación, te devolvemos el 100% de la señal.",
-  },
-  {
-    question: "¿Son viajes seguros?",
-    answer:
-      "Totalmente. Todos los viajes incluyen un coordinador con experiencia en destino y protocolos de seguridad. Somos agencia registrada y trabajamos con proveedores locales verificados.",
-  },
-]
+interface Props {
+  faqs: { question: string; answer: string }[]
+}
 
-export default function FAQSection() {
+export default function FAQSection({ faqs }: Props) {
   return (
     <section id="faq" className="bg-background py-14">
       <div className="mx-auto max-w-3xl px-6">
@@ -62,6 +38,13 @@ export default function FAQSection() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <a
+          href="/preguntas-frecuentes/"
+          className="mt-8 block text-center text-sm font-semibold text-coral hover:text-coral/80 transition-colors"
+        >
+          Ver todas las preguntas frecuentes →
+        </a>
       </div>
     </section>
   )

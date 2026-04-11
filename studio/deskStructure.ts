@@ -51,6 +51,12 @@ export const structure = (S: StructureBuilder) =>
       // --- Páginas ---
       S.documentTypeListItem('landingPage').title('Landing pages'),
 
+      // --- FAQs ---
+      S.documentTypeListItem('globalFaq').title('FAQs Globales'),
+
+      // --- Legal ---
+      S.documentTypeListItem('legalPage').title('Páginas legales'),
+
       S.divider(),
 
       // --- Configuración del sitio (singleton) ---

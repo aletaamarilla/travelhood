@@ -1,35 +1,41 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import CTAFooter from "@/components/CTAFooter.astro";
 import Footer from "@/components/Footer.astro";
 import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/lib/schemas";
+import { getSiteSettings, resolveSettingsImages, getDestinations } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, buildWhatsAppUrl } from "@/lib/config";
+
+const [settings, destinations] = await Promise.all([getSiteSettings(), getDestinations()]);
+const images = settings ? resolveSettingsImages(settings) : null;
+const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
 ---
 
 <Layout
-  title="Travelhood — Quiénes somos"
-  description="Conoce la historia de Travelhood. Viajes en grupo para jóvenes de 20 a 35 años que quieren explorar el mundo sin miedo y sin excusas."
-  keywords="travelhood, quiénes somos, agencia viajes grupo, viajes jóvenes España, sobre travelhood"
+  title="Sobre Travel Hood — Quiénes somos | Viajes en grupo"
+  description="Conoce la historia de Travel Hood. Viajes en grupo para jóvenes de 20 a 35 años que quieren explorar el mundo sin miedo y sin excusas."
+  keywords="travel hood, travelhood, quiénes somos, agencia viajes grupo, viajes jóvenes España, sobre travel hood"
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Travelhood",url:"/travelhood/"}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Travel Hood",url:"/travelhood/"}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateAboutPageSchema())} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
     <section class="relative flex min-h-[70vh] items-center overflow-hidden bg-teal-deep pt-16">
       <div class="absolute inset-0">
-        <img
-          src="/images/hero-brasil.jpg"
-          alt="Grupo de viajeros Travelhood — quiénes somos"
+        {images?.travelhood_heroImage && <img
+          src={images.travelhood_heroImage}
+          alt={images.travelhood_heroImageAlt || "Grupo de viajeros Travel Hood — quiénes somos"}
           class="h-full w-full object-cover opacity-30"
           width="1920"
           height="1080"
           loading="eager"
           fetchpriority="high"
-        />
+        />}
         <div class="absolute inset-0 bg-gradient-to-b from-teal-deep/60 via-teal-deep/80 to-teal-deep"></div>
       </div>
       <div class="absolute top-20 right-0 h-80 w-80 rounded-full bg-coral/10 blur-3xl"></div>
@@ -63,7 +69,7 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
               Transformamos el "ojalá" en "me voy".
             </h2>
             <p class="mt-6 text-base text-muted-foreground leading-relaxed">
-              Travelhood nace de una verdad simple: hay miles de personas de 20 a 35 años que quieren viajar pero no tienen con quién. El freno no es el dinero, es el miedo. La soledad. No atreverse.
+              Travel Hood nace de una verdad simple: hay miles de personas de 20 a 35 años que quieren viajar pero no tienen con quién. El freno no es el dinero, es el miedo. La soledad. No atreverse.
             </p>
             <p class="mt-4 text-base text-muted-foreground leading-relaxed">
               Nosotros rompemos esa barrera. Organizamos viajes en grupo con itinerarios únicos, un coordinador que viaja contigo y una comunidad que convierte a desconocidos en amigos antes de pisar el aeropuerto.
@@ -76,15 +82,22 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
           </div>
           <div class="relative w-full max-w-lg lg:w-1/2">
             <div class="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl">
-              <img
-                src="/images/hero-zanzibar.jpg"
-                alt="Viajeros disfrutando en destino"
-                class="h-full w-full object-cover"
-              />
+              {images?.travelhood_purposePhoto ? (
+                <img
+                  src={images.travelhood_purposePhoto}
+                  alt={images.travelhood_purposePhotoAlt || "Viajeros disfrutando en destino"}
+                  width="600"
+                  height="750"
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="flex h-full w-full items-center justify-center bg-teal-deep/20"></div>
+              )}
               <div class="absolute inset-0 bg-gradient-to-t from-teal-deep/30 via-transparent to-transparent"></div>
             </div>
             <div class="absolute -bottom-4 -left-4 z-10 rounded-2xl bg-card px-5 py-4 shadow-xl">
-              <p class="font-serif text-2xl font-extrabold text-coral">98%</p>
+              <p class="font-serif text-2xl font-extrabold text-coral">9/10</p>
               <p class="text-xs text-muted-foreground">repetirían la experiencia</p>
             </div>
           </div>
@@ -166,11 +179,18 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
           </div>
           <div class="relative w-full max-w-lg lg:w-1/2">
             <div class="relative aspect-square overflow-hidden rounded-3xl shadow-2xl">
-              <img
-                src="/images/hero-japon.jpg"
-                alt="Experiencia Travelhood en destino"
-                class="h-full w-full object-cover"
-              />
+              {images?.travelhood_diffPhoto ? (
+                <img
+                  src={images.travelhood_diffPhoto}
+                  alt={images.travelhood_diffPhotoAlt || "Experiencia Travel Hood en destino"}
+                  width="1080"
+                  height="1080"
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="flex h-full w-full items-center justify-center bg-teal-deep/20"></div>
+              )}
             </div>
             <div class="absolute -bottom-4 -right-4 z-10 rounded-2xl bg-card px-5 py-4 shadow-xl">
               <p class="font-serif text-2xl font-extrabold text-coral">+500</p>
@@ -202,7 +222,7 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
 
         <div class="mt-12 grid gap-6 sm:grid-cols-3">
           <div class="rounded-2xl bg-sand/5 p-6">
-            <p class="font-serif text-3xl font-extrabold text-coral">15+</p>
+            <p class="font-serif text-3xl font-extrabold text-coral">{destinations.length}+</p>
             <p class="mt-2 text-sm text-sand/70">Destinos únicos</p>
           </div>
           <div class="rounded-2xl bg-sand/5 p-6">
@@ -233,17 +253,27 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
         </div>
 
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { img: "/images/hero-laponia.jpg", alt: "Aventura en Laponia" },
-            { img: "/images/hero-maldivas.jpg", alt: "Grupo en Maldivas" },
-            { img: "/images/hero-main.jpg", alt: "Comunidad Travelhood" },
-          ].map((photo) => (
+          {(images?.travelhood_communityPhotos && images.travelhood_communityPhotos.length > 0
+            ? images.travelhood_communityPhotos
+            : [
+                { url: '', alt: 'Aventura' },
+                { url: '', alt: 'Grupo viajero' },
+                { url: '', alt: 'Comunidad Travel Hood' },
+              ]
+          ).map((photo) => (
             <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
-              <img
-                src={photo.img}
-                alt={photo.alt}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+              {photo.url ? (
+                <img
+                  src={photo.url}
+                  alt={photo.alt}
+                  width="800"
+                  height="600"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="flex h-full w-full items-center justify-center bg-teal-deep/20"></div>
+              )}
               <div class="absolute inset-0 bg-gradient-to-t from-teal-deep/40 via-transparent to-transparent"></div>
             </div>
           ))}
@@ -268,7 +298,7 @@ import { generateBreadcrumbSchema, generateAboutPageSchema, toJsonLd } from "@/l
   </main>
 
   <a
-    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    href={buildWhatsAppUrl(waPhone, "Hola! Me interesa saber más sobre vuestros viajes")}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Escríbenos por WhatsApp"

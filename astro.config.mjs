@@ -5,15 +5,34 @@ import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://travelhood.es',
+  site: process.env.PUBLIC_SITE_URL || 'https://travelhood.es',
   output: 'static',
   trailingSlash: 'always',
   adapter: vercel(),
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) =>
+        !page.includes('/404') &&
+        !page.includes('/redireccion-whatsapp'),
+    }),
+  ],
+  build: {
+    concurrency: 1,
+  },
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'hover',
+  },
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      allowedHosts: ['.ngrok-free.app'],
+    optimizeDeps: {
+      include: ['date-fns', 'date-fns/locale/es', 'lucide-react'],
     },
+    ...(process.env.NODE_ENV !== 'production' ? {
+      server: {
+        allowedHosts: ['.ngrok-free.app'],
+      },
+    } : {}),
   },
 });

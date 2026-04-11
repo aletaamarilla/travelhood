@@ -28,7 +28,11 @@ import {
   comparisonBySlugQuery,
   allLandingPagesQuery,
   landingBySlugQuery,
+  allLegalPagesQuery,
+  legalPageBySlugQuery,
   siteSettingsQuery,
+  globalFaqsByPageQuery,
+  allGlobalFaqsQuery,
 } from './queries'
 import type {
   SanityContinent,
@@ -42,7 +46,9 @@ import type {
   SanityBlogPost,
   SanityComparison,
   SanityLandingPage,
+  SanityLegalPage,
   SanitySiteSettings,
+  SanityGlobalFaq,
 } from '@/types/sanity'
 import type { SanityImageSource } from '@sanity/image-url'
 import {
@@ -96,7 +102,7 @@ async function ensureSettings(): Promise<{ defaultIncluded: string[]; defaultNot
   }
 }
 
-function resolveImage(img?: SanityImageSource | null): string {
+export function resolveImage(img?: SanityImageSource | null): string {
   if (!img) return ''
   if (typeof img === 'string') return img
   try {
@@ -106,13 +112,85 @@ function resolveImage(img?: SanityImageSource | null): string {
   }
 }
 
-function resolveImageThumb(img?: SanityImageSource | null, w = 800): string {
+export function resolveImageThumb(img?: SanityImageSource | null, w = 800): string {
   if (!img) return ''
   if (typeof img === 'string') return img
   try {
+    const ref = (img as Record<string, unknown>)?.asset as Record<string, string> | undefined
+    const isSvg = ref?._ref?.endsWith('-svg')
+    if (isSvg) return urlFor(img).url()
     return urlFor(img).width(w).auto('format').url()
   } catch {
     return ''
+  }
+}
+
+// ── Resolved Settings Images ──
+
+export interface ResolvedSettingsImages {
+  homeHeroImage: string
+  homeHeroImageAlt: string
+  homeWhyUsImage: string
+  homeHowItWorksImage: string
+  homeAboutBgImage: string
+  homeAboutPhoto: string
+  homeAboutPhotoAlt: string
+  travelhood_heroImage: string
+  travelhood_heroImageAlt: string
+  travelhood_purposePhoto: string
+  travelhood_purposePhotoAlt: string
+  travelhood_diffPhoto: string
+  travelhood_diffPhotoAlt: string
+  travelhood_communityPhotos: { url: string; alt: string }[]
+  blog_heroImage: string
+  blog_heroImageAlt: string
+  opiniones_heroImage: string
+  opiniones_heroImageAlt: string
+  comoFunciona_heroImage: string
+  comoFunciona_heroImageAlt: string
+  viajes_heroImage: string
+  viajes_heroImageAlt: string
+  ofertas_heroImage: string
+  ofertas_heroImageAlt: string
+  faq_heroImage: string
+  faq_heroImageAlt: string
+  orgLogoUrl: string
+  defaultSeoImageUrl: string
+}
+
+export function resolveSettingsImages(s: SanitySiteSettings): ResolvedSettingsImages {
+  return {
+    homeHeroImage: resolveImage(s.homeHeroImage),
+    homeHeroImageAlt: s.homeHeroImageAlt ?? '',
+    homeWhyUsImage: resolveImage(s.homeWhyUsImage),
+    homeHowItWorksImage: resolveImage(s.homeHowItWorksImage),
+    homeAboutBgImage: resolveImage(s.homeAboutBgImage),
+    homeAboutPhoto: resolveImage(s.homeAboutPhoto),
+    homeAboutPhotoAlt: s.homeAboutPhotoAlt ?? '',
+    travelhood_heroImage: resolveImage(s.travelhood_heroImage),
+    travelhood_heroImageAlt: s.travelhood_heroImageAlt ?? '',
+    travelhood_purposePhoto: resolveImage(s.travelhood_purposePhoto),
+    travelhood_purposePhotoAlt: s.travelhood_purposePhotoAlt ?? '',
+    travelhood_diffPhoto: resolveImage(s.travelhood_diffPhoto),
+    travelhood_diffPhotoAlt: s.travelhood_diffPhotoAlt ?? '',
+    travelhood_communityPhotos: (s.travelhood_communityPhotos ?? []).map((img) => ({
+      url: resolveImageThumb(img, 800),
+      alt: (img as SanityImageSource & { alt?: string }).alt ?? '',
+    })),
+    blog_heroImage: resolveImage(s.blog_heroImage),
+    blog_heroImageAlt: s.blog_heroImageAlt ?? '',
+    opiniones_heroImage: resolveImage(s.opiniones_heroImage),
+    opiniones_heroImageAlt: s.opiniones_heroImageAlt ?? '',
+    comoFunciona_heroImage: resolveImage(s.comoFunciona_heroImage),
+    comoFunciona_heroImageAlt: s.comoFunciona_heroImageAlt ?? '',
+    viajes_heroImage: resolveImage(s.viajes_heroImage),
+    viajes_heroImageAlt: s.viajes_heroImageAlt ?? '',
+    ofertas_heroImage: resolveImage(s.ofertas_heroImage),
+    ofertas_heroImageAlt: s.ofertas_heroImageAlt ?? '',
+    faq_heroImage: resolveImage(s.faq_heroImage),
+    faq_heroImageAlt: s.faq_heroImageAlt ?? '',
+    orgLogoUrl: resolveImageThumb(s.orgLogo, 200),
+    defaultSeoImageUrl: resolveImage(s.defaultSeoImage),
   }
 }
 
@@ -127,7 +205,7 @@ function mapContinent(s: SanityContinent): Continent {
     heroImage: resolveImage(s.heroImage),
     bestMonths: s.bestMonths ?? '',
     faqs: s.faqs?.map((f) => ({ question: f.question, answer: f.answer })) ?? [],
-    seoTitle: s.seo?.title ?? `Viajes en grupo a ${s.name} | Travelhood`,
+    seoTitle: s.seo?.title ?? `Viajes en grupo a ${s.name} | Travel Hood`,
     seoDescription: s.seo?.description ?? '',
   }
 }
@@ -184,13 +262,16 @@ function mapDestination(s: SanityDestination): Destination {
     idealFor: s.idealFor ?? '',
     climate: s.climate,
     categories: (s.categories ?? []) as Destination['categories'],
-    extraIncluded: s.extraIncluded ?? [],
-    extraNotIncluded: s.extraNotIncluded ?? [],
+    included: s.included ?? [],
+    notIncluded: s.notIncluded ?? [],
     itinerary: (s.itinerary ?? []).map((d) => ({
       day: d.day,
       title: d.title,
       description: d.description ?? '',
+      lat: d.lat,
+      lng: d.lng,
     })),
+    pdfUrl: s.pdfUrl ?? undefined,
   }
 }
 
@@ -237,45 +318,28 @@ export async function getDestinationSanityFaqs(slug: string): Promise<{ question
 interface MergeContext {
   defaultIncluded: string[]
   defaultNotIncluded: string[]
-  destinationData?: {
-    extraIncluded?: string[]
-    extraNotIncluded?: string[]
-    itinerary?: { day: number; title: string; description?: string }[]
-  }
-}
-
-function mapItineraryDay(d: { day: number; title: string; description?: string }) {
-  return { day: d.day, title: d.title, description: d.description ?? '' }
 }
 
 function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
-  const destData = ctx?.destinationData ?? {
-    extraIncluded: s.destination?.extraIncluded,
-    extraNotIncluded: s.destination?.extraNotIncluded,
-    itinerary: s.destination?.itinerary,
-  }
+  const destIncluded = s.destination?.included ?? []
+  const destNotIncluded = s.destination?.notIncluded ?? []
+  const destItinerary = s.destination?.itinerary ?? []
 
   const included = ctx
-    ? [...new Set([
-        ...ctx.defaultIncluded,
-        ...(destData?.extraIncluded ?? []),
-        ...(s.extraIncluded ?? []),
-      ])]
-    : s.extraIncluded ?? []
+    ? [...new Set([...ctx.defaultIncluded, ...destIncluded])]
+    : destIncluded
 
   const notIncluded = ctx
-    ? [...new Set([
-        ...ctx.defaultNotIncluded,
-        ...(destData?.extraNotIncluded ?? []),
-        ...(s.extraNotIncluded ?? []),
-      ])]
-    : s.extraNotIncluded ?? []
+    ? [...new Set([...ctx.defaultNotIncluded, ...destNotIncluded])]
+    : destNotIncluded
 
-  const destItinerary = Array.isArray(destData?.itinerary) ? destData.itinerary : []
-  const overrideItinerary = s.itineraryOverride ?? []
-  const resolvedItinerary = overrideItinerary.length > 0
-    ? overrideItinerary.map(mapItineraryDay)
-    : destItinerary.map(mapItineraryDay)
+  const itinerary = destItinerary.map((d) => ({
+    day: d.day,
+    title: d.title,
+    description: d.description ?? '',
+    lat: d.lat,
+    lng: d.lng,
+  }))
 
   return {
     id: s._id,
@@ -294,10 +358,7 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     status: s.status,
     included,
     notIncluded,
-    extraIncluded: s.extraIncluded ?? [],
-    extraNotIncluded: s.extraNotIncluded ?? [],
-    itinerary: resolvedItinerary,
-    itineraryOverride: overrideItinerary.map(mapItineraryDay),
+    itinerary,
     tags: (s.tags ?? []) as Trip['tags'],
   }
 }
@@ -320,10 +381,7 @@ export async function getTripsByDestination(slug: string): Promise<Trip[]> {
     sanityFetch<SanityTrip[]>(tripsByDestinationQuery, { slug }),
     ensureSettings(),
   ])
-  return data.map((s) => {
-    const destData = s.destination as unknown as MergeContext['destinationData']
-    return mapTrip(s, { ...settings, destinationData: destData ?? undefined })
-  })
+  return data.map((s) => mapTrip(s, settings))
 }
 
 export async function getTripsByTag(tag: string): Promise<Trip[]> {
@@ -402,7 +460,7 @@ function mapTripCategory(s: SanityTripCategory): TripCategoryData {
     heroImage: resolveImage(s.heroImage),
     idealProfile: s.idealProfile ?? '',
     faqs: s.faqs?.map((f) => ({ question: f.question, answer: f.answer })) ?? [],
-    seoTitle: s.seo?.title ?? `${s.name} — Viajes en grupo | Travelhood`,
+    seoTitle: s.seo?.title ?? `${s.name} — Viajes en grupo | Travel Hood`,
     seoDescription: s.seo?.description ?? '',
   }
 }
@@ -429,7 +487,7 @@ function mapSeason(s: SanitySeason): SeasonData {
     editorial: s.editorial,
     heroImage: resolveImage(s.heroImage),
     faqs: s.faqs?.map((f) => ({ question: f.question, answer: f.answer })) ?? [],
-    seoTitle: s.seo?.title ?? `${s.name} — Viajes | Travelhood`,
+    seoTitle: s.seo?.title ?? `${s.name} — Viajes | Travel Hood`,
     seoDescription: s.seo?.description ?? '',
   }
 }
@@ -462,7 +520,7 @@ function mapBlogPost(s: SanityBlogPost): BlogPost {
     dateISO: s.publishedAt ?? pubDate.toISOString().split('T')[0],
     readTime: s.readTime ?? '',
     featured: s.featured ?? false,
-    author: { name: s.author?.name ?? 'Travelhood', role: s.author?.role ?? '' },
+    author: { name: s.author?.name ?? 'Travel Hood', role: s.author?.role ?? '' },
     relatedDestinations: s.relatedDestinations?.map((d) => d.slug?.current ?? '').filter(Boolean) ?? [],
     relatedSlugs: s.relatedPosts?.map((p) => p.slug?.current ?? '').filter(Boolean) ?? [],
     tags: s.tags ?? [],
@@ -479,13 +537,17 @@ function mapBlogPost(s: SanityBlogPost): BlogPost {
 export async function getBlogPosts(): Promise<BlogPost[]> {
   if (!isSanityConfigured()) return hardBlogPosts
   const data = await sanityFetch<SanityBlogPost[]>(allBlogPostsQuery)
-  return data.map(mapBlogPost)
+  const sanityPosts = data.map(mapBlogPost)
+  const sanitySlugs = new Set(sanityPosts.map((p) => p.slug))
+  const extras = hardBlogPosts.filter((p) => !sanitySlugs.has(p.slug))
+  return [...sanityPosts, ...extras]
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
   if (!isSanityConfigured()) return hardBlogPosts.find((p) => p.slug === slug)
   const data = await sanityFetch<SanityBlogPost | null>(blogPostBySlugQuery, { slug })
-  return data ? mapBlogPost(data) : undefined
+  if (data) return mapBlogPost(data)
+  return hardBlogPosts.find((p) => p.slug === slug)
 }
 
 // ── Comparisons ──
@@ -529,6 +591,102 @@ export async function getLandingPages(): Promise<SanityLandingPage[]> {
 export async function getLandingBySlug(slug: string): Promise<SanityLandingPage | null> {
   if (!isSanityConfigured()) return null
   return sanityFetch<SanityLandingPage | null>(landingBySlugQuery, { slug })
+}
+
+// ── Legal Pages ──
+
+export async function getLegalPages(): Promise<SanityLegalPage[]> {
+  if (!isSanityConfigured()) return []
+  return sanityFetch<SanityLegalPage[]>(allLegalPagesQuery)
+}
+
+export async function getLegalPageBySlug(slug: string): Promise<SanityLegalPage | null> {
+  if (!isSanityConfigured()) return null
+  return sanityFetch<SanityLegalPage | null>(legalPageBySlugQuery, { slug })
+}
+
+// ── Global FAQs ──
+
+const FALLBACK_FAQS: SanityGlobalFaq[] = [
+  {
+    title: 'Preguntas generales',
+    slug: 'preguntas-generales',
+    order: 0,
+    pages: ['home', 'preguntas-frecuentes', 'como-funciona', 'trip-detail', 'viajar-sola'],
+    faqs: [
+      {
+        question: '¿Cómo reservo mi viaje?',
+        answer: 'Elige el viaje que más te guste, rellena el formulario de reserva y realiza el pago de la señal. Recibirás un email de confirmación con todos los detalles.',
+      },
+      {
+        question: '¿Qué incluye el viaje?',
+        answer: 'Cada viaje detalla en su ficha lo que incluye y lo que no. Generalmente incluye alojamiento, actividades y coordinador de viaje. El vuelo internacional no está incluido.',
+      },
+      {
+        question: '¿Es seguro viajar con Travel Hood?',
+        answer: 'Todos nuestros viajes incluyen seguro de viaje y están organizados por coordinadores experimentados que conocen el destino. Tu seguridad es nuestra prioridad.',
+      },
+      {
+        question: '¿Puedo cancelar mi reserva?',
+        answer: 'Puedes cancelar tu viaje según nuestra política de cancelación. Consulta los Términos y Condiciones para conocer los plazos y condiciones de reembolso.',
+      },
+      {
+        question: '¿Viajo sola o en grupo?',
+        answer: 'Viajas en grupo reducido con otras viajeras. Es la forma perfecta de conocer gente nueva mientras descubres destinos increíbles con total seguridad.',
+      },
+    ],
+  },
+]
+
+export async function getGlobalFaqs(page?: string): Promise<SanityGlobalFaq[]> {
+  if (!isSanityConfigured()) return FALLBACK_FAQS
+  try {
+    const data = page
+      ? await sanityFetch<SanityGlobalFaq[]>(globalFaqsByPageQuery, { page })
+      : await sanityFetch<SanityGlobalFaq[]>(allGlobalFaqsQuery)
+    return data.length > 0 ? data : FALLBACK_FAQS
+  } catch {
+    return FALLBACK_FAQS
+  }
+}
+
+// ── Price Range Calculation ──
+
+export interface PriceRange {
+  minPrice: number
+  maxPrice: number
+  formatted: string
+}
+
+export function calculatePriceRange(trips: Trip[]): PriceRange | null {
+  const activeTrips = trips.filter((t) => t.status !== 'full' && t.priceFrom > 0)
+  if (activeTrips.length === 0) return null
+  const prices = activeTrips.map((t) => t.priceFrom)
+  const min = Math.min(...prices)
+  const max = Math.max(...prices)
+  return {
+    minPrice: min,
+    maxPrice: max,
+    formatted:
+      min === max
+        ? `Desde ${min.toLocaleString('es-ES')}€`
+        : `${min.toLocaleString('es-ES')}€ – ${max.toLocaleString('es-ES')}€`,
+  }
+}
+
+export async function getDepositAmount(): Promise<number> {
+  const settings = await getSiteSettings()
+  return settings?.depositAmount ?? 250
+}
+
+// ── Featured Destinations ──
+
+export async function getFeaturedDestinations(limit = 6): Promise<Destination[]> {
+  const [allDests, allTrips] = await Promise.all([getDestinations(), getTrips()])
+  const activeDestIds = new Set(allTrips.filter((t) => t.status !== 'full').map((t) => t.destinationId))
+  const withActiveTrips = allDests.filter((d) => activeDestIds.has(d.id))
+  const tripCount = (d: Destination) => allTrips.filter((t) => t.destinationId === d.id && t.status !== 'full').length
+  return withActiveTrips.sort((a, b) => tripCount(b) - tripCount(a)).slice(0, limit)
 }
 
 // ── Re-export helpers that don't change ──

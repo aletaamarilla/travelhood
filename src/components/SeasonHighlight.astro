@@ -98,7 +98,10 @@ const cards = rawTrips
             <img
               src={card.heroImage}
               alt={card.name}
+              width="600"
+              height="400"
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
             />
             {card.isUrgent && (
               <div class="absolute top-3 left-3">

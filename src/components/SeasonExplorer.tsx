@@ -1,5 +1,6 @@
 import { useState } from "react"
 import type { Trip, Destination } from "@/lib/travel-data"
+import { deduplicateTripsByDestination } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -56,7 +57,7 @@ export default function SeasonExplorer({ trips, destinations }: SeasonExplorerPr
   ]
   const [activeId, setActiveId] = useState("all")
   const current = categories.find((c) => c.id === activeId)!
-  const allFiltered = current.getTrips()
+  const allFiltered = deduplicateTripsByDestination(current.getTrips())
   const visible = allFiltered.slice(0, MAX_VISIBLE)
   const hasMore = allFiltered.length > MAX_VISIBLE
 
@@ -118,14 +119,17 @@ export default function SeasonExplorer({ trips, destinations }: SeasonExplorerPr
               return (
                 <a
                   key={trip.id}
-                  href={`/destino/${dest.slug}`}
+                  href={`/destino/${dest.slug}/`}
                   className="group relative overflow-hidden rounded-xl"
                 >
                   <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-xl">
                     <img
                       src={dest.heroImage}
                       alt={dest.name}
+                      width={400}
+                      height={500}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 

@@ -1,4 +1,9 @@
 ---
+import { getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+import { generateSiteNavigationSchema, toJsonLd } from "@/lib/schemas";
+import CookieBanner from "@/components/CookieBanner";
+import { SITE_URL, FALLBACK_SITE_NAME } from "@/lib/config";
+
 interface Props {
   title?: string;
   description?: string;
@@ -6,23 +11,28 @@ interface Props {
   heroImage?: string;
   ogImage?: string;
   ogUrl?: string;
+  ogType?: string;
   canonical?: string;
   noIndex?: boolean;
 }
 
-const SITE_URL = "https://travelhood.es";
-const DEFAULT_OG_IMAGE = "/images/hero-main.jpg";
+const layoutSettings = await getSiteSettings();
+const layoutImages = layoutSettings ? resolveSettingsImages(layoutSettings) : null;
+const DEFAULT_OG_IMAGE = layoutImages?.defaultSeoImageUrl || "/images/og-default.jpg";
 
 const {
-  title = 'Travelhood — Viajes en grupo para 20-35 años',
+  title = 'Travel Hood — Viajes en grupo para 20-35 años',
   description = 'Nadie debería quedarse en casa por falta de compañía. Viajes en grupo organizados con itinerarios únicos, coordinador en destino y comunidad real.',
-  keywords = 'viajes en grupo, viajar solo, viajes jóvenes, viajes organizados, travelhood',
+  keywords = 'viajes en grupo, viajar solo, viajes jóvenes, viajes organizados, travel hood, travelhood',
   heroImage,
   ogImage = DEFAULT_OG_IMAGE,
   ogUrl,
+  ogType = "website",
   canonical,
   noIndex = false,
 } = Astro.props;
+
+const gtmId = import.meta.env.PUBLIC_GTM_ID || "";
 
 const currentPath = Astro.url.pathname;
 const canonicalUrl = canonical ?? `${SITE_URL}${currentPath.endsWith('/') ? currentPath : currentPath + '/'}`;
@@ -38,24 +48,34 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
     <meta name="theme-color" content="#143D4A" />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
-    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {noIndex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    }
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang="es" href={canonicalUrl} />
-    <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={ogPageUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:site_name" content="Travelhood" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content={FALLBACK_SITE_NAME} />
     <meta property="og:locale" content="es_ES" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-icon.png" />
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
     <link rel="dns-prefetch" href="https://flagcdn.com" />
+    {gtmId && <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />}
     {heroImage && <link rel="preload" as="image" href={heroImage} fetchpriority="high" />}
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -67,10 +87,60 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
         cssSelector: [".geo-data-block", "#faq"]
       }
     })} />
+    <script type="application/ld+json" set:html={toJsonLd(generateSiteNavigationSchema())} />
     <slot name="head" />
+    {gtmId && (
+      <script is:inline define:vars={{ gtmId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        var consent = null;
+        try {
+          var m = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
+          if (m) consent = JSON.parse(decodeURIComponent(m[1]));
+        } catch(e) {}
+
+        var analyticsGranted = consent && consent.analytics === true ? 'granted' : 'denied';
+        var marketingGranted = consent && consent.marketing === true ? 'granted' : 'denied';
+
+        gtag('consent', 'default', {
+          analytics_storage: analyticsGranted,
+          ad_storage: marketingGranted,
+          ad_user_data: marketingGranted,
+          ad_personalization: marketingGranted,
+          functionality_storage: 'granted',
+          security_storage: 'granted',
+          url_passthrough: true,
+          ads_data_redaction: true
+        });
+
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',gtmId);
+
+        window.addEventListener('cookieConsentUpdated', function(e) {
+          var d = e.detail || {};
+          var a = d.analytics === true ? 'granted' : 'denied';
+          var mk = d.marketing === true ? 'granted' : 'denied';
+          gtag('consent', 'update', {
+            analytics_storage: a,
+            ad_storage: mk,
+            ad_user_data: mk,
+            ad_personalization: mk
+          });
+        });
+      </script>
+    )}
   </head>
-  <body class="font-sans antialiased">
+  <body class="font-sans antialiased" data-logo={layoutImages?.orgLogoUrl || "/images/logo.svg"}>
+    {gtmId && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    )}
     <slot />
+    <script is:inline src="/scripts/register-sw.js"></script>
+    <CookieBanner client:idle />
   </body>
 </html>
 

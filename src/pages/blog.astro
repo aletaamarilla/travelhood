@@ -1,30 +1,37 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import BlogContent from "@/components/BlogContent";
 import CTAFooter from "@/components/CTAFooter.astro";
 import Footer from "@/components/Footer.astro";
-import { getBlogPosts } from "@/lib/data-provider";
-const blogPosts = await getBlogPosts();
+import { getBlogPosts, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, buildWhatsAppUrl } from "@/lib/config";
+const [blogPosts, blogPageSettings] = await Promise.all([getBlogPosts(), getSiteSettings()]);
+const blogPageImages = blogPageSettings ? resolveSettingsImages(blogPageSettings) : null;
+const waPhone = blogPageSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
 import { generateBreadcrumbSchema, generateCollectionPageSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
 ---
 
 <Layout
-  title="Blog — Travelhood"
+  title="Blog de viajes — Guías, consejos e inspiración | Travel Hood"
   description="Consejos, guías e historias de viajes en grupo para jóvenes de 20 a 35 años. Inspírate para tu próxima aventura."
-  keywords="blog viajes grupo, consejos viajar solo, guías viaje jóvenes, historias viajeros, travelhood blog"
+  keywords="blog viajes grupo, consejos viajar solo, guías viaje jóvenes, historias viajeros, travel hood blog, travelhood blog"
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Blog",url:"/blog/"}]))} />
-    <script type="application/ld+json" set:html={toJsonLd(generateCollectionPageSchema({name:"Blog Travelhood",description:"Consejos, guías e historias de viajes en grupo para jóvenes",url:"/blog/"}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateCollectionPageSchema({name:"Blog Travel Hood",description:"Consejos, guías e historias de viajes en grupo para jóvenes",url:"/blog/"}))} />
     <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:"Artículos del blog",items:blogPosts.map((p,i)=>({name:p.title,url:`/blog/${p.slug}/`,position:i+1}))}))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
-    <section class="bg-teal-deep pt-28 pb-16">
-      <div class="mx-auto max-w-7xl px-6 text-center">
+    <section class="relative bg-teal-deep pt-28 pb-16">
+      {blogPageImages?.blog_heroImage && (
+        <img src={blogPageImages.blog_heroImage} alt={blogPageImages.blog_heroImageAlt || ""} aria-hidden="true" class="absolute inset-0 h-full w-full object-cover" width="1920" height="1080" loading="eager" fetchpriority="high" />
+      )}
+      {blogPageImages?.blog_heroImage && <div class="absolute inset-0 bg-teal-deep/85"></div>}
+      <div class="relative mx-auto max-w-7xl px-6 text-center">
         <span class="inline-block rounded-full bg-coral/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-coral">
           Blog
         </span>
@@ -41,40 +48,12 @@ import { generateBreadcrumbSchema, generateCollectionPageSchema, generateItemLis
 
     <BlogContent client:load posts={blogPosts} />
 
-    <!-- Newsletter / Lead Magnet -->
-    <section class="bg-background py-16">
-      <div class="mx-auto max-w-2xl px-6 text-center">
-        <span class="text-xs font-bold uppercase tracking-widest text-secondary">
-          No te pierdas nada
-        </span>
-        <h2 class="mt-4 font-serif text-2xl font-extrabold text-foreground sm:text-3xl text-balance leading-tight">
-          Recibe los mejores consejos para tu próximo viaje.
-        </h2>
-        <p class="mt-3 text-base text-muted-foreground leading-relaxed">
-          Cada semana, inspiración directa a tu email. Sin spam, solo contenido que merece la pena.
-        </p>
-        <form class="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-0">
-          <input
-            type="email"
-            placeholder="tu@email.com"
-            class="flex-1 rounded-full border-2 border-border bg-card px-6 py-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-coral focus:outline-none sm:rounded-r-none"
-          />
-          <button
-            type="submit"
-            class="rounded-full bg-coral px-8 py-3.5 text-sm font-bold text-white transition-all hover:brightness-110 sm:rounded-l-none"
-          >
-            Suscribirme
-          </button>
-        </form>
-      </div>
-    </section>
-
     <CTAFooter />
     <Footer />
   </main>
 
   <a
-    href="https://wa.me/34600000000?text=Hola!%20Me%20interesa%20saber%20m%C3%A1s%20sobre%20vuestros%20viajes"
+    href={buildWhatsAppUrl(waPhone, "Hola! Me interesa saber más sobre vuestros viajes")}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Escríbenos por WhatsApp"

@@ -1,12 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
 import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
@@ -24,7 +23,7 @@ const [destination, destTripsRaw, countries, continents] = await Promise.all([
   getContinents(),
 ]);
 
-if (!destination) return Astro.redirect("/404");
+if (!destination) return Astro.redirect("/404/");
 
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
@@ -40,21 +39,21 @@ const minPrice = destTrips.length > 0
 
 const faqs = [
   { question: `¿Cuál es la mejor época para viajar a ${destination.name}?`, answer: `${destination.climate} Consulta las fechas de los viajes disponibles para elegir la temporada que mejor se adapte a tu preferencia.` },
-  { question: `¿Cuánto cuesta viajar a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travelhood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte, coordinador y seguro.` },
+  { question: `¿Cuánto cuesta viajar a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte y coordinador.` },
   { question: `¿Cuántos días dura un viaje a ${destination.name}?`, answer: destTrips.length > 0 ? `Los viajes a ${destination.name} duran ${destTrips[0].durationDays} días. Incluyen itinerario completo con actividades y tiempo libre.` : `La duración varía según la temporada. Consulta los viajes disponibles para más detalles.` },
 ];
 
-const pageTitle = `¿Cuándo es la mejor época para viajar a ${destination.name}? — Travelhood`;
+const pageTitle = `¿Cuándo es la mejor época para viajar a ${destination.name}? — Travel Hood`;
 const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destination.climate} Viajes en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} con coordinador y alojamiento incluidos.`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} keywords={`mejor época viajar ${destination.name}, cuando viajar a ${destination.name}, clima ${destination.name}, temporada ${destination.name}`}>
+<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={destination.heroImage} keywords={`mejor época viajar ${destination.name}, cuando viajar a ${destination.name}, clima ${destination.name}, temporada ${destination.name}`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:`/destino/${destination.slug}/`},{name:"Cuándo viajar",url:`/cuando-viajar-a/${destination.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <HeroSection
       image={destination.heroImage}
@@ -74,8 +73,8 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
           ¿Qué clima encontrarás en {destination.name}?
         </h2>
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
-          <p>{destination.climate} {destination.name} ofrece experiencias únicas en cada temporada. Travelhood selecciona las mejores fechas para cada destino.</p>
-          <p>Un viaje en grupo a {destination.name} con Travelhood cuesta desde {minPrice > 0 ? `${minPrice}€` : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno, coordinador y seguro de viaje.</p>
+          <p>{destination.climate} {destination.name} ofrece experiencias únicas en cada temporada. Travel Hood selecciona las mejores fechas para cada destino.</p>
+          <p>Un viaje en grupo a {destination.name} con Travel Hood cuesta desde {minPrice > 0 ? `${minPrice}€` : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno y coordinador.</p>
         </div>
       </div>
     </section>
@@ -128,7 +127,6 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
       ctaHref={`/destino/${destination.slug}/`}
     />
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

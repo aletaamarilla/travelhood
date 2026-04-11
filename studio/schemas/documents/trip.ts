@@ -19,7 +19,6 @@ export default defineType({
     {name: 'dates', title: 'Fechas y precios', options: {collapsible: true, collapsed: false}},
     {name: 'places', title: 'Plazas', options: {collapsible: true, collapsed: false}},
     {name: 'promo', title: 'Promoción', options: {collapsible: true, collapsed: true}},
-    {name: 'itineraryFieldset', title: 'Itinerario', options: {collapsible: true, collapsed: true}},
   ],
   fields: [
     defineField({
@@ -147,35 +146,6 @@ export default defineType({
       to: [{type: 'coordinator'}],
       description: '¿Qué coordinador/a lleva este viaje?',
       validation: (Rule) => Rule.required(),
-    }),
-
-    // --- Incluye / No incluye (overrides) ---
-    defineField({
-      name: 'extraIncluded',
-      title: 'Extras que incluye (override)',
-      type: 'array',
-      of: [{type: 'string'}],
-      description:
-        'Solo si este viaje incluye algo DISTINTO al destino. Normalmente vacío.',
-    }),
-    defineField({
-      name: 'extraNotIncluded',
-      title: 'Extras que NO incluye (override)',
-      type: 'array',
-      of: [{type: 'string'}],
-      description:
-        'Solo si este viaje NO incluye algo DISTINTO al destino. Normalmente vacío.',
-    }),
-
-    // --- Itinerario (override) ---
-    defineField({
-      name: 'itineraryOverride',
-      title: 'Itinerario (override)',
-      type: 'array',
-      of: [{type: 'itineraryDay'}],
-      fieldset: 'itineraryFieldset',
-      description:
-        'Solo si la ruta de este viaje difiere del itinerario base del destino. Normalmente vacío.',
     }),
 
     // --- Tags de temporada ---

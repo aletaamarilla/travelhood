@@ -1,16 +1,16 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import GEODataBlock from "@/components/GEODataBlock.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
 import CTASection from "@/components/CTASection.astro";
-import InternalLinks from "@/components/InternalLinks.astro";
 import {
   getCountries,
   getDestinations,
   getTrips,
   getContinents,
+  calculatePriceRange,
 } from "@/lib/data-provider";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
@@ -46,30 +46,31 @@ const minPrice = countryTrips.length > 0
   : 0;
 
 const faqs = [
-  { question: `¿Cuánto cuesta viajar a ${country.name} en grupo?`, answer: `Un viaje en grupo a ${country.name} con Travelhood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno, coordinador y seguro.` },
-  { question: `¿Es seguro viajar a ${country.name} en grupo?`, answer: `Sí. Todos los viajes a ${country.name} incluyen un coordinador Travelhood con experiencia en el destino, seguro de viaje y un grupo reducido de 12-18 personas. Nunca estás solo/a.` },
+  { question: `¿Cuánto cuesta viajar a ${country.name} en grupo?`, answer: `Un viaje en grupo a ${country.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno y coordinador.` },
+  { question: `¿Es seguro viajar a ${country.name} en grupo?`, answer: `Sí. Todos los viajes a ${country.name} incluyen un coordinador Travel Hood con experiencia en el destino y un grupo reducido de 12-18 personas. Nunca estás solo/a.` },
   { question: `¿Cuál es la mejor época para viajar a ${country.name}?`, answer: `La mejor época depende del destino específico dentro de ${country.name}. Consulta las páginas de cada destino para ver las fechas recomendadas y la información climática.` },
 ];
 
-const pageTitle = `Viajes en grupo a ${country.name} para jóvenes — Travelhood`;
-const pageDescription = `Descubre todos los viajes en grupo a ${country.name} con Travelhood. Grupos de 12-18 personas de 20-35 años con coordinador, alojamiento y seguro incluidos.`;
+const globalPriceRange = calculatePriceRange(trips);
+const pageTitle = `Viajes en grupo a ${country.name} para jóvenes — Travel Hood`;
+const pageDescription = `Descubre todos los viajes en grupo a ${country.name} con Travel Hood. Grupos de 12-18 personas de 20-35 años con coordinador y alojamiento incluidos.`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} keywords={`viaje en grupo a ${country.name}, viajes ${country.name} jóvenes, ${country.name} grupo organizado, travelhood ${country.name}`}>
+<Layout title={pageTitle} description={pageDescription} keywords={`viaje en grupo a ${country.name}, viajes ${country.name} jóvenes, ${country.name} grupo organizado, travel hood ${country.name}, travelhood ${country.name}`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:continent.name,url:`/destinos/${continent.slug}/`},{name:country.name,url:`/pais/${country.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:`Destinos en ${country.name}`,items:countryDestinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
-    <Navbar client:load solid />
+    <Navbar solid />
 
     <!-- Hero -->
     <section class="relative flex min-h-[60vh] items-center justify-center overflow-hidden">
       {countryDestinations[0] && (
         <img
           src={countryDestinations[0].heroImage}
-          alt={`Viaje en grupo a ${country.name} — Travelhood`}
+          alt={`Viaje en grupo a ${country.name} — Travel Hood`}
           class="absolute inset-0 h-full w-full object-cover"
           width="1920"
           height="1080"
@@ -100,7 +101,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           Viajes en grupo a {country.name} para jóvenes
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Descubre {country.name} con un grupo de 12-18 personas de tu edad. Coordinador en destino, alojamiento y seguro incluidos.
+          Descubre {country.name} con un grupo de 12-18 personas de tu edad. Coordinador en destino y alojamiento incluidos.
           {minPrice > 0 && ` Desde ${minPrice}€ por persona (sin vuelo).`}
         </p>
       </div>
@@ -110,14 +111,14 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
     <section class="bg-background py-16">
       <div class="mx-auto max-w-3xl px-6">
         <h2 class="font-serif text-2xl font-extrabold text-foreground sm:text-3xl mb-6 text-center">
-          ¿Por qué viajar a {country.name} con Travelhood?
+          ¿Por qué viajar a {country.name} con Travel Hood?
         </h2>
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            {country.name} es uno de los destinos más solicitados por los viajeros de Travelhood. Con itinerarios diseñados para jóvenes de 20 a 35 años, cada viaje combina aventura, cultura y momentos únicos en grupo.
+            {country.name} es uno de los destinos más solicitados por los viajeros de Travel Hood. Con itinerarios diseñados para jóvenes de 20 a 35 años, cada viaje combina aventura, cultura y momentos únicos en grupo.
           </p>
           <p>
-            El 70% de los viajeros de Travelhood reservan solos. El grupo medio tiene 14 personas y el 98% de los viajeros repiten. Los viajes cuestan entre 590€ y 1.590€, sin vuelo.
+            La mayoría de los viajeros de Travel Hood reservan solos. El grupo medio tiene 14 personas y casi todos repiten.{globalPriceRange ? ` Los viajes cuestan entre ${globalPriceRange.minPrice.toLocaleString('es-ES')}€ y ${globalPriceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
           </p>
         </div>
       </div>
@@ -137,7 +138,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
               return (
                 <a href={`/destino/${dest.slug}/`} class="group relative overflow-hidden rounded-2xl border border-border/40 bg-background transition-all hover:shadow-lg hover:-translate-y-0.5">
                   <div class="aspect-[16/10] overflow-hidden">
-                    <img src={dest.heroImage} alt={`Viaje en grupo a ${dest.name} — Travelhood`} width="400" height="250" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <img src={dest.heroImage} alt={`Viaje en grupo a ${dest.name} — Travel Hood`} width="400" height="250" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   </div>
                   <div class="p-5">
                     <h3 class="font-serif text-lg font-bold text-foreground">{dest.name}</h3>
@@ -188,13 +189,13 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
     <!-- GEO Data Block -->
     <GEODataBlock
       title={`Viajes en grupo a ${country.name} — Datos clave`}
-      subtitle={`Información actualizada sobre viajes organizados a ${country.name} con Travelhood`}
+      subtitle={`Información actualizada sobre viajes organizados a ${country.name} con Travel Hood`}
       dataPoints={[
         { label: "Destinos", value: `${countryDestinations.length} destinos en ${country.name}` },
         { label: "Precio desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
         { label: "Viajes disponibles", value: `${countryTrips.length} viajes` },
         { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
-        { label: "Incluye", value: "Coordinador + alojamiento + seguro" },
+        { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
       ]}
     />
 
@@ -212,7 +213,6 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
       ctaHref="/viajes/"
     />
 
-    <InternalLinks />
     <Footer />
   </main>
 </Layout>

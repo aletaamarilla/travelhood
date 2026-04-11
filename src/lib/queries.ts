@@ -26,7 +26,7 @@ export const countryBySlugQuery = `*[_type == "country" && slug.current == $slug
 export const allDestinationsQuery = `*[_type == "destination"] | order(name asc) {
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   highlights, idealFor, climate, categories,
-  extraIncluded, extraNotIncluded,
+  included, notIncluded,
   country->{_id, name, slug, flag},
   continent->{_id, name, slug},
   seo
@@ -36,10 +36,11 @@ export const destinationBySlugQuery = `*[_type == "destination" && slug.current 
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   gallery, highlights, idealFor, climate, categories,
   climateByMonth, budgetPerDay, coordinates,
-  extraIncluded, extraNotIncluded, itinerary,
+  included, notIncluded, itinerary,
   country->{_id, name, slug, flag, currency, currencyRate, language, timezone, visaRequired, visaInfo, vaccinesRecommended},
   continent->{_id, name, slug},
-  faqs, seo
+  faqs, seo,
+  "pdfUrl": pdfFile.asset->url
 }`
 
 export const destinationsByContinentQuery = `*[_type == "destination" && continent->slug.current == $slug] | order(name asc) {
@@ -53,8 +54,7 @@ export const allTripsQuery = `*[_type == "trip" && status != "full"] | order(dep
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  extraIncluded, extraNotIncluded,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, extraIncluded, extraNotIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -62,8 +62,7 @@ export const tripsByDestinationQuery = `*[_type == "trip" && destination->slug.c
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  extraIncluded, extraNotIncluded, itineraryOverride,
-  destination->{_id, name, slug, extraIncluded, extraNotIncluded, itinerary},
+  destination->{_id, name, slug, included, notIncluded, itinerary},
   coordinator->{_id, name, slug, image, imageAlt, role, bio, quote}
 }`
 
@@ -71,8 +70,7 @@ export const tripsByTagQuery = `*[_type == "trip" && $tag in tags] | order(depar
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  extraIncluded, extraNotIncluded,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, extraIncluded, extraNotIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, itinerary, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -124,7 +122,10 @@ export const seasonBySlugQuery = `*[_type == "season" && slug.current == $slug][
 // ── Blog Posts ──
 export const allBlogPostsQuery = `*[_type == "blogPost"] | order(publishedAt desc) {
   _id, title, slug, excerpt, category, image, imageAlt,
-  publishedAt, updatedAt, readTime, featured, author, tags, seo
+  publishedAt, updatedAt, readTime, featured, author, tags,
+  sections, seo,
+  relatedDestinations[]->{_id, name, slug, heroImage, shortDescription},
+  relatedPosts[]->{_id, title, slug, excerpt, image, imageAlt, category, publishedAt}
 }`
 
 export const blogPostBySlugQuery = `*[_type == "blogPost" && slug.current == $slug][0] {
@@ -173,8 +174,43 @@ export const landingBySlugQuery = `*[_type == "landingPage" && slug == $slug][0]
   featuredDestinations[]->{_id, name, slug, heroImage, heroImageAlt, shortDescription, country->{name, flag}}
 }`
 
+// ── Legal Pages ──
+export const allLegalPagesQuery = `*[_type == "legalPage"] | order(title asc) {
+  _id, title, slug, version, effectiveDate, lastReviewedAt, body, seo
+}`
+
+export const legalPageBySlugQuery = `*[_type == "legalPage" && slug.current == $slug][0] {
+  _id, title, slug, version, effectiveDate, lastReviewedAt, body, seo
+}`
+
+// ── Global FAQs ──
+export const globalFaqsByPageQuery = `*[_type == "globalFaq" && $page in pages] | order(order asc) {
+  title,
+  "slug": slug.current,
+  order,
+  faqs[]{ question, answer }
+}`
+
+export const allGlobalFaqsQuery = `*[_type == "globalFaq"] | order(order asc) {
+  title,
+  "slug": slug.current,
+  faqs[]{ question, answer }
+}`
+
 // ── Site Settings ──
 export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
-  _id, siteName, siteUrl, orgLogo, priceRange, contactEmail,
-  socialLinks, defaultSeoImage, defaultIncluded, defaultNotIncluded
+  _id, siteName, siteUrl, orgLogo, priceRange, depositAmount, contactEmail, whatsappPhone, whatsappCommunityUrl,
+  socialLinks, defaultSeoImage, defaultIncluded, defaultNotIncluded,
+  homeHeroImage, homeHeroImageAlt, homeWhyUsImage, homeHowItWorksImage,
+  homeAboutBgImage, homeAboutPhoto, homeAboutPhotoAlt,
+  travelhood_heroImage, travelhood_heroImageAlt,
+  travelhood_purposePhoto, travelhood_purposePhotoAlt,
+  travelhood_diffPhoto, travelhood_diffPhotoAlt,
+  travelhood_communityPhotos,
+  blog_heroImage, blog_heroImageAlt,
+  opiniones_heroImage, opiniones_heroImageAlt,
+  comoFunciona_heroImage, comoFunciona_heroImageAlt,
+  viajes_heroImage, viajes_heroImageAlt,
+  ofertas_heroImage, ofertas_heroImageAlt,
+  faq_heroImage, faq_heroImageAlt
 }`

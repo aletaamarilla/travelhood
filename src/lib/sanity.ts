@@ -14,7 +14,7 @@ function getClient(): SanityClient {
       projectId,
       dataset: import.meta.env.SANITY_DATASET || 'production',
       apiVersion: import.meta.env.SANITY_API_VERSION || '2026-03-16',
-      useCdn: false,
+      useCdn: true,
     })
   }
   return _client

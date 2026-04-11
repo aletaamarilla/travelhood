@@ -75,7 +75,7 @@ export default function SearchIsland({ destinations, continents }: SearchIslandP
     if (selectedWhere) params.set("donde", selectedWhere.id)
     if (selectedWhen) params.set("cuando", selectedWhen.id)
     const qs = params.toString()
-    window.location.href = (qs ? `/viajes?${qs}` : "/viajes") + "#resultados"
+    window.location.href = (qs ? `/viajes/?${qs}` : "/viajes/") + "#resultados"
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -86,28 +86,6 @@ export default function SearchIsland({ destinations, continents }: SearchIslandP
   const clearWhen = () => { setSelectedWhen(null) }
 
   return (
-    <>
-      {/* ===== HERO + SEARCH ===== */}
-      <section className="relative">
-        <img src="/images/hero-main.jpg" alt="Paisaje de aventura" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/55" />
-
-        <div className="relative z-10 flex min-h-[55vh] flex-col items-center px-6 pt-24 sm:min-h-[58vh] sm:pt-28 lg:min-h-[65vh]">
-          <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-5 text-center">
-            <h1 className="font-serif text-[2.25rem] font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
-              Tú pones las ganas,
-              <br />
-              nosotros el grupo.
-            </h1>
-            <p className="max-w-md text-base text-white/85 leading-relaxed sm:text-lg">
-              Viaja en grupos reducidos con personas de tu edad. Itinerario, alojamiento y coordinador incluidos.
-            </p>
-          </div>
-
-          <div className="z-20 mx-auto w-full max-w-2xl translate-y-1/2">
-          <p className="mb-3 text-center text-[13px] tracking-wide text-white/65">
-            +500 viajeros&ensp;·&ensp;{destinations.length} destinos&ensp;·&ensp;Coordinador en destino
-          </p>
           <div className="rounded-2xl bg-card p-1.5 shadow-2xl sm:rounded-full">
             <div className="flex flex-col sm:flex-row sm:items-center">
 
@@ -160,7 +138,7 @@ export default function SearchIsland({ destinations, continents }: SearchIslandP
                           onClick={() => { setSelectedWhere({ type: "destination", id: dest.id, label: dest.name }); setQuery(dest.name); setWhereOpen(false) }}
                           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
                         >
-                          <img src={dest.heroImage} alt={dest.name} className="h-8 w-8 shrink-0 rounded-md object-cover" />
+                          <img src={dest.heroImage} alt={dest.name} width={32} height={32} className="h-8 w-8 shrink-0 rounded-md object-cover" />
                           <div className="min-w-0">
                             <p className="text-sm font-medium text-foreground">{dest.name}</p>
                             <p className="truncate text-xs text-muted-foreground/70">{dest.shortDescription}</p>
@@ -197,7 +175,7 @@ export default function SearchIsland({ destinations, continents }: SearchIslandP
                           onClick={() => { setSelectedWhere({ type: "destination", id: dest.id, label: dest.name }); setQuery(dest.name); setWhereOpen(false) }}
                           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
                         >
-                          <img src={dest.heroImage} alt={dest.name} className="h-8 w-8 shrink-0 rounded-md object-cover" />
+                          <img src={dest.heroImage} alt={dest.name} width={32} height={32} className="h-8 w-8 shrink-0 rounded-md object-cover" />
                           <p className="text-sm text-foreground">{dest.name}</p>
                         </button>
                       ))}
@@ -303,10 +281,5 @@ export default function SearchIsland({ destinations, continents }: SearchIslandP
             </div>
           </div>
         </div>
-
-          </div>
-        </div>
-      </section>
-    </>
   )
 }

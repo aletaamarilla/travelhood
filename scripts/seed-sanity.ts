@@ -62,31 +62,41 @@ async function seed() {
   const {
     continents, countries, destinations, trips,
     coordinators, testimonials, tripCategories, seasons,
+    defaultIncluded, defaultNotIncluded,
   } = travelData
   const { blogPosts } = blogData
   const { comparisons } = comparisonsData
 
   const tx = client.transaction()
 
-  // Maps to track generated _ids for references
+  const dryRun = process.argv.includes('--dry-run')
+
   const continentIdMap = new Map<string, string>()
   const countryIdMap = new Map<string, string>()
   const destIdMap = new Map<string, string>()
   const coordIdMap = new Map<string, string>()
+  const tripIds = new Set<string>()
+  const testimonialIds = new Set<string>()
+  const categoryIds = new Set<string>()
+  const seasonIds = new Set<string>()
+  const blogPostIds = new Set<string>()
+  const comparisonIds = new Set<string>()
 
   // 1. Site Settings
   console.log('📝 siteSettings...')
   tx.createOrReplace({
     _type: 'siteSettings',
     _id: 'siteSettings',
-    siteName: 'Travelhood',
+    siteName: 'Travel Hood',
     siteUrl: 'https://travelhood.es',
     priceRange: '590€ - 1.590€',
-    contactEmail: 'hola@travelhood.es',
+    contactEmail: 'contacta@travelhood.es',
     socialLinks: [
-      { _key: makeKey(), platform: 'instagram', url: 'https://instagram.com/travelhood.es' },
+      { _key: makeKey(), platform: 'instagram', url: 'https://instagram.com/travelhood_esp' },
       { _key: makeKey(), platform: 'tiktok', url: 'https://tiktok.com/@travelhood.es' },
     ],
+    whatsappPhone: '34686684204',
+    whatsappCommunityUrl: 'https://chat.whatsapp.com/CA8Mqw35bdG4dkHfxGeVUZ',
   })
 
   // 2. Continents
@@ -122,6 +132,13 @@ async function seed() {
       slug: makeSlug(c.slug),
       continent: makeRef(continentIdMap.get(c.continentId) ?? ''),
       flag: c.flag,
+      currency: c.currency,
+      currencyRate: c.currencyRate,
+      language: c.language,
+      timezone: c.timezone,
+      visaRequired: c.visaRequired,
+      visaInfo: c.visaInfo,
+      vaccinesRecommended: c.vaccinesRecommended,
     })
   }
 
@@ -131,7 +148,18 @@ async function seed() {
     const _id = `destination-${d.slug}`
     destIdMap.set(d.id, _id)
 
-    const faqs: { _key: string; question: string; answer: string }[] = []
+    const faqs = (d.faqs ?? []).map((f: { question: string; answer: string }) => ({
+      _key: makeKey(),
+      question: f.question,
+      answer: f.answer,
+    }))
+
+    const destItinerary = (d.itinerary ?? []).map((day: { day: number; title: string; description: string }) => ({
+      _key: makeKey(),
+      day: day.day,
+      title: day.title,
+      description: day.description,
+    }))
 
     tx.createOrReplace({
       _type: 'destination',
@@ -142,11 +170,46 @@ async function seed() {
       continent: makeRef(continentIdMap.get(d.continentId) ?? ''),
       description: d.description,
       shortDescription: d.shortDescription,
+      heroImageAlt: d.heroImageAlt,
       highlights: d.highlights,
       idealFor: d.idealFor,
       climate: d.climate,
       categories: d.categories,
+      coordinates: d.coordinates
+        ? { _type: 'geopoint', lat: d.coordinates.lat, lng: d.coordinates.lng }
+        : undefined,
+      climateByMonth: d.climateByMonth?.map((m) => ({
+        _key: makeKey(),
+        month: m.month,
+        avgTemp: m.avgTemp,
+        rainfall: m.rainfall,
+        recommendation: m.recommendation,
+        note: m.note,
+      })),
+      budgetPerDay: d.budgetPerDay
+        ? {
+            mealCostLow: d.budgetPerDay.mealCostLow,
+            mealCostMid: d.budgetPerDay.mealCostMid,
+            beerCost: d.budgetPerDay.beerCost,
+            dailyBudget: d.budgetPerDay.dailyBudget,
+            totalExtras: d.budgetPerDay.totalExtras,
+          }
+        : undefined,
+      included: [...defaultIncluded, ...(d.extraIncluded ?? [])],
+      notIncluded: [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])],
+      itinerary: destItinerary,
       faqs,
+      seo: d.seo
+        ? {
+            title: d.seo.title,
+            description: d.seo.description,
+            keywords: d.seo.keywords,
+            cuandoViajarTitle: d.seo.cuandoViajarTitle,
+            cuandoViajarDescription: d.seo.cuandoViajarDescription,
+            presupuestoTitle: d.seo.presupuestoTitle,
+            presupuestoDescription: d.seo.presupuestoDescription,
+          }
+        : undefined,
     })
   }
 
@@ -181,17 +244,11 @@ async function seed() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '')
 
-    let enrichedItinerary = t.itinerary.map((d: { day: number; title: string; description: string }) => ({
-      _key: makeKey(),
-      day: d.day,
-      title: d.title,
-      description: d.description,
-    }))
-
-
+    const tripId = `trip-${tripSlug}`
+    tripIds.add(tripId)
     tx.createOrReplace({
       _type: 'trip',
-      _id: `trip-${tripSlug}`,
+      _id: tripId,
       title: t.title,
       slug: makeSlug(tripSlug),
       destination: makeRef(destIdMap.get(t.destinationId) ?? ''),
@@ -206,9 +263,6 @@ async function seed() {
       placesLeft: t.placesLeft,
       coordinator: makeRef(coordIdMap.get(t.coordinatorId) ?? ''),
       status: t.status,
-      included: t.included,
-      notIncluded: t.notIncluded,
-      itinerary: enrichedItinerary,
       tags: t.tags,
     })
   }
@@ -217,9 +271,11 @@ async function seed() {
   console.log('⭐ Testimonials...')
   for (let i = 0; i < testimonials.length; i++) {
     const t = testimonials[i]
+    const testId = `testimonial-${i}`
+    testimonialIds.add(testId)
     tx.createOrReplace({
       _type: 'testimonial',
-      _id: `testimonial-${i}`,
+      _id: testId,
       name: t.name,
       age: t.age,
       city: t.city,
@@ -233,9 +289,11 @@ async function seed() {
   // 8. Trip Categories
   console.log('🏷️ Trip Categories...')
   for (const cat of tripCategories) {
+    const catId = `category-${cat.slug}`
+    categoryIds.add(catId)
     tx.createOrReplace({
       _type: 'tripCategory',
-      _id: `category-${cat.slug}`,
+      _id: catId,
       name: cat.name,
       slug: makeSlug(cat.slug),
       editorial: cat.editorial,
@@ -255,9 +313,11 @@ async function seed() {
   // 9. Seasons
   console.log('📅 Seasons...')
   for (const s of seasons) {
+    const seasonId = `season-${s.slug}`
+    seasonIds.add(seasonId)
     tx.createOrReplace({
       _type: 'season',
-      _id: `season-${s.slug}`,
+      _id: seasonId,
       name: s.name,
       slug: makeSlug(s.slug),
       tags: s.tags,
@@ -277,9 +337,11 @@ async function seed() {
   // 10. Blog Posts
   console.log('📝 Blog Posts...')
   for (const p of blogPosts) {
+    const blogId = `blog-${p.slug}`
+    blogPostIds.add(blogId)
     tx.createOrReplace({
       _type: 'blogPost',
-      _id: `blog-${p.slug}`,
+      _id: blogId,
       title: p.title,
       slug: makeSlug(p.slug),
       excerpt: p.excerpt,
@@ -318,12 +380,18 @@ async function seed() {
   for (const c of comparisons) {
     const destA = destinations.find((d) => d.slug === c.slugA)
     const destB = destinations.find((d) => d.slug === c.slugB)
+    if (!destA || !destB) {
+      console.log(`  ⚠️ Skipping comparison ${c.slugA} vs ${c.slugB}: destination not found`)
+      continue
+    }
+    const compId = `comparison-${c.slugA}-vs-${c.slugB}`
+    comparisonIds.add(compId)
     tx.createOrReplace({
       _type: 'comparison',
-      _id: `comparison-${c.slugA}-vs-${c.slugB}`,
+      _id: compId,
       slug: makeSlug(`${c.slugA}-vs-${c.slugB}`),
-      destinationA: makeRef(destIdMap.get(destA?.id ?? '') ?? ''),
-      destinationB: makeRef(destIdMap.get(destB?.id ?? '') ?? ''),
+      destinationA: makeRef(destIdMap.get(destA.id) ?? ''),
+      destinationB: makeRef(destIdMap.get(destB.id) ?? ''),
       verdict: c.verdict,
     })
   }
@@ -332,6 +400,57 @@ async function seed() {
   console.log('\n🚀 Committing transaction...')
   const result = await tx.commit()
   console.log(`✅ Done! ${result.results.length} documents created/updated.`)
+
+  // 12. Purge orphan documents
+  console.log('\n🧹 Purging orphan documents...')
+
+  const purgeTargets: { type: string; validIds: Set<string> }[] = [
+    { type: 'comparison', validIds: comparisonIds },
+    { type: 'trip', validIds: tripIds },
+    { type: 'testimonial', validIds: testimonialIds },
+    { type: 'blogPost', validIds: blogPostIds },
+    { type: 'coordinator', validIds: new Set(coordIdMap.values()) },
+    { type: 'destination', validIds: new Set(destIdMap.values()) },
+    { type: 'country', validIds: new Set(countryIdMap.values()) },
+    { type: 'continent', validIds: new Set(continentIdMap.values()) },
+    { type: 'tripCategory', validIds: categoryIds },
+    { type: 'season', validIds: seasonIds },
+  ]
+
+  let totalPurged = 0
+
+  for (const { type, validIds } of purgeTargets) {
+    const existing = await client.fetch<string[]>(
+      `*[_type == $type]._id`,
+      { type }
+    )
+    const orphans = existing.filter((id) => !validIds.has(id))
+
+    if (orphans.length === 0) continue
+
+    console.log(`  ${type}: ${orphans.length} orphan(s) → ${orphans.join(', ')}`)
+
+    if (!dryRun) {
+      const deleteTx = client.transaction()
+      for (const id of orphans) {
+        deleteTx.delete(id)
+      }
+      await deleteTx.commit()
+      console.log(`  🗑️ Deleted ${orphans.length} ${type}(s)`)
+    } else {
+      console.log(`  ⏭️ Skipped (dry-run)`)
+    }
+
+    totalPurged += orphans.length
+  }
+
+  if (totalPurged === 0) {
+    console.log('  No orphan documents found.')
+  } else if (dryRun) {
+    console.log(`\n⚠️ Dry-run: ${totalPurged} orphan(s) would be deleted. Run without --dry-run to apply.`)
+  } else {
+    console.log(`\n🗑️ Purged ${totalPurged} orphan document(s) total.`)
+  }
 }
 
 seed().catch((err) => {
