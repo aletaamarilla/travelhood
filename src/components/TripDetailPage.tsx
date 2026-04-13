@@ -32,6 +32,7 @@ interface TripDetailPageProps {
   faqs: DestinationFAQ[]
   generalFaqs?: { question: string; answer: string }[]
   trips: ExtendedTrip[]
+  allTrips: ExtendedTrip[]
   testimonials: Testimonial[]
   coordinators: Coordinator[]
   country: Country
@@ -72,6 +73,19 @@ function getFeaturedTrip(trips: ExtendedTrip[]): ExtendedTrip | undefined {
     .filter((t) => new Date(t.departureDate).getTime() > now)
     .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
   return upcoming.find((t) => t.itinerary.some((d) => d.lat !== 0)) || upcoming[0] || trips[0]
+}
+
+function getPlacesLeftInfo(placesLeft: number) {
+  if (placesLeft <= 0) {
+    return null
+  }
+  if (placesLeft <= 4) {
+    return { text: `¡Solo quedan ${placesLeft} plazas!`, className: "font-semibold text-coral", bgClassName: "bg-coral/10 text-coral", Icon: Zap, urgent: true }
+  }
+  if (placesLeft <= 8) {
+    return { text: `${placesLeft} plazas disponibles`, className: "text-amber-600", bgClassName: "bg-amber-50 text-amber-700", Icon: Users, urgent: false }
+  }
+  return { text: `${placesLeft} plazas disponibles`, className: "text-muted-foreground", bgClassName: "", Icon: Users, urgent: false }
 }
 
 const CATEGORY_ICONS: Record<string, typeof Compass> = {
@@ -201,7 +215,8 @@ function PhotoModal({
 // ── Departures Modal ───────────────────────────────────
 
 function DeparturesModal({
-  trips,
+  availableTrips,
+  fullTrips,
   destinationName,
   isOpen,
   onClose,
@@ -209,7 +224,8 @@ function DeparturesModal({
   whatsappCommunityUrl,
   depositAmount = 250,
 }: {
-  trips: ExtendedTrip[]
+  availableTrips: ExtendedTrip[]
+  fullTrips: ExtendedTrip[]
   destinationName: string
   isOpen: boolean
   onClose: () => void
@@ -252,7 +268,13 @@ function DeparturesModal({
               Salidas para {destinationName}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-              {trips.length} {trips.length === 1 ? "salida disponible" : "salidas disponibles"}
+              {availableTrips.length > 0 && fullTrips.length > 0
+                ? `${availableTrips.length} ${availableTrips.length === 1 ? "salida disponible" : "salidas disponibles"} · ${fullTrips.length} ${fullTrips.length === 1 ? "completa" : "completas"}`
+                : availableTrips.length === 0 && fullTrips.length > 0
+                  ? "Todas las salidas están completas"
+                  : availableTrips.length > 0
+                    ? `${availableTrips.length} ${availableTrips.length === 1 ? "salida disponible" : "salidas disponibles"}`
+                    : "No hay salidas disponibles en este momento"}
             </p>
           </div>
           <button onClick={onClose} className="rounded-full p-1.5 sm:p-2 hover:bg-muted transition-colors">
@@ -262,14 +284,15 @@ function DeparturesModal({
         </div>
 
         <div className="flex flex-col gap-3 p-4 pb-24 sm:gap-4 sm:p-6 sm:pb-6 lg:pb-6">
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-teal-vivid/8 px-4 py-3 text-xs font-semibold text-teal-vivid">
-            <Shield size={13} className="shrink-0" />
-            Asegura tu plaza por solo {depositAmount}€ · El resto lo pagas 30 días antes de salir
-          </div>
+          {availableTrips.length > 0 && (
+            <div className="flex items-center justify-center gap-1.5 rounded-xl bg-teal-vivid/8 px-4 py-3 text-xs font-semibold text-teal-vivid">
+              <Shield size={13} className="shrink-0" />
+              Asegura tu plaza por solo {depositAmount}€ · El resto lo pagas 30 días antes de salir
+            </div>
+          )}
 
-          {trips.map((trip) => {
+          {availableTrips.map((trip) => {
             const hasPromo = !!trip.promoPrice
-            const isAlmostFull = trip.placesLeft <= 4
             return (
               <div
                 key={trip.id}
@@ -301,15 +324,22 @@ function DeparturesModal({
                         {trip.durationDays} días
                       </span>
                     </div>
-                    <div className="mt-1 sm:mt-2 flex items-center gap-1.5 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
-                      {isAlmostFull && (
-                        <span className="flex items-center gap-1 font-semibold text-coral">
-                          <Zap size={12} className="sm:hidden" />
-                          <Zap size={14} className="hidden sm:block" />
-                          <span className="text-[10px] sm:text-xs">¡Últimas plazas!</span>
-                        </span>
-                      )}
-                    </div>
+                    {(() => {
+                      const info = getPlacesLeftInfo(trip.placesLeft)
+                      if (!info) return null
+                      return (
+                        <div className="mt-1 sm:mt-2 flex items-center gap-1.5 sm:gap-3 text-xs sm:text-sm">
+                          <span
+                            className={`flex items-center gap-1 ${info.className}`}
+                            aria-label={`Quedan ${trip.placesLeft} plazas disponibles`}
+                          >
+                            <info.Icon size={12} className="sm:hidden" />
+                            <info.Icon size={14} className="hidden sm:block" />
+                            <span className="text-[10px] sm:text-xs">{info.text}</span>
+                          </span>
+                        </div>
+                      )
+                    })()}
                   </div>
 
                   <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2 sm:min-w-[140px]">
@@ -342,7 +372,68 @@ function DeparturesModal({
             )
           })}
 
-          {trips.length === 0 && (
+          {fullTrips.length > 0 && (
+            <>
+              <div className="flex items-center gap-3 pt-2">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap">Fechas completas</span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+
+              {fullTrips.map((trip) => (
+                <div
+                  key={trip.id}
+                  className="relative rounded-xl border border-border bg-card p-3 sm:p-5 opacity-60"
+                >
+                  <span className="absolute -top-2 right-3 sm:-top-2.5 sm:right-4 rounded-full bg-muted px-2 py-0.5 text-[10px] sm:px-3 sm:text-[11px] font-bold text-muted-foreground">
+                    Completo
+                  </span>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-serif text-sm sm:text-base font-bold text-foreground truncate">{trip.title}</h4>
+                      <div className="mt-1 sm:mt-2 flex flex-wrap items-center gap-1.5 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar size={12} className="sm:hidden" />
+                          <Calendar size={14} className="hidden sm:block" />
+                          {formatDate(trip.departureDate)}
+                        </span>
+                        <span className="text-border">→</span>
+                        <span className="flex items-center gap-1">
+                          {formatDate(trip.returnDate)}
+                        </span>
+                        <span className="text-border">·</span>
+                        <span className="flex items-center gap-1">
+                          <Clock size={12} className="sm:hidden" />
+                          <Clock size={14} className="hidden sm:block" />
+                          {trip.durationDays} días
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2 sm:min-w-[140px]">
+                      <div className="sm:text-right">
+                        <span className="text-lg sm:text-2xl font-extrabold text-foreground">
+                          {formatPrice(trip.priceFrom)}
+                        </span>
+                        <span className="hidden sm:block text-xs text-muted-foreground">+ vuelo ~{formatPrice(trip.flightEstimate)}</span>
+                      </div>
+                      <a
+                        href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title} pero veo que está completo. ¿Me avisáis si se libera plaza?`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-semibold text-muted-foreground transition-all hover:bg-muted"
+                      >
+                        Lista de espera
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {availableTrips.length === 0 && fullTrips.length === 0 && (
             <div className="py-12 text-center flex flex-col items-center gap-4">
               <p className="text-muted-foreground">No hay salidas disponibles en este momento.</p>
               <a
@@ -538,6 +629,7 @@ export default function TripDetailPage({
   faqs,
   generalFaqs,
   trips,
+  allTrips,
   testimonials,
   coordinators,
   country,
@@ -555,8 +647,12 @@ export default function TripDetailPage({
   const [mobilePhotoIndex, setMobilePhotoIndex] = useState(0)
   const mobileGalleryRef = useRef<HTMLDivElement>(null)
 
-  const cheapest = getCheapestTrip(trips)
-  const featured = getFeaturedTrip(trips)
+  const fullTrips = allTrips.filter(t => t.status === "full")
+  const hasAvailableTrips = trips.length > 0
+  const hasNoFutureDates = allTrips.length === 0
+
+  const cheapest = getCheapestTrip(trips) || getCheapestTrip(allTrips)
+  const featured = getFeaturedTrip(trips) || getFeaturedTrip(allTrips)
   const featuredItinerary = featured?.itinerary || []
   const hasMap = featuredItinerary.some((d) => d.lat !== 0 && d.lng !== 0)
 
@@ -565,7 +661,7 @@ export default function TripDetailPage({
     setGalleryOpen(true)
   }
 
-  const totalTravelers = trips.reduce((sum, t) => sum + (t.totalPlaces - t.placesLeft), 0)
+  const totalTravelers = allTrips.reduce((sum, t) => sum + (t.totalPlaces - t.placesLeft), 0)
 
   useEffect(() => {
     const el = mobileGalleryRef.current
@@ -980,32 +1076,92 @@ export default function TripDetailPage({
 
             {/* ── CTA Bottom ───────────────────── */}
             <section className="mt-12 mb-6 lg:mb-0 rounded-xl bg-gradient-to-br from-coral/10 to-yellow-sun/10 p-8 text-center">
-              <h3 className="font-serif text-2xl font-extrabold text-foreground">
-                ¿Te apuntas a {destination.name}?
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                El grupo ya se está formando. Solo falta tu nombre en la lista.
-              </p>
-              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  onClick={() => setDeparturesOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
-                >
-                  Ver salidas y precios
-                </button>
-                <a
-                  href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Podéis darme más info?`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
-                >
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Preguntar por WhatsApp
-                </a>
-              </div>
-              <p className="mt-4 text-xs text-muted-foreground">
-                Solo necesitas <span className="font-semibold text-foreground">{depositAmount}€</span> para asegurar tu plaza · Resto 30 días antes · Cancelación flexible
-              </p>
+              {hasNoFutureDates ? (
+                <>
+                  <h3 className="font-serif text-2xl font-extrabold text-foreground">
+                    Próximamente nuevas fechas
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    No hay salidas programadas en este momento, pero puedes preguntarnos y te avisamos en cuanto haya novedades.
+                  </p>
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a
+                      href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                    >
+                      Preguntar por nuevas fechas
+                    </a>
+                    {whatsappCommunityUrl && (
+                      <a
+                        href={whatsappCommunityUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      >
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Únete a la comunidad
+                      </a>
+                    )}
+                  </div>
+                </>
+              ) : hasAvailableTrips ? (
+                <>
+                  <h3 className="font-serif text-2xl font-extrabold text-foreground">
+                    ¿Te apuntas a {destination.name}?
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    El grupo ya se está formando. Solo falta tu nombre en la lista.
+                  </p>
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button
+                      onClick={() => setDeparturesOpen(true)}
+                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                    >
+                      Ver salidas y precios
+                    </button>
+                    <a
+                      href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Podéis darme más info?`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      Preguntar por WhatsApp
+                    </a>
+                  </div>
+                  <p className="mt-4 text-xs text-muted-foreground">
+                    Solo necesitas <span className="font-semibold text-foreground">{depositAmount}€</span> para asegurar tu plaza · Resto 30 días antes · Cancelación flexible
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3 className="font-serif text-2xl font-extrabold text-foreground">
+                    Todas las plazas están cubiertas
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Puedes ver las fechas y apuntarte a la lista de espera por si se libera alguna plaza.
+                  </p>
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button
+                      onClick={() => setDeparturesOpen(true)}
+                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                    >
+                      Ver salidas y precios
+                    </button>
+                    <a
+                      href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name} pero veo que está completo. ¿Me avisáis si se libera plaza?`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      Lista de espera
+                    </a>
+                  </div>
+                </>
+              )}
             </section>
           </div>
 
@@ -1014,46 +1170,77 @@ export default function TripDetailPage({
             <div className="sticky top-20">
               <div className="rounded-2xl bg-card shadow-lg border border-border overflow-hidden">
                 <div className="p-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Desde</p>
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="text-2xl font-extrabold text-foreground">
-                      {formatPrice(cheapest?.promoPrice || cheapest?.priceFrom || 0)}
-                    </span>
-                    {cheapest?.promoPrice && (
-                      <span className="text-sm text-muted-foreground line-through">
-                        {formatPrice(cheapest.priceFrom)}
-                      </span>
-                    )}
-                  </div>
-                  {cheapest?.promoLabel && (
-                    <span className="mt-1 inline-block rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
-                      {cheapest.promoLabel}
-                    </span>
+                  {hasNoFutureDates ? (
+                    <>
+                      <p className="text-sm font-semibold text-muted-foreground">
+                        No hay fechas disponibles
+                      </p>
+                      <a
+                        href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-coral px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                      >
+                        Preguntar por nuevas fechas
+                      </a>
+                      {whatsappCommunityUrl && (
+                        <a
+                          href={whatsappCommunityUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                        >
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                          Únete a la comunidad
+                        </a>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Desde</p>
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="text-2xl font-extrabold text-foreground">
+                          {formatPrice(cheapest?.promoPrice || cheapest?.priceFrom || 0)}
+                        </span>
+                        {cheapest?.promoPrice && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            {formatPrice(cheapest.priceFrom)}
+                          </span>
+                        )}
+                      </div>
+                      {cheapest?.promoLabel && (
+                        <span className="mt-1 inline-block rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
+                          {cheapest.promoLabel}
+                        </span>
+                      )}
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        {cheapest?.durationDays} días · + vuelo ~{formatPrice(cheapest?.flightEstimate || 0)}
+                      </p>
+
+                      {!hasAvailableTrips && (
+                        <div className="mt-2.5 flex items-center gap-1.5 rounded-lg bg-muted/60 px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground">
+                          <Zap size={12} />
+                          Todas las fechas completas
+                        </div>
+                      )}
+
+                      <button
+                        onClick={() => setDeparturesOpen(true)}
+                        className="mt-4 w-full rounded-full bg-coral px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                      >
+                        Ver salidas y precios
+                      </button>
+
+                      {hasAvailableTrips && (
+                        <div className="mt-3 rounded-lg bg-teal-vivid/8 px-3 py-2.5 text-center">
+                          <p className="text-xs font-bold text-teal-vivid">
+                            Reserva hoy por solo {depositAmount}€
+                          </p>
+                          <p className="mt-0.5 text-[10px] text-muted-foreground">El resto, 30 días antes de salir</p>
+                        </div>
+                      )}
+                    </>
                   )}
-                  <p className="mt-1 text-[11px] text-muted-foreground">
-                    {cheapest?.durationDays} días · + vuelo ~{formatPrice(cheapest?.flightEstimate || 0)}
-                  </p>
-
-                  {cheapest && cheapest.placesLeft <= 4 && (
-                    <div className="mt-2.5 flex items-center gap-1.5 rounded-lg bg-coral/10 px-2.5 py-1.5 text-[11px] font-semibold text-coral">
-                      <Zap size={12} />
-                      ¡Últimas plazas!
-                    </div>
-                  )}
-
-                  <button
-                    onClick={() => setDeparturesOpen(true)}
-                    className="mt-4 w-full rounded-full bg-coral px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
-                  >
-                    Ver salidas y precios
-                  </button>
-
-                  <div className="mt-3 rounded-lg bg-teal-vivid/8 px-3 py-2.5 text-center">
-                    <p className="text-xs font-bold text-teal-vivid">
-                      Reserva hoy por solo {depositAmount}€
-                    </p>
-                    <p className="mt-0.5 text-[10px] text-muted-foreground">El resto, 30 días antes de salir</p>
-                  </div>
                 </div>
 
                 <div className="border-t border-border px-5 py-3.5">
@@ -1113,45 +1300,73 @@ export default function TripDetailPage({
         style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 9999, background: "#fff", borderTop: "1px solid #e5e5e5", boxShadow: "0 -2px 12px rgba(0,0,0,0.08)" }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", padding: "10px 16px" }}>
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-lg font-extrabold text-foreground">
-                {formatPrice(cheapest?.promoPrice || cheapest?.priceFrom || 0)}
-              </span>
-              {cheapest?.promoPrice && (
-                <span className="text-[11px] text-muted-foreground line-through">
-                  {formatPrice(cheapest.priceFrom)}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-1.5">
-              <p className="text-[11px] text-muted-foreground">
-                Señal: {depositAmount}€ · {cheapest?.durationDays} días
-              </p>
-              {cheapest?.promoLabel && (
-                <span className="rounded-full bg-coral/10 px-1.5 py-0.5 text-[9px] font-bold text-coral">
-                  {cheapest.promoLabel}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <a
-              href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white transition-all hover:brightness-110"
-              aria-label="WhatsApp"
-            >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </a>
-            <button
-              onClick={() => setDeparturesOpen(true)}
-              className="rounded-full bg-coral px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
-            >
-              Ver salidas
-            </button>
-          </div>
+          {hasNoFutureDates ? (
+            <>
+              <div>
+                <span className="text-sm font-bold text-muted-foreground">Sin fechas</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-coral px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                >
+                  Preguntar por fechas
+                </a>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-lg font-extrabold text-foreground">
+                    {formatPrice(cheapest?.promoPrice || cheapest?.priceFrom || 0)}
+                  </span>
+                  {cheapest?.promoPrice && (
+                    <span className="text-[11px] text-muted-foreground line-through">
+                      {formatPrice(cheapest.priceFrom)}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-[11px] text-muted-foreground">
+                    {hasAvailableTrips ? `Señal: ${depositAmount}€ · ` : ""}{cheapest?.durationDays} días
+                  </p>
+                  {cheapest?.promoLabel && (
+                    <span className="rounded-full bg-coral/10 px-1.5 py-0.5 text-[9px] font-bold text-coral">
+                      {cheapest.promoLabel}
+                    </span>
+                  )}
+                </div>
+                {hasAvailableTrips && cheapest && cheapest.placesLeft > 0 && cheapest.placesLeft <= 4 && (
+                  <p className="text-[10px] font-semibold text-coral" aria-label={`Quedan ${cheapest.placesLeft} plazas`}>
+                    Quedan {cheapest.placesLeft}
+                  </p>
+                )}
+                {!hasAvailableTrips && (
+                  <p className="text-[10px] font-semibold text-muted-foreground">Fechas completas</p>
+                )}
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white transition-all hover:brightness-110"
+                  aria-label="WhatsApp"
+                >
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+                <button
+                  onClick={() => setDeparturesOpen(true)}
+                  className="rounded-full bg-coral px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                >
+                  Ver salidas
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -1166,7 +1381,8 @@ export default function TripDetailPage({
         initialIndex={galleryIndex}
       />
       <DeparturesModal
-        trips={trips}
+        availableTrips={trips}
+        fullTrips={fullTrips}
         destinationName={destination.name}
         isOpen={departuresOpen}
         onClose={() => setDeparturesOpen(false)}

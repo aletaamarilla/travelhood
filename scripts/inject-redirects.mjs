@@ -24,7 +24,7 @@ function paramToReplacement(destination, paramNames) {
 function convertRedirect(redirect) {
   const { regex } = paramToRegex(redirect.source);
   const dest = paramToReplacement(redirect.destination);
-  const status = redirect.permanent ? 308 : 307;
+  const status = redirect.permanent ? 301 : 307;
 
   return {
     src: regex,
@@ -61,9 +61,9 @@ const before = outputConfig.routes.slice(0, fsIndex);
 const after = outputConfig.routes.slice(fsIndex);
 
 outputConfig.routes = [
+  ...redirectRoutes,
   ...before,
   ...headerRoutes,
-  ...redirectRoutes,
   ...after,
 ];
 

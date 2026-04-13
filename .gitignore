@@ -18,6 +18,9 @@ studio/node_modules/
 studio/dist/
 .sanity/
 
+# backups
+backups/
+
 # misc
 .DS_Store
 _extracted/
@@ -25,3 +28,8 @@ _extracted/
 *.zip:*
 .vercel
 .env*.local
+
+# internal docs
+concepts/
+roadmaps/
+*.bak

@@ -52,8 +52,9 @@ if (!destination) return Astro.redirect("/404/");
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
 
-const destTrips = tripsRaw
-  .filter((t) => t.status !== "full")
+const now = new Date();
+const allFutureTrips = tripsRaw
+  .filter((t) => new Date(t.departureDate) > now)
   .sort(
     (a, b) =>
       new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime()
@@ -65,9 +66,10 @@ const destTrips = tripsRaw
       return { ...d, lat: d.lat ?? coords?.[0] ?? 0, lng: d.lng ?? coords?.[1] ?? 0 };
     }),
   }));
+const availableTrips = allFutureTrips.filter((t) => t.status !== "full");
 
 const destTestimonials = testimonials.filter(t => t.destinationId === destination.id);
-const coordIds = [...new Set(destTrips.map((t) => t.coordinatorId))];
+const coordIds = [...new Set(allFutureTrips.map((t) => t.coordinatorId))];
 const destCoordinators = coordIds
   .map((id) => coordinators.find((c) => c.id === id))
   .filter(Boolean) as typeof coordinators;
@@ -80,13 +82,13 @@ const [galleryPhotos, faqs, globalFaqBlocks] = await Promise.all([
 const photos = galleryPhotos.length > 0 ? galleryPhotos : [destination.heroImage];
 const generalFaqs = globalFaqBlocks.flatMap((b) => b.faqs);
 
-const [allComparisons, destinations, allTrips] = await Promise.all([
+const [allComparisons, destinations, allTripsGlobal] = await Promise.all([
   getComparisons(),
   getDestinations(),
   getTrips(),
 ]);
 const destComparisons = allComparisons.filter(c => c.slugA === slug || c.slugB === slug);
-const relatedDestinations = getRelatedDestinations(destination, destinations, allTrips, countries);
+const relatedDestinations = getRelatedDestinations(destination, destinations, allTripsGlobal, countries);
 
 const pageTitle = `${destination.name} — Viaje en grupo | Travel Hood`;
 const pageDescription = `${destination.shortDescription} Viaja en grupo con Travel Hood. Coordinador y alojamiento incluidos.`;
@@ -97,16 +99,20 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:continent.name,url:`/destinos/${continent.slug}/`},{name:destination.name,url:`/destino/${destination.slug}/`}]))} />
     <script type="application/ld+json" set:html={toJsonLd({...generateTouristDestinationSchema({name:destination.name,description:destination.description,url:`/destino/${destination.slug}/`,image:destination.heroImage}), ...(destTestimonials.length > 0 ? { aggregateRating: generateAggregateRatingSchema(destTestimonials.length) } : {})})} />
     {faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
-    {destTrips.map((trip) => (
+    {allFutureTrips.map((trip) => (
       <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({
         name: trip.title,
+        description: destination.description,
         startDate: trip.departureDate,
         endDate: trip.returnDate,
         location: destination.name,
+        locationAddress: country.name,
+        performer: "Travel Hood",
         price: resolvePrice(trip).price,
         url: `/destino/${destination.slug}/`,
         image: destination.heroImage,
         availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+        validFrom: trip.departureDate,
       }))} />
     ))}
   </Fragment>
@@ -118,7 +124,8 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
       photos={photos}
       faqs={faqs}
       generalFaqs={generalFaqs}
-      trips={destTrips}
+      trips={availableTrips}
+      allTrips={allFutureTrips}
       testimonials={destTestimonials}
       coordinators={destCoordinators}
       country={country}
@@ -132,14 +139,18 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
       title={`Viaje en grupo a ${destination.name} — Datos clave`}
       subtitle={`Información actualizada sobre viajes organizados a ${destination.name} con Travel Hood`}
       dataPoints={[
-        { label: "Precio desde", value: destTrips.length > 0 ? `${Math.min(...destTrips.map(t => resolvePrice(t).price))}€ (sin vuelo)` : "Próximamente" },
-        { label: "Duración", value: destTrips.length > 0 ? `${destTrips[0].durationDays} días` : "Variable" },
-        { label: "Plazas por grupo", value: destTrips.length > 0 ? `${destTrips[0].totalPlaces} personas de 20 a 35 años` : "14 personas de 20 a 35 años" },
+        { label: "Precio desde", value: availableTrips.length > 0
+          ? `${Math.min(...availableTrips.map(t => resolvePrice(t).price))}€ (sin vuelo)`
+          : allFutureTrips.length > 0
+            ? `${Math.min(...allFutureTrips.map(t => resolvePrice(t).price))}€ (completo)`
+            : "Próximamente" },
+        { label: "Duración", value: (availableTrips[0] || allFutureTrips[0]) ? `${(availableTrips[0] || allFutureTrips[0]).durationDays} días` : "Variable" },
+        { label: "Plazas por grupo", value: (availableTrips[0] || allFutureTrips[0]) ? `${(availableTrips[0] || allFutureTrips[0]).totalPlaces} personas de 20 a 35 años` : "14 personas de 20 a 35 años" },
         { label: "Clima", value: destination.climate },
         { label: "País", value: country.name },
         { label: "Tipo de viaje", value: destination.categories.length > 0 ? destination.categories.join(", ") : "Aventura" },
         ...(destination.idealFor ? [{ label: "Ideal para", value: destination.idealFor }] : []),
-        { label: "Incluye", value: destTrips.length > 0 && destTrips[0].included.length > 0 ? destTrips[0].included.slice(0, 3).join(" + ") : "Coordinador + alojamiento + actividades" },
+        { label: "Incluye", value: (availableTrips[0] || allFutureTrips[0])?.included?.length > 0 ? (availableTrips[0] || allFutureTrips[0]).included.slice(0, 3).join(" + ") : "Coordinador + alojamiento + actividades" },
       ]}
     />
 

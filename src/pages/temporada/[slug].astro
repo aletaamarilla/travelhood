@@ -86,16 +86,22 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
     {season.faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(season.faqs))} />}
     {seasonTrips.map((trip) => {
       const dest = destinations.find((d) => d.id === trip.destinationId)!;
+      const destCountry = countries.find((c) => c.id === dest?.countryId);
       const schemaPrice = resolvePrice(trip).price;
       return (
         <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({
           name: trip.title,
+          description: dest?.description,
           startDate: trip.departureDate,
           endDate: trip.returnDate,
           location: dest?.name ?? trip.title,
+          locationAddress: destCountry?.name ?? dest?.name,
+          performer: "Travel Hood",
           price: schemaPrice,
           url: `/destino/${dest?.slug}/`,
           image: dest?.heroImage,
+          availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+          validFrom: trip.departureDate,
         }))} />
       );
     })}
