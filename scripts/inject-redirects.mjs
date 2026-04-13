@@ -24,7 +24,7 @@ function paramToReplacement(destination, paramNames) {
 function convertRedirect(redirect) {
   const { regex } = paramToRegex(redirect.source);
   const dest = paramToReplacement(redirect.destination);
-  const status = redirect.permanent ? 301 : 307;
+  const status = redirect.statusCode ?? (redirect.permanent ? 301 : 307);
 
   return {
     src: regex,

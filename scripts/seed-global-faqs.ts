@@ -118,7 +118,7 @@ const FAQ_BLOCKS: FaqBlock[] = [
       },
       {
         question: '¿Cuántas personas van en cada grupo?',
-        answer: 'Entre 12 y 18 personas. Lo suficientemente grande para variedad, lo suficientemente pequeño para intimidad y conexión real.',
+        answer: 'Entre 12 y 13 personas. Lo suficientemente pequeño para intimidad y conexión real, pero con la variedad justa para que siempre haya alguien con quien conectar.',
       },
       {
         question: '¿Y si no conozco a nadie?',

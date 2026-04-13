@@ -145,12 +145,13 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
             ? `${Math.min(...allFutureTrips.map(t => resolvePrice(t).price))}€ (completo)`
             : "Próximamente" },
         { label: "Duración", value: (availableTrips[0] || allFutureTrips[0]) ? `${(availableTrips[0] || allFutureTrips[0]).durationDays} días` : "Variable" },
-        { label: "Plazas por grupo", value: (availableTrips[0] || allFutureTrips[0]) ? `${(availableTrips[0] || allFutureTrips[0]).totalPlaces} personas de 20 a 35 años` : "14 personas de 20 a 35 años" },
+        { label: "Plazas por grupo", value: (availableTrips[0] || allFutureTrips[0]) ? `${(availableTrips[0] || allFutureTrips[0]).totalPlaces} personas de 20 a 35 años` : "12 a 13 personas de 20 a 35 años" },
         { label: "Clima", value: destination.climate },
         { label: "País", value: country.name },
         { label: "Tipo de viaje", value: destination.categories.length > 0 ? destination.categories.join(", ") : "Aventura" },
         ...(destination.idealFor ? [{ label: "Ideal para", value: destination.idealFor }] : []),
         { label: "Incluye", value: (availableTrips[0] || allFutureTrips[0])?.included?.length > 0 ? (availableTrips[0] || allFutureTrips[0]).included.slice(0, 3).join(" + ") : "Coordinador + alojamiento + actividades" },
+        { label: "Precio cerrado", value: "Sin fondo común ni costes extra en destino" },
       ]}
     />
 

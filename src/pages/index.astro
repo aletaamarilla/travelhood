@@ -82,9 +82,10 @@ const webSiteSchema = generateWebSiteSchema();
       dataPoints={[
         { label: "Destinos", value: `${destinations.length} destinos` },
         { label: "Rango de precios", value: priceRange ? `${priceRange.formatted} (sin vuelo)` : "Consulta precios" },
-        { label: "Grupo", value: "12-18 personas de 20 a 35 años" },
+        { label: "Grupo", value: "12-13 personas de 20 a 35 años" },
         { label: "Viajan solos", value: "La mayoría reservan sin acompañante" },
         { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
+        { label: "Precio cerrado", value: "Sin fondo común ni costes extra" },
       ]}
     />
     <LeadMagnet client:visible whatsappCommunityUrl={waCommunityUrl} />

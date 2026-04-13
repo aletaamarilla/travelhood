@@ -823,7 +823,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
               </div>
               <div>
                 <p className="text-sm font-bold text-foreground">Grupos reducidos</p>
-                <p className="text-xs text-muted-foreground">12-18 personas de 20-35 años</p>
+                <p className="text-xs text-muted-foreground">12-13 personas de 20-35 años</p>
               </div>
             </div>
             <div className="flex items-center gap-4">

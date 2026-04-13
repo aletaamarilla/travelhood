@@ -1249,13 +1249,19 @@ export default function TripDetailPage({
                       <Shield size={12} className="text-teal-vivid shrink-0" />
                       Cancelación flexible
                     </div>
+                    {destination.hasCoordinator !== false && (
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       <UserCheck size={12} className="text-teal-vivid shrink-0" />
                       Coordinador en destino
                     </div>
+                    )}
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Users size={12} className="text-teal-vivid shrink-0" />
-                      Grupo 12-18 · 20-35 años
+                      Grupo 12-13 · 20-35 años
+                    </div>
+                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                      <Wallet size={12} className="text-teal-vivid shrink-0" />
+                      Sin fondo común · Precio cerrado
                     </div>
                   </div>
                 </div>

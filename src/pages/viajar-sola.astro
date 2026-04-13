@@ -20,7 +20,7 @@ const featuredDestIds = new Set(featuredDests.map((d) => d.id));
 const relevantTestimonials = testimonials.filter((t) => featuredDestIds.has(t.destinationId)).slice(0, 4);
 
 const faqs = [
-  { question: "¿Es seguro viajar sola?", answer: "Sí, con las medidas adecuadas y coordinadores experimentados. Viajas con un grupo reducido de 12-18 personas de tu misma edad y un coordinador Travel Hood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
+  { question: "¿Es seguro viajar sola?", answer: "Sí, con las medidas adecuadas y coordinadores experimentados. Viajas con un grupo reducido de 12-13 personas de tu misma edad y un coordinador Travel Hood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
   { question: "¿Haré amigos de verdad?", answer: "La gran mayoría de viajeros mantiene el grupo de WhatsApp activo meses después y muchos planifican otro viaje juntos. Las experiencias compartidas crean lazos muy fuertes." },
   { question: "¿Y si no conozco a nadie del grupo?", answer: "Esa es la norma, no la excepción. La mayoría de nuestros viajeros reservan solos. El coordinador facilita la integración desde el primer momento y al segundo día ya hay bromas internas." },
   { question: "¿Hay muchas más mujeres que hombres?", answer: "Los grupos suelen estar bastante equilibrados, con una ligera mayoría femenina (55-60%). El rango de edad 20-35 asegura que todos estéis en un momento vital similar." },
@@ -81,7 +81,7 @@ const faqs = [
             Pero hay una opción que elimina ese miedo: un viaje en grupo con personas de tu misma edad (20-35 años), un itinerario diseñado para vivir experiencias reales y un coordinador que se encarga de todo. Llegas al aeropuerto sin conocer a nadie. A los dos días, no quieres separarte del grupo.
           </p>
           <p>
-            Travel Hood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos. El grupo medio tiene 14 personas de 20-35 años. Cada viaje incluye coordinador, alojamiento y transporte interno.{priceRange ? ` Los viajes cuestan entre ${priceRange.minPrice.toLocaleString('es-ES')}€ y ${priceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
+            Travel Hood organiza viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos. El grupo medio tiene 12 a 13 personas de 20-35 años. Cada viaje incluye coordinador, alojamiento y transporte interno.{priceRange ? ` Los viajes cuestan entre ${priceRange.minPrice.toLocaleString('es-ES')}€ y ${priceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
           </p>
         </div>
       </div>
@@ -96,7 +96,7 @@ const faqs = [
             <p class="mt-2 text-base text-white/70">solo necesitas tu billete</p>
           </div>
           <div>
-            <p class="font-serif text-5xl font-extrabold text-white">12-18</p>
+            <p class="font-serif text-5xl font-extrabold text-white">12-13</p>
             <p class="mt-2 text-base text-white/70">viajeros por grupo</p>
           </div>
           <div>

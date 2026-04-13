@@ -47,13 +47,13 @@ const minPrice = countryTrips.length > 0
 
 const faqs = [
   { question: `¿Cuánto cuesta viajar a ${country.name} en grupo?`, answer: `Un viaje en grupo a ${country.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar precio'} por persona, sin incluir vuelos. El precio incluye alojamiento, transporte interno y coordinador.` },
-  { question: `¿Es seguro viajar a ${country.name} en grupo?`, answer: `Sí. Todos los viajes a ${country.name} incluyen un coordinador Travel Hood con experiencia en el destino y un grupo reducido de 12-18 personas. Nunca estás solo/a.` },
+  { question: `¿Es seguro viajar a ${country.name} en grupo?`, answer: `Sí. Todos los viajes a ${country.name} incluyen un coordinador Travel Hood con experiencia en el destino y un grupo reducido de 12-13 personas. Nunca estás solo/a.` },
   { question: `¿Cuál es la mejor época para viajar a ${country.name}?`, answer: `La mejor época depende del destino específico dentro de ${country.name}. Consulta las páginas de cada destino para ver las fechas recomendadas y la información climática.` },
 ];
 
 const globalPriceRange = calculatePriceRange(trips);
 const pageTitle = `Viajes en grupo a ${country.name} para jóvenes — Travel Hood`;
-const pageDescription = `Descubre todos los viajes en grupo a ${country.name} con Travel Hood. Grupos de 12-18 personas de 20-35 años con coordinador y alojamiento incluidos.`;
+const pageDescription = `Descubre todos los viajes en grupo a ${country.name} con Travel Hood. Grupos de 12-13 personas de 20-35 años con coordinador y alojamiento incluidos.`;
 ---
 
 <Layout title={pageTitle} description={pageDescription} keywords={`viaje en grupo a ${country.name}, viajes ${country.name} jóvenes, ${country.name} grupo organizado, travel hood ${country.name}, travelhood ${country.name}`}>
@@ -101,7 +101,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
           Viajes en grupo a {country.name} para jóvenes
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          Descubre {country.name} con un grupo de 12-18 personas de tu edad. Coordinador en destino y alojamiento incluidos.
+          Descubre {country.name} con un grupo de 12-13 personas de tu edad. Coordinador en destino y alojamiento incluidos.
           {minPrice > 0 && ` Desde ${minPrice}€ por persona (sin vuelo).`}
         </p>
       </div>
@@ -118,7 +118,7 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
             {country.name} es uno de los destinos más solicitados por los viajeros de Travel Hood. Con itinerarios diseñados para jóvenes de 20 a 35 años, cada viaje combina aventura, cultura y momentos únicos en grupo.
           </p>
           <p>
-            La mayoría de los viajeros de Travel Hood reservan solos. El grupo medio tiene 14 personas y casi todos repiten.{globalPriceRange ? ` Los viajes cuestan entre ${globalPriceRange.minPrice.toLocaleString('es-ES')}€ y ${globalPriceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
+            La mayoría de los viajeros de Travel Hood reservan solos. El grupo medio tiene 12 a 13 personas y casi todos repiten.{globalPriceRange ? ` Los viajes cuestan entre ${globalPriceRange.minPrice.toLocaleString('es-ES')}€ y ${globalPriceRange.maxPrice.toLocaleString('es-ES')}€, sin vuelo.` : ''}
           </p>
         </div>
       </div>
@@ -194,8 +194,9 @@ const pageDescription = `Descubre todos los viajes en grupo a ${country.name} co
         { label: "Destinos", value: `${countryDestinations.length} destinos en ${country.name}` },
         { label: "Precio desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
         { label: "Viajes disponibles", value: `${countryTrips.length} viajes` },
-        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+        { label: "Grupo medio", value: "12 a 13 personas de 20 a 35 años" },
         { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
+        { label: "Precio cerrado", value: "Sin fondo común ni costes extra" },
       ]}
     />
 

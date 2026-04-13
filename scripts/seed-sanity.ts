@@ -195,6 +195,7 @@ async function seed() {
             totalExtras: d.budgetPerDay.totalExtras,
           }
         : undefined,
+      hasCoordinator: d.hasCoordinator ?? true,
       included: [...defaultIncluded, ...(d.extraIncluded ?? [])],
       notIncluded: [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])],
       itinerary: destItinerary,

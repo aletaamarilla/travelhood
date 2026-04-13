@@ -134,7 +134,7 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
           {hasTrips
-            ? `${seasonTripCards.length} viajes disponibles con coordinador en destino y grupos de 12-18 personas.`
+            ? `${seasonTripCards.length} viajes disponibles con coordinador en destino y grupos de 12-13 personas.`
             : "Estamos preparando los viajes para esta temporada. Apúntate para enterarte primero."}
         </p>
       </div>
@@ -305,8 +305,9 @@ const uniqueDestinations = [...new Set(seasonTrips.map((t) => t.destinationId))]
         { label: "Viajes disponibles", value: `${seasonTrips.length} viajes` },
         { label: "Rango de precios", value: seasonTripCards.length > 0 ? `Desde ${Math.min(...seasonTripCards.map(t => t.price))}€` : "Próximamente" },
         { label: "Destinos", value: `${uniqueDestinations.length} destinos` },
-        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+        { label: "Grupo medio", value: "12 a 13 personas de 20 a 35 años" },
         { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
+        { label: "Precio cerrado", value: "Sin fondo común ni costes extra" },
       ]}
     />
 

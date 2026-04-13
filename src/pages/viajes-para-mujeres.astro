@@ -23,7 +23,7 @@ const upcomingTrips = trips
   .slice(0, 6);
 
 const faqs = [
-  { question: "¿Es seguro viajar sola como mujer?", answer: "Sí. En Travel Hood viajas con un grupo reducido de 12-18 personas y un coordinador que se encarga de la logística y la seguridad. Seleccionamos destinos seguros y alojamientos en zonas bien comunicadas." },
+  { question: "¿Es seguro viajar sola como mujer?", answer: "Sí. En Travel Hood viajas con un grupo reducido de 12-13 personas y un coordinador que se encarga de la logística y la seguridad. Seleccionamos destinos seguros y alojamientos en zonas bien comunicadas." },
   { question: "¿Cuántas mujeres viajan con Travel Hood?", answer: "La mayoría de nuestros viajeros son mujeres. Los grupos suelen estar equilibrados, con una ligera mayoría femenina. El rango de edad 20-35 años asegura afinidad natural." },
   { question: "¿Puedo compartir habitación con otra mujer?", answer: "Sí. Las habitaciones se organizan por género. Si vas sola, compartirás con otra viajera del grupo. Si prefieres habitación individual, consulta disponibilidad." },
   { question: "¿Qué destinos recomendáis para mujeres que viajan solas?", answer: "Tailandia, Bali e Islandia son los más populares entre viajeras solas. Son seguros, asequibles y ofrecen experiencias muy variadas. Egipto y Colombia también son excelentes opciones." },
@@ -67,7 +67,7 @@ const pageDescription = `Viajes en grupo para mujeres de 20-35 años. La mayorí
           ¿Por qué Travel Hood es ideal para mujeres que viajan solas?
         </h2>
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
-          <p>En Travel Hood, la mayoría de los viajeros que reservan solos son mujeres. Esto no es casualidad: nuestros viajes están diseñados con la seguridad, la comodidad y la experiencia como prioridades. Grupos reducidos de 12-18 personas, rango de edad 20-35 años y un coordinador en destino que toma todas las medidas para que todo funcione.</p>
+          <p>En Travel Hood, la mayoría de los viajeros que reservan solos son mujeres. Esto no es casualidad: nuestros viajes están diseñados con la seguridad, la comodidad y la experiencia como prioridades. Grupos reducidos de 12-13 personas, rango de edad 20-35 años y un coordinador en destino que toma todas las medidas para que todo funcione.</p>
           <p>No necesitas experiencia previa viajando sola. Muchas de nuestras viajeras no habían hecho un viaje en grupo antes. Llegas al aeropuerto, conoces a tu grupo y desde ese momento tienes compañía, plan y un equipo que se encarga de todo lo logístico.</p>
           <p>Los destinos que seleccionamos pasan un filtro de seguridad, accesibilidad y calidad de experiencia. Alojamientos en zonas bien comunicadas, transporte privado entre ciudades y actividades donde siempre vas acompañada del grupo y el coordinador.</p>
         </div>
@@ -134,8 +134,9 @@ const pageDescription = `Viajes en grupo para mujeres de 20-35 años. La mayorí
         { label: "Viajeras solas", value: "Mayoría del grupo" },
         { label: "Satisfacción", value: "Muy alta" },
         { label: "Rango de edad", value: "20-35 años" },
-        { label: "Grupo medio", value: "12-18 personas" },
+        { label: "Grupo medio", value: "12-13 personas" },
         { label: "Desde", value: priceRange ? `${priceRange.minPrice.toLocaleString('es-ES')}€ sin vuelo` : "Consulta precios" },
+        { label: "Precio cerrado", value: "Sin fondo común ni costes extra" },
       ]}
     />
 

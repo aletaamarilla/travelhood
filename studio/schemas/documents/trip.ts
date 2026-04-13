@@ -111,7 +111,7 @@ export default defineType({
       title: 'Plazas totales',
       type: 'number',
       fieldset: 'places',
-      description: 'Plazas totales del grupo (ej: 16). Normalmente entre 12 y 18.',
+      description: 'Plazas totales del grupo (ej: 13). Normalmente entre 12 y 13.',
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
@@ -144,8 +144,19 @@ export default defineType({
       title: 'Coordinador/a',
       type: 'reference',
       to: [{type: 'coordinator'}],
-      description: '¿Qué coordinador/a lleva este viaje?',
-      validation: (Rule) => Rule.required(),
+      description: '¿Qué coordinador/a lleva este viaje? (Solo requerido si el destino tiene coordinador)',
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const doc = context.document as {destination?: {_ref?: string}} | undefined
+          const destRef = doc?.destination?._ref
+          if (!destRef) return true
+
+          const client = context.getClient({apiVersion: '2024-01-01'})
+          const dest = await client.fetch(`*[_id == $id][0]{hasCoordinator}`, {id: destRef})
+
+          if (dest?.hasCoordinator === false) return true
+          return value ? true : 'Este destino requiere un coordinador asignado'
+        }),
     }),
 
     // --- Tags de temporada ---

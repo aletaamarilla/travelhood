@@ -272,6 +272,7 @@ function mapDestination(s: SanityDestination): Destination {
       lng: d.lng,
     })),
     pdfUrl: s.pdfUrl ?? undefined,
+    hasCoordinator: s.hasCoordinator ?? true,
   }
 }
 
@@ -324,9 +325,17 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
   const destIncluded = s.destination?.included ?? []
   const destNotIncluded = s.destination?.notIncluded ?? []
   const destItinerary = s.destination?.itinerary ?? []
+  const destHasCoordinator = s.destination?.hasCoordinator ?? true
+
+  let baseIncluded = ctx?.defaultIncluded ?? []
+  if (!destHasCoordinator) {
+    baseIncluded = baseIncluded.filter(
+      (item) => !item.toLowerCase().includes('coordinador')
+    )
+  }
 
   const included = ctx
-    ? [...new Set([...ctx.defaultIncluded, ...destIncluded])]
+    ? [...new Set([...baseIncluded, ...destIncluded])]
     : destIncluded
 
   const notIncluded = ctx
@@ -629,6 +638,10 @@ const FALLBACK_FAQS: SanityGlobalFaq[] = [
       {
         question: '¿Puedo cancelar mi reserva?',
         answer: 'Puedes cancelar tu viaje según nuestra política de cancelación. Consulta los Términos y Condiciones para conocer los plazos y condiciones de reembolso.',
+      },
+      {
+        question: '¿Hay fondo común o "bote" durante el viaje?',
+        answer: 'No. En Travel Hood el precio de tu viaje es cerrado. Lo que ves en la ficha es lo que pagas. No hay fondo común, "bote" ni gastos sorpresa en destino. Tú gestionas tu dinero en todo momento.',
       },
       {
         question: '¿Viajo sola o en grupo?',

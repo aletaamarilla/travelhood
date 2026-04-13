@@ -147,6 +147,7 @@ export interface SanityDestination {
   idealFor?: string
   climate: string
   categories?: string[]
+  hasCoordinator?: boolean
   climateByMonth?: SanityClimateMonth[]
   budgetPerDay?: SanityBudgetPerDay
   coordinates?: SanityGeopoint
@@ -200,7 +201,7 @@ export interface SanityTrip {
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'
   tags?: string[]
-  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'itinerary'> & {
+  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'itinerary' | 'hasCoordinator'> & {
     country?: Pick<SanityCountry, 'name' | 'flag'>
     continent?: Pick<SanityContinent, 'name' | 'slug'>
   }

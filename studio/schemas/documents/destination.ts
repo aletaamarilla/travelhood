@@ -109,6 +109,15 @@ export default defineType({
       description: 'Para quién es ideal este destino (ej: "Amantes de la naturaleza y el ecoturismo"). Una frase.',
     }),
     defineField({
+      name: 'hasCoordinator',
+      title: '¿Tiene coordinador Travelhood?',
+      type: 'boolean',
+      fieldset: 'basic',
+      initialValue: true,
+      description:
+        'Si está desmarcado, este destino NO incluirá "Coordinador Travel Hood 24/7" en la lista de incluye y el viaje no requerirá coordinador asignado.',
+    }),
+    defineField({
       name: 'pdfFile',
       title: 'PDF del viaje',
       type: 'file',

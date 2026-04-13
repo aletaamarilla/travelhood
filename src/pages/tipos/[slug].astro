@@ -109,7 +109,7 @@ const categoryEmoji: Record<string, string> = {
           Viajes de {category.name.toLowerCase()} en grupo para jóvenes
         </h1>
         <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-          {categoryEmoji[category.slug]} Destinos seleccionados, coordinador en destino y un grupo de 12-18 viajeros de tu edad.
+          {categoryEmoji[category.slug]} Destinos seleccionados, coordinador en destino y un grupo de 12-13 viajeros de tu edad.
         </p>
       </div>
     </section>
@@ -277,7 +277,7 @@ const categoryEmoji: Record<string, string> = {
       dataPoints={[
         { label: "Destinos", value: `${categoryDestinations.length} destinos` },
         { label: "Rango de precios", value: categoryTripCards.length > 0 ? `Desde ${Math.min(...categoryTripCards.map(t => t.price))}€` : "Próximamente" },
-        { label: "Grupo medio", value: "14 personas de 20 a 35 años" },
+        { label: "Grupo medio", value: "12 a 13 personas de 20 a 35 años" },
         { label: "Incluye", value: "Coordinador + alojamiento + actividades" },
       ]}
     />
