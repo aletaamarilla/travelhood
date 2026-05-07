@@ -14,6 +14,56 @@
       ]
     },
     {
+      "source": "/",
+      "headers": [
+        { "key": "Link", "value": "</.well-known/api-catalog>; rel=\"service-desc\"; type=\"application/linkset+json\"; title=\"Travel Hood API catalog\", </.well-known/agent-skills/index.json>; rel=\"describedby\"; type=\"application/json\"; title=\"Travel Hood agent skills\", </robots.txt>; rel=\"robots\"; type=\"text/plain\", </sitemap-index.xml>; rel=\"sitemap\"; type=\"application/xml\", </.well-known/travelhood-home.md>; rel=\"alternate\"; type=\"text/markdown\"; title=\"Travel Hood home in Markdown\"" },
+        { "key": "Vary", "value": "Accept" }
+      ]
+    },
+    {
+      "source": "/.well-known/api-catalog",
+      "headers": [
+        { "key": "Content-Type", "value": "application/linkset+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/api-catalog/",
+      "headers": [
+        { "key": "Content-Type", "value": "application/linkset+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/agent-skills/index.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/agent-skills/recomendar-viaje.md",
+      "headers": [
+        { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/agent-skills/preparar-contacto-whatsapp.md",
+      "headers": [
+        { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/.well-known/travelhood-home.md",
+      "headers": [
+        { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
+        { "key": "Vary", "value": "Accept" }
+      ]
+    },
+    {
       "source": "/fonts/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
@@ -31,6 +81,16 @@
         { "key": "Cache-Control", "value": "public, max-age=86400, s-maxage=604800" }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        { "type": "header", "key": "accept", "value": ".*text/markdown.*" }
+      ],
+      "destination": "/.well-known/travelhood-home.md"
+    },
+    { "source": "/.well-known/api-catalog", "destination": "/.well-known/api-catalog/" }
   ],
   "redirects": [
     { "source": "/trip/rio-de-janeiro-brasil", "destination": "/destino/brasil/", "statusCode": 301 },

@@ -366,6 +366,12 @@ export const countries: Country[] = [
     timezone: "GMT-4 (5h menos que España)", visaRequired: true,
     visaInfo: "ESTA obligatorio (14 USD)", vaccinesRecommended: "",
   },
+  {
+    id: "jp", name: "Japón", slug: "japon", continentId: "asia", flag: "JP",
+    currency: "Yen japonés (JPY)", currencyRate: "1€ ≈ 164 JPY", language: "Japonés",
+    timezone: "GMT+9 (8h más que España)", visaRequired: false,
+    visaInfo: "Hasta 90 días sin visa (UE)", vaccinesRecommended: "",
+  },
 ]
 
 export const destinations: Destination[] = [
@@ -1508,6 +1514,76 @@ export const destinations: Destination[] = [
     ],
     hasCoordinator: true,
   },
+  {
+    id: "japon",
+    name: "Japón",
+    slug: "japon",
+    countryId: "jp",
+    continentId: "asia",
+    description:
+      "Templos milenarios, neones de Tokio, trenes bala, gastronomía que enamora y paisajes que parecen sacados de un anime. Japón es puro contraste: tradición y futuro conviven en cada esquina.",
+    shortDescription: "Tokio, Kioto, Osaka e Hiroshima. 12 días de historia, modernidad y cultura milenaria.",
+    heroImage: "/images/hero-japon.jpg",
+    heroImageAlt: "Templo tradicional japonés rodeado de cerezos en flor con el Monte Fuji al fondo",
+    highlights: ["Tokio y Shibuya", "Kioto y Fushimi Inari", "Osaka y Universal Studios", "Hiroshima y Miyajima", "Monte Fuji desde Hakone"],
+    idealFor: "Amantes de la cultura, la gastronomía y los contrastes entre lo ancestral y lo futurista",
+    climate: "Templado, 10-30°C según época",
+    categories: ["cultural", "aventura"],
+    extraIncluded: ["Entrada al Universal Studios", "Guía en Kioto", "Entrada al Santuario de Fushimi", "Tasas turísticas y parques nacionales"],
+    extraNotIncluded: ["Seguro médico de viaje", "Actividades no especificadas como incluido en el itinerario"],
+    coordinates: { lat: 35.6762, lng: 139.6503 },
+    budgetPerDay: { mealCostLow: "5-10€", mealCostMid: "12-25€", beerCost: "3-5€", dailyBudget: "30-50€/día", totalExtras: "360-600€ (12 días)" },
+    itinerary: [
+      { day: 1, title: "Llegada a Japón", description: "Recepción en el Aeropuerto Internacional de Tokio. Si el tiempo lo permite, comenzaremos a explorar Tokio. Por la noche, cena de bienvenida en el restaurante tradicional Hana no Mai." },
+      { day: 2, title: "Explorando Tokio", description: "Salida en tren hacia Kamakura: Gran Buda, templo Engaku-ji, Hasedera y Kotoku-in. Si el tiempo lo permite, playa. Por la tarde, Shibuya Crossing y la estatua de Hachiko." },
+      { day: 3, title: "Llegada a Kioto", description: "Tren bala hacia Kioto. Visitamos el famoso Santuario Fushimi Inari-taisha (incluido) y el Palacio Imperial. Opción de explorar el Museo del Manga o el Nishiki Market." },
+      { day: 4, title: "Conociendo Kioto", description: "Visita al Kinkaku-ji (Templo de Oro) y al conjunto histórico de Kiyomizu-dera. Por la tarde, paseo por el barrio de Gion. Tour de 8 horas con guía." },
+      { day: 5, title: "Kioto y alrededores", description: "Arashiyama: famoso bosque de bambú y templos como Tenryu-ji. Por la tarde, experiencia de kimono tradicional, té y opción de relajarse en un onsen." },
+      { day: 6, title: "Camino a Hiroshima", description: "Tren bala hasta Miyajimaguchi y ferry hacia la isla sagrada de Miyajima. Regreso a Hiroshima: Parque Memorial de la Paz y su museo." },
+      { day: 7, title: "Rumbo a Osaka", description: "Mercado de Kuromon para probar gastronomía local. Por la tarde, barrio futurista de Shinsekai y Torre Tsutenkaku. Noche en Dotonbori: izakayas, bares y karaokes." },
+      { day: 8, title: "Universal Studios Japan", description: "Día completo en Universal Studios Japan (incluido). Zona mágica de Harry Potter y subzona de Super Mario Bros." },
+      { day: 9, title: "Nara y Akihabara", description: "Parque de Nara con sus 1.300 ciervos sagrados. Templos Kofuku-ji, Tōdai-ji y Santuario Kasuga-taisha. Por la tarde, regreso a Tokio y barrio de Akihabara." },
+      { day: 10, title: "La gran Tokio", description: "Museo TeamLab Borderless, barrio de Shinjuku y Edificio del Gobierno Metropolitano. Por la tarde, Asakusa y templo Senso-ji. Noche: Tokyo Skytree y recorrido en karts." },
+      { day: 11, title: "Hakone y Monte Fuji", description: "Tren hacia Hakone para contemplar el Monte Fuji. Parque Nacional Fuji-Hakone-Izu, Lago Ashi y templo de Hakone. Opción de subir en funicular. Cena de despedida en Tokio." },
+      { day: 12, title: "Se acaba la aventura", description: "Mañana libre para disfrutar los últimos momentos. Traslado al Aeropuerto Internacional de Tokio." },
+    ],
+    faqs: [
+      { question: "¿Necesito visado para viajar a Japón?", answer: "No, si eres ciudadano español puedes entrar como turista hasta 90 días sin visado. Solo necesitas pasaporte en vigor." },
+      { question: "¿Es caro viajar a Japón?", answer: "Japón tiene fama de caro, pero con el viaje organizado los mayores gastos están cubiertos. En el día a día puedes comer ramen por 5-8€ o sushi por 10-15€. El presupuesto diario extra ronda los 30-50€." },
+      { question: "¿Necesito saber japonés?", answer: "No es necesario. En zonas turísticas hay señalización en inglés y los japoneses son muy serviciales. Además, viajas con coordinador y guía local." },
+      { question: "¿Cómo funciona el transporte en Japón?", answer: "El sistema de trenes japonés es el mejor del mundo. Los trayectos entre ciudades se hacen en tren bala (Shinkansen) y todos los traslados están incluidos en el viaje." },
+      { question: "¿Qué tipo de alojamiento está incluido?", answer: "Alojamiento en hoteles y alojamientos seleccionados en Tokio, Kioto, Osaka e Hiroshima, con ubicaciones céntricas para aprovechar al máximo cada ciudad." },
+      { question: "¿Puedo viajar solo/a a Japón con Travel Hood?", answer: "Por supuesto. La mayoría de nuestros viajeros vienen solos y se van con amigos para toda la vida. El grupo y el coordinador hacen que te sientas acompañado desde el primer momento." },
+      { question: "¿Cuál es la mejor época para viajar a Japón?", answer: "Primavera (marzo-mayo) para los cerezos en flor y otoño (octubre-noviembre) para los colores del momiji. Pero Japón es espectacular en cualquier época del año." },
+      { question: "¿Hay tiempo libre durante el viaje?", answer: "Sí. Aunque el itinerario es muy completo, hay momentos libres para explorar a tu ritmo, hacer compras o simplemente perderte por las calles." },
+      { question: "¿Qué ropa debo llevar?", answer: "Depende de la época. En general, ropa cómoda para caminar, calzado ligero y una chaqueta. Recuerda que en Japón se descalzan al entrar a templos y casas." },
+      { question: "¿Cuántas personas viajan en el grupo?", answer: "Grupos reducidos de 12-13 personas para una experiencia cercana, divertida y personalizada." },
+    ],
+    seo: {
+      title: "Viaje a Japón en grupo | Travel Hood",
+      description: "Viaje en grupo a Japón para jóvenes. Tokio, Kioto, Osaka e Hiroshima en 12 días. Coordinador 24/7.",
+      keywords: "viaje japon, viaje en grupo japon, japon jóvenes, travel hood japon, viaje japon grupo",
+      cuandoViajarTitle: "Cuándo viajar a Japón | Travel Hood",
+      cuandoViajarDescription: "Descubre la mejor época para viajar a Japón: cerezos en flor, momiji, clima y recomendaciones mes a mes.",
+      presupuestoTitle: "Presupuesto Japón | Travel Hood",
+      presupuestoDescription: "¿Cuánto cuesta viajar a Japón? Precios de comida, transporte y gastos diarios estimados.",
+    },
+    climateByMonth: [
+      { month: "Enero", avgTemp: "2-10°C", rainfall: "Baja", recommendation: "Buena", note: "Frío pero soleado, pocos turistas" },
+      { month: "Febrero", avgTemp: "3-11°C", rainfall: "Baja", recommendation: "Buena", note: "Primeros ciruelos en flor" },
+      { month: "Marzo", avgTemp: "7-15°C", rainfall: "Media", recommendation: "Ideal", note: "Inicio de los cerezos en flor" },
+      { month: "Abril", avgTemp: "12-20°C", rainfall: "Media", recommendation: "Ideal", note: "Sakura en plena floración" },
+      { month: "Mayo", avgTemp: "16-24°C", rainfall: "Media", recommendation: "Ideal", note: "Clima perfecto, Golden Week" },
+      { month: "Junio", avgTemp: "20-27°C", rainfall: "Alta", recommendation: "Aceptable", note: "Temporada de lluvias (tsuyu)" },
+      { month: "Julio", avgTemp: "24-31°C", rainfall: "Media", recommendation: "Buena", note: "Verano, festivales matsuri" },
+      { month: "Agosto", avgTemp: "25-32°C", rainfall: "Media", recommendation: "Buena", note: "Calor y festivales, Travel Hood opera" },
+      { month: "Septiembre", avgTemp: "21-28°C", rainfall: "Media", recommendation: "Buena", note: "Fin del verano, menos turismo" },
+      { month: "Octubre", avgTemp: "15-22°C", rainfall: "Media", recommendation: "Ideal", note: "Otoño, colores del momiji" },
+      { month: "Noviembre", avgTemp: "10-17°C", rainfall: "Baja", recommendation: "Ideal", note: "Follaje otoñal espectacular" },
+      { month: "Diciembre", avgTemp: "4-12°C", rainfall: "Baja", recommendation: "Buena", note: "Fresco, iluminaciones navideñas" },
+    ],
+    hasCoordinator: true,
+  },
 ]
 
 export const defaultIncluded = [
@@ -1618,6 +1694,8 @@ export const trips: Trip[] = [
   // Sri Lanka Invierno
   { id: "sri-lanka-invierno-2026-11-01", destinationId: "sri-lanka-invierno", title: "Sri Lanka Invierno — Noviembre 2026", departureDate: "2026-11-01", returnDate: "2026-11-11", durationDays: 11, priceFrom: 1050, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Entradas a templos", "Clases de surf", "2 safaris", "Snorkel"], notIncluded: [...defaultNotIncluded, "Visado"], itinerary: [], tags: ["puente-noviembre"] },
   { id: "sri-lanka-invierno-2026-11-16", destinationId: "sri-lanka-invierno", title: "Sri Lanka Invierno — Noviembre 2026 (2)", departureDate: "2026-11-16", returnDate: "2026-11-26", durationDays: 11, priceFrom: 1050, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "marta", status: "open", included: [...defaultIncluded, "Entradas a templos", "Clases de surf", "2 safaris", "Snorkel"], notIncluded: [...defaultNotIncluded, "Visado"], itinerary: [], tags: ["puente-noviembre"] },
+  // Japón
+  { id: "japon-2026-08-01", destinationId: "japon", title: "Japón — Agosto 2026", departureDate: "2026-08-01", returnDate: "2026-08-12", durationDays: 12, priceFrom: 0, flightEstimate: 800, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Entrada al Universal Studios", "Guía en Kioto", "Entrada al Santuario de Fushimi", "Tasas turísticas y parques nacionales"], notIncluded: [...defaultNotIncluded, "Seguro médico de viaje"], itinerary: [], tags: ["verano"] }, // TODO: precio pendiente
 ]
 
 export const coordinators: Coordinator[] = [
@@ -1627,7 +1705,7 @@ export const coordinators: Coordinator[] = [
     age: 29,
     role: "Coordinadora Senior",
     bio: "Lleva 4 años abriendo rutas por el mundo. Su especialidad: que el grupo se sienta familia desde el primer día.",
-    destinations: ["brasil", "zanzibar", "egipto", "lofoten", "indonesia", "filipinas-verano", "puerto-rico", "sri-lanka-verano", "sri-lanka-invierno"],
+    destinations: ["brasil", "zanzibar", "egipto", "lofoten", "indonesia", "filipinas-verano", "puerto-rico", "sri-lanka-verano", "sri-lanka-invierno", "japon"],
     quote: "Lo mejor de un viaje no es el destino, es con quién lo compartes.",
     image: "/images/hero-brasil.jpg",
   },

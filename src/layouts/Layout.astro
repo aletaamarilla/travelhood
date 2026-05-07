@@ -3,6 +3,7 @@ import { getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
 import { generateSiteNavigationSchema, toJsonLd } from "@/lib/schemas";
 import CookieBanner from "@/components/CookieBanner";
 import { SITE_URL, FALLBACK_SITE_NAME } from "@/lib/config";
+import { webMcpTools } from "@/lib/agent-visibility";
 
 interface Props {
   title?: string;
@@ -45,7 +46,7 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="theme-color" content="#143D4A" />
+    <meta name="theme-color" content="#0B2E3A" />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     {noIndex
@@ -70,6 +71,7 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
     <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="apple-touch-icon" href="/apple-icon.png" />
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
@@ -140,6 +142,7 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
     )}
     <slot />
     <script is:inline src="/scripts/register-sw.js"></script>
+    <script src={webMcpTools.scriptPath} defer></script>
     <CookieBanner client:idle />
   </body>
 </html>

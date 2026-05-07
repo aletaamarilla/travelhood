@@ -14,7 +14,7 @@ function paramToRegex(source) {
   return { regex: `^${regex}$`, paramCount: paramIndex };
 }
 
-function paramToReplacement(destination, paramNames) {
+function paramToReplacement(destination) {
   let idx = 0;
   return destination
     .replace(/:(\w+)\*/g, () => { idx++; return `$${idx}`; })
@@ -42,6 +42,19 @@ function convertHeader(header) {
   return { src: `^${src}$`, headers, continue: true };
 }
 
+function convertRewrite(rewrite) {
+  const { regex } = paramToRegex(rewrite.source);
+  const route = {
+    src: regex,
+    dest: paramToReplacement(rewrite.destination),
+  };
+
+  if (rewrite.has) route.has = rewrite.has;
+  if (rewrite.missing) route.missing = rewrite.missing;
+
+  return route;
+}
+
 const vercelJson = JSON.parse(readFileSync(VERCEL_JSON, 'utf-8'));
 const outputConfig = JSON.parse(readFileSync(OUTPUT_CONFIG, 'utf-8'));
 
@@ -49,6 +62,7 @@ const redirectRoutes = (vercelJson.redirects || []).map(convertRedirect);
 const headerRoutes = (vercelJson.headers || [])
   .filter(h => !h.source.includes('_astro'))
   .map(convertHeader);
+const rewriteRoutes = (vercelJson.rewrites || []).map(convertRewrite);
 
 const fsIndex = outputConfig.routes.findIndex(r => r.handle === 'filesystem');
 
@@ -64,9 +78,10 @@ outputConfig.routes = [
   ...redirectRoutes,
   ...before,
   ...headerRoutes,
+  ...rewriteRoutes,
   ...after,
 ];
 
 writeFileSync(OUTPUT_CONFIG, JSON.stringify(outputConfig, null, 2));
 
-console.log(`Injected ${redirectRoutes.length} redirects and ${headerRoutes.length} header rules into config.json`);
+console.log(`Injected ${redirectRoutes.length} redirects, ${headerRoutes.length} header rules and ${rewriteRoutes.length} rewrites into config.json`);

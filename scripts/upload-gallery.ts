@@ -233,7 +233,11 @@ async function convertHeicToJpeg(filePath: string): Promise<string> {
     // sharp lacks HEIC support on this system — fall back to heic-convert
     const convert = (await import('heic-convert')).default
     const inputBuffer = fs.readFileSync(filePath)
-    const outputBuffer = await convert({ buffer: inputBuffer, format: 'JPEG', quality: 0.9 })
+    const inputArrayBuffer = inputBuffer.buffer.slice(
+      inputBuffer.byteOffset,
+      inputBuffer.byteOffset + inputBuffer.byteLength,
+    )
+    const outputBuffer = await convert({ buffer: inputArrayBuffer, format: 'JPEG', quality: 0.9 })
     fs.writeFileSync(newPath, Buffer.from(outputBuffer))
   }
 

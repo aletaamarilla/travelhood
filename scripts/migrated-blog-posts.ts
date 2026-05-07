@@ -4,6 +4,8 @@
  * This file will be deprecated once all blog content is managed through Sanity CMS.
  */
 
+import type { BlogPost } from "../src/lib/blog-data"
+
 // ═══════════════════════════════════════════════════════════
 // MIGRATED FROM WORDPRESS — 2026-04-07
 // These posts were automatically extracted from travelhood.es (WordPress)
