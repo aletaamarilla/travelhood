@@ -40,6 +40,13 @@ const REQUIRED_CATALOG_PATHS = [
   "/.well-known/travelhood-home.md",
 ]
 
+const UNSUPPORTED_DISCOVERY_PATHS = [
+  "/.well-known/openid-configuration",
+  "/.well-known/oauth-authorization-server",
+  "/.well-known/oauth-protected-resource",
+  "/.well-known/mcp/server-card.json",
+]
+
 const SKILL_DIGEST_ALGORITHM = "sha-256"
 const DEFAULT_NEGOTIATION = "auto"
 const DEFAULT_TIMEOUT_MS = 10_000
@@ -269,6 +276,13 @@ function checkLinkHeader(linkHeader) {
       `/ Link header is missing type="${link.type}" for ${link.path}.`,
     )
   }
+
+  for (const path of UNSUPPORTED_DISCOVERY_PATHS) {
+    assert.ok(
+      !entries.some((entry) => pathFromHref(entry.href, "/ Link header entry") === path),
+      `/ Link header must not advertise unsupported discovery route ${path}.`,
+    )
+  }
 }
 
 function checkCatalog(catalog) {
@@ -286,6 +300,10 @@ function checkCatalog(catalog) {
 
   for (const path of REQUIRED_CATALOG_PATHS) {
     assert.ok(catalogPaths.has(path), `API catalog is missing item ${path}.`)
+  }
+
+  for (const path of UNSUPPORTED_DISCOVERY_PATHS) {
+    assert.ok(!catalogPaths.has(path), `API catalog must not advertise unsupported route ${path}.`)
   }
 }
 
@@ -314,10 +332,19 @@ function checkSkillsIndex(skillsIndex) {
 async function fetchText(baseUrl, path, options) {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), options.timeoutMs)
+  const headers = new Headers(options.headers)
+
+  if (!headers.has("accept")) {
+    headers.set("Accept", "*/*")
+  }
+
+  if (!headers.has("user-agent")) {
+    headers.set("User-Agent", "TravelHoodAgentVisibilityCheck/1.0 (+https://travelhood.es)")
+  }
 
   try {
     const response = await fetch(new URL(path, `${baseUrl}/`), {
-      headers: options.headers,
+      headers,
       redirect: "follow",
       signal: controller.signal,
     })
@@ -400,6 +427,16 @@ await runCheck("api catalog JSON linkset", async () => {
     assertContentType(response, "application/linkset+json", "/.well-known/api-catalog")
   }
   checkCatalog(JSON.parse(body))
+})
+
+await runCheck("unsupported standard discovery routes absent", async () => {
+  for (const path of UNSUPPORTED_DISCOVERY_PATHS) {
+    const { response } = await fetchText(options.baseUrl, path, options)
+    assert.ok(
+      !response.ok,
+      `${path} returned HTTP ${response.status}; unsupported OAuth/MCP discovery routes must not publish metadata.`,
+    )
+  }
 })
 
 await runCheck("agent skills index", async () => {

@@ -17,14 +17,16 @@ type LinksetEntry = {
   item: LinksetTarget[]
 }
 
-const catalogResources = [
-  resources.home,
-  resources.robots,
-  resources.sitemapIndex,
-  resources.rss,
-  resources.agentSkillsIndex,
-  resources.homeMarkdown,
-] as const satisfies readonly AgentVisibilityResource[]
+const allResources = Object.values(resources) as readonly AgentVisibilityResource[]
+const catalogResources = apiCatalog.describedResourceIds.map((resourceId) => {
+  const resource = allResources.find((candidate) => candidate.id === resourceId)
+
+  if (!resource) {
+    throw new Error(`Missing agent visibility resource: ${resourceId}`)
+  }
+
+  return resource
+})
 
 function mediaType(contentType: string): string {
   return contentType.split(";")[0]?.trim() || contentType

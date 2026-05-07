@@ -18,7 +18,80 @@ export type LinkHeaderEntry = {
   title?: string
 }
 
+export type AuthorizationServerMetadata = {
+  issuer: string
+  authorizationEndpoint: string
+  tokenEndpoint: string
+  jwksUri: string
+  grantTypesSupported: readonly string[]
+  responseTypesSupported: readonly string[]
+  tokenEndpointAuthMethodsSupported: readonly string[]
+  codeChallengeMethodsSupported: readonly string[]
+  scopesSupported: readonly string[]
+}
+
+export type ProtectedResourceMetadata = {
+  resource: string
+  authorizationServers: readonly string[]
+  scopesSupported: readonly string[]
+  bearerMethodsSupported: readonly string[]
+  resourceDocumentation: string
+}
+
+export type McpServerCard = {
+  serverInfo: {
+    name: string
+    version: string
+  }
+  transport: {
+    type: "streamable-http"
+    endpoint: string
+  }
+  capabilities: {
+    tools: boolean
+    resources: boolean
+    prompts: boolean
+  }
+  auth: {
+    required: boolean
+    authorizationServers: readonly string[]
+    scopes: readonly string[]
+  }
+  documentation: string
+}
+
+export type AgentDiscoveryConfig = {
+  siteOrigin: string
+  issuer?: string
+  authorizationEndpoint?: string
+  tokenEndpoint?: string
+  jwksUri?: string
+  resourceIdentifier?: string
+  mcpEndpoint?: string
+  mcpServerName: string
+  mcpServerVersion: string
+  supportedScopes: readonly string[]
+  supportedGrantTypes: readonly string[]
+  supportedResponseTypes: readonly string[]
+  tokenEndpointAuthMethods: readonly string[]
+  codeChallengeMethods: readonly string[]
+  lastReviewedAt: string
+  hasAuthorizationServer: boolean
+  hasProtectedResource: boolean
+  hasMcpServer: boolean
+}
+
 const SITE_BASE_URL = SITE_URL.replace(/\/+$/, "")
+
+function publicEnvUrl(value: string | undefined): string | undefined {
+  const normalizedValue = value?.trim()
+
+  if (!normalizedValue) {
+    return undefined
+  }
+
+  return normalizedValue
+}
 
 export function absoluteUrl(path: string): string {
   if (/^https?:\/\//i.test(path)) {
@@ -37,6 +110,58 @@ export const site = {
     "Viajes en grupo reducido para personas jovenes, con itinerario, alojamiento y coordinador incluidos.",
   visibilityVersion: "agent-visibility-v1",
 } as const
+
+const configuredIssuer = publicEnvUrl(import.meta.env.PUBLIC_AGENT_AUTH_ISSUER)
+const configuredAuthorizationEndpoint = publicEnvUrl(
+  import.meta.env.PUBLIC_AGENT_AUTHORIZATION_ENDPOINT,
+)
+const configuredTokenEndpoint = publicEnvUrl(import.meta.env.PUBLIC_AGENT_TOKEN_ENDPOINT)
+const configuredJwksUri = publicEnvUrl(import.meta.env.PUBLIC_AGENT_JWKS_URI)
+const configuredResourceIdentifier = publicEnvUrl(import.meta.env.PUBLIC_AGENT_RESOURCE)
+const configuredMcpEndpoint = publicEnvUrl(import.meta.env.PUBLIC_AGENT_MCP_ENDPOINT)
+
+const hasCompleteAuthorizationServerConfig = Boolean(
+  configuredIssuer &&
+    configuredAuthorizationEndpoint &&
+    configuredTokenEndpoint &&
+    configuredJwksUri,
+)
+
+// Public capability flags must only flip when the matching discovery route or
+// MCP card is implemented, not merely because future env values are present.
+const publishesAuthorizationServerDiscovery = false
+const publishesMcpServerCard = false
+const hasAuthorizationServer = publishesAuthorizationServerDiscovery && hasCompleteAuthorizationServerConfig
+const hasProtectedResource = Boolean(hasAuthorizationServer && configuredResourceIdentifier)
+const hasMcpServer = publishesMcpServerCard && Boolean(configuredMcpEndpoint)
+
+const supportedScopes = hasProtectedResource
+  ? [
+      "travelhood.public.read",
+      ...(hasMcpServer ? ["travelhood.mcp.read"] : []),
+    ]
+  : []
+
+export const agentDiscoveryConfig = {
+  siteOrigin: SITE_BASE_URL,
+  issuer: configuredIssuer,
+  authorizationEndpoint: configuredAuthorizationEndpoint,
+  tokenEndpoint: configuredTokenEndpoint,
+  jwksUri: configuredJwksUri,
+  resourceIdentifier: configuredResourceIdentifier,
+  mcpEndpoint: configuredMcpEndpoint,
+  mcpServerName: "Travel Hood MCP",
+  mcpServerVersion: "0.0.0",
+  supportedScopes,
+  supportedGrantTypes: hasAuthorizationServer ? ["authorization_code"] : [],
+  supportedResponseTypes: hasAuthorizationServer ? ["code"] : [],
+  tokenEndpointAuthMethods: hasAuthorizationServer ? ["client_secret_post", "none"] : [],
+  codeChallengeMethods: hasAuthorizationServer ? ["S256"] : [],
+  lastReviewedAt: "2026-05-07",
+  hasAuthorizationServer,
+  hasProtectedResource,
+  hasMcpServer,
+} as const satisfies AgentDiscoveryConfig
 
 export const resources = {
   home: {
@@ -216,9 +341,9 @@ export const unsupportedCapabilities = {
 } as const
 
 export const capabilityFlags = {
-  oauthDiscovery: unsupportedCapabilities.oauthDiscovery.supported,
-  protectedResourceMetadata: unsupportedCapabilities.protectedResourceMetadata.supported,
-  mcpServerCard: unsupportedCapabilities.mcpServerCard.supported,
+  oauthDiscovery: agentDiscoveryConfig.hasAuthorizationServer,
+  protectedResourceMetadata: agentDiscoveryConfig.hasProtectedResource,
+  mcpServerCard: agentDiscoveryConfig.hasMcpServer,
 } as const
 
 export const agentDiscoveryLinks = [
