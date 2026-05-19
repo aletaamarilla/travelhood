@@ -17,6 +17,12 @@ export default defineType({
       options: {collapsible: true, collapsed: true},
     },
     {name: 'contact', title: 'WhatsApp y contacto', options: {collapsible: true, collapsed: false}},
+    {name: 'legal', title: 'Identidad legal', options: {collapsible: true, collapsed: false}},
+    {
+      name: 'reviewsTrust',
+      title: 'Confianza y opiniones',
+      options: {collapsible: true, collapsed: false},
+    },
   ],
   fields: [
     defineField({
@@ -78,12 +84,67 @@ export default defineType({
       validation: (Rule) => Rule.uri({scheme: ['https']}),
     }),
     defineField({
+      name: 'legalLicenseType',
+      title: 'Tipo de licencia legal',
+      type: 'string',
+      description: 'Etiqueta visible del registro/licencia administrativa (ej: CIAN).',
+      fieldset: 'legal',
+      initialValue: 'CIAN',
+    }),
+    defineField({
+      name: 'legalLicenseNumber',
+      title: 'Número de licencia legal',
+      type: 'string',
+      description:
+        'Número de registro/licencia de la agencia. Se muestra de forma discreta en el footer y puede usarse en schema.org.',
+      fieldset: 'legal',
+      initialValue: '048161-2',
+      validation: (Rule) =>
+        Rule.regex(/^[A-Z0-9\s.-]+$/i, {name: 'license'}).warning('Revisa el formato del número de licencia.'),
+    }),
+    defineField({
       name: 'depositAmount',
       title: 'Señal de reserva (€)',
       type: 'number',
       description: 'Importe de la señal de reserva que se muestra en la web. Se aplica globalmente.',
       initialValue: 250,
       validation: (Rule) => Rule.min(0),
+    }),
+    defineField({
+      name: 'trustpilotProfileUrl',
+      title: 'URL del perfil en Trustpilot',
+      type: 'url',
+      description:
+        'Enlace principal al perfil público de Travel Hood en Trustpilot. No usar widgets, logos, badges ni claims de verificación.',
+      fieldset: 'reviewsTrust',
+      validation: (Rule) => Rule.uri({scheme: ['https']}),
+    }),
+    defineField({
+      name: 'reviewsAttributionText',
+      title: 'Texto de atribución de opiniones',
+      type: 'text',
+      rows: 2,
+      description:
+        'Texto breve bajo las opiniones. Ej: "También puedes leer más opiniones en nuestro perfil público de Trustpilot."',
+      fieldset: 'reviewsTrust',
+      validation: (Rule) => Rule.max(220).warning('Mantén la atribución breve y transparente.'),
+    }),
+    defineField({
+      name: 'reviewsLastReviewedAt',
+      title: 'Última revisión manual de opiniones',
+      type: 'datetime',
+      description:
+        'Fecha interna de la última revisión manual del origen y trazabilidad de las opiniones publicadas.',
+      fieldset: 'reviewsTrust',
+    }),
+    defineField({
+      name: 'reviewsCtaLabel',
+      title: 'Texto del CTA de opiniones',
+      type: 'string',
+      description:
+        'Etiqueta del enlace hacia el perfil externo de opiniones. Ej: "Ver opiniones en Trustpilot".',
+      fieldset: 'reviewsTrust',
+      validation: (Rule) => Rule.max(80).warning('Usa una etiqueta clara y breve.'),
     }),
     defineField({
       name: 'defaultSeoImage',

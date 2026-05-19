@@ -142,15 +142,33 @@ export interface Coordinator {
   image: string
 }
 
+export type TestimonialSource = "trustpilot" | "editorial"
+export type TestimonialVerificationStatus =
+  | "individual-link"
+  | "profile-link"
+  | "pending-review"
+  | "retired"
+
 export interface Testimonial {
   id: string
   name: string
-  age: number
-  city: string
-  destinationId: string
+  age?: number
+  city?: string
+  destinationId?: string
   quote: string
   rating: number
-  image: string
+  image?: string
+  featured?: boolean
+  source?: TestimonialSource
+  verificationStatus?: TestimonialVerificationStatus
+  externalReviewUrl?: string
+  sourceProfileUrl?: string
+  experienceDateLabel?: string
+  experienceDate?: string
+  editorialReviewedAt?: string
+  editorialEvidenceRef?: string
+  isVisible?: boolean
+  sortOrder?: number
 }
 
 export interface TripCategoryData {
@@ -1731,6 +1749,13 @@ export const testimonials: Testimonial[] = [
     quote: "Fui sin conocer a nadie. Volví con gente que ya considero amigos.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t1; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 1,
   },
   {
     id: "t2",
@@ -1741,6 +1766,13 @@ export const testimonials: Testimonial[] = [
     quote: "Ver las auroras boreales con 13 personas más que sienten lo mismo que tú... no hay palabras.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t2; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 2,
   },
   {
     id: "t3",
@@ -1751,6 +1783,13 @@ export const testimonials: Testimonial[] = [
     quote: "Indonesia me volaba la cabeza cada día. Y el grupo hizo que fuera 10 veces mejor.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t3; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 3,
   },
   {
     id: "t4",
@@ -1761,6 +1800,13 @@ export const testimonials: Testimonial[] = [
     quote: "Pensé que Maldivas en grupo sería raro. Fue la mejor decisión que he tomado.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t4; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 4,
   },
   {
     id: "t5",
@@ -1771,6 +1817,13 @@ export const testimonials: Testimonial[] = [
     quote: "Zanzíbar no estaba en mi radar. Ahora es mi viaje favorito de toda la vida.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t5; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 5,
   },
   {
     id: "t6",
@@ -1781,6 +1834,13 @@ export const testimonials: Testimonial[] = [
     quote: "Repetí con Travel Hood. La primera vez fui solo, la segunda convencí a dos amigos.",
     rating: 5,
     image: "",
+    featured: true,
+    source: "editorial",
+    verificationStatus: "pending-review",
+    editorialReviewedAt: "2026-05-14T00:00:00Z",
+    editorialEvidenceRef: "fallback:src/lib/travel-data.ts:testimonials.t6; testimonio editorial recopilado por Travel Hood",
+    isVisible: true,
+    sortOrder: 6,
   },
 ]
 

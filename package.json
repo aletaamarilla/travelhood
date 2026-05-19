@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check:visibility": "node scripts/check-agent-visibility.mjs",
+    "check:favicons": "node scripts/check-favicons.mjs",
     "seed": "npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {

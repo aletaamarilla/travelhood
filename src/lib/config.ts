@@ -6,6 +6,8 @@ export const FALLBACK_WHATSAPP_PHONE = "34686684204"
 export const FALLBACK_WA_COMMUNITY_URL = ""
 export const FALLBACK_INSTAGRAM_URL = "https://instagram.com/travelhood_esp"
 export const FALLBACK_TIKTOK_URL = "https://tiktok.com/@travelhood.es"
+export const FALLBACK_LEGAL_LICENSE_TYPE = "CIAN"
+export const FALLBACK_LEGAL_LICENSE_NUMBER = "048161-2"
 
 export function buildWhatsAppUrl(phone: string, message?: string): string {
   const base = `https://wa.me/${phone}`

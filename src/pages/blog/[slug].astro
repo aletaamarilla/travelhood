@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
+import ReviewCard from "@/components/ReviewCard.astro";
 import { getRelatedPosts } from "@/lib/blog-data";
 import { getBlogPosts, getDestinations, getTrips, getTestimonials, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
 import { generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
@@ -36,7 +37,7 @@ const relatedTrips = relatedDests.flatMap((d) =>
 ).slice(0, 3);
 
 const destTestimonials = testimonials
-  .filter((t) => post.relatedDestinations.includes(t.destinationId))
+  .filter((t) => t.destinationId && post.relatedDestinations.includes(t.destinationId))
   .slice(0, 2);
 
 const canonicalUrl = `${SITE_URL}/blog/${post.slug}/`;
@@ -376,19 +377,12 @@ const breadcrumbLd = {
               {destTestimonials.length > 0 && (
                 <div class="rounded-2xl bg-card p-6">
                   <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-4">Lo dicen ellos</p>
-                  {destTestimonials.map((t) => (
-                    <blockquote class="mb-4 last:mb-0">
-                      <div class="flex gap-0.5 mb-2">
-                        {Array.from({ length: t.rating }).map(() => (
-                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-yellow-sun">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                          </svg>
-                        ))}
-                      </div>
-                      <p class="text-sm text-foreground italic leading-relaxed">"{t.quote}"</p>
-                      <p class="mt-1 text-xs text-muted-foreground">{t.name}, {t.age} años — {t.city}</p>
-                    </blockquote>
-                  ))}
+                  {destTestimonials.map((t) => {
+                    const dest = destinations.find((d) => d.id === t.destinationId);
+                    return (
+                      <ReviewCard review={t} destinationName={dest?.name} compact class="mb-4 last:mb-0" />
+                    );
+                  })}
                 </div>
               )}
 

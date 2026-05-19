@@ -17,6 +17,8 @@ import {
 import type { Destination, Trip, Testimonial, Coordinator, Country, Continent } from "@/lib/travel-data"
 import type { DestinationFAQ } from "@/lib/destination-details"
 import { buildWhatsAppUrl } from "@/lib/config"
+import { selectVisibleReviews } from "@/lib/reviews"
+import ReviewCard from "@/components/ReviewCard"
 
 // ── Types ──────────────────────────────────────────────
 
@@ -662,6 +664,7 @@ export default function TripDetailPage({
   }
 
   const totalTravelers = allTrips.reduce((sum, t) => sum + (t.totalPlaces - t.placesLeft), 0)
+  const visibleTestimonials = selectVisibleReviews(testimonials, 4)
 
   useEffect(() => {
     const el = mobileGalleryRef.current
@@ -968,29 +971,38 @@ export default function TripDetailPage({
             )}
 
             {/* ── Testimonials ──────────────────── */}
-            {testimonials.length > 0 && (
+            {visibleTestimonials.length > 0 && (
               <section className="mt-12" id="testimonios">
-                <h2 className="font-serif text-xl font-extrabold text-foreground">
-                  Lo que dicen nuestros viajeros
-                </h2>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-secondary">
+                      Opiniones trazables
+                    </span>
+                    <h2 className="mt-2 font-serif text-xl font-extrabold text-foreground">
+                      Lo que dicen quienes viajaron a {destination.name}
+                    </h2>
+                    <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                      Mostramos reseñas visibles con origen editorial revisado, sin mezclar tarjetas antiguas sin trazabilidad.
+                    </p>
+                  </div>
+                  <a
+                    href="/opiniones/"
+                    className="inline-flex w-fit items-center gap-2 rounded-full border border-teal-deep/20 px-4 py-2 text-sm font-bold text-teal-deep transition-colors hover:bg-teal-deep hover:text-white"
+                  >
+                    Ver todas las opiniones
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                </div>
                 <div className="mt-4 -mx-5 px-5 sm:mx-0 sm:px-0">
                   <div className="flex gap-3 overflow-x-auto scrollbar-hide snap-x pb-1 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible">
-                    {testimonials.slice(0, 4).map((t) => (
-                      <div key={t.id} className="shrink-0 w-[72vw] snap-start sm:w-auto rounded-xl bg-card p-5 shadow-sm">
-                        <div className="flex items-center gap-1 mb-3">
-                          {Array.from({ length: t.rating }).map((_, i) => (
-                            <Star key={i} size={14} className="fill-yellow-sun text-yellow-sun" />
-                          ))}
-                        </div>
-                        <p className="text-sm text-foreground/80 italic leading-relaxed">"{t.quote}"</p>
-                        <div className="mt-3 flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-teal-vivid to-coral" />
-                          <div>
-                            <p className="text-xs font-bold text-foreground">{t.name}, {t.age} años</p>
-                            <p className="text-[11px] text-muted-foreground">{t.city}</p>
-                          </div>
-                        </div>
-                      </div>
+                    {visibleTestimonials.map((t) => (
+                      <ReviewCard
+                        key={t.id}
+                        review={t}
+                        destinationName={destination.name}
+                        destinationPrefix="Viajó a"
+                        className="shrink-0 w-[72vw] snap-start sm:w-auto"
+                      />
                     ))}
                   </div>
                 </div>

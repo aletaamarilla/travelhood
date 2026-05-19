@@ -3,7 +3,9 @@ import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import ContinentFAQ from "@/components/ContinentFAQ";
+import ReviewCard from "@/components/ReviewCard.astro";
 import { getDestinations, getTestimonials, getCountries, getTrips, getLandingBySlug, resolveImage, calculatePriceRange, getFeaturedDestinations } from "@/lib/data-provider";
+import { selectLandingReviews } from "@/lib/reviews";
 const [destinations, testimonials, countries, allTrips, landing, featuredDests] = await Promise.all([
   getDestinations(), getTestimonials(), getCountries(), getTrips(), getLandingBySlug("viajar-sola"), getFeaturedDestinations(5)
 ]);
@@ -16,8 +18,9 @@ const pageDescription = "¿No tienes con quién viajar? La mayoría de viajeros 
 
 const recommendedDestinations = featuredDests;
 
-const featuredDestIds = new Set(featuredDests.map((d) => d.id));
-const relevantTestimonials = testimonials.filter((t) => featuredDestIds.has(t.destinationId)).slice(0, 4);
+const editorialDestinationIds = new Set(recommendedDestinations.map((destination) => destination.id));
+const relevantTestimonials = selectLandingReviews(testimonials, { destinationIds: editorialDestinationIds, limit: 4 });
+const destinationsById = new Map(destinations.map((destination) => [destination.id, destination]));
 
 const faqs = [
   { question: "¿Es seguro viajar sola?", answer: "Sí, con las medidas adecuadas y coordinadores experimentados. Viajas con un grupo reducido de 12-13 personas de tu misma edad y un coordinador Travel Hood que se encarga de la logística y la seguridad. Nunca estás realmente sola." },
@@ -119,29 +122,27 @@ const faqs = [
           </h2>
         </div>
 
-        <div class="grid gap-6 sm:grid-cols-2">
-          {relevantTestimonials.map((t) => {
-            const dest = destinations.find((d) => d.id === t.destinationId);
-            return (
-              <div class="rounded-xl bg-background p-6 border border-border/40">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="h-10 w-10 rounded-full bg-teal-deep/10 flex items-center justify-center text-teal-vivid font-bold text-sm">
-                    {t.name[0]}
-                  </div>
-                  <div>
-                    <p class="font-semibold text-foreground">{t.name}, {t.age} años</p>
-                    <p class="text-xs text-muted-foreground">{t.city} · {dest?.name}</p>
-                  </div>
-                  <div class="ml-auto flex gap-0.5">
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F0A800" stroke="#F0A800" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    ))}
-                  </div>
-                </div>
-                <p class="text-sm text-muted-foreground italic leading-relaxed">"{t.quote}"</p>
-              </div>
-            );
-          })}
+        {relevantTestimonials.length > 0 ? (
+          <div class="grid gap-6 sm:grid-cols-2">
+            {relevantTestimonials.map((t) => {
+              const dest = t.destinationId ? destinationsById.get(t.destinationId) : undefined;
+              return <ReviewCard review={t} destinationName={dest?.name} destinationPrefix="Viajó a" />;
+            })}
+          </div>
+        ) : (
+          <div class="rounded-3xl border border-border/70 bg-background p-8 text-center shadow-sm">
+            <h3 class="font-serif text-xl font-extrabold text-foreground">
+              Estamos revisando las opiniones visibles
+            </h3>
+            <p class="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">
+              No mostramos tarjetas antiguas o pendientes de revisión editorial. La selección aparecerá aquí cuando tenga origen trazable.
+            </p>
+          </div>
+        )}
+        <div class="mt-8 text-center">
+          <a href="/opiniones/" class="text-sm font-bold text-teal-vivid transition-colors hover:text-teal-deep">
+            Ver todas las opiniones →
+          </a>
         </div>
       </div>
     </section>

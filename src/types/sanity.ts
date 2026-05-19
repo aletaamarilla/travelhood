@@ -43,6 +43,12 @@ export interface SanitySiteSettings {
   socialLinks?: {platform: string; url: string}[]
   whatsappPhone?: string
   whatsappCommunityUrl?: string
+  legalLicenseType?: string
+  legalLicenseNumber?: string
+  trustpilotProfileUrl?: string
+  reviewsAttributionText?: string
+  reviewsLastReviewedAt?: string
+  reviewsCtaLabel?: string
   defaultSeoImage?: SanityImageSource
   defaultIncluded?: string[]
   defaultNotIncluded?: string[]
@@ -210,16 +216,33 @@ export interface SanityTrip {
 
 // ── Testimonial ──
 
+export type SanityTestimonialSource = 'trustpilot' | 'editorial'
+export type SanityTestimonialVerificationStatus =
+  | 'individual-link'
+  | 'profile-link'
+  | 'pending-review'
+  | 'retired'
+
 export interface SanityTestimonial {
   _id: string
   name: string
-  age: number
-  city: string
+  age?: number
+  city?: string
   quote: string
   rating: number
   image?: SanityImageSource
   imageAlt?: string
   featured?: boolean
+  source?: SanityTestimonialSource
+  verificationStatus?: SanityTestimonialVerificationStatus
+  externalReviewUrl?: string
+  sourceProfileUrl?: string
+  experienceDateLabel?: string
+  experienceDate?: string
+  editorialReviewedAt?: string
+  editorialEvidenceRef?: string
+  isVisible?: boolean
+  sortOrder?: number
   destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug'>
 }
 

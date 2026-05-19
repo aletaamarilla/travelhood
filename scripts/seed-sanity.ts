@@ -97,6 +97,8 @@ async function seed() {
     ],
     whatsappPhone: '34686684204',
     whatsappCommunityUrl: 'https://chat.whatsapp.com/CA8Mqw35bdG4dkHfxGeVUZ',
+    legalLicenseType: 'CIAN',
+    legalLicenseNumber: '048161-2',
   })
 
   // 2. Continents
@@ -273,6 +275,7 @@ async function seed() {
   for (let i = 0; i < testimonials.length; i++) {
     const t = testimonials[i]
     const testId = `testimonial-${i}`
+    const destinationRef = t.destinationId ? makeRef(destIdMap.get(t.destinationId) ?? '') : undefined
     testimonialIds.add(testId)
     tx.createOrReplace({
       _type: 'testimonial',
@@ -280,10 +283,20 @@ async function seed() {
       name: t.name,
       age: t.age,
       city: t.city,
-      destination: makeRef(destIdMap.get(t.destinationId) ?? ''),
+      destination: destinationRef,
       quote: t.quote,
       rating: t.rating,
-      featured: i < 6,
+      source: t.source ?? 'trustpilot',
+      verificationStatus: t.verificationStatus ?? 'pending-review',
+      externalReviewUrl: t.externalReviewUrl,
+      sourceProfileUrl: t.sourceProfileUrl,
+      experienceDateLabel: t.experienceDateLabel,
+      experienceDate: t.experienceDate,
+      editorialReviewedAt: t.editorialReviewedAt,
+      editorialEvidenceRef: t.editorialEvidenceRef,
+      isVisible: t.isVisible ?? true,
+      featured: t.featured ?? false,
+      sortOrder: t.sortOrder ?? i + 1,
     })
   }
 

@@ -1,9 +1,24 @@
-import { SITE_URL, FALLBACK_SITE_NAME, FALLBACK_INSTAGRAM_URL, FALLBACK_TIKTOK_URL } from "@/lib/config"
+import {
+  SITE_URL,
+  FALLBACK_SITE_NAME,
+  FALLBACK_INSTAGRAM_URL,
+  FALLBACK_LEGAL_LICENSE_NUMBER,
+  FALLBACK_LEGAL_LICENSE_TYPE,
+  FALLBACK_TIKTOK_URL,
+} from "@/lib/config"
 
 const ORG_NAME = FALLBACK_SITE_NAME
 const ORG_LOGO = `${SITE_URL}/icon.svg`
 
-export function generateTravelAgencySchema(priceRange?: string) {
+interface LegalLicenseSchemaInput {
+  type?: string
+  number?: string
+}
+
+export function generateTravelAgencySchema(priceRange?: string, legalLicense: LegalLicenseSchemaInput = {}) {
+  const licenseType = legalLicense.type || FALLBACK_LEGAL_LICENSE_TYPE
+  const licenseNumber = legalLicense.number || FALLBACK_LEGAL_LICENSE_NUMBER
+
   return {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
@@ -12,6 +27,15 @@ export function generateTravelAgencySchema(priceRange?: string) {
     logo: ORG_LOGO,
     description: "Viajes en grupo para jóvenes de 20 a 35 años con coordinador en destino y alojamiento incluidos.",
     priceRange: priceRange || "Consulta precios",
+    ...(licenseNumber
+      ? {
+          identifier: {
+            "@type": "PropertyValue",
+            propertyID: licenseType,
+            value: licenseNumber,
+          },
+        }
+      : {}),
     areaServed: { "@type": "Country", name: "España" },
     audience: { "@type": "PeopleAudience", suggestedMinAge: 20, suggestedMaxAge: 35 },
     sameAs: [
@@ -28,16 +52,6 @@ export function generateTravelAgencySchema(priceRange?: string) {
 
 /** @deprecated Use generateTravelAgencySchema instead */
 export const generateOrganizationSchema = generateTravelAgencySchema
-
-export function generateAggregateRatingSchema(reviewCount: number, ratingValue: number = 5) {
-  return {
-    "@type": "AggregateRating",
-    ratingValue: String(ratingValue),
-    reviewCount: String(reviewCount),
-    bestRating: "5",
-    worstRating: "1",
-  }
-}
 
 export function generateWebSiteSchema() {
   return {

@@ -75,6 +75,7 @@ import {
 import { blogPosts as hardBlogPosts, type BlogPost } from './blog-data'
 import { comparisons as hardComparisons, type Comparison } from './comparisons'
 import { lookupCoords } from './destination-details'
+import { filterVisibleReviews, sortReviews } from './reviews'
 
 const isSanityConfigured = (): boolean => {
   try {
@@ -425,38 +426,56 @@ export async function getCoordinators(): Promise<Coordinator[]> {
 
 // ── Testimonials ──
 
+function normalizeTestimonials(testimonials: Testimonial[], featuredOnly = false): Testimonial[] {
+  const visibleTestimonials = filterVisibleReviews(testimonials)
+    .filter((t) => !featuredOnly || t.featured === true)
+
+  return sortReviews(visibleTestimonials)
+}
+
 function mapTestimonial(s: SanityTestimonial): Testimonial {
   return {
     id: s._id,
     name: s.name,
     age: s.age,
     city: s.city,
-    destinationId: s.destination?._id ?? '',
+    destinationId: s.destination?._id,
     quote: s.quote,
     rating: s.rating,
     image: resolveImageThumb(s.image, 200),
+    featured: s.featured ?? false,
+    source: s.source ?? 'editorial',
+    verificationStatus: s.verificationStatus ?? 'pending-review',
+    externalReviewUrl: s.externalReviewUrl,
+    sourceProfileUrl: s.sourceProfileUrl,
+    experienceDateLabel: s.experienceDateLabel,
+    experienceDate: s.experienceDate,
+    editorialReviewedAt: s.editorialReviewedAt,
+    editorialEvidenceRef: s.editorialEvidenceRef,
+    isVisible: s.isVisible ?? true,
+    sortOrder: s.sortOrder,
   }
 }
 
 export async function getTestimonials(): Promise<Testimonial[]> {
-  if (!isSanityConfigured()) return hardTestimonials
+  if (!isSanityConfigured()) return normalizeTestimonials(hardTestimonials)
   const data = await sanityFetch<SanityTestimonial[]>(allTestimonialsQuery)
-  return data.map(mapTestimonial)
+  return normalizeTestimonials(data.map(mapTestimonial))
 }
 
 export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
-  if (!isSanityConfigured()) return hardTestimonials
+  if (!isSanityConfigured()) return normalizeTestimonials(hardTestimonials, true)
   const data = await sanityFetch<SanityTestimonial[]>(featuredTestimonialsQuery)
-  return data.map(mapTestimonial)
+  return normalizeTestimonials(data.map(mapTestimonial), true)
 }
 
 export async function getTestimonialsByDestination(slug: string): Promise<Testimonial[]> {
   if (!isSanityConfigured()) {
     const dest = hardDestinations.find((d) => d.slug === slug)
-    return dest ? hardTestimonials.filter((t) => t.destinationId === dest.id) : []
+    return dest ? normalizeTestimonials(hardTestimonials.filter((t) => t.destinationId === dest.id)) : []
   }
   const data = await sanityFetch<SanityTestimonial[]>(testimonialsByDestinationQuery, { slug })
-  return data.map(mapTestimonial)
+  return normalizeTestimonials(data.map(mapTestimonial))
 }
 
 // ── Trip Categories ──

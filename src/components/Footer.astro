@@ -1,6 +1,12 @@
 ---
 import { getContinents, getTripCategories, getSeasons, getDestinations, getSiteSettings, resolveSettingsImages, getFeaturedDestinations } from "@/lib/data-provider";
-import { FALLBACK_CONTACT_EMAIL, FALLBACK_INSTAGRAM_URL, FALLBACK_WHATSAPP_PHONE } from "@/lib/config";
+import {
+  FALLBACK_CONTACT_EMAIL,
+  FALLBACK_INSTAGRAM_URL,
+  FALLBACK_LEGAL_LICENSE_NUMBER,
+  FALLBACK_LEGAL_LICENSE_TYPE,
+  FALLBACK_WHATSAPP_PHONE,
+} from "@/lib/config";
 
 const [continents, tripCategories, seasons, destinations, settings, featuredDests] = await Promise.all([
   getContinents(),
@@ -18,6 +24,9 @@ const instagramLink = settings?.socialLinks?.find(s => s.platform === 'instagram
 const instagramUrl = instagramLink?.url ?? FALLBACK_INSTAGRAM_URL;
 const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
 const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+const legalLicenseType = settings?.legalLicenseType || FALLBACK_LEGAL_LICENSE_TYPE;
+const legalLicenseNumber = settings?.legalLicenseNumber || FALLBACK_LEGAL_LICENSE_NUMBER;
+const legalLicenseLabel = legalLicenseNumber ? `${legalLicenseType} ${legalLicenseNumber}` : "";
 
 const popularDestinations = featuredDests
   .map((d) => ({ label: d.name, href: `/destino/${d.slug}/` }));
@@ -207,6 +216,11 @@ const navLinks = [
           window.dispatchEvent(new CustomEvent('openCookieBanner'));
         });
       </script>
+      {legalLicenseLabel && (
+        <a href="/legal/aviso-legal/" class="text-xs text-sand/40 hover:text-sand transition-colors">
+          Agencia registrada con número {legalLicenseLabel}
+        </a>
+      )}
       <p class="text-xs text-sand/40">
         © Travel Hood 2026. Todos los derechos reservados.
       </p>

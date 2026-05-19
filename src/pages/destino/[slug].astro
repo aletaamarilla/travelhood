@@ -9,7 +9,7 @@ import {
   getDestinationBySlug,
   getTripsByDestination,
   getTrips,
-  getTestimonials,
+  getTestimonialsByDestination,
   getCoordinators,
   getCountries,
   getContinents,
@@ -23,7 +23,8 @@ import { getRelatedDestinations } from "@/lib/related-destinations";
 import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL } from "@/lib/config";
 import { lookupCoords } from "@/lib/destination-details";
 import { resolvePrice } from "@/lib/utils";
-import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateAggregateRatingSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
+import { selectVisibleReviews } from "@/lib/reviews";
+import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
 
 export async function getStaticPaths() {
   const allDestinations = await getDestinations();
@@ -36,7 +37,7 @@ const { slug } = Astro.params;
 const [destination, tripsRaw, testimonials, coordinators, countries, continents, siteSettings] = await Promise.all([
   getDestinationBySlug(slug!),
   getTripsByDestination(slug!),
-  getTestimonials(),
+  getTestimonialsByDestination(slug!),
   getCoordinators(),
   getCountries(),
   getContinents(),
@@ -68,7 +69,7 @@ const allFutureTrips = tripsRaw
   }));
 const availableTrips = allFutureTrips.filter((t) => t.status !== "full");
 
-const destTestimonials = testimonials.filter(t => t.destinationId === destination.id);
+const destTestimonials = selectVisibleReviews(testimonials);
 const coordIds = [...new Set(allFutureTrips.map((t) => t.coordinatorId))];
 const destCoordinators = coordIds
   .map((id) => coordinators.find((c) => c.id === id))
@@ -97,7 +98,7 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
 <Layout title={pageTitle} description={pageDescription} ogImage={destination.heroImage} heroImage={destination.heroImage} keywords={`viaje en grupo a ${destination.name}, viajes ${country.name}, ${destination.categories.map(c => `viajes de ${c}`).join(', ')}, travel hood, travelhood`}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:continent.name,url:`/destinos/${continent.slug}/`},{name:destination.name,url:`/destino/${destination.slug}/`}]))} />
-    <script type="application/ld+json" set:html={toJsonLd({...generateTouristDestinationSchema({name:destination.name,description:destination.description,url:`/destino/${destination.slug}/`,image:destination.heroImage}), ...(destTestimonials.length > 0 ? { aggregateRating: generateAggregateRatingSchema(destTestimonials.length) } : {})})} />
+    <script type="application/ld+json" set:html={toJsonLd(generateTouristDestinationSchema({name:destination.name,description:destination.description,url:`/destino/${destination.slug}/`,image:destination.heroImage}))} />
     {faqs.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
     {allFutureTrips.map((trip) => (
       <script type="application/ld+json" set:html={toJsonLd(generateEventSchema({

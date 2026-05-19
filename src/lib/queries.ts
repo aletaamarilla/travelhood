@@ -86,18 +86,27 @@ export const coordinatorBySlugQuery = `*[_type == "coordinator" && slug.current 
 }`
 
 // ── Testimonials ──
-export const allTestimonialsQuery = `*[_type == "testimonial"] | order(_createdAt desc) {
+export const allTestimonialsQuery = `*[_type == "testimonial" && isVisible != false && verificationStatus != "retired"] | order(coalesce(sortOrder, 9999) asc, _createdAt desc) {
   _id, name, age, city, quote, rating, image, imageAlt, featured,
+  source, verificationStatus, externalReviewUrl, sourceProfileUrl,
+  experienceDateLabel, experienceDate, editorialReviewedAt, editorialEvidenceRef,
+  isVisible, sortOrder,
   destination->{_id, name, slug}
 }`
 
-export const featuredTestimonialsQuery = `*[_type == "testimonial" && featured == true] | order(_createdAt desc) {
-  _id, name, age, city, quote, rating, image, imageAlt,
+export const featuredTestimonialsQuery = `*[_type == "testimonial" && featured == true && isVisible != false && verificationStatus != "retired"] | order(coalesce(sortOrder, 9999) asc, _createdAt desc) {
+  _id, name, age, city, quote, rating, image, imageAlt, featured,
+  source, verificationStatus, externalReviewUrl, sourceProfileUrl,
+  experienceDateLabel, experienceDate, editorialReviewedAt, editorialEvidenceRef,
+  isVisible, sortOrder,
   destination->{_id, name, slug}
 }`
 
-export const testimonialsByDestinationQuery = `*[_type == "testimonial" && destination->slug.current == $slug] {
-  _id, name, age, city, quote, rating, image, imageAlt,
+export const testimonialsByDestinationQuery = `*[_type == "testimonial" && destination->slug.current == $slug && isVisible != false && verificationStatus != "retired"] | order(coalesce(sortOrder, 9999) asc, _createdAt desc) {
+  _id, name, age, city, quote, rating, image, imageAlt, featured,
+  source, verificationStatus, externalReviewUrl, sourceProfileUrl,
+  experienceDateLabel, experienceDate, editorialReviewedAt, editorialEvidenceRef,
+  isVisible, sortOrder,
   destination->{_id, name, slug}
 }`
 
@@ -200,7 +209,9 @@ export const allGlobalFaqsQuery = `*[_type == "globalFaq"] | order(order asc) {
 // ── Site Settings ──
 export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   _id, siteName, siteUrl, orgLogo, priceRange, depositAmount, contactEmail, whatsappPhone, whatsappCommunityUrl,
-  socialLinks, defaultSeoImage, defaultIncluded, defaultNotIncluded,
+  legalLicenseType, legalLicenseNumber,
+  socialLinks, trustpilotProfileUrl, reviewsAttributionText, reviewsLastReviewedAt, reviewsCtaLabel,
+  defaultSeoImage, defaultIncluded, defaultNotIncluded,
   homeHeroImage, homeHeroImageAlt, homeWhyUsImage, homeHowItWorksImage,
   homeAboutBgImage, homeAboutPhoto, homeAboutPhotoAlt,
   travelhood_heroImage, travelhood_heroImageAlt,

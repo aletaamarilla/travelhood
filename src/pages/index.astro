@@ -27,7 +27,10 @@ const waCommunityUrl = settings?.whatsappCommunityUrl ?? FALLBACK_WA_COMMUNITY_U
 import GEODataBlock from "@/components/GEODataBlock.astro";
 
 const priceRange = calculatePriceRange(trips);
-const agencySchema = generateTravelAgencySchema(priceRange?.formatted);
+const agencySchema = generateTravelAgencySchema(priceRange?.formatted, {
+  type: settings?.legalLicenseType,
+  number: settings?.legalLicenseNumber,
+});
 const webSiteSchema = generateWebSiteSchema();
 ---
 
