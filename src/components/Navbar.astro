@@ -28,27 +28,20 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
 <header
   id="navbar-header"
   class={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-    solid ? "bg-white/90 backdrop-blur-lg shadow-sm" : "bg-transparent"
+    solid ? "bg-white/95 backdrop-blur-xl shadow-sm ring-1 ring-foreground/5" : "bg-transparent"
   }`}
   data-solid={solid ? "true" : "false"}
 >
-  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5">
-    <a href="/" class="relative z-50 flex items-center gap-2">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <a href="/" class="relative z-50 flex items-center" aria-label="Ir a la home de Travel Hood">
       <img
         id="navbar-logo"
         src={fallbackLogo}
         alt="Travel Hood"
-        width={28}
-        height={28}
+        width={67}
+        height={44}
+        class="h-10 w-auto shrink-0 sm:h-11"
       />
-      <span
-        id="navbar-brand"
-        class={`font-serif text-sm font-bold tracking-tight transition-colors duration-300 ${
-          solid ? "text-foreground" : "text-white"
-        }`}
-      >
-        Travel Hood
-      </span>
     </a>
 
     <ul class="hidden items-center gap-6 lg:flex" id="navbar-desktop-links">
@@ -56,10 +49,10 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
         <li>
           <a
             href={link.href}
-            class={`nav-link text-xs font-medium tracking-wide transition-colors duration-300 hover:opacity-100 ${
+            class={`nav-link text-xs font-semibold tracking-wide transition-colors duration-300 hover:opacity-100 ${
               solid
-                ? "text-foreground/60 hover:text-foreground"
-                : "text-white/65 hover:text-white"
+                ? "text-foreground/70 hover:text-foreground"
+                : "text-white/75 hover:text-white"
             }`}
           >
             {link.label}
@@ -72,9 +65,9 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
       <a
         id="navbar-desktop-cta"
         href="/viajes/#resultados"
-        class={`inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 ${
+        class={`inline-flex items-center rounded-full px-[1.125rem] py-2 text-xs font-bold transition-all duration-300 ${
           solid
-            ? "bg-coral text-white hover:bg-coral/90"
+            ? "bg-coral text-white shadow-sm shadow-coral/20 hover:bg-coral/90 hover:shadow-md hover:shadow-coral/25"
             : "bg-white/15 text-white backdrop-blur-sm hover:bg-white/25"
         }`}
       >
@@ -217,7 +210,6 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
     var header = document.getElementById("navbar-header");
     var hamburger = document.getElementById("navbar-hamburger");
     var overlay = document.getElementById("navbar-overlay");
-    var brand = document.getElementById("navbar-brand");
     var logo = document.getElementById("navbar-logo");
     var desktopCta = document.getElementById("navbar-desktop-cta");
     var desktopLinks = document.querySelectorAll("#navbar-desktop-links .nav-link");
@@ -248,24 +240,14 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
     function applyScrolledState() {
       if (!header) return;
       if (isOpen) {
-        header.classList.remove("bg-white/90", "backdrop-blur-lg", "shadow-sm", "bg-transparent");
+        header.classList.remove("bg-white/95", "backdrop-blur-xl", "shadow-sm", "ring-1", "ring-foreground/5", "bg-transparent");
         header.classList.add("bg-teal-deep");
       } else if (isScrolled) {
         header.classList.remove("bg-transparent", "bg-teal-deep");
-        header.classList.add("bg-white/90", "backdrop-blur-lg", "shadow-sm");
+        header.classList.add("bg-white/95", "backdrop-blur-xl", "shadow-sm", "ring-1", "ring-foreground/5");
       } else {
-        header.classList.remove("bg-white/90", "backdrop-blur-lg", "shadow-sm", "bg-teal-deep");
+        header.classList.remove("bg-white/95", "backdrop-blur-xl", "shadow-sm", "ring-1", "ring-foreground/5", "bg-teal-deep");
         header.classList.add("bg-transparent");
-      }
-
-      if (brand) {
-        if (isOpen || !isScrolled) {
-          brand.classList.remove("text-foreground");
-          brand.classList.add("text-white");
-        } else {
-          brand.classList.remove("text-white");
-          brand.classList.add("text-foreground");
-        }
       }
 
       if (hamburger) {
@@ -280,20 +262,20 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
 
       desktopLinks.forEach(function (link) {
         if (isScrolled) {
-          link.classList.remove("text-white/65", "hover:text-white");
-          link.classList.add("text-foreground/60", "hover:text-foreground");
+          link.classList.remove("text-white/75", "hover:text-white");
+          link.classList.add("text-foreground/70", "hover:text-foreground");
         } else {
-          link.classList.remove("text-foreground/60", "hover:text-foreground");
-          link.classList.add("text-white/65", "hover:text-white");
+          link.classList.remove("text-foreground/70", "hover:text-foreground");
+          link.classList.add("text-white/75", "hover:text-white");
         }
       });
 
       if (desktopCta) {
         if (isScrolled) {
           desktopCta.classList.remove("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
-          desktopCta.classList.add("bg-coral", "text-white", "hover:bg-coral/90");
+          desktopCta.classList.add("bg-coral", "text-white", "shadow-sm", "shadow-coral/20", "hover:bg-coral/90", "hover:shadow-md", "hover:shadow-coral/25");
         } else {
-          desktopCta.classList.remove("bg-coral", "hover:bg-coral/90");
+          desktopCta.classList.remove("bg-coral", "shadow-sm", "shadow-coral/20", "hover:bg-coral/90", "hover:shadow-md", "hover:shadow-coral/25");
           desktopCta.classList.add("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
         }
       }

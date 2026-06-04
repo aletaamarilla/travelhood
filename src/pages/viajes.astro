@@ -23,7 +23,7 @@ const waPhone = viajesSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
     <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:"Todos los destinos Travel Hood",items:destinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
   </Fragment>
   <main>
-    <Navbar />
+    <Navbar solid />
     <SearchPage trips={trips} destinations={destinations} continents={continents} countries={countries} heroImage={viajesImages?.viajes_heroImage} heroImageAlt={viajesImages?.viajes_heroImageAlt} whatsappPhone={waPhone} client:load />
     <Footer />
   </main>

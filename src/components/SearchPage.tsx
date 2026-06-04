@@ -8,10 +8,37 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
 function safeFormatDate(dateStr: string | null | undefined, fmt: string, options?: Parameters<typeof format>[2]): string {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  if (isNaN(d.getTime())) return ''
+  const d = parseTripDate(dateStr)
+  if (!d) return ''
   return format(d, fmt, options)
+}
+
+function parseTripDate(dateStr: string | null | undefined): Date | null {
+  if (!dateStr) return null
+
+  const dateOnly = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/)
+  const parsed = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(dateStr)
+
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+function getTodayStart(): Date {
+  const now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
+}
+
+function isUpcomingTrip(trip: Pick<Trip, "departureDate">, todayStart: Date): boolean {
+  const departureDate = parseTripDate(trip.departureDate)
+  return !!departureDate && departureDate >= todayStart
+}
+
+function tripDepartsInMonth(trip: Pick<Trip, "departureDate">, monthIndex: number): boolean {
+  if (!Number.isInteger(monthIndex) || monthIndex < 0 || monthIndex > 11) return false
+
+  const departureDate = parseTripDate(trip.departureDate)
+  return !!departureDate && departureDate.getMonth() === monthIndex
 }
 
 interface ErrorBoundaryProps { children: ReactNode; fallback?: ReactNode }
@@ -131,8 +158,8 @@ function parseUrlParams(allContinents: Continent[], allDestinations: Destination
       result.cuandoTipo = "period"
       result.cuandoLabel = period.label
     } else {
-      const monthIdx = parseInt(cuando)
-      if (!isNaN(monthIdx) && monthIdx >= 0 && monthIdx <= 11) {
+      const monthIdx = Number(cuando)
+      if (Number.isInteger(monthIdx) && monthIdx >= 0 && monthIdx <= 11) {
         result.cuando = String(monthIdx)
         result.cuandoTipo = "month"
         result.cuandoLabel = monthNamesFull[monthIdx]
@@ -271,6 +298,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
   const [whereOpen, setWhereOpen] = useState(false)
   const [whenOpen, setWhenOpen] = useState(false)
   const [whenTab, setWhenTab] = useState<"flexible" | "meses">("flexible")
+  const todayStart = useMemo(() => getTodayStart(), [])
 
   useEffect(() => {
     const params = parseUrlParams(continents, destinations)
@@ -307,22 +335,26 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
 
   const filteredTrips = useMemo(() => {
     const matched = trips
-      .filter((t) => t.status !== "full")
+      .filter((t) => t.status !== "full" && isUpcomingTrip(t, todayStart))
       .filter((t) => {
         const dest = destinations.find((d) => d.id === t.destinationId)
         if (whereValue?.type === "destination" && t.destinationId !== whereValue.id) return false
         if (whereValue?.type === "continent" && dest?.continentId !== whereValue.id) return false
         if (whenValue?.type === "period" && !t.tags.includes(whenValue.id as TripTag)) return false
         if (whenValue?.type === "month") {
-          const depMonth = new Date(t.departureDate).getMonth()
-          if (depMonth !== parseInt(whenValue.id)) return false
+          const selectedMonth = Number(whenValue.id)
+          if (!tripDepartsInMonth(t, selectedMonth)) return false
         }
         if (categoryValue !== "all" && !dest?.categories.includes(categoryValue as DestinationCategory)) return false
         return true
       })
-      .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime())
+      .sort(
+        (a, b) =>
+          (parseTripDate(a.departureDate)?.getTime() ?? Number.MAX_SAFE_INTEGER) -
+          (parseTripDate(b.departureDate)?.getTime() ?? Number.MAX_SAFE_INTEGER)
+      )
     return deduplicateTripsByDestination(matched)
-  }, [whereValue, whenValue, categoryValue, trips, destinations])
+  }, [whereValue, whenValue, categoryValue, trips, destinations, todayStart])
 
   const TRIPS_PER_PAGE = 9
   const [currentPage, setCurrentPage] = useState(1)
@@ -344,7 +376,10 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
     })
   }, [])
 
-  const totalAvailableTrips = useMemo(() => deduplicateTripsByDestination(trips.filter((t) => t.status !== "full")).length, [trips])
+  const totalAvailableTrips = useMemo(
+    () => deduplicateTripsByDestination(trips.filter((t) => t.status !== "full" && isUpcomingTrip(t, todayStart))).length,
+    [trips, todayStart]
+  )
   const activeFilterCount = [whereValue, whenValue, categoryValue !== "all" ? categoryValue : null].filter(Boolean).length
 
   const scrollToResults = useCallback(() => {

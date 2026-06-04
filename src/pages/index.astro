@@ -40,7 +40,7 @@ const webSiteSchema = generateWebSiteSchema();
     <script type="application/ld+json" set:html={toJsonLd(webSiteSchema)} />
   </Fragment>
   <main>
-    <Navbar logoUrl={images?.orgLogoUrl} />
+    <Navbar solid logoUrl={images?.orgLogoUrl} />
     <section class={`relative ${!images?.homeHeroImage ? 'bg-gradient-to-br from-teal-deep to-teal-deep/80' : ''}`}>
       {images?.homeHeroImage && (
         <img
