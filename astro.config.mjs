@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL || 'https://travelhood.es',
   output: 'static',
@@ -25,11 +27,20 @@ export default defineConfig({
     defaultStrategy: 'hover',
   },
   vite: {
+    cacheDir: isProduction ? 'node_modules/.vite-build' : 'node_modules/.vite-dev',
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: ['date-fns', 'date-fns/locale/es', 'lucide-react'],
+      exclude: ['react/jsx-dev-runtime', 'react/jsx-runtime'],
+      ...(!isProduction ? {
+        esbuildOptions: {
+          define: {
+            'process.env.NODE_ENV': '"development"',
+          },
+        },
+      } : {}),
     },
-    ...(process.env.NODE_ENV !== 'production' ? {
+    ...(!isProduction ? {
       server: {
         allowedHosts: ['.ngrok-free.app'],
       },
