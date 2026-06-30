@@ -1,0 +1,451 @@
+---
+import Footer from "@/components/Footer.astro";
+import Navbar from "@/components/Navbar.astro";
+import ReviewCard from "@/components/ReviewCard.astro";
+import Layout from "@/layouts/Layout.astro";
+import { buildWhatsAppUrl, FALLBACK_WHATSAPP_PHONE, SITE_URL } from "@/lib/config";
+import {
+  getDestinations,
+  getFeaturedDestinations,
+  getLandingBySlug,
+  getSiteSettings,
+  getTestimonials,
+  resolveImage,
+  resolveSettingsImages,
+} from "@/lib/data-provider";
+import { selectLandingReviews } from "@/lib/reviews";
+import { generateBreadcrumbSchema, generateFaqSchema, generateServiceSchema, toJsonLd } from "@/lib/schemas";
+
+const [settings, featuredDestinations, testimonials, destinations, landing] = await Promise.all([
+  getSiteSettings(),
+  getFeaturedDestinations(6),
+  getTestimonials(),
+  getDestinations(),
+  getLandingBySlug("viajes-privados"),
+]);
+
+const settingsImages = settings ? resolveSettingsImages(settings) : null;
+const landingHeroImage = resolveImage(landing?.heroImage);
+const landingSeoImage = resolveImage(landing?.seo?.ogImage);
+const communityPhotos = settingsImages?.travelhood_communityPhotos ?? [];
+const summerPhotoKeywords = /filipinas|maldivas|zanzibar|tailandia|indonesia|bali|playa|verano|caribe|brasil|colombia|puerto\s*rico|sri\s*lanka/i;
+const summerCommunityPhoto =
+  communityPhotos.find((photo) => summerPhotoKeywords.test(photo.alt)) ?? communityPhotos[0];
+const heroImage =
+  landingHeroImage ||
+  summerCommunityPhoto?.url ||
+  settingsImages?.viajes_heroImage ||
+  featuredDestinations[0]?.heroImage ||
+  "";
+const rawHeroImageAlt =
+  landing?.heroImageAlt ||
+  summerCommunityPhoto?.alt ||
+  settingsImages?.viajes_heroImageAlt;
+const heroImageAlt =
+  rawHeroImageAlt && rawHeroImageAlt.trim().length > 12
+    ? rawHeroImageAlt
+    : "Grupo de jóvenes disfrutando de un viaje de verano en grupo con Travelhood";
+const ogImage = landingSeoImage || settingsImages?.defaultSeoImageUrl || heroImage || undefined;
+const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+
+const pageTitle = landing?.seo?.title ?? "Viajes privados para grupos jóvenes | Travelhood";
+const pageDescription =
+  landing?.seo?.description ??
+  "Travelhood monta viajes privados para grupos jóvenes que ya tienen gente y quieren una propuesta clara por WhatsApp: destino, fechas, presupuesto y plan.";
+const pageKeywords =
+  "viajes privados para grupos, viajes para grupos jóvenes, viaje privado amigos, viajes para estudiantes, viaje fin de MIR, viajes para opositores, viajes organizados por WhatsApp, viajes en grupo privados España";
+const canonicalUrl = `${SITE_URL}/viajes-privados/`;
+const heroHeadline = "Viajes en grupo privados";
+const heroSubtitle = "Vosotros ponéis el grupo. Nosotros, el resto.";
+
+const whatsappMessage =
+  "Hola, somos un grupo y nos gustaría montar un viaje privado. ¿Nos contáis cómo funciona?";
+const whatsappUrl = buildWhatsAppUrl(waPhone, whatsappMessage);
+
+const editorialDestinationIds = new Set(featuredDestinations.map((destination) => destination.id));
+const carouselReviews = selectLandingReviews(testimonials, { destinationIds: editorialDestinationIds, limit: 8 });
+const destinationsById = new Map(destinations.map((destination) => [destination.id, destination]));
+
+const faqs = [
+  {
+    question: "¿Cuánto cuesta un viaje privado?",
+    answer:
+      "Depende de vosotros. El precio se calcula para cada grupo según destino, fechas, cuántos sois, dónde dormís y qué queréis hacer. Por eso no publicamos un precio cerrado: os lo pasamos cuando vemos vuestro viaje.",
+  },
+  {
+    question: "¿Hay un grupo mínimo?",
+    answer:
+      "No publicamos un grupo mínimo cerrado. Depende del destino, las fechas y cuántos seáis. Escribidnos por WhatsApp y lo valoramos caso por caso.",
+  },
+  {
+    question: "¿Qué os contamos para empezar?",
+    answer:
+      "Con cuatro cosas nos vale: cuántos sois, fechas aproximadas, presupuesto por persona y qué tipo de viaje os apetece. Si ya tenéis destino o ciudad de salida, mejor todavía.",
+  },
+  {
+    question: "¿En qué se diferencia de un viaje abierto?",
+    answer:
+      "En un viaje abierto os unís a un grupo creado por Travelhood. En uno privado, el grupo ya lo ponéis vosotros y nosotros os montamos la propuesta para viajar juntos.",
+  },
+];
+
+const fitCards = [
+  {
+    title: "Amigos de siempre",
+    description: "Tenéis el grupo. Nadie quiere organizarlo.",
+  },
+  {
+    title: "Clase, máster o academia",
+    description: "El viaje de fin de curso, sin morir en el intento.",
+  },
+  {
+    title: "Fin del MIR o la carrera",
+    description: "Os lo habéis ganado. Toca celebrarlo.",
+  },
+  {
+    title: "Gente del trabajo",
+    description: "Viajar juntos sin que parezca un team building.",
+  },
+];
+
+const trustPoints = [
+  "Respondemos por WhatsApp",
+  "Viajáis solo vosotros",
+  "Precio a vuestra medida",
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  heroImage={heroImage}
+  ogImage={ogImage}
+  ogUrl={canonicalUrl}
+  canonical={canonicalUrl}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateServiceSchema({
+      name: "Viajes privados para grupos jóvenes",
+      description: pageDescription,
+      url: "/viajes-privados/",
+    }))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([
+      { name: "Home", url: "/" },
+      { name: "Viajes privados", url: "/viajes-privados/" },
+    ]))} />
+  </Fragment>
+
+  <main class="bg-background pb-24 sm:pb-0">
+    <Navbar solid />
+
+    <section data-private-trip-hero class="bg-background">
+      <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-12 pt-24 sm:px-6 sm:pb-16 sm:pt-28 lg:grid-cols-2 lg:gap-14 lg:pb-24 lg:pt-32">
+        <div>
+          <nav class="mb-6 hidden text-sm text-muted-foreground sm:block" aria-label="Breadcrumb">
+            <a href="/" class="transition-colors hover:text-foreground">Home</a>
+            <span class="mx-2">/</span>
+            <span class="font-medium text-foreground">Viajes privados</span>
+          </nav>
+          <h1 class="text-balance font-serif text-4xl font-extrabold leading-[1.02] text-foreground sm:text-6xl">
+            {heroHeadline}
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            {heroSubtitle}
+          </p>
+          <div class="mt-7 hidden sm:block">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-private-trip-whatsapp
+              data-cta="hero"
+              data-whatsapp-message={whatsappMessage}
+              class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-base font-extrabold text-teal-deep shadow-lg shadow-[#25D366]/25 transition-all hover:-translate-y-0.5 hover:brightness-105"
+            >
+              Contarnos el viaje por WhatsApp
+            </a>
+          </div>
+          <p class="mt-5 text-sm text-muted-foreground sm:mt-3">
+            Sin formulario. Sin compromiso. Primero vemos si encaja.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-2 sm:mt-7">
+            {trustPoints.map((point, index) => (
+              <span
+                class:list={[
+                  "rounded-full border border-border bg-card px-3 py-1.5 text-xs font-bold text-muted-foreground",
+                  index === 0 ? "hidden sm:inline-flex" : "inline-flex",
+                ]}
+              >
+                {point}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="relative">
+          {heroImage ? (
+            <img
+              src={heroImage}
+              alt={heroImageAlt}
+              width="1200"
+              height="1500"
+              loading="eager"
+              fetchpriority="high"
+              class="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl shadow-foreground/10 sm:aspect-[16/10] lg:aspect-[4/5]"
+            />
+          ) : (
+            <div class="aspect-[4/3] w-full rounded-3xl bg-teal-deep sm:aspect-[16/10] lg:aspect-[4/5]"></div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {carouselReviews.length > 0 && (
+      <section class="border-t border-border/50 bg-background py-14 sm:py-18">
+        <div class="mx-auto mb-7 max-w-6xl px-4 sm:px-6">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">Viajeros reales</span>
+          <h2 class="mt-3 text-balance font-serif text-2xl font-extrabold text-foreground sm:text-4xl">
+            Lo dicen ellos, no nosotros.
+          </h2>
+        </div>
+
+        <div class="mx-auto max-w-6xl">
+          <div class="flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto px-4 pb-4 sm:px-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {carouselReviews.map((review) => {
+              const destination = review.destinationId ? destinationsById.get(review.destinationId) : undefined;
+              return (
+                <div class="w-[82%] shrink-0 snap-start sm:w-[340px]">
+                  <ReviewCard review={review} destinationName={destination?.name} destinationPrefix="Viajó a" compact class="h-full" />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="bg-card py-14 sm:py-18">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary">Para quién es</span>
+        <h2 class="mt-3 text-balance font-serif text-3xl font-extrabold text-foreground sm:text-4xl">
+          Si tenéis grupo, tenéis viaje.
+        </h2>
+        <p class="mt-4 text-base leading-relaxed text-muted-foreground">
+          No hace falta traerlo cerrado. Con las ganas y unas fechas, empezamos.
+        </p>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          {fitCards.map((card) => (
+            <article class="group relative overflow-hidden rounded-2xl border border-border/40 bg-background p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-coral to-yellow-sun" aria-hidden="true"></span>
+              <h3 class="mt-1 font-serif text-lg font-bold text-foreground">{card.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{card.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {featuredDestinations.length > 0 && (
+      <section class="bg-background py-14 sm:py-18">
+        <div class="mx-auto mb-7 max-w-6xl px-4 sm:px-6">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">Nuestros viajes</span>
+          <h2 class="mt-3 text-balance font-serif text-2xl font-extrabold text-foreground sm:text-4xl">
+            A dónde os llevamos.
+          </h2>
+        </div>
+
+        <div class="mx-auto max-w-6xl">
+          <div class="flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto px-4 pb-4 sm:px-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {featuredDestinations.map((destination) => (
+              <a
+                href={`/destino/${destination.slug}/`}
+                data-private-trip-secondary-cta
+                data-cta={`trip_${destination.slug}`}
+                class="group w-[72%] shrink-0 snap-start overflow-hidden rounded-2xl border border-border/40 bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:w-[300px]"
+              >
+                <div class="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={destination.heroImage}
+                    alt={`Viaje en grupo a ${destination.name} con Travelhood`}
+                    width="600"
+                    height="750"
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                  <h3 class="absolute bottom-4 left-4 right-4 font-serif text-xl font-bold text-white">{destination.name}</h3>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="mt-8 px-4 text-center sm:px-6">
+          <a
+            href="/viajes/"
+            data-private-trip-secondary-cta
+            data-cta="trips_all"
+            class="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-card px-7 py-3 text-base font-bold text-foreground transition-all hover:-translate-y-0.5 hover:shadow-md"
+          >
+            Ver todos los viajes
+          </a>
+        </div>
+      </section>
+    )}
+
+    <section class="bg-card py-14 sm:py-18">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary">Cómo va esto</span>
+        <p class="mt-4 text-balance font-serif text-2xl font-bold leading-snug text-foreground sm:text-3xl">
+          Nos escribís por WhatsApp y nos encargamos del resto: destino, alojamiento, fechas y plan.
+        </p>
+      </div>
+    </section>
+
+    <section id="faq" class="bg-background py-14 sm:py-18">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <div class="mb-8 text-center">
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">Preguntas frecuentes</span>
+          <h2 class="mt-3 text-balance font-serif text-3xl font-extrabold text-foreground sm:text-4xl">
+            Lo que más nos preguntáis.
+          </h2>
+        </div>
+        <div class="space-y-3">
+          {faqs.map((faq) => (
+            <details class="group rounded-2xl border border-border/40 bg-card p-5 shadow-sm">
+              <summary class="cursor-pointer list-none font-serif text-lg font-bold text-foreground marker:hidden">
+                <span class="flex items-start justify-between gap-4">
+                  {faq.question}
+                  <span class="mt-1 text-coral transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                </span>
+              </summary>
+              <p class="mt-4 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+        <div class="mt-8 text-center">
+          <a
+            href="/preguntas-frecuentes/"
+            data-private-trip-secondary-cta
+            data-cta="faq_all"
+            class="text-sm font-bold text-secondary underline-offset-4 hover:underline"
+          >
+            Ver todas las preguntas →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-teal-deep py-16 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+        <span class="text-xs font-bold uppercase tracking-widest text-sand/70">¿Hablamos?</span>
+        <h2 class="mt-3 text-balance font-serif text-3xl font-extrabold text-white sm:text-4xl">
+          Contadnos qué tenéis en la cabeza.
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-sand/75">
+          Escribidnos por WhatsApp con cuántos sois y para cuándo. Os respondemos lo antes posible y os decimos si lo vemos.
+        </p>
+        <div class="mt-8 flex justify-center">
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-private-trip-whatsapp
+            data-cta="final"
+            data-whatsapp-message={whatsappMessage}
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#25D366] px-7 py-3 text-base font-extrabold text-teal-deep transition-all hover:-translate-y-0.5 hover:brightness-105"
+          >
+            Escribirnos por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="fixed inset-x-4 bottom-4 z-40 sm:inset-x-auto sm:bottom-6 sm:right-6">
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-private-trip-whatsapp
+        data-cta="sticky_mobile"
+        data-whatsapp-message={whatsappMessage}
+        aria-label="Escríbenos por WhatsApp"
+        class="flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-4 text-base font-extrabold text-white shadow-xl shadow-black/25 transition-all hover:-translate-y-0.5 hover:brightness-110 sm:h-14 sm:w-14 sm:min-h-0 sm:p-0"
+      >
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" class="shrink-0" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span class="sm:hidden">Escríbenos por WhatsApp</span>
+      </a>
+    </div>
+
+    <Footer />
+  </main>
+
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+      const utms = {};
+
+      utmKeys.forEach((key) => {
+        const value = params.get(key);
+        if (value) utms[key] = value;
+      });
+
+      const originParts = ["utm_source", "utm_medium", "utm_campaign"]
+        .map((key) => utms[key])
+        .filter(Boolean);
+      const origin = originParts.join(" / ");
+
+      const pushEvent = (payload) => {
+        if (Array.isArray(window.dataLayer)) {
+          window.dataLayer.push(payload);
+        }
+      };
+
+      pushEvent({
+        event: "private_trip_landing_view",
+        page: "viajes_privados",
+        context: "private_trip",
+        ...utms,
+      });
+
+      document.querySelectorAll("[data-private-trip-whatsapp]").forEach((link) => {
+        const baseMessage = link.getAttribute("data-whatsapp-message") || "";
+        if (origin && link instanceof HTMLAnchorElement) {
+          const url = new URL(link.href);
+          url.searchParams.set("text", `${baseMessage}\n\nOrigen: ${origin}`);
+          link.href = url.toString();
+        }
+
+        link.addEventListener("click", () => {
+          pushEvent({
+            event: "private_trip_whatsapp_click",
+            page: "viajes_privados",
+            context: "private_trip",
+            cta: link.getAttribute("data-cta"),
+            has_utm: Object.keys(utms).length > 0,
+            ...utms,
+          });
+        });
+      });
+
+      document.querySelectorAll("[data-private-trip-secondary-cta]").forEach((link) => {
+        link.addEventListener("click", () => {
+          pushEvent({
+            event: "private_trip_secondary_cta_click",
+            page: "viajes_privados",
+            context: "private_trip",
+            cta: link.getAttribute("data-cta"),
+            href: link instanceof HTMLAnchorElement ? link.href : "",
+            has_utm: Object.keys(utms).length > 0,
+            ...utms,
+          });
+        });
+      });
+    })();
+  </script>
+</Layout>

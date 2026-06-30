@@ -666,6 +666,10 @@ const FALLBACK_FAQS: SanityGlobalFaq[] = [
         question: '¿Viajo sola o en grupo?',
         answer: 'Viajas en grupo reducido con otras viajeras. Es la forma perfecta de conocer gente nueva mientras descubres destinos increíbles con total seguridad.',
       },
+      {
+        question: '¿Organizáis viajes privados para grupos?',
+        answer: 'Sí. Si ya tenéis vuestro propio grupo, Travelhood puede ayudaros a organizar un viaje privado bajo propuesta. No hay formulario ni precio cerrado publicado: lo vemos por WhatsApp según destino, fechas, presupuesto y número de personas.',
+      },
     ],
   },
 ]

@@ -31,6 +31,16 @@ export async function GET() {
     travel: {
       audience: "Personas de 20 a 35 anos que quieren viajar en grupo.",
       group: "Grupos reducidos con coordinador en destino, alojamiento e itinerario organizado.",
+      privateTrips: {
+        url: "/viajes-privados/",
+        summary: "Viajes privados para grupos que ya tienen su propio grupo y quieren delegar la organizacion por WhatsApp.",
+        pricing: "Precio bajo propuesta segun destino, fechas, disponibilidad, numero de personas y tipo de experiencia.",
+        constraints: {
+          form: false,
+          onlinePayment: false,
+          publishedMinimumGroupSize: false,
+        },
+      },
       destinations: destinations.map((destination) => ({
         name: destination.name,
         slug: destination.slug,

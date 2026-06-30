@@ -20,7 +20,7 @@ import {
   getGlobalFaqs,
 } from "@/lib/data-provider";
 import { getRelatedDestinations } from "@/lib/related-destinations";
-import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL } from "@/lib/config";
+import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL, buildWhatsAppUrl } from "@/lib/config";
 import { lookupCoords } from "@/lib/destination-details";
 import { resolvePrice } from "@/lib/utils";
 import { selectVisibleReviews } from "@/lib/reviews";
@@ -52,6 +52,8 @@ if (!destination) return Astro.redirect("/404/");
 
 const country = countries.find((c) => c.id === destination.countryId)!;
 const continent = continents.find((c) => c.id === destination.continentId)!;
+const privateTripWhatsappMessage = `Hola, somos un grupo y nos gustaría montar un viaje privado a ${destination.name}. ¿Nos contáis cómo funciona?`;
+const privateTripWhatsappUrl = buildWhatsAppUrl(waPhone, privateTripWhatsappMessage);
 
 const now = new Date();
 const allFutureTrips = tripsRaw
@@ -155,6 +157,30 @@ const pageDescription = `${destination.shortDescription} Viaja en grupo con Trav
         { label: "Precio cerrado", value: "Sin fondo común ni costes extra en destino" },
       ]}
     />
+
+    <section class="bg-background py-12">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="grid gap-5 rounded-3xl border border-border/40 bg-card p-6 shadow-sm sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">Formato privado</span>
+            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+              ¿Quieres {destination.name} para tu grupo privado?
+            </h2>
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Si ya tenéis grupo y queréis viajar juntos, podemos valorar una propuesta privada inspirada en este destino.
+            </p>
+          </div>
+          <a
+            href={privateTripWhatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-teal-deep px-6 py-3 text-sm font-bold text-sand transition-all hover:-translate-y-0.5 hover:shadow-md"
+          >
+            Pedir {destination.name} para mi grupo
+          </a>
+        </div>
+      </div>
+    </section>
 
     {relatedDestinations.length > 0 && (
       <section class="py-14">

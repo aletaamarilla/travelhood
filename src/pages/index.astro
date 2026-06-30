@@ -76,6 +76,27 @@ const webSiteSchema = generateWebSiteSchema();
     <LastChance />
     <WhyUsSection bgImage={images?.homeWhyUsImage} />
     <SeasonExplorer trips={trips} destinations={destinations} client:visible />
+    <section class="bg-background py-12">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="grid gap-6 rounded-3xl border border-border/40 bg-card p-6 shadow-sm sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-secondary">Para grupos que ya se tienen</span>
+            <h2 class="mt-3 font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+              ¿No os encaja ninguna salida? Pedid un viaje privado.
+            </h2>
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Si ya tenéis grupo de amigos, clase, academia o compañeros, Travelhood puede ayudaros a montar una propuesta privada por WhatsApp.
+            </p>
+          </div>
+          <a
+            href="/viajes-privados/"
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-teal-deep px-6 py-3 text-sm font-bold text-sand transition-all hover:-translate-y-0.5 hover:shadow-md"
+          >
+            Ver viajes privados para grupos
+          </a>
+        </div>
+      </div>
+    </section>
     <HowItWorksSection bgImage={images?.homeHowItWorksImage} />
     <TestimonialsSection />
     <AboutSection bgImage={images?.homeAboutBgImage} photo={images?.homeAboutPhoto} photoAlt={images?.homeAboutPhotoAlt} />

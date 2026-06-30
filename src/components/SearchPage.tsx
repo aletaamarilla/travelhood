@@ -840,12 +840,20 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                 Prueba a cambiar tus filtros o explora todas las opciones disponibles. Estamos preparando nuevos destinos constantemente.
               </p>
             </div>
-            <button
-              onClick={clearAll}
-              className="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
-            >
-              Ver todos los viajes
-            </button>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <button
+                onClick={clearAll}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+              >
+                Ver todos los viajes
+              </button>
+              <a
+                href="/viajes-privados/"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-teal-deep/20 bg-card px-6 py-3 text-sm font-bold text-teal-deep transition-all hover:bg-teal-deep hover:text-sand"
+              >
+                Pedir un viaje privado para mi grupo
+              </a>
+            </div>
           </div>
         )}
 
@@ -922,6 +930,12 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                 className="inline-flex items-center justify-center rounded-full border-2 border-sand/40 px-7 py-3 text-sm font-bold text-sand transition-all hover:bg-sand/10"
               >
                 Volver al inicio
+              </a>
+              <a
+                href="/viajes-privados/"
+                className="inline-flex items-center justify-center rounded-full border-2 border-sand/40 px-7 py-3 text-sm font-bold text-sand transition-all hover:bg-sand/10"
+              >
+                Viajes privados para grupos
               </a>
             </div>
           </div>

@@ -50,6 +50,50 @@ export function generateTravelAgencySchema(priceRange?: string, legalLicense: Le
   }
 }
 
+export function generateServiceSchema(opts: {
+  name: string
+  description: string
+  url: string
+  areaServed?: string
+  audience?: string
+  serviceType?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: opts.name,
+    description: opts.description,
+    url: opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`,
+    provider: {
+      "@type": "TravelAgency",
+      name: ORG_NAME,
+      url: SITE_URL,
+      logo: ORG_LOGO,
+    },
+    serviceType: opts.serviceType ?? "Viajes privados para grupos",
+    areaServed: {
+      "@type": "Country",
+      name: opts.areaServed ?? "España",
+    },
+    audience: {
+      "@type": "PeopleAudience",
+      audienceType: opts.audience ?? "Grupos jóvenes de 20 a 35 años",
+      suggestedMinAge: 20,
+      suggestedMaxAge: 35,
+    },
+    offers: {
+      "@type": "Offer",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "EUR",
+        description: "Precio bajo propuesta según destino, fechas, disponibilidad, grupo y tipo de experiencia.",
+      },
+      availability: "https://schema.org/InStock",
+      url: opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`,
+    },
+  }
+}
+
 /** @deprecated Use generateTravelAgencySchema instead */
 export const generateOrganizationSchema = generateTravelAgencySchema
 

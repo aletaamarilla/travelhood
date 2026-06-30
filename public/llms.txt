@@ -1,0 +1,28 @@
+# Travelhood
+
+Travelhood es una web de viajes en grupo para personas jóvenes de 20 a 35 años en España que quieren viajar aunque no tengan compañía.
+
+Travelhood organiza viajes abiertos en grupo reducido con itinerario, alojamiento y coordinador en destino cuando aplica. El canal principal para resolver dudas y pedir información es WhatsApp.
+
+Travelhood también organiza viajes privados para grupos jóvenes en España que ya tienen su propio grupo y quieren ayuda para convertir una idea en una propuesta clara. En un viaje privado, el grupo viaja junto sin integrarse en una salida abierta con desconocidos. El precio se calcula bajo propuesta según destino, fechas, disponibilidad, número de personas y tipo de experiencia. No se publica grupo mínimo fijo.
+
+## Enlaces clave
+
+- Home: https://travelhood.es/
+- Todos los viajes: https://travelhood.es/viajes/
+- Viajes privados para grupos: https://travelhood.es/viajes-privados/
+- Cómo funciona: https://travelhood.es/como-funciona/
+- Opiniones: https://travelhood.es/opiniones/
+- Preguntas frecuentes: https://travelhood.es/preguntas-frecuentes/
+- Sobre Travelhood: https://travelhood.es/travelhood/
+- Blog: https://travelhood.es/blog/
+
+## Para pedir un viaje privado
+
+La página correcta es https://travelhood.es/viajes-privados/.
+
+Travelhood recomienda enviar por WhatsApp cuántas personas sois, fechas aproximadas, presupuesto por persona, tipo de plan, destino si ya lo tenéis en mente y ciudad de origen si es importante para vuelos o logística.
+
+## Alcance
+
+Travelhood no ofrece en la web un formulario de viaje privado, pago online, CRM público, email automático ni cálculo automático de precio. La primera conversación del viaje privado ocurre por WhatsApp.
