@@ -51,15 +51,15 @@ const waPhone = settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
 const pageTitle = landing?.seo?.title ?? "Viajes privados para grupos jóvenes | Travelhood";
 const pageDescription =
   landing?.seo?.description ??
-  "Travelhood monta viajes privados para grupos jóvenes que ya tienen gente y quieren una propuesta clara por WhatsApp: destino, fechas, presupuesto y plan.";
+  "Travelhood organiza viajes privados para grupos jóvenes que ya tienen gente y quieren convertir una idea en una propuesta clara por WhatsApp: destino, fechas, presupuesto y plan.";
 const pageKeywords =
   "viajes privados para grupos, viajes para grupos jóvenes, viaje privado amigos, viajes para estudiantes, viaje fin de MIR, viajes para opositores, viajes organizados por WhatsApp, viajes en grupo privados España";
 const canonicalUrl = `${SITE_URL}/viajes-privados/`;
-const heroHeadline = "Viajes en grupo privados";
-const heroSubtitle = "Vosotros ponéis el grupo. Nosotros, el resto.";
+const heroHeadline = "Viajes privados para vuestro grupo";
+const heroSubtitle = "Tenéis la gente. Nosotros os ayudamos a convertirlo en viaje.";
 
 const whatsappMessage =
-  "Hola, somos un grupo y nos gustaría montar un viaje privado. ¿Nos contáis cómo funciona?";
+  "Hola, somos un grupo y queremos montar un viaje privado. Somos ___ personas y nos gustaría viajar sobre ___. ¿Nos ayudáis con opciones?";
 const whatsappUrl = buildWhatsAppUrl(waPhone, whatsappMessage);
 
 const editorialDestinationIds = new Set(featuredDestinations.map((destination) => destination.id));
@@ -70,7 +70,7 @@ const faqs = [
   {
     question: "¿Cuánto cuesta un viaje privado?",
     answer:
-      "Depende de vosotros. El precio se calcula para cada grupo según destino, fechas, cuántos sois, dónde dormís y qué queréis hacer. Por eso no publicamos un precio cerrado: os lo pasamos cuando vemos vuestro viaje.",
+      "Depende de vosotros. El precio se calcula para cada grupo según destino, fechas, cuántos sois, dónde dormís y qué queréis hacer. Por eso no publicamos un precio cerrado: os lo pasamos cuando tenemos claro el grupo, las fechas y el tipo de experiencia.",
   },
   {
     question: "¿Hay un grupo mínimo?",
@@ -109,9 +109,9 @@ const fitCards = [
 ];
 
 const trustPoints = [
-  "Respondemos por WhatsApp",
+  "Propuesta por WhatsApp",
   "Viajáis solo vosotros",
-  "Precio a vuestra medida",
+  "Precio según grupo",
 ];
 ---
 
@@ -164,11 +164,11 @@ const trustPoints = [
               data-whatsapp-message={whatsappMessage}
               class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-base font-extrabold text-teal-deep shadow-lg shadow-[#25D366]/25 transition-all hover:-translate-y-0.5 hover:brightness-105"
             >
-              Contarnos el viaje por WhatsApp
+              Pedir propuesta por WhatsApp
             </a>
           </div>
           <p class="mt-5 text-sm text-muted-foreground sm:mt-3">
-            Sin formulario. Sin compromiso. Primero vemos si encaja.
+            Sin formulario. Sin compromiso. Nos contáis el grupo y os proponemos opciones.
           </p>
 
           <div class="mt-6 flex flex-wrap gap-2 sm:mt-7">
@@ -234,7 +234,7 @@ const trustPoints = [
           Si tenéis grupo, tenéis viaje.
         </h2>
         <p class="mt-4 text-base leading-relaxed text-muted-foreground">
-          No hace falta traerlo cerrado. Con las ganas y unas fechas, empezamos.
+          No hace falta traerlo cerrado. Si sois una clase, una academia, una residencia o un grupo de amigos, con unas fechas y un número aproximado empezamos.
         </p>
 
         <div class="mt-8 grid gap-4 sm:grid-cols-2">
@@ -252,9 +252,9 @@ const trustPoints = [
     {featuredDestinations.length > 0 && (
       <section class="bg-background py-14 sm:py-18">
         <div class="mx-auto mb-7 max-w-6xl px-4 sm:px-6">
-          <span class="text-xs font-bold uppercase tracking-widest text-secondary">Nuestros viajes</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-secondary">Ideas para empezar</span>
           <h2 class="mt-3 text-balance font-serif text-2xl font-extrabold text-foreground sm:text-4xl">
-            A dónde os llevamos.
+            Destinos que suelen funcionar con grupos jóvenes.
           </h2>
         </div>
 
@@ -299,9 +299,9 @@ const trustPoints = [
 
     <section class="bg-card py-14 sm:py-18">
       <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <span class="text-xs font-bold uppercase tracking-widest text-secondary">Cómo va esto</span>
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary">Cómo funciona</span>
         <p class="mt-4 text-balance font-serif text-2xl font-bold leading-snug text-foreground sm:text-3xl">
-          Nos escribís por WhatsApp y nos encargamos del resto: destino, alojamiento, fechas y plan.
+          Nos escribís por WhatsApp, nos contáis cuántos sois, fechas y presupuesto aproximado. Con eso os damos opciones realistas de destino, alojamiento y plan.
         </p>
       </div>
     </section>
@@ -347,7 +347,7 @@ const trustPoints = [
           Contadnos qué tenéis en la cabeza.
         </h2>
         <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-sand/75">
-          Escribidnos por WhatsApp con cuántos sois y para cuándo. Os respondemos lo antes posible y os decimos si lo vemos.
+          Escribidnos por WhatsApp con cuántos sois y para cuándo. Os respondemos lo antes posible y os contamos qué opciones encajan con vuestro grupo.
         </p>
         <div class="mt-8 flex justify-center">
           <a
