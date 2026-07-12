@@ -10,8 +10,8 @@ import {
 } from "@/lib/data-provider"
 
 const WHATSAPP_INTENT = "Hola! Me interesa saber mas sobre vuestros viajes"
-const MAX_DESTINATIONS = 12
-const MAX_TRIPS = 8
+const MAX_DESTINATIONS = 24
+const MAX_TRIPS = 16
 const MAX_FAQS = 8
 
 type MarkdownLine = string | false | null | undefined
@@ -155,6 +155,9 @@ export async function renderHomeMarkdown(): Promise<string> {
     "",
     `- Recurso canonico HTML: ${resources.home.url}`,
     `- Recurso Markdown: ${resources.homeMarkdown.url}`,
+    `- Resumen para LLMs: ${resources.llmsTxt.url}`,
+    `- Catalogo WebMCP publico: ${resources.webMcpData.url}`,
+    `- Skills publicas para agentes: ${resources.agentSkillsIndex.url}`,
     "- Esta representacion esta generada desde datos publicos de la web; no contiene informacion privada ni permite reservar, pagar o enviar mensajes automaticamente.",
   ])
 

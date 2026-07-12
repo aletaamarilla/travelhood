@@ -76,6 +76,7 @@ import { blogPosts as hardBlogPosts, type BlogPost } from './blog-data'
 import { comparisons as hardComparisons, type Comparison } from './comparisons'
 import { lookupCoords } from './destination-details'
 import { filterVisibleReviews, sortReviews } from './reviews'
+import type { SearchCatalogContinent, SearchCatalogDestination, SearchDestinationRef } from './search-intent'
 
 const isSanityConfigured = (): boolean => {
   try {
@@ -90,17 +91,30 @@ const isSanityConfigured = (): boolean => {
 
 let cachedSettings: SanitySiteSettings | null = null
 
+const LEGACY_DEFAULT_INCLUDED = new Set([
+  'Traslados principales',
+  'Tasas turísticas y entradas incluidas en el itinerario',
+])
+
 async function ensureSettings(): Promise<{ defaultIncluded: string[]; defaultNotIncluded: string[] }> {
   if (!isSanityConfigured()) {
-    return { defaultIncluded: hardDefaultIncluded, defaultNotIncluded: hardDefaultNotIncluded }
+    return { defaultIncluded: normalizeDefaultIncluded(hardDefaultIncluded), defaultNotIncluded: hardDefaultNotIncluded }
   }
   if (!cachedSettings) {
     cachedSettings = await sanityFetch<SanitySiteSettings | null>(siteSettingsQuery)
   }
   return {
-    defaultIncluded: cachedSettings?.defaultIncluded ?? hardDefaultIncluded,
-    defaultNotIncluded: cachedSettings?.defaultNotIncluded ?? hardDefaultNotIncluded,
+    defaultIncluded: normalizeDefaultIncluded(cachedSettings?.defaultIncluded ?? []),
+    defaultNotIncluded: cachedSettings?.defaultNotIncluded ?? [],
   }
+}
+
+function removeLegacyDefaultIncluded(items: string[]): string[] {
+  return items.filter((item) => !LEGACY_DEFAULT_INCLUDED.has(item))
+}
+
+function normalizeDefaultIncluded(items: string[]): string[] {
+  return removeLegacyDefaultIncluded(items).filter((item) => !/\bdesayunos?\b/i.test(item))
 }
 
 export function resolveImage(img?: SanityImageSource | null): string {
@@ -124,6 +138,24 @@ export function resolveImageThumb(img?: SanityImageSource | null, w = 800): stri
   } catch {
     return ''
   }
+}
+
+function resolveCoordinates(
+  coordinates: SanityDestination['coordinates'] | Destination['coordinates'] | undefined
+): Destination['coordinates'] | undefined {
+  if (!coordinates) return undefined
+  if (coordinates.lat === 0 && coordinates.lng === 0) return undefined
+  return { lat: coordinates.lat, lng: coordinates.lng }
+}
+
+function mapItineraryWithCoordinates(days: NonNullable<SanityDestination['itinerary']>): NonNullable<Destination['itinerary']> {
+  return days.map((d) => ({
+    day: d.day,
+    title: d.title,
+    description: d.description ?? '',
+    lat: d.lat,
+    lng: d.lng,
+  }))
 }
 
 // ── Resolved Settings Images ──
@@ -259,19 +291,42 @@ function mapDestination(s: SanityDestination): Destination {
     description: s.description,
     shortDescription: s.shortDescription,
     heroImage: resolveImage(s.heroImage),
+    heroImageAlt: s.heroImageAlt ?? '',
+    gallery: s.gallery?.map((img) => ({
+      url: resolveImageThumb(img, 800),
+      alt: (img as SanityImageSource & { alt?: string }).alt ?? '',
+    })) ?? [],
     highlights: s.highlights ?? [],
     idealFor: s.idealFor ?? '',
     climate: s.climate,
     categories: (s.categories ?? []) as Destination['categories'],
-    included: s.included ?? [],
+    included: removeLegacyDefaultIncluded(s.included ?? []),
     notIncluded: s.notIncluded ?? [],
-    itinerary: (s.itinerary ?? []).map((d) => ({
-      day: d.day,
-      title: d.title,
-      description: d.description ?? '',
-      lat: d.lat,
-      lng: d.lng,
-    })),
+    coordinates: resolveCoordinates(s.coordinates),
+    climateByMonth: (s.climateByMonth ?? []) as Destination['climateByMonth'],
+    budgetPerDay: s.budgetPerDay
+      ? {
+          mealCostLow: s.budgetPerDay.mealCostLow ?? '',
+          mealCostMid: s.budgetPerDay.mealCostMid ?? '',
+          beerCost: s.budgetPerDay.beerCost ?? '',
+          dailyBudget: s.budgetPerDay.dailyBudget ?? '',
+          totalExtras: s.budgetPerDay.totalExtras ?? '',
+        }
+      : undefined,
+    itinerary: mapItineraryWithCoordinates(s.itinerary ?? []),
+    faqs: s.faqs?.map((f) => ({ question: f.question, answer: f.answer })) ?? [],
+    seo: s.seo
+      ? {
+          title: s.seo.title ?? '',
+          description: s.seo.description ?? '',
+          keywords: s.seo.keywords ?? '',
+          ogImage: resolveImage(s.seo.ogImage),
+          cuandoViajarTitle: s.seo.cuandoViajarTitle,
+          cuandoViajarDescription: s.seo.cuandoViajarDescription,
+          presupuestoTitle: s.seo.presupuestoTitle,
+          presupuestoDescription: s.seo.presupuestoDescription,
+        }
+      : undefined,
     pdfUrl: s.pdfUrl ?? undefined,
     hasCoordinator: s.hasCoordinator ?? true,
   }
@@ -289,6 +344,146 @@ export async function getDestinationBySlug(slug: string): Promise<Destination | 
   return data ? mapDestination(data) : undefined
 }
 
+/** Placeholder copy — not enough for search/catalog display. */
+const PLACEHOLDER_SHORT_DESCRIPTIONS = new Set(['próximamente', 'proximamente'])
+
+export type SearchableDestinationRejectReason =
+  | 'missing-slug'
+  | 'missing-name'
+  | 'missing-short-description'
+  | 'placeholder-short-description'
+  | 'missing-hero-image'
+  | 'missing-country'
+  | 'missing-continent'
+
+export interface SearchableDestinationContext {
+  countryIds: ReadonlySet<string>
+  continentIds: ReadonlySet<string>
+}
+
+/**
+ * Publishability for search/navigation: slug, name, shortDescription, heroImage and
+ * resolvable country/continent refs so `/destino/[slug].astro` can render without 404.
+ * Active trips are NOT required — destinations without dates still show a professional
+ * "Próximamente" state on the landing page.
+ */
+export function getSearchableDestinationRejectReason(
+  destination: Destination,
+  context?: SearchableDestinationContext,
+): SearchableDestinationRejectReason | null {
+  if (!destination.slug?.trim()) return 'missing-slug'
+  if (!destination.name?.trim()) return 'missing-name'
+
+  const shortDescription = destination.shortDescription?.trim() ?? ''
+  if (!shortDescription) return 'missing-short-description'
+  if (PLACEHOLDER_SHORT_DESCRIPTIONS.has(shortDescription.toLowerCase())) {
+    return 'placeholder-short-description'
+  }
+
+  if (!destination.heroImage?.trim()) return 'missing-hero-image'
+
+  if (context) {
+    if (!destination.countryId || !context.countryIds.has(destination.countryId)) {
+      return 'missing-country'
+    }
+    if (!destination.continentId || !context.continentIds.has(destination.continentId)) {
+      return 'missing-continent'
+    }
+  }
+
+  return null
+}
+
+export function isSearchableDestination(
+  destination: Destination,
+  context?: SearchableDestinationContext,
+): boolean {
+  return getSearchableDestinationRejectReason(destination, context) === null
+}
+
+export function buildSearchableDestinationContext(
+  countries: readonly Country[],
+  continents: readonly Continent[],
+): SearchableDestinationContext {
+  return {
+    countryIds: new Set(countries.map((country) => country.id)),
+    continentIds: new Set(continents.map((continent) => continent.id)),
+  }
+}
+
+export function filterSearchableDestinations(
+  destinations: readonly Destination[],
+  context?: SearchableDestinationContext,
+): Destination[] {
+  return destinations.filter((destination) => isSearchableDestination(destination, context))
+}
+
+/** Continents that have at least one searchable destination (avoids empty continent chips). */
+export function filterContinentsWithSearchableDestinations(
+  continents: readonly Continent[],
+  searchableDestinations: readonly Destination[],
+): Continent[] {
+  const continentIds = new Set(searchableDestinations.map((destination) => destination.continentId))
+  return continents.filter((continent) => continentIds.has(continent.id))
+}
+
+export function toSearchDestinationRefs(
+  destinations: readonly Destination[],
+): SearchDestinationRef[] {
+  return destinations.map((destination) => ({
+    id: destination.id,
+    slug: destination.slug,
+  }))
+}
+
+/** Strip full Destination records to the fields needed by SearchIsland. */
+export function toSearchCatalogDestinations(
+  destinations: readonly Destination[],
+): SearchCatalogDestination[] {
+  return destinations.map((destination) => ({
+    id: destination.id,
+    slug: destination.slug,
+    name: destination.name,
+    shortDescription: destination.shortDescription,
+    heroImage: destination.heroImage,
+    categories: destination.categories,
+    continentId: destination.continentId,
+  }))
+}
+
+export function toSearchCatalogContinents(
+  continents: readonly Continent[],
+): SearchCatalogContinent[] {
+  return continents.map((continent) => ({
+    id: continent.id,
+    name: continent.name,
+  }))
+}
+
+export async function getSearchableDestinations(): Promise<Destination[]> {
+  const [destinations, countries, continents] = await Promise.all([
+    getDestinations(),
+    getCountries(),
+    getContinents(),
+  ])
+  const context = buildSearchableDestinationContext(countries, continents)
+  return filterSearchableDestinations(destinations, context)
+}
+
+export async function getSearchCatalog(): Promise<{ destinations: Destination[]; continents: Continent[] }> {
+  const [destinations, countries, allContinents] = await Promise.all([
+    getDestinations(),
+    getCountries(),
+    getContinents(),
+  ])
+  const context = buildSearchableDestinationContext(countries, allContinents)
+  const searchableDestinations = filterSearchableDestinations(destinations, context)
+  return {
+    destinations: searchableDestinations,
+    continents: filterContinentsWithSearchableDestinations(allContinents, searchableDestinations),
+  }
+}
+
 export async function getDestinationsByContinent(continentSlugOrId: string): Promise<Destination[]> {
   if (!isSanityConfigured()) {
     const continent = hardContinents.find((c) => c.slug === continentSlugOrId || c.id === continentSlugOrId)
@@ -304,15 +499,23 @@ export async function getDestinationRaw(slug: string): Promise<SanityDestination
 }
 
 export async function getDestinationGallery(slug: string): Promise<string[]> {
+  const fallbackGallery = () => {
+    const dest = hardDestinations.find((d) => d.slug === slug)
+    return dest?.gallery?.map((img) => img.url) ?? []
+  }
+  if (!isSanityConfigured()) return fallbackGallery()
   const raw = await getDestinationRaw(slug)
-  if (!raw?.gallery?.length) return []
-  return raw.gallery.map((img) => resolveImageThumb(img, 800))
+  return raw?.gallery?.map((img) => resolveImageThumb(img, 800)) ?? []
 }
 
 export async function getDestinationSanityFaqs(slug: string): Promise<{ question: string; answer: string }[]> {
+  const fallbackFaqs = () => {
+    const dest = hardDestinations.find((d) => d.slug === slug)
+    return dest?.faqs ?? []
+  }
+  if (!isSanityConfigured()) return fallbackFaqs()
   const raw = await getDestinationRaw(slug)
-  if (!raw?.faqs?.length) return []
-  return raw.faqs.map((f) => ({ question: f.question, answer: f.answer }))
+  return raw?.faqs?.map((f) => ({ question: f.question, answer: f.answer })) ?? []
 }
 
 // ── Trips ──
@@ -323,7 +526,7 @@ interface MergeContext {
 }
 
 function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
-  const destIncluded = s.destination?.included ?? []
+  const destIncluded = removeLegacyDefaultIncluded(s.destination?.included ?? [])
   const destNotIncluded = s.destination?.notIncluded ?? []
   const destItinerary = s.destination?.itinerary ?? []
   const destHasCoordinator = s.destination?.hasCoordinator ?? true
@@ -680,9 +883,9 @@ export async function getGlobalFaqs(page?: string): Promise<SanityGlobalFaq[]> {
     const data = page
       ? await sanityFetch<SanityGlobalFaq[]>(globalFaqsByPageQuery, { page })
       : await sanityFetch<SanityGlobalFaq[]>(allGlobalFaqsQuery)
-    return data.length > 0 ? data : FALLBACK_FAQS
+    return data
   } catch {
-    return FALLBACK_FAQS
+    return []
   }
 }
 

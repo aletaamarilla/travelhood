@@ -139,6 +139,15 @@
   body {
     @apply bg-background text-foreground;
   }
+  a:focus-visible,
+  button:focus-visible,
+  [role='button']:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

@@ -1,5 +1,5 @@
 import { webMcpTools, site } from "@/lib/agent-visibility"
-import { getDestinations, getTripCategories } from "@/lib/data-provider"
+import { getCountries, getDestinations, getTripCategories, getTrips } from "@/lib/data-provider"
 
 export const prerender = true
 
@@ -10,11 +10,27 @@ function compactText(value?: string, maxLength = MAX_TEXT_LENGTH): string {
   return text.length > maxLength ? `${text.slice(0, maxLength - 1).trim()}...` : text
 }
 
+function minPositivePrice(prices: number[]): number | null {
+  const positivePrices = prices.filter((price) => price > 0)
+
+  return positivePrices.length ? Math.min(...positivePrices) : null
+}
+
 export async function GET() {
-  const [destinations, tripTypes] = await Promise.all([
+  const [destinations, tripTypes, countries, trips] = await Promise.all([
     getDestinations(),
     getTripCategories(),
+    getCountries(),
+    getTrips(),
   ])
+  const countriesById = new Map(countries.map((country) => [country.id, country]))
+  const tripsByDestinationId = new Map<string, typeof trips>()
+
+  for (const trip of trips) {
+    const destinationTrips = tripsByDestinationId.get(trip.destinationId) ?? []
+    destinationTrips.push(trip)
+    tripsByDestinationId.set(trip.destinationId, destinationTrips)
+  }
 
   const publicData = {
     id: "travelhood.webmcp.public-data",
@@ -45,11 +61,37 @@ export async function GET() {
         name: destination.name,
         slug: destination.slug,
         url: `/destino/${destination.slug}/`,
+        canonicalUrl: `${site.url}/destino/${destination.slug}/`,
         categories: destination.categories,
         shortDescription: compactText(destination.shortDescription),
         idealFor: compactText(destination.idealFor, 160),
         highlights: destination.highlights.slice(0, 5),
         hasCoordinator: destination.hasCoordinator,
+        publicFacts: {
+          priceFromExcludingInternationalFlights: minPositivePrice(
+            (tripsByDestinationId.get(destination.id) ?? []).map((trip) => trip.promoPrice ?? trip.priceFrom),
+          ),
+          flightEstimate: (tripsByDestinationId.get(destination.id) ?? [])[0]?.flightEstimate ?? null,
+          durationDays: (tripsByDestinationId.get(destination.id) ?? [])[0]?.durationDays ?? null,
+          climate: compactText(destination.climate, 180),
+          budget: destination.budgetPerDay
+            ? {
+                dailyBudget: destination.budgetPerDay.dailyBudget,
+                totalExtras: destination.budgetPerDay.totalExtras,
+              }
+            : null,
+        },
+        practicalData: {
+          country: countriesById.get(destination.countryId)?.name ?? null,
+          visaInfo: countriesById.get(destination.countryId)?.visaInfo ?? null,
+          vaccinesRecommended: countriesById.get(destination.countryId)?.vaccinesRecommended ?? null,
+          variableDataNote:
+            "Visado, vacunas, clima y presupuesto son datos variables; deben confirmarse en fuentes oficiales y con Travel Hood antes de reservar.",
+        },
+        faqs: (destination.faqs ?? []).slice(0, 4).map((faq) => ({
+          question: faq.question,
+          answer: compactText(faq.answer, 320),
+        })),
       })),
       tripTypes: tripTypes.map((tripType) => ({
         name: tripType.name,

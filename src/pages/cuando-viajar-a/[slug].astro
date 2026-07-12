@@ -6,7 +6,8 @@ import GEODataBlock from "@/components/GEODataBlock.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
-import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents } from "@/lib/data-provider";
+import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents, getSiteSettings } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, SITE_URL, buildWhatsAppUrl } from "@/lib/config";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
@@ -16,11 +17,12 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [destination, destTripsRaw, countries, continents] = await Promise.all([
+const [destination, destTripsRaw, countries, continents, siteSettings] = await Promise.all([
   getDestinationBySlug(slug!),
   getTripsByDestination(slug!),
   getCountries(),
   getContinents(),
+  getSiteSettings(),
 ]);
 
 if (!destination) return Astro.redirect("/404/");
@@ -36,6 +38,13 @@ const destTrips = destTripsRaw
 const minPrice = destTrips.length > 0
   ? Math.min(...destTrips.map((t) => resolvePrice(t).price))
   : 0;
+const featuredTrip = destTrips[0];
+const heroAlt = destination.heroImageAlt || `Viaje en grupo a ${destination.name}`;
+const waPhone = siteSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+const whatsappMessage = `Hola! Estoy mirando cuándo viajar a ${destination.name}. ¿Me contáis qué salida encaja mejor?`;
+const whatsappUrl = buildWhatsAppUrl(waPhone, whatsappMessage);
+const climateByMonth = destination.climateByMonth ?? [];
+const hasClimateByMonth = climateByMonth.length > 0;
 
 const faqs = [
   { question: `¿Cuál es la mejor época para viajar a ${destination.name}?`, answer: `${destination.climate} Consulta las fechas de los viajes disponibles para elegir la temporada que mejor se adapte a tu preferencia.` },
@@ -43,13 +52,18 @@ const faqs = [
   { question: `¿Cuántos días dura un viaje a ${destination.name}?`, answer: destTrips.length > 0 ? `Los viajes a ${destination.name} duran ${destTrips[0].durationDays} días. Incluyen itinerario completo con actividades y tiempo libre.` : `La duración varía según la temporada. Consulta los viajes disponibles para más detalles.` },
 ];
 
-const pageTitle = `¿Cuándo es la mejor época para viajar a ${destination.name}? — Travel Hood`;
-const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destination.climate} Viajes en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} con coordinador y alojamiento incluidos.`;
+const destinationPath = `/destino/${destination.slug}/`;
+const pagePath = `/cuando-viajar-a/${destination.slug}/`;
+const canonicalUrl = `${SITE_URL}${pagePath}`;
+const seoImage = destination.seo?.ogImage || destination.heroImage;
+const pageTitle = destination.seo?.cuandoViajarTitle || `¿Cuándo es la mejor época para viajar a ${destination.name}? — Travel Hood`;
+const pageDescription = destination.seo?.cuandoViajarDescription || `Descubre cuándo viajar a ${destination.name}. ${destination.climate} Viajes en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} con coordinador y alojamiento incluidos.`;
+const pageKeywords = destination.seo?.keywords || `mejor época viajar ${destination.name}, cuando viajar a ${destination.name}, clima ${destination.name}, temporada ${destination.name}`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={destination.heroImage} keywords={`mejor época viajar ${destination.name}, cuando viajar a ${destination.name}, clima ${destination.name}, temporada ${destination.name}`}>
+<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={seoImage} keywords={pageKeywords} canonical={canonicalUrl} ogUrl={canonicalUrl}>
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:`/destino/${destination.slug}/`},{name:"Cuándo viajar",url:`/cuando-viajar-a/${destination.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:destinationPath},{name:"Cuándo viajar",url:pagePath}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
@@ -57,7 +71,7 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
 
     <HeroSection
       image={destination.heroImage}
-      imageAlt={`Mejor época para viajar a ${destination.name}`}
+      imageAlt={heroAlt}
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: destination.name, href: `/destino/${destination.slug}/` },
@@ -66,6 +80,35 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
       title={`¿Cuándo es la mejor época para viajar a ${destination.name}?`}
       subtitle={destination.climate}
     />
+
+    <section class="bg-card py-8">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="grid gap-5 rounded-3xl border border-border/40 bg-background p-5 shadow-sm sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-secondary">Respuesta rápida</p>
+            <h2 class="mt-2 font-serif text-xl font-extrabold text-foreground sm:text-2xl">
+              {climateByMonth.some((month) => month.recommendation === "Ideal")
+                ? `La mejor época para viajar a ${destination.name} depende del plan, pero estas fechas tienen meses recomendados como ideales.`
+                : `La mejor época para viajar a ${destination.name} es la que encaja con una salida real y tu estilo de viaje.`}
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {featuredTrip ? `La próxima salida disponible dura ${featuredTrip.durationDays} días, sale el ${new Date(featuredTrip.departureDate).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })} y cuesta desde ${minPrice}€ sin vuelo.` : "Ahora mismo no hay salida disponible, pero puedes escribirnos para que te avisemos cuando abramos nuevas fechas."}
+            </p>
+          </div>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-destination-whatsapp
+            data-page="cuando-viajar"
+            data-destination={destination.slug}
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-sm font-extrabold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+          >
+            Preguntar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
 
     <section class="bg-background py-16">
       <div class="mx-auto max-w-3xl px-6">
@@ -78,6 +121,45 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
         </div>
       </div>
     </section>
+
+    {hasClimateByMonth && (
+      <section class="bg-card py-14">
+        <div class="mx-auto max-w-5xl px-6">
+          <h2 class="mb-3 text-center font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Clima de {destination.name} mes a mes
+          </h2>
+          <p class="mx-auto mb-8 max-w-2xl text-center text-sm text-muted-foreground">
+            Tabla pensada para decidir rápido: temperatura media, lluvia y recomendación de viaje.
+          </p>
+          <div class="overflow-hidden rounded-2xl border border-border/40 bg-background shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-left text-sm">
+                <thead class="bg-teal-deep text-sand">
+                  <tr>
+                    <th scope="col" class="px-4 py-3 font-bold">Mes</th>
+                    <th scope="col" class="px-4 py-3 font-bold">Temperatura</th>
+                    <th scope="col" class="px-4 py-3 font-bold">Lluvia</th>
+                    <th scope="col" class="px-4 py-3 font-bold">Recomendación</th>
+                    <th scope="col" class="px-4 py-3 font-bold">Nota</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-border/40">
+                  {climateByMonth.map((month) => (
+                    <tr>
+                      <th scope="row" class="whitespace-nowrap px-4 py-3 font-bold text-foreground">{month.month}</th>
+                      <td class="px-4 py-3 text-muted-foreground">{month.avgTemp || "Consultar"}</td>
+                      <td class="px-4 py-3 text-muted-foreground">{month.rainfall || "Consultar"}</td>
+                      <td class="px-4 py-3 font-semibold text-foreground">{month.recommendation || "Según fechas"}</td>
+                      <td class="px-4 py-3 text-muted-foreground">{month.note || "Sin nota específica"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
 
     {destTrips.length > 0 && (
       <section class="bg-card py-14">
@@ -122,10 +204,34 @@ const pageDescription = `Descubre cuándo viajar a ${destination.name}. ${destin
 
     <CTASection
       title={`¿Listo para viajar a ${destination.name}?`}
-      subtitle="El grupo ya se está formando."
-      ctaText={`Ver viajes a ${destination.name}`}
-      ctaHref={`/destino/${destination.slug}/`}
+      subtitle="Escríbenos y te contamos fechas, grupo y presupuesto sin compromiso."
+      ctaText="Pedir info por WhatsApp"
+      ctaHref={whatsappUrl}
     />
+
+    <script is:inline define:vars={{ destinationSlug: destination.slug }}>
+      function hasAnalyticsConsent() {
+        try {
+          const match = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
+          if (!match) return false;
+          return JSON.parse(decodeURIComponent(match[1])).analytics === true;
+        } catch {
+          return false;
+        }
+      }
+
+      document.querySelectorAll("[data-destination-whatsapp], a[href*='wa.me']").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (!hasAnalyticsConsent()) return;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "destination_whatsapp_click",
+            destination_slug: link.getAttribute("data-destination") || destinationSlug,
+            cta_location: link.getAttribute("data-cta-location") || "cuando_viajar_bottom_cta",
+          });
+        });
+      });
+    </script>
 
     <Footer />
   </main>

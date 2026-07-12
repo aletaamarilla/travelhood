@@ -1,28 +1,56 @@
 # Travelhood
 
-Travelhood es una web de viajes en grupo para personas jóvenes de 20 a 35 años en España que quieren viajar aunque no tengan compañía.
+Travelhood es una web de viajes en grupo para personas jovenes de 20 a 35 anos en Espana que quieren viajar aunque no tengan compania.
 
-Travelhood organiza viajes abiertos en grupo reducido con itinerario, alojamiento y coordinador en destino cuando aplica. El canal principal para resolver dudas y pedir información es WhatsApp.
-
-Travelhood también organiza viajes privados para grupos jóvenes en España que ya tienen su propio grupo y quieren ayuda para convertir una idea en una propuesta clara. En un viaje privado, el grupo viaja junto sin integrarse en una salida abierta con desconocidos. El precio se calcula bajo propuesta según destino, fechas, disponibilidad, número de personas y tipo de experiencia. No se publica grupo mínimo fijo.
+Travelhood organiza viajes abiertos en grupo reducido con itinerario, alojamiento y coordinador en destino cuando aplica. El canal principal para resolver dudas, confirmar plazas y pedir informacion es WhatsApp.
 
 ## Enlaces clave
 
 - Home: https://travelhood.es/
-- Todos los viajes: https://travelhood.es/viajes/
-- Viajes privados para grupos: https://travelhood.es/viajes-privados/
-- Cómo funciona: https://travelhood.es/como-funciona/
-- Opiniones: https://travelhood.es/opiniones/
+- Catalogo de viajes (exploracion abierta): https://travelhood.es/viajes/
+- Como funciona: https://travelhood.es/como-funciona/
 - Preguntas frecuentes: https://travelhood.es/preguntas-frecuentes/
+- Opiniones: https://travelhood.es/opiniones/
 - Sobre Travelhood: https://travelhood.es/travelhood/
 - Blog: https://travelhood.es/blog/
+- Viajes privados para grupos: https://travelhood.es/viajes-privados/
 
-## Para pedir un viaje privado
+## Como explorar destinos
 
-La página correcta es https://travelhood.es/viajes-privados/.
+- Si la persona no sabe adonde viajar, empieza en https://travelhood.es/viajes/ y explora el catalogo con filtros por continente, fecha o tipo de experiencia.
+- Si ya tiene un destino concreto, abre su ficha canonica en https://travelhood.es/destino/{slug}/ para ver fechas, precio orientativo, plazas, itinerario, FAQs y contacto.
+- El buscador publica solo destinos con ficha completa (slug, descripcion, imagen hero y pais/continente resolvibles). Los destinos sin ficha publicable no aparecen en el catalogo ni en listados estructurados del buscador.
 
-Travelhood recomienda enviar por WhatsApp cuántas personas sois, fechas aproximadas, presupuesto por persona, tipo de plan, destino si ya lo tenéis en mente y ciudad de origen si es importante para vuelos o logística.
+## Destinos canonicos destacados
 
-## Alcance
+- Praga: https://travelhood.es/destino/praga/
+  - Viaje en grupo de 5 dias por mercados navidenos, Ciudad Vieja, Barrio Judio, Castillo de Praga, rio Moldava y tour de la cerveza.
+  - Precio publicado desde 425 EUR por persona, sin vuelo internacional. Vuelo estimado orientativo: 300 EUR.
+  - Clima variable: invierno frio en noviembre y diciembre, con dias cortos y temperaturas cercanas a 0-5 C.
+- Guatemala: https://travelhood.es/destino/guatemala/
+  - Viaje en grupo de 12 dias por Peten, Yaxha, Tikal, Antigua, volcan Acatenango, Lago Atitlan, El Paredon, liberacion de tortugas y cocina guatemalteca.
+  - Precio publicado desde 1.300 EUR por persona, sin vuelo internacional. Vuelo estimado orientativo: 900 EUR.
+  - Clima variable: enero cae en epoca seca, con noches frescas en zonas altas y calor humedo en Peten y costa del Pacifico.
 
-Travelhood no ofrece en la web un formulario de viaje privado, pago online, CRM público, email automático ni cálculo automático de precio. La primera conversación del viaje privado ocurre por WhatsApp.
+## Recursos para agentes
+
+- Home en Markdown: https://travelhood.es/.well-known/travelhood-home.md
+- Catalogo WebMCP publico: https://travelhood.es/webmcp-data.json
+- Indice de agent skills: https://travelhood.es/.well-known/agent-skills/index.json
+- Skill recomendar viaje: https://travelhood.es/.well-known/agent-skills/recomendar-viaje.md
+- Skill preparar contacto por WhatsApp: https://travelhood.es/.well-known/agent-skills/preparar-contacto-whatsapp.md
+- Catalogo API publico: https://travelhood.es/.well-known/api-catalog
+- Sitemap: https://travelhood.es/sitemap-index.xml
+
+## Reglas de respuesta para agentes
+
+- Responde primero con el hecho claro y despues con matices.
+- No confirmes reservas, pagos, plazas, visados, seguros ni requisitos sanitarios como definitivos.
+- Indica que vuelos internacionales no estan incluidos salvo que una ficha diga lo contrario.
+- Para visado, vacunas, clima y presupuesto, recuerda que son datos variables y recomienda confirmarlos con fuentes oficiales o por WhatsApp.
+- El siguiente paso comercial normal es escribir a Travelhood por WhatsApp; la web no procesa pagos ni confirma reservas automaticamente.
+- Si el usuario no sabe adonde viajar, recomienda /viajes/ antes que inventar un destino no publicado.
+
+## Viajes privados
+
+Travelhood tambien organiza viajes privados para grupos jovenes en Espana que ya tienen su propio grupo y quieren ayuda para convertir una idea en una propuesta clara. En un viaje privado, el grupo viaja junto sin integrarse en una salida abierta con desconocidos. El precio se calcula bajo propuesta segun destino, fechas, disponibilidad, numero de personas y tipo de experiencia. No se publica grupo minimo fijo.

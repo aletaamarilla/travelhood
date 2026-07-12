@@ -1,0 +1,581 @@
+{
+  "runId": "2026-07-10T18-04-36-519Z-4d4c6396",
+  "timestamp": "2026-07-10T18:04:36.519Z",
+  "mode": "dry-run",
+  "dataset": "production",
+  "manifest": {
+    "path": "imports/fillNewDestination/manifest.json",
+    "sha256": "b11ff9fa26a4032d543ce0b41dc6da378289f6a8f8857f190622ae6c04bf2481",
+    "slug": "fillNewDestination",
+    "generatedAt": "2026-07-10"
+  },
+  "status": "completed",
+  "blockers": [],
+  "created": {
+    "assets": [],
+    "documents": []
+  },
+  "planned": {
+    "countries": [
+      {
+        "_id": "drafts.country-chequia",
+        "_type": "country",
+        "name": "Chequia",
+        "slug": {
+          "_type": "slug",
+          "current": "chequia"
+        },
+        "continent": {
+          "_type": "reference",
+          "_ref": "continent-europa"
+        },
+        "flag": "CZ"
+      },
+      {
+        "_id": "drafts.country-guatemala",
+        "_type": "country",
+        "name": "Guatemala",
+        "slug": {
+          "_type": "slug",
+          "current": "guatemala"
+        },
+        "continent": {
+          "_type": "reference",
+          "_ref": "continent-centroamerica"
+        },
+        "flag": "GT"
+      }
+    ],
+    "destinations": [
+      {
+        "_id": "drafts.destination-praga",
+        "_type": "destination",
+        "name": "Praga",
+        "slug": {
+          "_type": "slug",
+          "current": "praga"
+        },
+        "country": {
+          "_type": "reference",
+          "_ref": "drafts.country-chequia"
+        },
+        "continent": {
+          "_type": "reference",
+          "_ref": "continent-europa"
+        },
+        "description": "Descubre Praga en 5 dias durante la epoca mas magica del ano. Recorre sus calles medievales, admira sus monumentos iluminados, navega por el rio Moldava y disfruta de sus famosos mercados navidenos.",
+        "shortDescription": "Mercados navidenos, historia y cerveza checa en grupo.",
+        "heroImage": {
+          "_type": "image",
+          "asset": {
+            "_type": "reference",
+            "_ref": "dry-run.asset.destination-praga.hero"
+          }
+        },
+        "heroImageAlt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+        "highlights": [
+          "Mercados navidenos",
+          "Ciudad Vieja",
+          "Barrio Judio",
+          "Castillo de Praga",
+          "Rio Moldava",
+          "Tour de la cerveza"
+        ],
+        "idealFor": "Personas que quieren una escapada cultural de Navidad sin esperar a tener compania.",
+        "hasCoordinator": true,
+        "categories": [
+          "cultural"
+        ],
+        "gallery": [
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-praga.gallery.0"
+            },
+            "_key": "8581814a19b8",
+            "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad"
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-praga.gallery.1"
+            },
+            "_key": "7438e23c1b7e",
+            "alt": "Tranvia rojo recorriendo una calle historica de Praga"
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-praga.gallery.2"
+            },
+            "_key": "397810ff910d",
+            "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos"
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-praga.gallery.3"
+            },
+            "_key": "fb402fe95508",
+            "alt": "Puesto de comida caliente en un mercado navideno de Praga"
+          }
+        ],
+        "climate": "Invierno frio en noviembre y diciembre, con dias cortos y temperaturas cercanas a 0-5 C; llevar abrigo, calzado comodo y capas para mercados navidenos.",
+        "included": [
+          "2 tours privados con guia local en espanol",
+          "Paseo en barco por el rio Moldava",
+          "Tour de la cerveza",
+          "Visita a los mercados navidenos"
+        ],
+        "notIncluded": [
+          "Transporte publico durante el viaje"
+        ],
+        "itinerary": [
+          {
+            "_key": "712cf52cbfa6",
+            "day": 1,
+            "title": "Llegada a Praga",
+            "description": "Llegada a Praga y encuentro con el grupo en el alojamiento. Tiempo para instalarnos, conocer a los companeros de viaje y disfrutar de una primera toma de contacto con la ciudad."
+          },
+          {
+            "_key": "c1c72517cb59",
+            "day": 2,
+            "title": "Ciudad Vieja y Barrio Judio",
+            "description": "Descubriremos la parte historica de Praga con guia local en espanol y visitaremos lugares emblematicos. Por la tarde haremos un paseo en barco por el rio Moldava."
+          },
+          {
+            "_key": "934bc93dda2f",
+            "day": 3,
+            "title": "Castillo y tour de la cerveza",
+            "description": "Recorreremos la zona mas monumental de la ciudad. Por la tarde disfrutaremos de un tour de la cerveza con paradas en 3 sitios diferentes."
+          },
+          {
+            "_key": "eab9c2bc2de1",
+            "day": 4,
+            "title": "Dia libre y mercados navidenos",
+            "description": "Dia libre para descubrir Praga a tu ritmo. Por la tarde visitaremos juntos los mercados navidenos de Praga."
+          },
+          {
+            "_key": "209018c7f18d",
+            "day": 5,
+            "title": "Se acaba la aventura",
+            "description": "Tiempo libre hasta la hora del traslado al aeropuerto y vuelta a casa."
+          }
+        ],
+        "faqs": []
+      },
+      {
+        "_id": "drafts.destination-guatemala",
+        "_type": "destination",
+        "name": "Guatemala",
+        "slug": {
+          "_type": "slug",
+          "current": "guatemala"
+        },
+        "country": {
+          "_type": "reference",
+          "_ref": "drafts.country-guatemala"
+        },
+        "continent": {
+          "_type": "reference",
+          "_ref": "continent-centroamerica"
+        },
+        "description": "12 dias descubriendo uno de los paises mas autenticos de Centroamerica: templos mayas entre la selva, ciudades coloniales, volcanes, lagos de postal y playas salvajes del Pacifico.",
+        "shortDescription": "Templos mayas, volcanes, lago Atitlan y Pacifico en grupo.",
+        "heroImage": {
+          "_type": "image",
+          "asset": {
+            "_type": "reference",
+            "_ref": "dry-run.asset.destination-guatemala.hero"
+          }
+        },
+        "heroImageAlt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+        "highlights": [
+          "Lago Peten Itza",
+          "Yaxha",
+          "Tikal",
+          "Antigua",
+          "Volcan Acatenango",
+          "Lago Atitlan",
+          "El Paredon",
+          "Liberacion de tortugas",
+          "Clase de cocina guatemalteca"
+        ],
+        "idealFor": "Personas que quieren aventura, cultura local y naturaleza intensa viajando acompanadas.",
+        "hasCoordinator": true,
+        "categories": [
+          "aventura",
+          "cultural",
+          "naturaleza"
+        ],
+        "gallery": [
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-guatemala.gallery.0"
+            },
+            "_key": "ea91737d3182",
+            "alt": "Mercado local frente a una iglesia amarilla en Guatemala"
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-guatemala.gallery.1"
+            },
+            "_key": "ed6a885613c9",
+            "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna"
+          },
+          {
+            "_type": "image",
+            "asset": {
+              "_type": "reference",
+              "_ref": "dry-run.asset.destination-guatemala.gallery.2"
+            },
+            "_key": "ff5cad452201",
+            "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz"
+          }
+        ],
+        "climate": "Enero cae en epoca seca y fria de Guatemala: dias generalmente secos, noches frescas en Antigua/Atitlan y zonas altas, y calor humedo en Peten y costa del Pacifico.",
+        "included": [
+          "Traslados en lancha indicados en el itinerario",
+          "Guias locales certificados en Tikal, Yaxha, Antigua y Acatenango",
+          "Ruta en kayak por el Lago Peten Itza",
+          "Ascenso al Volcan Acatenango con material de montana y guias especializados",
+          "Clase de cocina guatemalteca",
+          "Liberacion de tortugas",
+          "Cena de bienvenida"
+        ],
+        "notIncluded": [
+          "Visado"
+        ],
+        "itinerary": [
+          {
+            "_key": "1e6796b95866",
+            "day": 1,
+            "title": "Llegada a Guatemala",
+            "description": "Llegada a Ciudad de Guatemala y traslado al alojamiento. Por la noche disfrutaremos de una cena de bienvenida para conocer al grupo."
+          },
+          {
+            "_key": "f921c7c7cba5",
+            "day": 2,
+            "title": "Flores y Lago Peten Itza",
+            "description": "Traslado al aeropuerto y vuelo hacia Flores. Paseo por la isla y ruta en kayak al atardecer por el Lago Peten Itza."
+          },
+          {
+            "_key": "f0e7aaadccde",
+            "day": 3,
+            "title": "Yaxha",
+            "description": "Manana libre en Flores y visita por la tarde al complejo arqueologico de Yaxha para ver el atardecer entre templos mayas y selva."
+          },
+          {
+            "_key": "ece640aa45cd",
+            "day": 4,
+            "title": "Tikal y Antigua",
+            "description": "Visita temprana al Parque Nacional de Tikal. Regreso en vuelo a Ciudad de Guatemala y traslado a Antigua."
+          },
+          {
+            "_key": "928c2e1d7542",
+            "day": 5,
+            "title": "Antigua",
+            "description": "Recorrido por Antigua con guia local, incluyendo calles empedradas, iglesias, conventos, mercados y Cerro de la Cruz. Por la tarde, clase de salsa opcional segun PDF."
+          },
+          {
+            "_key": "ba51bb73f981",
+            "day": 6,
+            "title": "Volcan Acatenango",
+            "description": "Ascenso al Volcan Acatenango para contemplar el Volcan Fuego y noche en campamento. El PDF indica alternativa para quienes no quieran realizar el ascenso."
+          },
+          {
+            "_key": "7138cc250d94",
+            "day": 7,
+            "title": "Amanecer en el volcan",
+            "description": "Amanecer en el volcan, descenso, regreso a Antigua y tarde libre para descansar o pasear."
+          },
+          {
+            "_key": "6f5239b681f4",
+            "day": 8,
+            "title": "Lago Atitlan",
+            "description": "Traslado al Lago Atitlan, visita a la Reserva Natural de San Marcos y lancha hasta San Juan La Laguna."
+          },
+          {
+            "_key": "4cc624d21257",
+            "day": 9,
+            "title": "Rostro Maya y cultura local",
+            "description": "Amanecer desde el mirador del Rostro Maya, recorrido por San Juan La Laguna, cooperativas de artesanas y clase de cocina guatemalteca."
+          },
+          {
+            "_key": "c468b7e43677",
+            "day": 10,
+            "title": "Panajachel y El Paredon",
+            "description": "Visita a Panajachel y Santa Catarina Palopo antes de poner rumbo a El Paredon. Tarde libre para disfrutar del ambiente y el atardecer."
+          },
+          {
+            "_key": "63a13b2e1eed",
+            "day": 11,
+            "title": "El Paredon",
+            "description": "Dia de playa. Por la tarde, experiencia de liberacion de tortugas. Opcionalmente, clase de surf o kayak por manglares."
+          },
+          {
+            "_key": "575468bcfa64",
+            "day": 12,
+            "title": "Se acaba la aventura",
+            "description": "Manana libre y traslado al aeropuerto de Ciudad de Guatemala para emprender el regreso a casa."
+          }
+        ],
+        "faqs": []
+      }
+    ],
+    "trips": [
+      {
+        "_id": "drafts.trip-praga-2026-11-26",
+        "_type": "trip",
+        "title": "Praga - Noviembre 2026",
+        "slug": {
+          "_type": "slug",
+          "current": "praga-noviembre-2026"
+        },
+        "destination": {
+          "_type": "reference",
+          "_ref": "drafts.destination-praga"
+        },
+        "departureDate": "2026-11-26",
+        "returnDate": "2026-11-30",
+        "durationDays": 5,
+        "priceFrom": 425,
+        "flightEstimate": 300,
+        "totalPlaces": 15,
+        "placesLeft": 15,
+        "status": "open",
+        "tags": [
+          "puente-noviembre"
+        ],
+        "coordinator": {
+          "_type": "reference",
+          "_ref": "coordinator-carlos"
+        }
+      },
+      {
+        "_id": "drafts.trip-praga-2026-12-02",
+        "_type": "trip",
+        "title": "Praga - Diciembre 2026",
+        "slug": {
+          "_type": "slug",
+          "current": "praga-diciembre-2026"
+        },
+        "destination": {
+          "_type": "reference",
+          "_ref": "drafts.destination-praga"
+        },
+        "departureDate": "2026-12-02",
+        "returnDate": "2026-12-06",
+        "durationDays": 5,
+        "priceFrom": 425,
+        "flightEstimate": 300,
+        "totalPlaces": 15,
+        "placesLeft": 15,
+        "status": "open",
+        "tags": [
+          "navidad"
+        ],
+        "coordinator": {
+          "_type": "reference",
+          "_ref": "coordinator-carlos"
+        }
+      },
+      {
+        "_id": "drafts.trip-guatemala-2027-01-19",
+        "_type": "trip",
+        "title": "Guatemala - Enero 2027",
+        "slug": {
+          "_type": "slug",
+          "current": "guatemala-enero-2027"
+        },
+        "destination": {
+          "_type": "reference",
+          "_ref": "drafts.destination-guatemala"
+        },
+        "departureDate": "2027-01-19",
+        "returnDate": "2027-01-30",
+        "durationDays": 12,
+        "priceFrom": 1300,
+        "flightEstimate": 900,
+        "totalPlaces": 15,
+        "placesLeft": 15,
+        "status": "open",
+        "tags": [],
+        "coordinator": {
+          "_type": "reference",
+          "_ref": "coordinator-carlos"
+        }
+      }
+    ],
+    "assets": [
+      {
+        "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+        "sha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+        "role": "hero",
+        "destination": "destination-praga",
+        "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+        "sha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+        "role": "gallery",
+        "destination": "destination-praga",
+        "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+        "sha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+        "role": "gallery",
+        "destination": "destination-praga",
+        "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+        "sha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+        "role": "gallery",
+        "destination": "destination-praga",
+        "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+        "sha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+        "role": "gallery",
+        "destination": "destination-praga",
+        "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+        "sha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+        "role": "hero",
+        "destination": "destination-guatemala",
+        "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+        "sha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+        "role": "gallery",
+        "destination": "destination-guatemala",
+        "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+        "sha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+        "role": "gallery",
+        "destination": "destination-guatemala",
+        "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+        "contentType": "image"
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+        "uploadPath": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+        "sha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+        "role": "gallery",
+        "destination": "destination-guatemala",
+        "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+        "contentType": "image"
+      }
+    ],
+    "order": [
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+        "source": "new_destination/praga_images/Praga 1.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+        "source": "new_destination/praga_images/Praga 2.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+        "source": "new_destination/praga_images/Praga 3.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+        "source": "new_destination/praga_images/Praga 4.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+        "source": "new_destination/praga_images/Praga 5.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+        "source": "new_destination/guatemala_images/20260104_233404442_iOS.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+        "source": "new_destination/guatemala_images/IMG_20240815_174718.jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+        "source": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg"
+      },
+      {
+        "kind": "asset",
+        "id": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+        "source": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg"
+      },
+      {
+        "kind": "country",
+        "id": "drafts.country-chequia"
+      },
+      {
+        "kind": "country",
+        "id": "drafts.country-guatemala"
+      },
+      {
+        "kind": "destination",
+        "id": "drafts.destination-praga"
+      },
+      {
+        "kind": "destination",
+        "id": "drafts.destination-guatemala"
+      },
+      {
+        "kind": "trip",
+        "id": "drafts.trip-praga-2026-11-26"
+      },
+      {
+        "kind": "trip",
+        "id": "drafts.trip-praga-2026-12-02"
+      },
+      {
+        "kind": "trip",
+        "id": "drafts.trip-guatemala-2027-01-19"
+      }
+    ]
+  },
+  "error": null,
+  "recovery": [
+    "No Sanity IDs were created by this execution."
+  ]
+}

@@ -1,0 +1,3314 @@
+{
+  "schemaVersion": 1,
+  "slug": "fillNewDestination",
+  "task": "Inventariar fuentes y construir el manifiesto de importacion",
+  "generatedAt": "2026-07-10",
+  "mode": "read-only inventory; no Sanity writes",
+  "sourceRoot": "new_destination/",
+  "statusLegend": {
+    "verified_from_source": "Extraido directamente de PDF, nombre de archivo, hash o metadatos locales.",
+    "proposed": "Propuesta editorial o de mapeo pendiente de aprobacion humana.",
+    "pending_review": "Dato presente pero requiere decision o comprobacion antes de importar.",
+    "missing": "Dato requerido por schema o roadmap que no aparece en la fuente inspeccionada.",
+    "blocked_by_metadata": "No verificable con las herramientas disponibles sin convertir o modificar el original."
+  },
+  "prohibitedOperationsObserved": {
+    "seed": false,
+    "migration": false,
+    "cleanupScript": false,
+    "sanityWrite": false,
+    "sourceFileMutation": false
+  },
+  "siteSettingsDefaultsUsedForDeduplication": {
+    "source": "src/lib/travel-data.ts and scripts/set-default-included.ts",
+    "defaultIncluded": [
+      "Alojamiento durante todo el viaje",
+      "Desayunos incluidos",
+      "Traslados principales",
+      "Coordinador Travel Hood 24/7",
+      "Tasas turisticas y entradas incluidas en el itinerario"
+    ],
+    "defaultNotIncluded": [
+      "Vuelos internacionales",
+      "Comidas y cenas no especificadas",
+      "Seguro de viaje",
+      "Actividades no incluidas en el itinerario",
+      "Gastos personales y propinas"
+    ],
+    "status": "verified_from_source"
+  },
+  "allowlist": {
+    "countriesPotential": {
+      "publishedIds": [
+        "country-chequia",
+        "country-guatemala"
+      ],
+      "draftIds": [
+        "drafts.country-chequia",
+        "drafts.country-guatemala"
+      ],
+      "note": "IDs potenciales para altas si no existe un pais equivalente; deben resolverse por _id, slug y nombre normalizado antes de crear.",
+      "status": "proposed"
+    },
+    "destinations": {
+      "publishedIds": [
+        "destination-praga",
+        "destination-guatemala"
+      ],
+      "draftIds": [
+        "drafts.destination-praga",
+        "drafts.destination-guatemala"
+      ],
+      "status": "verified_from_concept"
+    },
+    "trips": {
+      "publishedIds": [
+        "trip-praga-2026-11-26",
+        "trip-praga-2026-12-02",
+        "trip-guatemala-2027-01-19"
+      ],
+      "draftIds": [
+        "drafts.trip-praga-2026-11-26",
+        "drafts.trip-praga-2026-12-02",
+        "drafts.trip-guatemala-2027-01-19"
+      ],
+      "count": 3,
+      "status": "verified_from_pdf_and_concept"
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "new_destination/Praga & guatemala.pdf",
+      "type": "application/pdf",
+      "sizeBytes": 128838,
+      "sha256": "d57bc466538938137fd23d2118e51162a22c7da497ae3c9718c6cf68b8eb6441",
+      "pages": 10,
+      "source": "local filesystem and pypdf text extraction",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 303210,
+      "sha256": "136ce852b518a966b1244c4ff408256b53527640dff905ce2aced3053b735bea",
+      "dimensions": {
+        "width": 4032,
+        "height": 2268
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+      "type": "image/heic",
+      "sizeBytes": 1593552,
+      "sha256": "5128da820f3eb9186f8eae89882b24affd79105ff3cec79be46561856b6d6b92",
+      "dimensions": null,
+      "source": "local filesystem and file command",
+      "status": "blocked_by_metadata",
+      "notes": "HEIC dimensions and visual content could not be verified without conversion support."
+    },
+    {
+      "path": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+      "type": "image/heic",
+      "sizeBytes": 1484413,
+      "sha256": "c29c74e3263ced72ed9653eff585e7d5abc01901cf4dbba72b7e880c3c8e1350",
+      "dimensions": null,
+      "source": "local filesystem and file command",
+      "status": "blocked_by_metadata",
+      "notes": "HEIC dimensions and visual content could not be verified without conversion support."
+    },
+    {
+      "path": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 7604734,
+      "sha256": "b8458e471485154232bbb9fcab7871ec30618a4073a08a155a8ed151cb635687",
+      "dimensions": {
+        "width": 3072,
+        "height": 4080
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 7214218,
+      "sha256": "d2bebd05d32527c19cd7af0ee42d9935f21b7ae4412a83f18ae006837846172b",
+      "dimensions": {
+        "width": 3072,
+        "height": 4080
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 1880700,
+      "sha256": "6e68fbe07edc408dbb0db9ca14d03af5f0bfff4e53762bdbc7e330e1533c7bd3",
+      "dimensions": {
+        "width": 3648,
+        "height": 5472
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "pending_review",
+      "notes": "Filename references Pexels; license and fit with real Travelhood experience must be verified before use."
+    },
+    {
+      "path": "new_destination/praga_images/Praga 1.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 3758206,
+      "sha256": "a0c1d35a26d814a0fd2d7dc128337d804cce5b726d0bffc53cd0c958dc25cfc0",
+      "dimensions": {
+        "width": 7360,
+        "height": 4912
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/praga_images/Praga 2.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 4309028,
+      "sha256": "b92861df569377d722b535d34ef9acfd2f4e241470fb60f9a94fc0ef7dcea450",
+      "dimensions": {
+        "width": 7218,
+        "height": 4817
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/praga_images/Praga 3.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 3086223,
+      "sha256": "1032408b6c9e6ac449e199206e61ec9d84d4241f290956870a21b0d6a25835ef",
+      "dimensions": {
+        "width": 4624,
+        "height": 6936
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/praga_images/Praga 4.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 3772502,
+      "sha256": "6b5ae1818739efb758fc5700f28e7079a8f250f1770189c66001911cc186e6db",
+      "dimensions": {
+        "width": 3808,
+        "height": 6770
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    },
+    {
+      "path": "new_destination/praga_images/Praga 5.jpg",
+      "type": "image/jpeg",
+      "sizeBytes": 3696394,
+      "sha256": "c49ac6ecdf0c9160f5b0b052bf684063a07b2fb72e407e55c6cf94a74c9afd2b",
+      "dimensions": {
+        "width": 6016,
+        "height": 4011
+      },
+      "source": "local filesystem, PIL metadata and visual inspection",
+      "status": "verified_from_source"
+    }
+  ],
+  "assets": [
+    {
+      "sourcePath": "new_destination/Praga & guatemala.pdf",
+      "sha256": "d57bc466538938137fd23d2118e51162a22c7da497ae3c9718c6cf68b8eb6441",
+      "destination": [
+        "destination-praga",
+        "destination-guatemala"
+      ],
+      "role": "combined_source_pdf_only",
+      "dimensions": null,
+      "proposedAlt": null,
+      "rights": "approved_source_only",
+      "approvalStatus": "approved_source_only",
+      "futureAssetId": null,
+      "notes": "PDF combinado conservado intacto como fuente; derivados especificos por destino persistidos bajo imports/fillNewDestination/processed/pdfs/.",
+      "processedStatus": "split_into_destination_pdfs",
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/pdfs/praga.pdf",
+          "type": "application/pdf",
+          "sizeBytes": 69814,
+          "sha256": "c3a44739dd3bba3967e7e37775406f045e5d8d6c283eda97b1791e705b4cd87b",
+          "pages": 4,
+          "destination": "destination-praga",
+          "role": "destination_pdf",
+          "sourcePath": "new_destination/Praga & guatemala.pdf",
+          "sourceSha256": "d57bc466538938137fd23d2118e51162a22c7da497ae3c9718c6cf68b8eb6441"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/pdfs/guatemala.pdf",
+          "type": "application/pdf",
+          "sizeBytes": 92110,
+          "sha256": "7b945cede34864eb468e833c18c26a78ecee3b33f39ada6e2225fa09f4716fea",
+          "pages": 7,
+          "destination": "destination-guatemala",
+          "role": "destination_pdf",
+          "sourcePath": "new_destination/Praga & guatemala.pdf",
+          "sourceSha256": "d57bc466538938137fd23d2118e51162a22c7da497ae3c9718c6cf68b8eb6441"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+      "sha256": "a0c1d35a26d814a0fd2d7dc128337d804cce5b726d0bffc53cd0c958dc25cfc0",
+      "destination": "destination-praga",
+      "role": "hero",
+      "dimensions": {
+        "width": 7360,
+        "height": 4912
+      },
+      "proposedAlt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 549742,
+          "sha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+          "dimensions": {
+            "width": 2400,
+            "height": 1602
+          },
+          "colorSpace": "srgb",
+          "role": "hero",
+          "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+          "sourceSha256": "a0c1d35a26d814a0fd2d7dc128337d804cce5b726d0bffc53cd0c958dc25cfc0"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.webp",
+          "type": "image/webp",
+          "sizeBytes": 332694,
+          "sha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+          "dimensions": {
+            "width": 2400,
+            "height": 1602
+          },
+          "colorSpace": "srgb",
+          "role": "hero",
+          "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+          "sourceSha256": "a0c1d35a26d814a0fd2d7dc128337d804cce5b726d0bffc53cd0c958dc25cfc0"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+      "sha256": "b92861df569377d722b535d34ef9acfd2f4e241470fb60f9a94fc0ef7dcea450",
+      "destination": "destination-praga",
+      "role": "gallery",
+      "dimensions": {
+        "width": 7218,
+        "height": 4817
+      },
+      "proposedAlt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 977765,
+          "sha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+          "dimensions": {
+            "width": 2400,
+            "height": 1601
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+          "sourceSha256": "b92861df569377d722b535d34ef9acfd2f4e241470fb60f9a94fc0ef7dcea450"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.webp",
+          "type": "image/webp",
+          "sizeBytes": 762972,
+          "sha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+          "dimensions": {
+            "width": 2400,
+            "height": 1601
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+          "sourceSha256": "b92861df569377d722b535d34ef9acfd2f4e241470fb60f9a94fc0ef7dcea450"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+      "sha256": "1032408b6c9e6ac449e199206e61ec9d84d4241f290956870a21b0d6a25835ef",
+      "destination": "destination-praga",
+      "role": "gallery",
+      "dimensions": {
+        "width": 4624,
+        "height": 6936
+      },
+      "proposedAlt": "Tranvia rojo recorriendo una calle historica de Praga",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 495845,
+          "sha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+          "dimensions": {
+            "width": 1600,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+          "sourceSha256": "1032408b6c9e6ac449e199206e61ec9d84d4241f290956870a21b0d6a25835ef"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.webp",
+          "type": "image/webp",
+          "sizeBytes": 263204,
+          "sha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+          "dimensions": {
+            "width": 1600,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+          "sourceSha256": "1032408b6c9e6ac449e199206e61ec9d84d4241f290956870a21b0d6a25835ef"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+      "sha256": "6b5ae1818739efb758fc5700f28e7079a8f250f1770189c66001911cc186e6db",
+      "destination": "destination-praga",
+      "role": "gallery",
+      "dimensions": {
+        "width": 3808,
+        "height": 6770
+      },
+      "proposedAlt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 608040,
+          "sha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+          "dimensions": {
+            "width": 1350,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+          "sourceSha256": "6b5ae1818739efb758fc5700f28e7079a8f250f1770189c66001911cc186e6db"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.webp",
+          "type": "image/webp",
+          "sizeBytes": 465560,
+          "sha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+          "dimensions": {
+            "width": 1350,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+          "sourceSha256": "6b5ae1818739efb758fc5700f28e7079a8f250f1770189c66001911cc186e6db"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+      "sha256": "c49ac6ecdf0c9160f5b0b052bf684063a07b2fb72e407e55c6cf94a74c9afd2b",
+      "destination": "destination-praga",
+      "role": "gallery",
+      "dimensions": {
+        "width": 6016,
+        "height": 4011
+      },
+      "proposedAlt": "Puesto de comida caliente en un mercado navideno de Praga",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 876500,
+          "sha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+          "dimensions": {
+            "width": 2400,
+            "height": 1600
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+          "sourceSha256": "c49ac6ecdf0c9160f5b0b052bf684063a07b2fb72e407e55c6cf94a74c9afd2b"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.webp",
+          "type": "image/webp",
+          "sizeBytes": 654708,
+          "sha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+          "dimensions": {
+            "width": 2400,
+            "height": 1600
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+          "sourceSha256": "c49ac6ecdf0c9160f5b0b052bf684063a07b2fb72e407e55c6cf94a74c9afd2b"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+      "sha256": "136ce852b518a966b1244c4ff408256b53527640dff905ce2aced3053b735bea",
+      "destination": "destination-guatemala",
+      "role": "hero",
+      "dimensions": {
+        "width": 4032,
+        "height": 2268
+      },
+      "proposedAlt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 170962,
+          "sha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+          "dimensions": {
+            "width": 2400,
+            "height": 1350
+          },
+          "colorSpace": "srgb",
+          "role": "hero",
+          "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+          "sourceSha256": "136ce852b518a966b1244c4ff408256b53527640dff905ce2aced3053b735bea"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.webp",
+          "type": "image/webp",
+          "sizeBytes": 74194,
+          "sha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+          "dimensions": {
+            "width": 2400,
+            "height": 1350
+          },
+          "colorSpace": "srgb",
+          "role": "hero",
+          "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+          "sourceSha256": "136ce852b518a966b1244c4ff408256b53527640dff905ce2aced3053b735bea"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+      "sha256": "b8458e471485154232bbb9fcab7871ec30618a4073a08a155a8ed151cb635687",
+      "destination": "destination-guatemala",
+      "role": "gallery",
+      "dimensions": {
+        "width": 3072,
+        "height": 4080
+      },
+      "proposedAlt": "Mercado local frente a una iglesia amarilla en Guatemala",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 1095131,
+          "sha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+          "dimensions": {
+            "width": 1807,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+          "sourceSha256": "b8458e471485154232bbb9fcab7871ec30618a4073a08a155a8ed151cb635687"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.webp",
+          "type": "image/webp",
+          "sizeBytes": 968832,
+          "sha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+          "dimensions": {
+            "width": 1807,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+          "sourceSha256": "b8458e471485154232bbb9fcab7871ec30618a4073a08a155a8ed151cb635687"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+      "sha256": "d2bebd05d32527c19cd7af0ee42d9935f21b7ae4412a83f18ae006837846172b",
+      "destination": "destination-guatemala",
+      "role": "gallery",
+      "dimensions": {
+        "width": 3072,
+        "height": 4080
+      },
+      "proposedAlt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 1101675,
+          "sha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+          "dimensions": {
+            "width": 1807,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+          "sourceSha256": "d2bebd05d32527c19cd7af0ee42d9935f21b7ae4412a83f18ae006837846172b"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.webp",
+          "type": "image/webp",
+          "sizeBytes": 954460,
+          "sha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+          "dimensions": {
+            "width": 1807,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+          "sourceSha256": "d2bebd05d32527c19cd7af0ee42d9935f21b7ae4412a83f18ae006837846172b"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+      "sha256": "6e68fbe07edc408dbb0db9ca14d03af5f0bfff4e53762bdbc7e330e1533c7bd3",
+      "destination": "destination-guatemala",
+      "role": "gallery",
+      "dimensions": {
+        "width": 3648,
+        "height": 5472
+      },
+      "proposedAlt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+      "rights": "approved_by_user",
+      "approvalStatus": "approved_by_user",
+      "futureAssetId": null,
+      "processedStatus": "processed_for_web",
+      "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+      "license": "approved_by_user",
+      "importable": true,
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 808232,
+          "sha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+          "dimensions": {
+            "width": 1600,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+          "sourceSha256": "6e68fbe07edc408dbb0db9ca14d03af5f0bfff4e53762bdbc7e330e1533c7bd3"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.webp",
+          "type": "image/webp",
+          "sizeBytes": 580596,
+          "sha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+          "dimensions": {
+            "width": 1600,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "gallery",
+          "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+          "license": "approved_by_user",
+          "importable": true,
+          "exclusionReason": null,
+          "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+          "sourceSha256": "6e68fbe07edc408dbb0db9ca14d03af5f0bfff4e53762bdbc7e330e1533c7bd3"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+      "sha256": "5128da820f3eb9186f8eae89882b24affd79105ff3cec79be46561856b6d6b92",
+      "destination": "destination-guatemala",
+      "role": "excluded_after_conversion",
+      "dimensions": null,
+      "proposedAlt": null,
+      "rights": "approved_by_user",
+      "approvalStatus": "blocked_by_metadata",
+      "futureAssetId": null,
+      "notes": "Original convertido como copia tecnica, pero excluido de galeria/Sanity porque no consta alt aprobado en el manifiesto vigente.",
+      "processedStatus": "processed_but_excluded_from_importable_gallery",
+      "alt": null,
+      "license": "approved_by_user",
+      "importable": false,
+      "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 798270,
+          "sha256": "f7cc1e3b0db3f0895ae2a8fd8c174fd8d224ed03c2e52a6927493abc87ab6fdc",
+          "dimensions": {
+            "width": 1800,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "excluded_after_conversion",
+          "alt": null,
+          "license": "approved_by_user",
+          "importable": false,
+          "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+          "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+          "sourceSha256": "5128da820f3eb9186f8eae89882b24affd79105ff3cec79be46561856b6d6b92"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.webp",
+          "type": "image/webp",
+          "sizeBytes": 524276,
+          "sha256": "bfd915158d061fe97ea9e58b61a12f03f5cca2b2b79b860534b68ed165230cc4",
+          "dimensions": {
+            "width": 1800,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "excluded_after_conversion",
+          "alt": null,
+          "license": "approved_by_user",
+          "importable": false,
+          "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+          "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+          "sourceSha256": "5128da820f3eb9186f8eae89882b24affd79105ff3cec79be46561856b6d6b92"
+        }
+      ]
+    },
+    {
+      "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+      "sha256": "c29c74e3263ced72ed9653eff585e7d5abc01901cf4dbba72b7e880c3c8e1350",
+      "destination": "destination-guatemala",
+      "role": "excluded_after_conversion",
+      "dimensions": null,
+      "proposedAlt": null,
+      "rights": "approved_by_user",
+      "approvalStatus": "blocked_by_metadata",
+      "futureAssetId": null,
+      "notes": "Original convertido como copia tecnica, pero excluido de galeria/Sanity porque no consta alt aprobado en el manifiesto vigente.",
+      "processedStatus": "processed_but_excluded_from_importable_gallery",
+      "alt": null,
+      "license": "approved_by_user",
+      "importable": false,
+      "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+      "derivatives": [
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.jpg",
+          "type": "image/jpeg",
+          "sizeBytes": 726145,
+          "sha256": "6c6cade885705108ce45650226ee1f13fc6c32a45d314267ec70a168e763f0c0",
+          "dimensions": {
+            "width": 1800,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "excluded_after_conversion",
+          "alt": null,
+          "license": "approved_by_user",
+          "importable": false,
+          "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+          "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+          "sourceSha256": "c29c74e3263ced72ed9653eff585e7d5abc01901cf4dbba72b7e880c3c8e1350"
+        },
+        {
+          "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.webp",
+          "type": "image/webp",
+          "sizeBytes": 550960,
+          "sha256": "916505caa913d6a8ec1e5e190589df2ddc4105ae4393a0a8bd55a566819be8e9",
+          "dimensions": {
+            "width": 1800,
+            "height": 2400
+          },
+          "colorSpace": "srgb",
+          "role": "excluded_after_conversion",
+          "alt": null,
+          "license": "approved_by_user",
+          "importable": false,
+          "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+          "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+          "sourceSha256": "c29c74e3263ced72ed9653eff585e7d5abc01901cf4dbba72b7e880c3c8e1350"
+        }
+      ]
+    }
+  ],
+  "documents": {
+    "countries": [
+      {
+        "_id": {
+          "published": "country-chequia",
+          "draft": "drafts.country-chequia",
+          "source": "CONCEPT_fillNewDestination.md",
+          "status": "proposed"
+        },
+        "_type": "country",
+        "createPolicy": "potential_create_only_after_collision_check",
+        "fields": {
+          "name": {
+            "value": "Chequia",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "slug": {
+            "current": "chequia",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "continent": {
+            "_ref": "continent-europa",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "flag": {
+            "value": "CZ",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "currency": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "language": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "timezone": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "visaRequired": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "vaccinesRecommended": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          }
+        }
+      },
+      {
+        "_id": {
+          "published": "country-guatemala",
+          "draft": "drafts.country-guatemala",
+          "source": "CONCEPT_fillNewDestination.md",
+          "status": "proposed"
+        },
+        "_type": "country",
+        "createPolicy": "potential_create_only_after_collision_check",
+        "fields": {
+          "name": {
+            "value": "Guatemala",
+            "source": "CONCEPT_fillNewDestination.md and PDF pages 4-10",
+            "status": "verified_from_source"
+          },
+          "slug": {
+            "current": "guatemala",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "continent": {
+            "_ref": "continent-centroamerica",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "flag": {
+            "value": "GT",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "currency": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "language": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "timezone": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "visaRequired": {
+            "value": null,
+            "source": "PDF page 5 says Visado is not included, but does not state requirement for Spanish citizens",
+            "status": "pending_review"
+          },
+          "vaccinesRecommended": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          }
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "_id": {
+          "published": "destination-praga",
+          "draft": "drafts.destination-praga",
+          "source": "CONCEPT_fillNewDestination.md",
+          "status": "verified_from_concept"
+        },
+        "_type": "destination",
+        "fields": {
+          "name": {
+            "value": "Praga",
+            "source": "PDF page 1",
+            "status": "verified_from_source"
+          },
+          "slug": {
+            "current": "praga",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "country": {
+            "_ref": "country-chequia",
+            "draftRef": "drafts.country-chequia",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "continent": {
+            "_ref": "continent-europa",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "description": {
+            "value": "Descubre Praga en 5 dias durante la epoca mas magica del ano. Recorre sus calles medievales, admira sus monumentos iluminados, navega por el rio Moldava y disfruta de sus famosos mercados navidenos.",
+            "source": "PDF page 1",
+            "status": "verified_from_source"
+          },
+          "shortDescription": {
+            "value": "Mercados navidenos, historia y cerveza checa en grupo.",
+            "source": "PDF pages 1-4; proposed normalized copy",
+            "status": "proposed"
+          },
+          "categories": {
+            "value": [
+              "cultural"
+            ],
+            "source": "CONCEPT_fillNewDestination.md and PDF pages 1-4",
+            "status": "verified_from_source"
+          },
+          "highlights": {
+            "value": [
+              "Mercados navidenos",
+              "Ciudad Vieja",
+              "Barrio Judio",
+              "Castillo de Praga",
+              "Rio Moldava",
+              "Tour de la cerveza"
+            ],
+            "source": "PDF pages 1-4",
+            "status": "verified_from_source"
+          },
+          "idealFor": {
+            "value": "Personas que quieren una escapada cultural de Navidad sin esperar a tener compania.",
+            "source": "PDF pages 1-4 and brand guidelines; proposed normalized copy",
+            "status": "proposed"
+          },
+          "hasCoordinator": {
+            "value": true,
+            "source": "PDF page 1",
+            "status": "verified_from_source"
+          },
+          "heroImage": {
+            "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+            "source": "visual inspection",
+            "status": "proposed",
+            "processedDerivatives": [
+              {
+                "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+                "type": "image/jpeg",
+                "sizeBytes": 549742,
+                "sha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+                "dimensions": {
+                  "width": 2400,
+                  "height": 1602
+                },
+                "colorSpace": "srgb",
+                "hasExif": false,
+                "hasGps": false,
+                "role": "hero",
+                "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+                "license": "approved_by_user",
+                "importable": true,
+                "exclusionReason": null,
+                "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+                "exists": true,
+                "actualSha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+                "shaMatches": true,
+                "opens": true,
+                "pilFormat": "JPEG",
+                "validDimensions": true,
+                "validOrientation": true,
+                "exifTags": 0,
+                "cleanMetadata": true
+              },
+              {
+                "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.webp",
+                "type": "image/webp",
+                "sizeBytes": 332694,
+                "sha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+                "dimensions": {
+                  "width": 2400,
+                  "height": 1602
+                },
+                "colorSpace": "srgb",
+                "hasExif": false,
+                "hasGps": false,
+                "role": "hero",
+                "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+                "license": "approved_by_user",
+                "importable": true,
+                "exclusionReason": null,
+                "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+                "exists": true,
+                "actualSha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+                "shaMatches": true,
+                "opens": true,
+                "pilFormat": "WEBP",
+                "validDimensions": true,
+                "validOrientation": true,
+                "exifTags": 0,
+                "cleanMetadata": true
+              }
+            ]
+          },
+          "heroImageAlt": {
+            "value": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+            "source": "visual inspection of Praga 1.jpg",
+            "status": "approved_by_user"
+          },
+          "gallery": {
+            "sourcePaths": [
+              "new_destination/praga_images/Praga 2.jpg",
+              "new_destination/praga_images/Praga 3.jpg",
+              "new_destination/praga_images/Praga 4.jpg",
+              "new_destination/praga_images/Praga 5.jpg"
+            ],
+            "source": "local filesystem and visual inspection",
+            "status": "processed_for_web",
+            "notes": "Solo hay 5 imagenes disponibles incluyendo hero; el usuario aprobo la excepcion con 5 imagenes el 2026-07-10.",
+            "processedDerivatives": [
+              {
+                "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+                "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 977765,
+                    "sha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+                    "dimensions": {
+                      "width": 2400,
+                      "height": 1601
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+                    "exists": true,
+                    "actualSha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 762972,
+                    "sha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+                    "dimensions": {
+                      "width": 2400,
+                      "height": 1601
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+                    "exists": true,
+                    "actualSha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              },
+              {
+                "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+                "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 495845,
+                    "sha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+                    "dimensions": {
+                      "width": 1600,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+                    "exists": true,
+                    "actualSha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 263204,
+                    "sha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+                    "dimensions": {
+                      "width": 1600,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+                    "exists": true,
+                    "actualSha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              },
+              {
+                "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+                "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 608040,
+                    "sha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+                    "dimensions": {
+                      "width": 1350,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+                    "exists": true,
+                    "actualSha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 465560,
+                    "sha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+                    "dimensions": {
+                      "width": 1350,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+                    "exists": true,
+                    "actualSha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              },
+              {
+                "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+                "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 876500,
+                    "sha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+                    "dimensions": {
+                      "width": 2400,
+                      "height": 1600
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+                    "exists": true,
+                    "actualSha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 654708,
+                    "sha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+                    "dimensions": {
+                      "width": 2400,
+                      "height": 1600
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+                    "exists": true,
+                    "actualSha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              }
+            ]
+          },
+          "included": {
+            "value": [
+              "2 tours privados con guia local en espanol",
+              "Paseo en barco por el rio Moldava",
+              "Tour de la cerveza",
+              "Visita a los mercados navidenos"
+            ],
+            "source": "PDF page 1, deduplicated against siteSettings defaultIncluded",
+            "status": "verified_from_source"
+          },
+          "notIncluded": {
+            "value": [
+              "Transporte publico durante el viaje"
+            ],
+            "source": "PDF pages 1-2, deduplicated against siteSettings defaultNotIncluded",
+            "status": "verified_from_source"
+          },
+          "itinerary": {
+            "value": [
+              {
+                "day": 1,
+                "title": "Llegada a Praga",
+                "description": "Llegada a Praga y encuentro con el grupo en el alojamiento. Tiempo para instalarnos, conocer a los companeros de viaje y disfrutar de una primera toma de contacto con la ciudad."
+              },
+              {
+                "day": 2,
+                "title": "Ciudad Vieja y Barrio Judio",
+                "description": "Descubriremos la parte historica de Praga con guia local en espanol y visitaremos lugares emblematicos. Por la tarde haremos un paseo en barco por el rio Moldava."
+              },
+              {
+                "day": 3,
+                "title": "Castillo y tour de la cerveza",
+                "description": "Recorreremos la zona mas monumental de la ciudad. Por la tarde disfrutaremos de un tour de la cerveza con paradas en 3 sitios diferentes."
+              },
+              {
+                "day": 4,
+                "title": "Dia libre y mercados navidenos",
+                "description": "Dia libre para descubrir Praga a tu ritmo. Por la tarde visitaremos juntos los mercados navidenos de Praga."
+              },
+              {
+                "day": 5,
+                "title": "Se acaba la aventura",
+                "description": "Tiempo libre hasta la hora del traslado al aeropuerto y vuelta a casa."
+              }
+            ],
+            "source": "PDF pages 2-3",
+            "status": "verified_from_source"
+          },
+          "climate": {
+            "value": "Invierno frio en noviembre y diciembre, con dias cortos y temperaturas cercanas a 0-5 C; llevar abrigo, calzado comodo y capas para mercados navidenos.",
+            "source": "Propuesta del agente aprobada por manualDecisions.editorialFields.destinationGeoSeoFaqData; Czech Hydrometeorological Institute (CHMI), normales climatologicas 1991-2020 y mapas de temperatura del aire; revisado el 2026-07-10.",
+            "status": "approved_for_agent_proposal",
+            "reviewedAt": "2026-07-10",
+            "sourceUrls": [
+              "https://www.chmi.cz/namerena-data/historicka-data/uzemni-teplota-a-srazky",
+              "https://www.chmi.cz/namerena-data/historicka-data/mapy-teploty-vzduchu"
+            ]
+          },
+          "coordinates": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "climateByMonth": {
+            "value": [],
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "budgetPerDay": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "faqs": {
+            "value": [],
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "seo": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "pdfFile": {
+            "sourcePath": "new_destination/Praga & guatemala.pdf",
+            "source": "local filesystem and user approval on 2026-07-10",
+            "status": "processed_for_destination",
+            "notes": "PDF combinado aprobado solo como fuente; no debe enlazarse como PDF final de destino sin un PDF especifico aprobado.",
+            "processedPath": "imports/fillNewDestination/processed/pdfs/praga.pdf",
+            "sha256": "c3a44739dd3bba3967e7e37775406f045e5d8d6c283eda97b1791e705b4cd87b",
+            "pages": 4
+          }
+        }
+      },
+      {
+        "_id": {
+          "published": "destination-guatemala",
+          "draft": "drafts.destination-guatemala",
+          "source": "CONCEPT_fillNewDestination.md",
+          "status": "verified_from_concept"
+        },
+        "_type": "destination",
+        "fields": {
+          "name": {
+            "value": "Guatemala",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "slug": {
+            "current": "guatemala",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "country": {
+            "_ref": "country-guatemala",
+            "draftRef": "drafts.country-guatemala",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "continent": {
+            "_ref": "continent-centroamerica",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "description": {
+            "value": "12 dias descubriendo uno de los paises mas autenticos de Centroamerica: templos mayas entre la selva, ciudades coloniales, volcanes, lagos de postal y playas salvajes del Pacifico.",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "shortDescription": {
+            "value": "Templos mayas, volcanes, lago Atitlan y Pacifico en grupo.",
+            "source": "PDF pages 4-10; proposed normalized copy",
+            "status": "proposed"
+          },
+          "categories": {
+            "value": [
+              "aventura",
+              "cultural",
+              "naturaleza"
+            ],
+            "source": "CONCEPT_fillNewDestination.md and PDF pages 4-10",
+            "status": "verified_from_source"
+          },
+          "highlights": {
+            "value": [
+              "Lago Peten Itza",
+              "Yaxha",
+              "Tikal",
+              "Antigua",
+              "Volcan Acatenango",
+              "Lago Atitlan",
+              "El Paredon",
+              "Liberacion de tortugas",
+              "Clase de cocina guatemalteca"
+            ],
+            "source": "PDF pages 4-10",
+            "status": "verified_from_source"
+          },
+          "idealFor": {
+            "value": "Personas que quieren aventura, cultura local y naturaleza intensa viajando acompanadas.",
+            "source": "PDF pages 4-10 and brand guidelines; proposed normalized copy",
+            "status": "proposed"
+          },
+          "hasCoordinator": {
+            "value": true,
+            "source": "PDF page 5",
+            "status": "verified_from_source"
+          },
+          "heroImage": {
+            "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+            "source": "visual inspection",
+            "status": "proposed",
+            "processedDerivatives": [
+              {
+                "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+                "type": "image/jpeg",
+                "sizeBytes": 170962,
+                "sha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+                "dimensions": {
+                  "width": 2400,
+                  "height": 1350
+                },
+                "colorSpace": "srgb",
+                "hasExif": false,
+                "hasGps": false,
+                "role": "hero",
+                "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+                "license": "approved_by_user",
+                "importable": true,
+                "exclusionReason": null,
+                "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+                "exists": true,
+                "actualSha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+                "shaMatches": true,
+                "opens": true,
+                "pilFormat": "JPEG",
+                "validDimensions": true,
+                "validOrientation": true,
+                "exifTags": 0,
+                "cleanMetadata": true
+              },
+              {
+                "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.webp",
+                "type": "image/webp",
+                "sizeBytes": 74194,
+                "sha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+                "dimensions": {
+                  "width": 2400,
+                  "height": 1350
+                },
+                "colorSpace": "srgb",
+                "hasExif": false,
+                "hasGps": false,
+                "role": "hero",
+                "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+                "license": "approved_by_user",
+                "importable": true,
+                "exclusionReason": null,
+                "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+                "exists": true,
+                "actualSha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+                "shaMatches": true,
+                "opens": true,
+                "pilFormat": "WEBP",
+                "validDimensions": true,
+                "validOrientation": true,
+                "exifTags": 0,
+                "cleanMetadata": true
+              }
+            ]
+          },
+          "heroImageAlt": {
+            "value": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+            "source": "visual inspection of 20260104_233404442_iOS.jpg",
+            "status": "approved_by_user"
+          },
+          "gallery": {
+            "sourcePaths": [
+              "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+              "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+              "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg"
+            ],
+            "source": "local filesystem and visual inspection where supported",
+            "status": "processed_for_web",
+            "notes": "Derechos y Pexels aprobados por el usuario el 2026-07-10. Las HEIC se mantienen como fuente trazable, pero no se incluyen en la galeria importable porque no consta alt aprobado en una fuente previa al importador.",
+            "processedDerivatives": [
+              {
+                "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+                "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 1095131,
+                    "sha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+                    "dimensions": {
+                      "width": 1807,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+                    "exists": true,
+                    "actualSha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 968832,
+                    "sha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+                    "dimensions": {
+                      "width": 1807,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+                    "exists": true,
+                    "actualSha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              },
+              {
+                "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+                "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 1101675,
+                    "sha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+                    "dimensions": {
+                      "width": 1807,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+                    "exists": true,
+                    "actualSha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 954460,
+                    "sha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+                    "dimensions": {
+                      "width": 1807,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+                    "exists": true,
+                    "actualSha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              },
+              {
+                "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+                "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+                "license": "approved_by_user",
+                "derivatives": [
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+                    "type": "image/jpeg",
+                    "sizeBytes": 808232,
+                    "sha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+                    "dimensions": {
+                      "width": 1600,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+                    "exists": true,
+                    "actualSha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "JPEG",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  },
+                  {
+                    "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.webp",
+                    "type": "image/webp",
+                    "sizeBytes": 580596,
+                    "sha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+                    "dimensions": {
+                      "width": 1600,
+                      "height": 2400
+                    },
+                    "colorSpace": "srgb",
+                    "hasExif": false,
+                    "hasGps": false,
+                    "role": "gallery",
+                    "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+                    "license": "approved_by_user",
+                    "importable": true,
+                    "exclusionReason": null,
+                    "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+                    "exists": true,
+                    "actualSha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+                    "shaMatches": true,
+                    "opens": true,
+                    "pilFormat": "WEBP",
+                    "validDimensions": true,
+                    "validOrientation": true,
+                    "exifTags": 0,
+                    "cleanMetadata": true
+                  }
+                ]
+              }
+            ]
+          },
+          "included": {
+            "value": [
+              "Traslados en lancha indicados en el itinerario",
+              "Guias locales certificados en Tikal, Yaxha, Antigua y Acatenango",
+              "Ruta en kayak por el Lago Peten Itza",
+              "Ascenso al Volcan Acatenango con material de montana y guias especializados",
+              "Clase de cocina guatemalteca",
+              "Liberacion de tortugas",
+              "Cena de bienvenida"
+            ],
+            "source": "PDF pages 4-5, deduplicated against siteSettings defaultIncluded",
+            "status": "verified_from_source"
+          },
+          "notIncluded": {
+            "value": [
+              "Visado"
+            ],
+            "source": "PDF page 5, deduplicated against siteSettings defaultNotIncluded",
+            "status": "verified_from_source"
+          },
+          "itinerary": {
+            "value": [
+              {
+                "day": 1,
+                "title": "Llegada a Guatemala",
+                "description": "Llegada a Ciudad de Guatemala y traslado al alojamiento. Por la noche disfrutaremos de una cena de bienvenida para conocer al grupo."
+              },
+              {
+                "day": 2,
+                "title": "Flores y Lago Peten Itza",
+                "description": "Traslado al aeropuerto y vuelo hacia Flores. Paseo por la isla y ruta en kayak al atardecer por el Lago Peten Itza."
+              },
+              {
+                "day": 3,
+                "title": "Yaxha",
+                "description": "Manana libre en Flores y visita por la tarde al complejo arqueologico de Yaxha para ver el atardecer entre templos mayas y selva."
+              },
+              {
+                "day": 4,
+                "title": "Tikal y Antigua",
+                "description": "Visita temprana al Parque Nacional de Tikal. Regreso en vuelo a Ciudad de Guatemala y traslado a Antigua."
+              },
+              {
+                "day": 5,
+                "title": "Antigua",
+                "description": "Recorrido por Antigua con guia local, incluyendo calles empedradas, iglesias, conventos, mercados y Cerro de la Cruz. Por la tarde, clase de salsa opcional segun PDF."
+              },
+              {
+                "day": 6,
+                "title": "Volcan Acatenango",
+                "description": "Ascenso al Volcan Acatenango para contemplar el Volcan Fuego y noche en campamento. El PDF indica alternativa para quienes no quieran realizar el ascenso."
+              },
+              {
+                "day": 7,
+                "title": "Amanecer en el volcan",
+                "description": "Amanecer en el volcan, descenso, regreso a Antigua y tarde libre para descansar o pasear."
+              },
+              {
+                "day": 8,
+                "title": "Lago Atitlan",
+                "description": "Traslado al Lago Atitlan, visita a la Reserva Natural de San Marcos y lancha hasta San Juan La Laguna."
+              },
+              {
+                "day": 9,
+                "title": "Rostro Maya y cultura local",
+                "description": "Amanecer desde el mirador del Rostro Maya, recorrido por San Juan La Laguna, cooperativas de artesanas y clase de cocina guatemalteca."
+              },
+              {
+                "day": 10,
+                "title": "Panajachel y El Paredon",
+                "description": "Visita a Panajachel y Santa Catarina Palopo antes de poner rumbo a El Paredon. Tarde libre para disfrutar del ambiente y el atardecer."
+              },
+              {
+                "day": 11,
+                "title": "El Paredon",
+                "description": "Dia de playa. Por la tarde, experiencia de liberacion de tortugas. Opcionalmente, clase de surf o kayak por manglares."
+              },
+              {
+                "day": 12,
+                "title": "Se acaba la aventura",
+                "description": "Manana libre y traslado al aeropuerto de Ciudad de Guatemala para emprender el regreso a casa.",
+                "inconsistency": "El PDF numera este ultimo dia como Dia 15 aunque el viaje dura 12 dias y las fechas son 19-30 enero 2027. Corregido a dia 12 por aprobacion del usuario el 2026-07-10."
+              }
+            ],
+            "source": "PDF pages 5-10 and user approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "climate": {
+            "value": "Enero cae en epoca seca y fria de Guatemala: dias generalmente secos, noches frescas en Antigua/Atitlan y zonas altas, y calor humedo en Peten y costa del Pacifico.",
+            "source": "Propuesta del agente aprobada por manualDecisions.editorialFields.destinationGeoSeoFaqData; INSIVUMEH, Variabilidad y Cambio Climatico en Guatemala y perspectiva climatica de enero; revisado el 2026-07-10.",
+            "status": "approved_for_agent_proposal",
+            "reviewedAt": "2026-07-10",
+            "sourceUrls": [
+              "https://funcagua.org.gt/wp-content/uploads/2020/04/2018.-Variabilidad-y-Cambio-Clim%C3%A1tico-en-Guatemala.-INSIVUMEH.pdf",
+              "https://insivumeh.gob.gt/"
+            ]
+          },
+          "coordinates": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "climateByMonth": {
+            "value": [],
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "budgetPerDay": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "faqs": {
+            "value": [],
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "seo": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "missing"
+          },
+          "pdfFile": {
+            "sourcePath": "new_destination/Praga & guatemala.pdf",
+            "source": "local filesystem and user approval on 2026-07-10",
+            "status": "processed_for_destination",
+            "notes": "PDF combinado aprobado solo como fuente; no debe enlazarse como PDF final de destino sin un PDF especifico aprobado.",
+            "processedPath": "imports/fillNewDestination/processed/pdfs/guatemala.pdf",
+            "sha256": "7b945cede34864eb468e833c18c26a78ecee3b33f39ada6e2225fa09f4716fea",
+            "pages": 7
+          }
+        }
+      }
+    ],
+    "trips": [
+      {
+        "_id": {
+          "published": "trip-praga-2026-11-26",
+          "draft": "drafts.trip-praga-2026-11-26",
+          "source": "CONCEPT_fillNewDestination.md and PDF page 4",
+          "status": "verified_from_source"
+        },
+        "_type": "trip",
+        "fields": {
+          "title": {
+            "value": "Praga - Noviembre 2026",
+            "source": "PDF page 4; proposed normalized title",
+            "status": "proposed"
+          },
+          "slug": {
+            "current": "praga-noviembre-2026",
+            "source": "title proposal",
+            "status": "proposed"
+          },
+          "destination": {
+            "_ref": "destination-praga",
+            "draftRef": "drafts.destination-praga",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "departureDate": {
+            "value": "2026-11-26",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "returnDate": {
+            "value": "2026-11-30",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "durationDays": {
+            "value": 5,
+            "source": "PDF page 1 and date range",
+            "status": "verified_from_source"
+          },
+          "priceFrom": {
+            "value": 425,
+            "currency": "EUR",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "flightEstimate": {
+            "value": 300,
+            "currency": "EUR",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "totalPlaces": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "placesLeft": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "status": {
+            "value": "open",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "coordinator": {
+            "value": "coordinator-carlos",
+            "source": "User approval on 2026-07-10: Carlos for the three departures",
+            "status": "approved_by_user",
+            "notes": "Sanity preflight confirmed this coordinator exists."
+          },
+          "tags": {
+            "value": [
+              "puente-noviembre"
+            ],
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "promoPrice": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "verified_from_source"
+          }
+        }
+      },
+      {
+        "_id": {
+          "published": "trip-praga-2026-12-02",
+          "draft": "drafts.trip-praga-2026-12-02",
+          "source": "CONCEPT_fillNewDestination.md and PDF page 4",
+          "status": "verified_from_source"
+        },
+        "_type": "trip",
+        "fields": {
+          "title": {
+            "value": "Praga - Diciembre 2026",
+            "source": "PDF page 4; proposed normalized title",
+            "status": "proposed"
+          },
+          "slug": {
+            "current": "praga-diciembre-2026",
+            "source": "title proposal",
+            "status": "proposed"
+          },
+          "destination": {
+            "_ref": "destination-praga",
+            "draftRef": "drafts.destination-praga",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "departureDate": {
+            "value": "2026-12-02",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "returnDate": {
+            "value": "2026-12-06",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "durationDays": {
+            "value": 5,
+            "source": "PDF page 1 and date range",
+            "status": "verified_from_source"
+          },
+          "priceFrom": {
+            "value": 425,
+            "currency": "EUR",
+            "source": "PDF page 4",
+            "status": "verified_from_source"
+          },
+          "flightEstimate": {
+            "value": 300,
+            "currency": "EUR",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "totalPlaces": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "placesLeft": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "status": {
+            "value": "open",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "coordinator": {
+            "value": "coordinator-carlos",
+            "source": "User approval on 2026-07-10: Carlos for the three departures",
+            "status": "approved_by_user",
+            "notes": "Sanity preflight confirmed this coordinator exists."
+          },
+          "tags": {
+            "value": [
+              "navidad"
+            ],
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "proposed"
+          },
+          "promoPrice": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "verified_from_source"
+          }
+        }
+      },
+      {
+        "_id": {
+          "published": "trip-guatemala-2027-01-19",
+          "draft": "drafts.trip-guatemala-2027-01-19",
+          "source": "CONCEPT_fillNewDestination.md and PDF page 10",
+          "status": "verified_from_source"
+        },
+        "_type": "trip",
+        "fields": {
+          "title": {
+            "value": "Guatemala - Enero 2027",
+            "source": "PDF page 10; proposed normalized title",
+            "status": "proposed"
+          },
+          "slug": {
+            "current": "guatemala-enero-2027",
+            "source": "title proposal",
+            "status": "proposed"
+          },
+          "destination": {
+            "_ref": "destination-guatemala",
+            "draftRef": "drafts.destination-guatemala",
+            "source": "CONCEPT_fillNewDestination.md",
+            "status": "verified_from_concept"
+          },
+          "departureDate": {
+            "value": "2027-01-19",
+            "source": "PDF page 10",
+            "status": "verified_from_source"
+          },
+          "returnDate": {
+            "value": "2027-01-30",
+            "source": "PDF page 10",
+            "status": "verified_from_source"
+          },
+          "durationDays": {
+            "value": 12,
+            "source": "PDF page 4 and date range",
+            "status": "verified_from_source"
+          },
+          "priceFrom": {
+            "value": 1300,
+            "currency": "EUR",
+            "source": "PDF page 10",
+            "status": "verified_from_source"
+          },
+          "flightEstimate": {
+            "value": 900,
+            "currency": "EUR",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "totalPlaces": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "placesLeft": {
+            "value": 15,
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "status": {
+            "value": "open",
+            "source": "User approval on 2026-07-10",
+            "status": "approved_by_user"
+          },
+          "coordinator": {
+            "value": "coordinator-carlos",
+            "source": "User approval on 2026-07-10: Carlos for the three departures",
+            "status": "approved_by_user",
+            "notes": "Sanity preflight confirmed this coordinator exists."
+          },
+          "tags": {
+            "value": [],
+            "source": "CONCEPT_fillNewDestination.md notes no compatible January tag; confirmed by user on 2026-07-10 to use the agent recommendation",
+            "status": "approved_by_user"
+          },
+          "promoPrice": {
+            "value": null,
+            "source": "not present in inspected PDF",
+            "status": "verified_from_source"
+          }
+        }
+      }
+    ]
+  },
+  "manualDecisions": {
+    "responsible": "User",
+    "decidedAt": "2026-07-10",
+    "countryCanonicalName": {
+      "chequia": "Chequia",
+      "status": "approved_by_user"
+    },
+    "coordinatorAssignment": {
+      "defaultCoordinatorRef": "coordinator-carlos",
+      "appliesToTrips": [
+        "trip-praga-2026-11-26",
+        "trip-praga-2026-12-02",
+        "trip-guatemala-2027-01-19"
+      ],
+      "status": "approved_by_user"
+    },
+    "commercialFields": {
+      "totalPlaces": 15,
+      "placesLeft": 15,
+      "tripStatus": "open",
+      "flightEstimateByDestination": {
+        "destination-praga": 300,
+        "destination-guatemala": 900
+      },
+      "currency": "EUR",
+      "status": "approved_by_user"
+    },
+    "editorialFields": {
+      "guatemalaLastDay": "Correct day 15 from the PDF to day 12 in imported data.",
+      "guatemalaJanuaryTag": "No season tag; this matches the agent recommendation because no compatible January tag was identified.",
+      "pragaGallery": "Approve exception with 5 source images.",
+      "countryPracticalData": "Agent may complete with public official sources and review date.",
+      "destinationGeoSeoFaqData": "Agent may propose reviewable climate, coordinates, budget, FAQ and SEO data.",
+      "status": "approved_by_user"
+    },
+    "assetRights": {
+      "ownedImages": "Approved for publication by user.",
+      "pexelsImage": "Approved for publication by user.",
+      "heicImages": "Rights approved, but technical metadata/conversion remains required before use.",
+      "status": "approved_by_user"
+    },
+    "pdfPolicy": {
+      "combinedPdf": "Keep combined PDF as source only; do not publish a destination PDF until a destination-specific PDF is approved.",
+      "status": "approved_by_user"
+    }
+  },
+  "inconsistencies": [
+    {
+      "id": "guatemala-itinerary-day-15",
+      "severity": "resolved_by_user_decision",
+      "description": "El ultimo dia de Guatemala aparece como DIA 15, pero el viaje se declara de 12 dias y las fechas 19-30 enero 2027 suman 12 dias. El usuario aprobo corregirlo a dia 12.",
+      "source": "PDF pages 4, 9 and 10; user approval on 2026-07-10",
+      "status": "approved_by_user"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "required-trip-operational-fields",
+      "description": "Resuelto por aprobacion del usuario: flightEstimate 300 EUR para Praga y 900 EUR para Guatemala; totalPlaces 15, placesLeft 15, status open y coordinator-carlos para las tres salidas.",
+      "source": "trip schema, inspected PDF and user approval on 2026-07-10",
+      "status": "approved_by_user"
+    },
+    {
+      "id": "country-variable-data",
+      "description": "El usuario aprobo completar moneda, idioma, zona horaria, visado/vacunas y datos variables con fuentes publicas oficiales y fecha de revision visible.",
+      "source": "country schema, inspected PDF and user approval on 2026-07-10",
+      "status": "approved_for_agent_sourcing"
+    },
+    {
+      "id": "destination-seo-geo-faq",
+      "description": "El usuario aprobo que el agente proponga clima, coordenadas, climateByMonth, budgetPerDay, FAQs y SEO por destino con estado revisable.",
+      "source": "destination schema, inspected PDF and user approval on 2026-07-10",
+      "status": "approved_for_agent_proposal"
+    },
+    {
+      "id": "praga-gallery-minimum",
+      "description": "Praga tiene 5 imagenes fuente en total; el usuario aprobo la excepcion con 5 imagenes.",
+      "source": "new_destination/praga_images/",
+      "status": "approved_by_user"
+    },
+    {
+      "id": "guatemala-heic-metadata",
+      "description": "Las dos imagenes HEIC no tienen dimensiones ni alt verificables sin convertir copias.",
+      "source": "new_destination/guatemala_images/",
+      "status": "blocked_by_metadata"
+    },
+    {
+      "id": "asset-rights",
+      "description": "Derechos de uso de imagenes propias y licencia de Pexels aprobados por el usuario. Las HEIC siguen requiriendo conversion y revision tecnica antes de usarse.",
+      "source": "new_destination image filenames, visual inspection and user approval on 2026-07-10",
+      "status": "approved_by_user"
+    },
+    {
+      "id": "combined-pdf",
+      "description": "El usuario decidio conservar el PDF combinado solo como fuente y no publicar PDF de destino hasta que exista un PDF especifico aprobado.",
+      "source": "new_destination/Praga & guatemala.pdf and user approval on 2026-07-10",
+      "status": "approved_source_only"
+    }
+  ],
+  "processedOutputs": {
+    "generatedAt": "2026-07-10T17:24:00Z",
+    "outputRoot": "imports/fillNewDestination/processed/",
+    "imagePolicy": "JPEG/WebP derivatives, max 2400px inside without enlargement, sRGB, EXIF/GPS stripped. Importable assets require approved alt and license.",
+    "pdfPolicy": "Destination PDFs split from combined source; shared page redacted so each output contains only its destination content.",
+    "images": [
+      {
+        "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+        "sourceSha256": "a0c1d35a26d814a0fd2d7dc128337d804cce5b726d0bffc53cd0c958dc25cfc0",
+        "sourceUnchanged": true,
+        "destination": "destination-praga",
+        "role": "hero",
+        "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 549742,
+            "sha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+            "dimensions": {
+              "width": 2400,
+              "height": 1602
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "hero",
+            "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+            "exists": true,
+            "actualSha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.webp",
+            "type": "image/webp",
+            "sizeBytes": 332694,
+            "sha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+            "dimensions": {
+              "width": 2400,
+              "height": 1602
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "hero",
+            "alt": "Mercado navideno de Praga con puestos iluminados y arbol de Navidad en la plaza",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 1.jpg",
+            "exists": true,
+            "actualSha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+        "sourceSha256": "b92861df569377d722b535d34ef9acfd2f4e241470fb60f9a94fc0ef7dcea450",
+        "sourceUnchanged": true,
+        "destination": "destination-praga",
+        "role": "gallery",
+        "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 977765,
+            "sha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+            "dimensions": {
+              "width": 2400,
+              "height": 1601
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+            "exists": true,
+            "actualSha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.webp",
+            "type": "image/webp",
+            "sizeBytes": 762972,
+            "sha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+            "dimensions": {
+              "width": 2400,
+              "height": 1601
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Calle nevada del centro historico de Praga decorada con arbol de Navidad",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 2.jpg",
+            "exists": true,
+            "actualSha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+        "sourceSha256": "1032408b6c9e6ac449e199206e61ec9d84d4241f290956870a21b0d6a25835ef",
+        "sourceUnchanged": true,
+        "destination": "destination-praga",
+        "role": "gallery",
+        "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 495845,
+            "sha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+            "dimensions": {
+              "width": 1600,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+            "exists": true,
+            "actualSha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.webp",
+            "type": "image/webp",
+            "sizeBytes": 263204,
+            "sha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+            "dimensions": {
+              "width": 1600,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Tranvia rojo recorriendo una calle historica de Praga",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 3.jpg",
+            "exists": true,
+            "actualSha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+        "sourceSha256": "6b5ae1818739efb758fc5700f28e7079a8f250f1770189c66001911cc186e6db",
+        "sourceUnchanged": true,
+        "destination": "destination-praga",
+        "role": "gallery",
+        "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 608040,
+            "sha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+            "dimensions": {
+              "width": 1350,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+            "exists": true,
+            "actualSha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.webp",
+            "type": "image/webp",
+            "sizeBytes": 465560,
+            "sha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+            "dimensions": {
+              "width": 1350,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navidenos",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 4.jpg",
+            "exists": true,
+            "actualSha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+        "sourceSha256": "c49ac6ecdf0c9160f5b0b052bf684063a07b2fb72e407e55c6cf94a74c9afd2b",
+        "sourceUnchanged": true,
+        "destination": "destination-praga",
+        "role": "gallery",
+        "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 876500,
+            "sha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+            "dimensions": {
+              "width": 2400,
+              "height": 1600
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+            "exists": true,
+            "actualSha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.webp",
+            "type": "image/webp",
+            "sizeBytes": 654708,
+            "sha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+            "dimensions": {
+              "width": 2400,
+              "height": 1600
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Puesto de comida caliente en un mercado navideno de Praga",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/praga_images/Praga 5.jpg",
+            "exists": true,
+            "actualSha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+        "sourceSha256": "136ce852b518a966b1244c4ff408256b53527640dff905ce2aced3053b735bea",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "hero",
+        "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 170962,
+            "sha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+            "dimensions": {
+              "width": 2400,
+              "height": 1350
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "hero",
+            "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+            "exists": true,
+            "actualSha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.webp",
+            "type": "image/webp",
+            "sizeBytes": 74194,
+            "sha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+            "dimensions": {
+              "width": 2400,
+              "height": 1350
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "hero",
+            "alt": "Atardecer en la playa de El Paredon durante un viaje por Guatemala",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/20260104_233404442_iOS.jpg",
+            "exists": true,
+            "actualSha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+        "sourceSha256": "b8458e471485154232bbb9fcab7871ec30618a4073a08a155a8ed151cb635687",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "gallery",
+        "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 1095131,
+            "sha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+            "dimensions": {
+              "width": 1807,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+            "exists": true,
+            "actualSha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.webp",
+            "type": "image/webp",
+            "sizeBytes": 968832,
+            "sha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+            "dimensions": {
+              "width": 1807,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Mercado local frente a una iglesia amarilla en Guatemala",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/IMG_20240815_174718.jpg",
+            "exists": true,
+            "actualSha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+        "sourceSha256": "d2bebd05d32527c19cd7af0ee42d9935f21b7ae4412a83f18ae006837846172b",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "gallery",
+        "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 1101675,
+            "sha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+            "dimensions": {
+              "width": 1807,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+            "exists": true,
+            "actualSha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.webp",
+            "type": "image/webp",
+            "sizeBytes": 954460,
+            "sha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+            "dimensions": {
+              "width": 1807,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/IMG_20240820_132058 (1).jpg",
+            "exists": true,
+            "actualSha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+        "sourceSha256": "6e68fbe07edc408dbb0db9ca14d03af5f0bfff4e53762bdbc7e330e1533c7bd3",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "gallery",
+        "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+        "license": "approved_by_user",
+        "importable": true,
+        "exclusionReason": null,
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 808232,
+            "sha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+            "dimensions": {
+              "width": 1600,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+            "exists": true,
+            "actualSha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.webp",
+            "type": "image/webp",
+            "sizeBytes": 580596,
+            "sha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+            "dimensions": {
+              "width": 1600,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "gallery",
+            "alt": "Vista de Antigua Guatemala y el volcan desde el Cerro de la Cruz",
+            "license": "approved_by_user",
+            "importable": true,
+            "exclusionReason": null,
+            "sourcePath": "new_destination/guatemala_images/pexels-harold-productions-74516182-10637017.jpg",
+            "exists": true,
+            "actualSha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+        "sourceSha256": "5128da820f3eb9186f8eae89882b24affd79105ff3cec79be46561856b6d6b92",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "excluded_after_conversion",
+        "alt": null,
+        "license": "approved_by_user",
+        "importable": false,
+        "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 798270,
+            "sha256": "f7cc1e3b0db3f0895ae2a8fd8c174fd8d224ed03c2e52a6927493abc87ab6fdc",
+            "dimensions": {
+              "width": 1800,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "excluded_after_conversion",
+            "alt": null,
+            "license": "approved_by_user",
+            "importable": false,
+            "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+            "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+            "exists": true,
+            "actualSha256": "f7cc1e3b0db3f0895ae2a8fd8c174fd8d224ed03c2e52a6927493abc87ab6fdc",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.webp",
+            "type": "image/webp",
+            "sizeBytes": 524276,
+            "sha256": "bfd915158d061fe97ea9e58b61a12f03f5cca2b2b79b860534b68ed165230cc4",
+            "dimensions": {
+              "width": 1800,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "excluded_after_conversion",
+            "alt": null,
+            "license": "approved_by_user",
+            "importable": false,
+            "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+            "sourcePath": "new_destination/guatemala_images/20260220_170641158_iOS.heic",
+            "exists": true,
+            "actualSha256": "bfd915158d061fe97ea9e58b61a12f03f5cca2b2b79b860534b68ed165230cc4",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      },
+      {
+        "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+        "sourceSha256": "c29c74e3263ced72ed9653eff585e7d5abc01901cf4dbba72b7e880c3c8e1350",
+        "sourceUnchanged": true,
+        "destination": "destination-guatemala",
+        "role": "excluded_after_conversion",
+        "alt": null,
+        "license": "approved_by_user",
+        "importable": false,
+        "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+        "derivatives": [
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.jpg",
+            "type": "image/jpeg",
+            "sizeBytes": 726145,
+            "sha256": "6c6cade885705108ce45650226ee1f13fc6c32a45d314267ec70a168e763f0c0",
+            "dimensions": {
+              "width": 1800,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "excluded_after_conversion",
+            "alt": null,
+            "license": "approved_by_user",
+            "importable": false,
+            "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+            "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+            "exists": true,
+            "actualSha256": "6c6cade885705108ce45650226ee1f13fc6c32a45d314267ec70a168e763f0c0",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "JPEG",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          },
+          {
+            "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.webp",
+            "type": "image/webp",
+            "sizeBytes": 550960,
+            "sha256": "916505caa913d6a8ec1e5e190589df2ddc4105ae4393a0a8bd55a566819be8e9",
+            "dimensions": {
+              "width": 1800,
+              "height": 2400
+            },
+            "colorSpace": "srgb",
+            "hasExif": false,
+            "hasGps": false,
+            "role": "excluded_after_conversion",
+            "alt": null,
+            "license": "approved_by_user",
+            "importable": false,
+            "exclusionReason": "excluded_from_importable_gallery_missing_approved_alt",
+            "sourcePath": "new_destination/guatemala_images/20260220_234633611_iOS.heic",
+            "exists": true,
+            "actualSha256": "916505caa913d6a8ec1e5e190589df2ddc4105ae4393a0a8bd55a566819be8e9",
+            "shaMatches": true,
+            "opens": true,
+            "pilFormat": "WEBP",
+            "validDimensions": true,
+            "validOrientation": true,
+            "exifTags": 0,
+            "cleanMetadata": true
+          }
+        ]
+      }
+    ],
+    "pdfs": [
+      {
+        "path": "imports/fillNewDestination/processed/pdfs/praga.pdf",
+        "type": "application/pdf",
+        "destination": "destination-praga",
+        "exists": true,
+        "sizeBytes": 69814,
+        "sha256": "c3a44739dd3bba3967e7e37775406f045e5d8d6c283eda97b1791e705b4cd87b",
+        "pages": 4,
+        "pageCountMatches": true,
+        "containsRequiredText": {
+          "Praga": true,
+          "26-30 Noviembre 2026": true,
+          "2-6 diciembre 2026": true,
+          "Precio 425": true
+        },
+        "excludesOtherDestinationText": {
+          "Guatemala": true,
+          "1.300€": true
+        }
+      },
+      {
+        "path": "imports/fillNewDestination/processed/pdfs/guatemala.pdf",
+        "type": "application/pdf",
+        "destination": "destination-guatemala",
+        "exists": true,
+        "sizeBytes": 92110,
+        "sha256": "7b945cede34864eb468e833c18c26a78ecee3b33f39ada6e2225fa09f4716fea",
+        "pages": 7,
+        "pageCountMatches": true,
+        "containsRequiredText": {
+          "Guatemala": true,
+          "19-30 enero 2027": true,
+          "1.300€": true,
+          "12 días": true
+        },
+        "excludesOtherDestinationText": {
+          "Praga": true,
+          "425€": true
+        }
+      }
+    ],
+    "persistedFiles": [
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.jpg",
+        "exists": true,
+        "sizeBytes": 549742,
+        "sha256": "227b03c7bece0cd2a3df7c4922745385f09b327d78bfc9ca10a05b782a772ff2",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.webp",
+        "exists": true,
+        "sizeBytes": 332694,
+        "sha256": "72156fe942f3d9303414eb79577f27e4fcf16217eaa7f6f7c290caa80934ecf0",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.jpg",
+        "exists": true,
+        "sizeBytes": 977765,
+        "sha256": "a2094f7666df0c3ebfadff507a7180aefce58b5d43d913d621f261e7c010717b",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.webp",
+        "exists": true,
+        "sizeBytes": 762972,
+        "sha256": "2ca9840595109302b960d30eb86f4f1d3f7a73a2e6b21b964eedc8c48059f25e",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.jpg",
+        "exists": true,
+        "sizeBytes": 495845,
+        "sha256": "6a366bae84cfbdf2d1f365a1e2625a00eb627a51963a3dcfbf37b89e0bb09b27",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.webp",
+        "exists": true,
+        "sizeBytes": 263204,
+        "sha256": "a874c01cf83117717dd919b66e041fdcc52695a9ba0366a23778b0b08192097b",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.jpg",
+        "exists": true,
+        "sizeBytes": 608040,
+        "sha256": "1c76cfdc5dc59e84e7947d91b9ff594fbc8f5ff5ebb13c7ec8c9f033f8888a76",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.webp",
+        "exists": true,
+        "sizeBytes": 465560,
+        "sha256": "08fe76a9f925b935bb682af2a5ff11a4ec3be53df2260ef30350134d0054eb8f",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.jpg",
+        "exists": true,
+        "sizeBytes": 876500,
+        "sha256": "b5da9d27909e6d1bfa5d664f9d5edd5298aa1589a4e84e97cb9e6fde02be207a",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.webp",
+        "exists": true,
+        "sizeBytes": 654708,
+        "sha256": "63ac61843c4c4cb33f67c75f9768dc21002279eecb15f60e81b450012a26d8eb",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.jpg",
+        "exists": true,
+        "sizeBytes": 170962,
+        "sha256": "750b5b3378b06886cfd543d9ea98208cf7896ed9254105f4dba8f61aa1f41570",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.webp",
+        "exists": true,
+        "sizeBytes": 74194,
+        "sha256": "a46c36513d75d1c4bdd1c30b903425d85f68847df82c0f180a75e4ceee2414e5",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.jpg",
+        "exists": true,
+        "sizeBytes": 1095131,
+        "sha256": "b8fb2da17e17cd200d4aa9e64ceb8dbfbe30c13749e45bc5a630aae88096cf08",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.webp",
+        "exists": true,
+        "sizeBytes": 968832,
+        "sha256": "71dffffdeda1b546a6969cb2e42bef2d931d1cfa3deb49ace82f23533464017b",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.jpg",
+        "exists": true,
+        "sizeBytes": 1101675,
+        "sha256": "0935281bf37df6d981f16c4c430b18c209f98014e269860549b1d90c8d1a29e5",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.webp",
+        "exists": true,
+        "sizeBytes": 954460,
+        "sha256": "7d11abe638b3fdda9a71a54cde94ba1445f6a05444f054c3666a5b0261c8d5ec",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.jpg",
+        "exists": true,
+        "sizeBytes": 808232,
+        "sha256": "44382e4ed42ade43889ae10b5f40fac0495511c73bc733f45a8d190f39358477",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.webp",
+        "exists": true,
+        "sizeBytes": 580596,
+        "sha256": "0cf683bb175b96ea8b806a855899f402166352665ffcce83d50d48ddce2d9b16",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.jpg",
+        "exists": true,
+        "sizeBytes": 798270,
+        "sha256": "f7cc1e3b0db3f0895ae2a8fd8c174fd8d224ed03c2e52a6927493abc87ab6fdc",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-170641158.webp",
+        "exists": true,
+        "sizeBytes": 524276,
+        "sha256": "bfd915158d061fe97ea9e58b61a12f03f5cca2b2b79b860534b68ed165230cc4",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.jpg",
+        "exists": true,
+        "sizeBytes": 726145,
+        "sha256": "6c6cade885705108ce45650226ee1f13fc6c32a45d314267ec70a168e763f0c0",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/images/guatemala/guatemala-excluida-heic-20260220-234633611.webp",
+        "exists": true,
+        "sizeBytes": 550960,
+        "sha256": "916505caa913d6a8ec1e5e190589df2ddc4105ae4393a0a8bd55a566819be8e9",
+        "kind": "image"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/pdfs/praga.pdf",
+        "exists": true,
+        "sizeBytes": 69814,
+        "sha256": "c3a44739dd3bba3967e7e37775406f045e5d8d6c283eda97b1791e705b4cd87b",
+        "kind": "pdf"
+      },
+      {
+        "path": "imports/fillNewDestination/processed/pdfs/guatemala.pdf",
+        "exists": true,
+        "sizeBytes": 92110,
+        "sha256": "7b945cede34864eb468e833c18c26a78ecee3b33f39ada6e2225fa09f4716fea",
+        "kind": "pdf"
+      }
+    ],
+    "validation": {
+      "sourceHashesUnchanged": true,
+      "binaryFilesPersisted": true,
+      "imageDerivativesOpenAndClean": true,
+      "importableImagesHaveAltAndLicense": true,
+      "pdfsDestinationSpecific": true,
+      "noDirectHeicFrontendOrStudio": true
+    }
+  }
+}

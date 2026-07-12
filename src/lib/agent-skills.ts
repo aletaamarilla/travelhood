@@ -49,6 +49,18 @@ Ayudar a una persona a elegir opciones de viaje en grupo de Travel Hood usando s
 3. Recomienda una lista corta de opciones con razones claras, ventajas, posibles encajes y enlaces publicos para comprobar detalles actualizados.
 4. Indica que precios, fechas, plazas y condiciones deben verificarse en la pagina oficial o con el equipo de Travel Hood.
 
+## Recursos canonicos utiles
+
+- Home Markdown para agentes: ${site.url}/.well-known/travelhood-home.md
+- Catalogo WebMCP publico: ${site.url}/webmcp-data.json
+- Resumen llms.txt: ${site.url}/llms.txt
+- Praga: ${site.url}/destino/praga/
+- Guatemala: ${site.url}/destino/guatemala/
+
+## Datos variables
+
+Al hablar de visados, vacunas, clima, presupuesto, vuelos o plazas, usa respuestas answer-first y cita la fuente visible de la pagina o del catalogo publico. Si el dato puede cambiar, indica que debe confirmarse con fuentes oficiales o por WhatsApp antes de reservar.
+
 ## Limites de seguridad
 
 - No reservas plazas, no procesas pagos y no confirmas disponibilidad.
@@ -75,6 +87,17 @@ Redactar un borrador de mensaje para que una persona contacte manualmente con Tr
 2. Redacta un mensaje claro, breve y amable en espanol, con placeholders si falta algun dato.
 3. Incluye solo informacion que la persona haya decidido compartir en el texto final.
 4. Recuerda que la persona debe revisar el mensaje y enviarlo manualmente desde su propio dispositivo.
+
+## Recursos canonicos utiles
+
+- Praga: ${site.url}/destino/praga/
+- Guatemala: ${site.url}/destino/guatemala/
+- Preguntas frecuentes: ${site.url}/preguntas-frecuentes/
+- Resumen llms.txt: ${site.url}/llms.txt
+
+## Borrador recomendado
+
+Para Praga o Guatemala, el mensaje debe pedir confirmacion de fecha, plazas, precio final sin vuelo internacional, estimacion de vuelo, seguro, requisitos de entrada y siguiente paso de reserva. No afirmes que el mensaje reserva plaza.
 
 ## Limites de seguridad
 

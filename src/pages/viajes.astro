@@ -2,29 +2,96 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar.astro";
 import SearchPage from "@/components/SearchPage";
+import GEODataBlock from "@/components/GEODataBlock.astro";
 import Footer from "@/components/Footer.astro";
-import { generateBreadcrumbSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
-import { getDestinations, getTrips, getContinents, getCountries, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
-import { FALLBACK_WHATSAPP_PHONE } from "@/lib/config";
-const [destinations, trips, continents, countries, viajesSettings] = await Promise.all([
-  getDestinations(), getTrips(), getContinents(), getCountries(), getSiteSettings()
+import {
+  generateBreadcrumbSchema,
+  generateCollectionPageSchema,
+  generateFaqSchema,
+  generateItemListSchema,
+  toJsonLd,
+} from "@/lib/schemas";
+import { getSearchCatalog, getTrips, getCountries, getSiteSettings, resolveSettingsImages, calculatePriceRange } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, SITE_URL } from "@/lib/config";
+
+const [{ destinations, continents }, trips, countries, viajesSettings] = await Promise.all([
+  getSearchCatalog(), getTrips(), getCountries(), getSiteSettings()
 ]);
 const viajesImages = viajesSettings ? resolveSettingsImages(viajesSettings) : null;
 const waPhone = viajesSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+const priceRange = calculatePriceRange(trips);
+const canonicalUrl = `${SITE_URL}/viajes/`;
+
+const viajesFaqs = [
+  {
+    question: "¿No sé dónde viajar, qué me propone Travelhood?",
+    answer: `Travelhood publica ${destinations.length} destinos con ficha completa en /viajes/. Puedes explorar el catálogo sin elegir destino, filtrar por continente, fecha o tipo de experiencia, y abrir la ficha de cada destino para ver fechas, precio orientativo y plazas.`,
+  },
+  {
+    question: "¿Cómo funciona el buscador de viajes?",
+    answer: "Si ya sabes adónde quieres ir, elige un destino concreto y te llevamos a su ficha. Si aún no lo tienes claro, deja «Cualquier destino» y explora el catálogo filtrando por continente, mes o tipo de viaje.",
+  },
+  {
+    question: "¿Qué incluyen los viajes en grupo?",
+    answer: "Itinerario, alojamiento y coordinador en destino cuando aplica. El vuelo internacional no está incluido salvo que la ficha indique lo contrario.",
+  },
+];
 ---
 
 <Layout
-  title="Viajes en grupo 2026 — Encuentra tu aventura | Travel Hood"
-  description="Explora todos los viajes en grupo de Travel Hood para jóvenes de 20-35 años. Filtra por destino, fecha y tipo de experiencia. Coordinador y alojamiento incluidos."
-  keywords="viajes en grupo 2026, viajes organizados jóvenes, viajes para singles, buscar viaje grupo, travel hood viajes, travelhood viajes"
+  title="Viajes en grupo — ¿No sabes dónde viajar? | Travel Hood"
+  description={`Travelhood te propone ${destinations.length} destinos disponibles en grupo para jóvenes de 20-35 años. Explora el catálogo, filtra por fecha o tipo de experiencia y encuentra tu próxima aventura.`}
+  keywords="viajes en grupo 2026, viajes organizados jóvenes, no sé dónde viajar, buscar viaje grupo, travel hood viajes, travelhood viajes"
+  canonical={canonicalUrl}
+  ogUrl={canonicalUrl}
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:"Viajes",url:"/viajes/"}]))} />
-    <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:"Todos los destinos Travel Hood",items:destinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateCollectionPageSchema({
+      name: "Catálogo de viajes en grupo Travel Hood",
+      description: `Destinos publicados para jóvenes de 20 a 35 años que aún no saben dónde viajar. ${destinations.length} fichas disponibles con fechas, precio orientativo y plazas.`,
+      url: "/viajes/",
+    }))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateItemListSchema({name:"Destinos publicados Travel Hood",items:destinations.map((d,i)=>({name:d.name,url:`/destino/${d.slug}/`,position:i+1}))}))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(viajesFaqs))} />
   </Fragment>
   <main>
     <Navbar solid />
+    <section class="border-b border-border/40 bg-background">
+      <div class="mx-auto max-w-4xl px-6 py-8 text-center">
+        <p class="text-base leading-relaxed text-muted-foreground">
+          <strong class="text-foreground">¿No sabes dónde viajar?</strong> Travelhood te propone {destinations.length} destinos disponibles en grupo para jóvenes de 20 a 35 años. Explora el catálogo, filtra por continente, fecha o tipo de experiencia y abre la ficha que más te encaje.
+        </p>
+      </div>
+    </section>
     <SearchPage trips={trips} destinations={destinations} continents={continents} countries={countries} heroImage={viajesImages?.viajes_heroImage} heroImageAlt={viajesImages?.viajes_heroImageAlt} whatsappPhone={waPhone} client:load />
+    <GEODataBlock
+      title="Catálogo de viajes en grupo — Datos clave"
+      subtitle="Información para explorar destinos si aún no tienes claro adónde viajar"
+      dataPoints={[
+        { label: "Destinos publicados", value: `${destinations.length} fichas disponibles` },
+        { label: "Público", value: "Jóvenes de 20 a 35 años en España" },
+        { label: "Exploración abierta", value: "Filtros por continente, fecha y tipo" },
+        { label: "Destino concreto", value: "Navegación directa a /destino/{slug}/" },
+        { label: "Rango de precios", value: priceRange ? `${priceRange.formatted} (sin vuelo)` : "Consulta precios" },
+        { label: "Siguiente paso", value: "WhatsApp para dudas y plazas" },
+      ]}
+    />
+    <section class="bg-background py-12">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 class="font-serif text-2xl font-extrabold text-foreground text-center sm:text-3xl">
+          Preguntas frecuentes sobre el catálogo
+        </h2>
+        <div class="mt-8 space-y-6">
+          {viajesFaqs.map((faq) => (
+            <article class="rounded-2xl border border-border/40 bg-card p-6 shadow-sm">
+              <h3 class="font-serif text-lg font-bold text-foreground">{faq.question}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{faq.answer}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
     <Footer />
   </main>
 </Layout>

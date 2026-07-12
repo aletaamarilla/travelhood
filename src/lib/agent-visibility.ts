@@ -220,6 +220,22 @@ export const resources = {
     status: "available",
     description: "Representacion Markdown controlada de la home.",
   },
+  llmsTxt: {
+    id: "llms-txt",
+    path: "/llms.txt",
+    url: absoluteUrl("/llms.txt"),
+    contentType: "text/plain; charset=utf-8",
+    status: "available",
+    description: "Resumen canonico del sitio para agentes y buscadores de IA.",
+  },
+  webMcpData: {
+    id: "webmcp-data",
+    path: "/webmcp-data.json",
+    url: absoluteUrl("/webmcp-data.json"),
+    contentType: "application/json; charset=utf-8",
+    status: "available",
+    description: "Catalogo JSON publico usado por herramientas WebMCP de bajo riesgo.",
+  },
 } as const satisfies Record<string, AgentVisibilityResource>
 
 export const contentSignals = {
@@ -241,6 +257,8 @@ export const apiCatalog = {
     resources.rss.id,
     resources.agentSkillsIndex.id,
     resources.homeMarkdown.id,
+    resources.llmsTxt.id,
+    resources.webMcpData.id,
   ],
 } as const
 
@@ -374,6 +392,18 @@ export const agentDiscoveryLinks = [
     rel: "alternate",
     type: "text/markdown",
     title: "Travel Hood home in Markdown",
+  },
+  {
+    href: resources.llmsTxt.path,
+    rel: "alternate",
+    type: "text/plain",
+    title: "Travel Hood llms.txt",
+  },
+  {
+    href: resources.webMcpData.path,
+    rel: "service-desc",
+    type: "application/json",
+    title: "Travel Hood WebMCP public data",
   },
 ] as const satisfies readonly LinkHeaderEntry[]
 

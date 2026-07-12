@@ -1,0 +1,41 @@
+---
+description: "Tokens de diseño de la marca: paleta, tipografía y espaciado."
+globs: ["**/*.tsx", "**/*.jsx", "**/*.css", "**/*.scss"]
+alwaysApply: false
+---
+
+# Tokens De Diseño
+
+- Usa Tailwind v4 desde `src/styles/globals.css`; no hay `tailwind.config.*`.
+- Usa los tokens del theme (`bg-background`, `text-foreground`, `bg-teal-deep`) antes que HEX inline.
+- Usa HEX inline solo para valores externos o excepciones ya existentes como WhatsApp `#25D366`.
+
+## Color
+
+| Token Tailwind | CSS var | HEX real | Uso |
+| --- | --- | --- | --- |
+| `bg-background` | `--background` | `#F5F3EF` | Fondo general cálido. |
+| `text-foreground` | `--foreground` | `#0B2E3A` | Texto principal sobre fondo claro. |
+| `bg-card` | `--card` | `#FFFFFF` | Cards, popovers y superficies elevadas. |
+| `bg-primary`, `bg-teal-deep` | `--primary`, `--teal-deep` | `#0B2E3A` | Fondos oscuros, marca base, avatares fallback. |
+| `bg-secondary`, `bg-teal-vivid` | `--secondary`, `--teal-vivid` | `#0E94B0` | Highlights, links y elementos interactivos secundarios. |
+| `bg-accent`, `bg-coral` | `--accent`, `--coral` | `#E5522A` | CTAs principales, urgencia y acentos. |
+| `bg-yellow-sun` | `--yellow-sun` | `#F0A800` | Estrellas, badges y detalles pequeños. |
+| `bg-sand`, `text-sand` | `--sand` | `#F2E8D9` | Texto claro sobre teal y fondos cálidos puntuales. |
+| `text-muted-foreground` | `--muted-foreground` | `#4A6B75` | Texto secundario. |
+| `border-border` | `--border` | `#D6CDBF` | Bordes suaves. |
+| `text-destructive` | `--destructive` | `#e53e3e` | Estados destructivos/error. |
+
+## Tipografía
+
+- Implementación real: `--font-sans: 'DM Sans', sans-serif`; úsala para body y UI.
+- Implementación real: `--font-serif: 'Space Grotesk', sans-serif`; úsala para H1/H2 y claims con `font-serif`.
+- Documento de marca pide `Syne` para títulos y `Nunito` para cuerpo, pero esas fuentes no están cargadas ni hay archivos `.woff2` en `public/`.
+- Jerarquía observada: H1 `text-3xl sm:text-5xl` + `font-extrabold`; H2 `text-2xl sm:text-3xl`; body `text-sm`/`text-base`; etiquetas `text-[10px]` a `text-[12px]` con `uppercase tracking-wider`.
+
+## Espaciado, Grid Y Radios
+
+- Usa contenedores `mx-auto max-w-7xl px-4 sm:px-6` o `max-w-4xl` para bloques editoriales/hero.
+- Usa grids responsive `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` para cards y `gap-5`/`gap-6`.
+- Radios reales: `--radius: 0.75rem`; usa `rounded-xl`, `rounded-2xl` y `rounded-full` para CTAs/chips.
+- Usa `border border-border/40`, `shadow-sm`, `hover:shadow-md`, `hover:-translate-y-0.5` en cards interactivas.

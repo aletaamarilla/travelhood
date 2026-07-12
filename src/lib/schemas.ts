@@ -103,6 +103,7 @@ export function generateWebSiteSchema() {
     "@type": "WebSite",
     name: ORG_NAME,
     url: SITE_URL,
+    description: "Viajes en grupo para jóvenes de 20 a 35 años. Catálogo en /viajes/ para explorar destinos y fichas en /destino/{slug}/ para evaluar salidas concretas.",
     potentialAction: {
       "@type": "SearchAction",
       target: `${SITE_URL}/viajes/?q={search_term_string}`,
@@ -174,6 +175,8 @@ export function generateTouristDestinationSchema(opts: {
   description: string
   url: string
   image: string
+  country?: string
+  categories?: string[]
 }) {
   return {
     "@context": "https://schema.org",
@@ -183,6 +186,8 @@ export function generateTouristDestinationSchema(opts: {
     url: opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`,
     image: opts.image.startsWith("http") ? opts.image : `${SITE_URL}${opts.image}`,
     touristType: "Jóvenes de 20 a 35 años",
+    ...(opts.country ? { address: { "@type": "PostalAddress", addressCountry: opts.country } } : {}),
+    ...(opts.categories?.length ? { keywords: opts.categories.join(", ") } : {}),
   }
 }
 
@@ -327,6 +332,7 @@ export function generateEventSchema(opts: {
   description?: string
   startDate: string
   endDate: string
+  durationDays?: number
   location: string
   locationAddress?: string
   performer?: string
@@ -336,6 +342,8 @@ export function generateEventSchema(opts: {
   validFrom?: string
   url?: string
   image?: string
+  totalPlaces?: number
+  placesLeft?: number
 }) {
   return {
     "@context": "https://schema.org",
@@ -344,6 +352,7 @@ export function generateEventSchema(opts: {
     ...(opts.description ? { description: opts.description } : {}),
     startDate: opts.startDate,
     endDate: opts.endDate,
+    ...(opts.durationDays ? { duration: `P${opts.durationDays}D` } : {}),
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
     ...(opts.performer ? {
@@ -375,6 +384,8 @@ export function generateEventSchema(opts: {
       ...(opts.validFrom ? { validFrom: opts.validFrom } : {}),
       url: opts.url ? (opts.url.startsWith("http") ? opts.url : `${SITE_URL}${opts.url}`) : SITE_URL,
     },
+    ...(typeof opts.totalPlaces === "number" ? { maximumAttendeeCapacity: opts.totalPlaces } : {}),
+    ...(typeof opts.placesLeft === "number" ? { remainingAttendeeCapacity: opts.placesLeft } : {}),
     ...(opts.image ? { image: opts.image.startsWith("http") ? opts.image : `${SITE_URL}${opts.image}` } : {}),
   }
 }

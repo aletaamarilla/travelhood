@@ -10,6 +10,12 @@
     "astro": "astro",
     "check:visibility": "node scripts/check-agent-visibility.mjs",
     "check:favicons": "node scripts/check-favicons.mjs",
+    "check:search-destinations": "npx tsx scripts/check-search-destinations.ts",
+    "preflight:fill-new-destination": "npx tsx scripts/preflight-fill-new-destination.ts --preflight",
+    "import:praga-guatemala": "npx tsx scripts/import-praga-guatemala.ts",
+    "test:import-praga-guatemala": "npx tsx scripts/import-praga-guatemala.test.ts",
+    "test:search-intent": "npx tsx src/lib/search-intent.test.ts",
+    "test:searchable-destinations": "npx tsx src/lib/searchable-destinations.test.ts",
     "seed": "npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {

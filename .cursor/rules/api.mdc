@@ -1,0 +1,25 @@
+---
+description: "Usar al crear/modificar endpoints, route handlers, webhooks o validación de entrada."
+alwaysApply: false
+---
+
+# API Y Route Handlers
+
+- El sitio está configurado como `output: 'static'`; los endpoints existentes son route handlers Astro prerenderables para RSS, robots, WebMCP y `.well-known`.
+- Exporta `GET` como `function GET()` o `async function GET()`; añade `export const prerender = true` cuando el endpoint debe ser explícitamente estático.
+- Devuelve siempre `new Response(body, { headers })` con `Content-Type` explícito y `charset=utf-8` en texto/JSON.
+- Añade `Cache-Control: public, max-age=3600` para recursos públicos derivados de datos que pueden cachearse.
+
+## Datos Y Errores
+
+- Lee datos de negocio desde `src/lib/data-provider.ts`, no directamente desde Sanity en páginas/endpoints nuevos.
+- `data-provider` usa Sanity si `SANITY_PROJECT_ID` está configurado y fallback hardcoded si no; conserva esa degradación.
+- Para assets de Sanity usa `resolveImage`, `resolveImageThumb` o `sanityImgSrcset`; no construyas URLs a mano salvo helpers existentes.
+- Si una configuración interna falta y es inconsistente con `src/lib/agent-visibility.ts`, lanza `throw new Error(...)` como en `api-catalog.ts`.
+
+## Contratos Públicos
+
+- Mantén JSON formateado con `JSON.stringify(data, null, 2)` y salto final `\n` en endpoints públicos.
+- Expón solo datos públicos mínimos: nada de tokens, teléfonos privados no publicados, datos personales o acciones destructivas.
+- Usa `SITE_URL`, `FALLBACK_SITE_NAME`, `FALLBACK_WHATSAPP_PHONE` y similares desde `src/lib/config.ts`.
+- No hay patrón real de `POST`, webhooks, pagos ni validación de entrada en el repo.

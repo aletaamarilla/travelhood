@@ -6,7 +6,8 @@ import GEODataBlock from "@/components/GEODataBlock.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import CTASection from "@/components/CTASection.astro";
 import FAQWrapper from "@/components/FAQWrapper.astro";
-import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents } from "@/lib/data-provider";
+import { getDestinations, getDestinationBySlug, getTripsByDestination, getCountries, getContinents, getSiteSettings } from "@/lib/data-provider";
+import { FALLBACK_WHATSAPP_PHONE, SITE_URL, buildWhatsAppUrl } from "@/lib/config";
 import { resolvePrice } from "@/lib/utils";
 import { generateFaqSchema, generateBreadcrumbSchema, toJsonLd } from "@/lib/schemas";
 
@@ -16,11 +17,12 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const [destination, destTripsRaw, countries, continents] = await Promise.all([
+const [destination, destTripsRaw, countries, continents, siteSettings] = await Promise.all([
   getDestinationBySlug(slug!),
   getTripsByDestination(slug!),
   getCountries(),
   getContinents(),
+  getSiteSettings(),
 ]);
 
 if (!destination) return Astro.redirect("/404/");
@@ -43,6 +45,17 @@ const avgFlightEstimate = destTrips.length > 0
 
 const included = destTrips.length > 0 ? destTrips[0].included : [];
 const notIncluded = destTrips.length > 0 ? destTrips[0].notIncluded : [];
+const heroAlt = destination.heroImageAlt || `Viaje en grupo a ${destination.name}`;
+const waPhone = siteSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
+const whatsappMessage = `Hola! Estoy calculando el presupuesto para ${destination.name}. ¿Me contáis precio, vuelo y gastos reales?`;
+const whatsappUrl = buildWhatsAppUrl(waPhone, whatsappMessage);
+const budgetItems = destination.budgetPerDay ? [
+  { label: "Comida sencilla", value: destination.budgetPerDay.mealCostLow, detail: "Para comidas locales o rápidas durante tiempo libre." },
+  { label: "Comida media", value: destination.budgetPerDay.mealCostMid, detail: "Restaurante medio sin convertir cada comida en un lujo." },
+  { label: "Cerveza", value: destination.budgetPerDay.beerCost, detail: "Referencia útil para ocio y momentos de grupo." },
+  { label: "Gasto diario", value: destination.budgetPerDay.dailyBudget, detail: "Margen orientativo de extras por día en destino." },
+  { label: "Extras estimados", value: destination.budgetPerDay.totalExtras, detail: "Estimación para todo el viaje, aparte del precio y vuelo." },
+].filter((item) => item.value) : [];
 
 const faqs = [
   { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte y coordinador.` },
@@ -54,13 +67,18 @@ const totalBudget = minPrice > 0 && avgFlightEstimate > 0 ? minPrice + avgFlight
 const dailyCost = totalBudget > 0 && destTrips.length > 0 ? Math.round(totalBudget / destTrips[0].durationDays) : 0;
 const currentYear = new Date().getFullYear();
 
-const pageTitle = `¿Cuánto cuesta viajar a ${destination.name}? Presupuesto ${currentYear} — Travel Hood`;
-const pageDescription = `Presupuesto detallado para viajar a ${destination.name} en ${currentYear}. Viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, vuelos estimados ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'}. Desglose completo de costes.`;
+const destinationPath = `/destino/${destination.slug}/`;
+const pagePath = `/presupuesto/${destination.slug}/`;
+const canonicalUrl = `${SITE_URL}${pagePath}`;
+const seoImage = destination.seo?.ogImage || destination.heroImage;
+const pageTitle = destination.seo?.presupuestoTitle || `¿Cuánto cuesta viajar a ${destination.name}? Presupuesto ${currentYear} — Travel Hood`;
+const pageDescription = destination.seo?.presupuestoDescription || `Presupuesto detallado para viajar a ${destination.name} en ${currentYear}. Viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, vuelos estimados ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'}. Desglose completo de costes.`;
+const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${destination.name}, presupuesto ${destination.name}, precio viaje ${destination.name}, gastos ${destination.name}`;
 ---
 
-<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={destination.heroImage} keywords={`cuanto cuesta viajar a ${destination.name}, presupuesto ${destination.name}, precio viaje ${destination.name}, gastos ${destination.name}`}>
+<Layout title={pageTitle} description={pageDescription} heroImage={destination.heroImage} ogImage={seoImage} keywords={pageKeywords} canonical={canonicalUrl} ogUrl={canonicalUrl}>
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:`/destino/${destination.slug}/`},{name:"Presupuesto",url:`/presupuesto/${destination.slug}/`}]))} />
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{name:"Home",url:"/"},{name:destination.name,url:destinationPath},{name:"Presupuesto",url:pagePath}]))} />
     <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />
   </Fragment>
   <main>
@@ -68,7 +86,7 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
 
     <HeroSection
       image={destination.heroImage}
-      imageAlt={`Presupuesto para viajar a ${destination.name}`}
+      imageAlt={heroAlt}
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: destination.name, href: `/destino/${destination.slug}/` },
@@ -77,6 +95,35 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
       title={`¿Cuánto cuesta viajar a ${destination.name} en grupo? — Presupuesto ${currentYear}`}
       subtitle="Desglose completo de costes para tu viaje en grupo con Travel Hood."
     />
+
+    <section class="bg-card py-8">
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="grid gap-5 rounded-3xl border border-border/40 bg-background p-5 shadow-sm sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-secondary">Respuesta rápida</p>
+            <h2 class="mt-2 font-serif text-xl font-extrabold text-foreground sm:text-2xl">
+              Viajar a {destination.name} cuesta desde {minPrice > 0 ? `${minPrice}€` : "consultar"} sin vuelo{avgFlightEstimate > 0 ? `, con vuelo estimado de ${avgFlightEstimate}€` : ""}.
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {budgetItems.length > 0
+                ? `Para gastos en destino, calcula ${destination.budgetPerDay?.dailyBudget} y un extra total aproximado de ${destination.budgetPerDay?.totalExtras}.`
+                : "Te damos una estimación clara por WhatsApp según fechas, vuelos y disponibilidad real."}
+            </p>
+          </div>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-destination-whatsapp
+            data-page="presupuesto"
+            data-destination={destination.slug}
+            class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-sm font-extrabold text-white transition-all hover:-translate-y-0.5 hover:brightness-110"
+          >
+            Resolver dudas por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
 
     <section class="bg-background py-16">
       <div class="mx-auto max-w-3xl px-6">
@@ -108,6 +155,28 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
         </div>
       </div>
     </section>
+
+    {budgetItems.length > 0 && (
+      <section class="bg-card py-14">
+        <div class="mx-auto max-w-5xl px-6">
+          <h2 class="mb-3 text-center font-serif text-2xl font-extrabold text-foreground sm:text-3xl">
+            Gastos diarios en {destination.name}
+          </h2>
+          <p class="mx-auto mb-8 max-w-2xl text-center text-sm text-muted-foreground">
+            Desglose orientativo para que calcules el viaje completo sin sorpresas ni fondo común.
+          </p>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {budgetItems.map((item) => (
+              <article class="rounded-2xl border border-border/40 bg-background p-5 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground">{item.label}</p>
+                <p class="mt-2 text-2xl font-extrabold text-foreground">{item.value}</p>
+                <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{item.detail}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
 
     {included.length > 0 && (
       <section class="bg-card py-14">
@@ -189,10 +258,34 @@ const pageDescription = `Presupuesto detallado para viajar a ${destination.name}
 
     <CTASection
       title={`¿Listo para viajar a ${destination.name}?`}
-      subtitle={`Reserva tu plaza desde ${minPrice > 0 ? `${minPrice}€` : "consultar"}.`}
-      ctaText={`Ver viajes a ${destination.name}`}
-      ctaHref={`/destino/${destination.slug}/`}
+      subtitle={`Te contamos precio, vuelo estimado, fechas y cómo reservar tu plaza desde ${minPrice > 0 ? `${minPrice}€` : "consultar"}.`}
+      ctaText="Pedir presupuesto por WhatsApp"
+      ctaHref={whatsappUrl}
     />
+
+    <script is:inline define:vars={{ destinationSlug: destination.slug }}>
+      function hasAnalyticsConsent() {
+        try {
+          const match = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
+          if (!match) return false;
+          return JSON.parse(decodeURIComponent(match[1])).analytics === true;
+        } catch {
+          return false;
+        }
+      }
+
+      document.querySelectorAll("[data-destination-whatsapp], a[href*='wa.me']").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (!hasAnalyticsConsent()) return;
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "destination_whatsapp_click",
+            destination_slug: link.getAttribute("data-destination") || destinationSlug,
+            cta_location: link.getAttribute("data-cta-location") || "presupuesto_bottom_cta",
+          });
+        });
+      });
+    </script>
 
     <Footer />
   </main>

@@ -14,11 +14,11 @@ import FAQSection from "@/components/FAQSection";
 import CTAFooter from "@/components/CTAFooter.astro";
 import Footer from "@/components/Footer.astro";
 import { generateTravelAgencySchema, generateWebSiteSchema, toJsonLd } from "@/lib/schemas";
-import { getDestinations, getTrips, getContinents, getSiteSettings, resolveSettingsImages, getGlobalFaqs, calculatePriceRange } from "@/lib/data-provider";
+import { getTrips, getSearchCatalog, getSiteSettings, resolveSettingsImages, getGlobalFaqs, calculatePriceRange, toSearchCatalogDestinations, toSearchCatalogContinents } from "@/lib/data-provider";
 import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL, buildWhatsAppUrl } from "@/lib/config";
 import { sanityImgSrcset } from "@/lib/utils";
-const [destinations, trips, continents, settings, faqBlocks] = await Promise.all([
-  getDestinations(), getTrips(), getContinents(), getSiteSettings(), getGlobalFaqs('home')
+const [{ destinations, continents }, trips, settings, faqBlocks] = await Promise.all([
+  getSearchCatalog(), getTrips(), getSiteSettings(), getGlobalFaqs('home')
 ]);
 const homeFaqs = faqBlocks.flatMap((b) => b.faqs);
 const images = settings ? resolveSettingsImages(settings) : null;
@@ -27,6 +27,15 @@ const waCommunityUrl = settings?.whatsappCommunityUrl ?? FALLBACK_WA_COMMUNITY_U
 import GEODataBlock from "@/components/GEODataBlock.astro";
 
 const priceRange = calculatePriceRange(trips);
+const searchDestinations = toSearchCatalogDestinations(destinations);
+const searchContinents = toSearchCatalogContinents(continents);
+const searchTrips = trips.map(({ destinationId, departureDate, returnDate, status, tags }) => ({
+  destinationId,
+  departureDate,
+  returnDate,
+  status,
+  tags,
+}));
 const agencySchema = generateTravelAgencySchema(priceRange?.formatted, {
   type: settings?.legalLicenseType,
   number: settings?.legalLicenseNumber,
@@ -69,7 +78,7 @@ const webSiteSchema = generateWebSiteSchema();
           <p class="mb-3 text-center text-[13px] tracking-wide text-white/65">
             +500 viajeros · {destinations.length} destinos · Coordinador en destino
           </p>
-          <SearchIsland destinations={destinations} continents={continents} client:load />
+          <SearchIsland destinations={searchDestinations} continents={searchContinents} trips={searchTrips} client:load />
         </div>
       </div>
     </section>

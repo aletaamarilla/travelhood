@@ -11,6 +11,7 @@ const { title, subtitle, ctaText, ctaHref, variant = 'teal' } = Astro.props
 const bgClass = variant === 'teal' ? 'bg-teal-deep' : 'bg-card'
 const titleClass = variant === 'teal' ? 'text-white' : 'text-foreground'
 const subtitleClass = variant === 'teal' ? 'text-white/70' : 'text-muted-foreground'
+const isExternal = ctaHref.startsWith('http')
 ---
 
 <section class={`${bgClass} py-16`}>
@@ -25,6 +26,8 @@ const subtitleClass = variant === 'teal' ? 'text-white/70' : 'text-muted-foregro
     )}
     <a
       href={ctaHref}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
       class="mt-8 inline-flex items-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-bold text-white transition-all hover:bg-coral/90 hover:shadow-lg"
     >
       {ctaText}

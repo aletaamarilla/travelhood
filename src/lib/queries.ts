@@ -25,11 +25,13 @@ export const countryBySlugQuery = `*[_type == "country" && slug.current == $slug
 // ── Destinations ──
 export const allDestinationsQuery = `*[_type == "destination"] | order(name asc) {
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
-  highlights, idealFor, climate, categories, hasCoordinator,
-  included, notIncluded,
+  gallery, highlights, idealFor, climate, categories, hasCoordinator,
+  climateByMonth, budgetPerDay, coordinates,
+  included, notIncluded, itinerary,
   country->{_id, name, slug, flag},
   continent->{_id, name, slug},
-  seo
+  faqs, seo,
+  "pdfUrl": pdfFile.asset->url
 }`
 
 export const destinationBySlugQuery = `*[_type == "destination" && slug.current == $slug][0] {
@@ -44,9 +46,14 @@ export const destinationBySlugQuery = `*[_type == "destination" && slug.current 
 }`
 
 export const destinationsByContinentQuery = `*[_type == "destination" && continent->slug.current == $slug] | order(name asc) {
-  _id, name, slug, shortDescription, heroImage, heroImageAlt, categories, climate,
+  _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
+  gallery, highlights, idealFor, categories, climate, hasCoordinator,
+  climateByMonth, budgetPerDay, coordinates,
+  included, notIncluded, itinerary,
   country->{_id, name, slug, flag},
-  continent->{_id, name, slug}
+  continent->{_id, name, slug},
+  faqs, seo,
+  "pdfUrl": pdfFile.asset->url
 }`
 
 // ── Trips ──

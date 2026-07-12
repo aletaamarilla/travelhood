@@ -51,10 +51,16 @@ export interface BudgetPerDay {
   totalExtras: string
 }
 
+export interface DestinationGalleryImage {
+  url: string
+  alt: string
+}
+
 export interface DestinationSeo {
   title: string
   description: string
   keywords: string
+  ogImage?: string
   cuandoViajarTitle?: string
   cuandoViajarDescription?: string
   presupuestoTitle?: string
@@ -74,6 +80,7 @@ export interface Destination {
   idealFor: string
   climate: string
   categories: DestinationCategory[]
+  gallery?: DestinationGalleryImage[]
   extraIncluded?: string[]
   extraNotIncluded?: string[]
   included?: string[]
@@ -192,6 +199,156 @@ export interface SeasonData {
   seoTitle: string
   seoDescription: string
 }
+
+const pragaExtraIncluded = [
+  "2 tours privados con guía local en español",
+  "Paseo en barco por el río Moldava",
+  "Tour de la cerveza",
+  "Visita a los mercados navideños",
+]
+
+const pragaExtraNotIncluded = [
+  "Transporte público durante el viaje",
+]
+
+const pragaItinerary: ItineraryDay[] = [
+  {
+    day: 1,
+    title: "Llegada a Praga",
+    description: "Llegada a Praga y encuentro con el grupo en el alojamiento. Tiempo para instalarnos, conocer a los compañeros de viaje y disfrutar de una primera toma de contacto con la ciudad.",
+    lat: 50.0755,
+    lng: 14.4378,
+  },
+  {
+    day: 2,
+    title: "Ciudad Vieja y Barrio Judío",
+    description: "Descubriremos la parte histórica de Praga con guía local en español y visitaremos lugares emblemáticos. Por la tarde haremos un paseo en barco por el río Moldava.",
+    lat: 50.0875,
+    lng: 14.4213,
+  },
+  {
+    day: 3,
+    title: "Castillo y tour de la cerveza",
+    description: "Recorreremos la zona más monumental de la ciudad. Por la tarde disfrutaremos de un tour de la cerveza con paradas en 3 sitios diferentes.",
+    lat: 50.0911,
+    lng: 14.4016,
+  },
+  {
+    day: 4,
+    title: "Día libre y mercados navideños",
+    description: "Día libre para descubrir Praga a tu ritmo. Por la tarde visitaremos juntos los mercados navideños de Praga.",
+    lat: 50.087,
+    lng: 14.4208,
+  },
+  {
+    day: 5,
+    title: "Se acaba la aventura",
+    description: "Tiempo libre hasta la hora del traslado al aeropuerto y vuelta a casa.",
+    lat: 50.1008,
+    lng: 14.2632,
+  },
+]
+
+const guatemalaExtraIncluded = [
+  "Traslados en lancha indicados en el itinerario",
+  "Guías locales certificados en Tikal, Yaxhá, Antigua y Acatenango",
+  "Ruta en kayak por el Lago Petén Itzá",
+  "Ascenso al Volcán Acatenango con material de montaña y guías especializados",
+  "Clase de cocina guatemalteca",
+  "Liberación de tortugas",
+  "Cena de bienvenida",
+]
+
+const guatemalaExtraNotIncluded = [
+  "Visado",
+]
+
+const guatemalaItinerary: ItineraryDay[] = [
+  {
+    day: 1,
+    title: "Llegada a Guatemala",
+    description: "Llegada a Ciudad de Guatemala y traslado al alojamiento. Por la noche disfrutaremos de una cena de bienvenida para conocer al grupo.",
+    lat: 14.6349,
+    lng: -90.5069,
+  },
+  {
+    day: 2,
+    title: "Flores y Lago Petén Itzá",
+    description: "Traslado al aeropuerto y vuelo hacia Flores. Paseo por la isla y ruta en kayak al atardecer por el Lago Petén Itzá.",
+    lat: 16.9297,
+    lng: -89.8914,
+  },
+  {
+    day: 3,
+    title: "Yaxhá",
+    description: "Mañana libre en Flores y visita por la tarde al complejo arqueológico de Yaxhá para ver el atardecer entre templos mayas y selva.",
+    lat: 17.074,
+    lng: -89.4006,
+  },
+  {
+    day: 4,
+    title: "Tikal y Antigua",
+    description: "Visita temprana al Parque Nacional de Tikal. Regreso en vuelo a Ciudad de Guatemala y traslado a Antigua.",
+    lat: 17.222,
+    lng: -89.6237,
+  },
+  {
+    day: 5,
+    title: "Antigua",
+    description: "Recorrido por Antigua con guía local, incluyendo calles empedradas, iglesias, conventos, mercados y Cerro de la Cruz. Por la tarde, clase de salsa opcional según PDF.",
+    lat: 14.5586,
+    lng: -90.7295,
+  },
+  {
+    day: 6,
+    title: "Volcán Acatenango",
+    description: "Ascenso al Volcán Acatenango para contemplar el Volcán Fuego y noche en campamento. El PDF indica alternativa para quienes no quieran realizar el ascenso.",
+    lat: 14.5012,
+    lng: -90.8769,
+  },
+  {
+    day: 7,
+    title: "Amanecer en el volcán",
+    description: "Amanecer en el volcán, descenso, regreso a Antigua y tarde libre para descansar o pasear.",
+    lat: 14.5012,
+    lng: -90.8769,
+  },
+  {
+    day: 8,
+    title: "Lago Atitlán",
+    description: "Traslado al Lago Atitlán, visita a la Reserva Natural de San Marcos y lancha hasta San Juan La Laguna.",
+    lat: 14.6907,
+    lng: -91.2025,
+  },
+  {
+    day: 9,
+    title: "Rostro Maya y cultura local",
+    description: "Amanecer desde el mirador del Rostro Maya, recorrido por San Juan La Laguna, cooperativas de artesanas y clase de cocina guatemalteca.",
+    lat: 14.6947,
+    lng: -91.2867,
+  },
+  {
+    day: 10,
+    title: "Panajachel y El Paredón",
+    description: "Visita a Panajachel y Santa Catarina Palopó antes de poner rumbo a El Paredón. Tarde libre para disfrutar del ambiente y el atardecer.",
+    lat: 14.7403,
+    lng: -91.1594,
+  },
+  {
+    day: 11,
+    title: "El Paredón",
+    description: "Día de playa. Por la tarde, experiencia de liberación de tortugas. Opcionalmente, clase de surf o kayak por manglares.",
+    lat: 13.9211,
+    lng: -91.0792,
+  },
+  {
+    day: 12,
+    title: "Se acaba la aventura",
+    description: "Mañana libre y traslado al aeropuerto de Ciudad de Guatemala para emprender el regreso a casa.",
+    lat: 14.5833,
+    lng: -90.5275,
+  },
+]
 
 // --- DATA ---
 
@@ -389,6 +546,20 @@ export const countries: Country[] = [
     currency: "Yen japonés (JPY)", currencyRate: "1€ ≈ 164 JPY", language: "Japonés",
     timezone: "GMT+9 (8h más que España)", visaRequired: false,
     visaInfo: "Hasta 90 días sin visa (UE)", vaccinesRecommended: "",
+  },
+  {
+    id: "cz", name: "Chequia", slug: "chequia", continentId: "europe", flag: "CZ",
+    currency: "Corona checa (CZK)", currencyRate: "1€ ≈ 25 CZK", language: "Checo",
+    timezone: "GMT+1 (misma hora que España)", visaRequired: false,
+    visaInfo: "Schengen: DNI o pasaporte para ciudadanos de la UE. Confirma siempre la documentación vigente antes de viajar.",
+    vaccinesRecommended: "Sin vacunas obligatorias específicas registradas. Consulta Sanidad Exterior según tu perfil viajero.",
+  },
+  {
+    id: "gt", name: "Guatemala", slug: "guatemala", continentId: "central-america", flag: "GT",
+    currency: "Quetzal guatemalteco (GTQ)", currencyRate: "1€ ≈ 8,4 GTQ", language: "Español",
+    timezone: "GMT-6 (7h menos que España peninsular en invierno)", visaRequired: false,
+    visaInfo: "Hasta 90 días sin visado para ciudadanos españoles; confirma siempre la documentación vigente antes de viajar.",
+    vaccinesRecommended: "Consulta Sanidad Exterior antes del viaje según ruta y perfil viajero.",
   },
 ]
 
@@ -1602,14 +1773,156 @@ export const destinations: Destination[] = [
     ],
     hasCoordinator: true,
   },
+  {
+    id: "praga",
+    name: "Praga",
+    slug: "praga",
+    countryId: "cz",
+    continentId: "europe",
+    description:
+      "Descubre Praga en 5 días durante la época más mágica del año. Recorre sus calles medievales, admira sus monumentos iluminados, navega por el río Moldava y disfruta de sus famosos mercados navideños.",
+    shortDescription: "Mercados navideños, historia y cerveza checa en grupo.",
+    heroImage: "/imports/fillNewDestination/processed/images/praga/praga-hero-mercado-navideno.webp",
+    heroImageAlt: "Mercado navideño de Praga con puestos iluminados y árbol de Navidad en la plaza",
+    gallery: [
+      {
+        url: "/imports/fillNewDestination/processed/images/praga/praga-galeria-calle-nevada.webp",
+        alt: "Calle nevada del centro histórico de Praga decorada con árbol de Navidad",
+      },
+      {
+        url: "/imports/fillNewDestination/processed/images/praga/praga-galeria-tranvia-rojo.webp",
+        alt: "Tranvía rojo recorriendo una calle histórica de Praga",
+      },
+      {
+        url: "/imports/fillNewDestination/processed/images/praga/praga-galeria-plaza-ciudad-vieja.webp",
+        alt: "Vista elevada de la plaza de la Ciudad Vieja de Praga con mercados navideños",
+      },
+      {
+        url: "/imports/fillNewDestination/processed/images/praga/praga-galeria-puesto-comida.webp",
+        alt: "Puesto de comida caliente en un mercado navideño de Praga",
+      },
+    ],
+    highlights: ["Mercados navideños", "Ciudad Vieja", "Barrio Judío", "Castillo de Praga", "Río Moldava", "Tour de la cerveza"],
+    idealFor: "Personas que quieren una escapada cultural de Navidad sin esperar a tener compañía.",
+    climate: "Invierno frío en noviembre y diciembre, con días cortos y temperaturas cercanas a 0-5°C; llevar abrigo, calzado cómodo y capas para mercados navideños.",
+    categories: ["cultural"],
+    extraIncluded: pragaExtraIncluded,
+    extraNotIncluded: pragaExtraNotIncluded,
+    coordinates: { lat: 50.0755, lng: 14.4378 },
+    budgetPerDay: { mealCostLow: "8-12€", mealCostMid: "15-25€", beerCost: "2-4€", dailyBudget: "30-55€/día", totalExtras: "150-275€ (5 días)" },
+    itinerary: pragaItinerary,
+    faqs: [
+      { question: "¿Qué incluye el viaje a Praga?", answer: "El viaje a Praga incluye alojamiento, traslados principales, coordinador Travel Hood, tasas y entradas indicadas, 2 tours privados con guía local en español, paseo en barco por el Moldava, tour de la cerveza y visita a mercados navideños." },
+      { question: "¿El precio de Praga incluye vuelos?", answer: "No, el precio desde 425€ de Praga no incluye vuelos internacionales. La estimación de vuelo es orientativa y debe confirmarse antes de reservar." },
+      { question: "¿Cómo es el grupo del viaje a Praga?", answer: "El viaje a Praga está pensado para personas de 20 a 35 años que quieren viajar aunque no tengan compañía, en un grupo reducido con afinidad de edad." },
+      { question: "¿Hay coordinador en el viaje a Praga?", answer: "Sí, el viaje a Praga incluye coordinador Travel Hood para acompañar al grupo durante la experiencia." },
+      { question: "¿El seguro está incluido en Praga?", answer: "No, el seguro de viaje no está incluido en el precio de Praga. Antes de viajar conviene revisar la cobertura que necesitas y resolver dudas por WhatsApp." },
+      { question: "¿Hace falta visado o vacunas para Praga?", answer: "Para ciudadanos de la UE, Chequia forma parte de Schengen y se viaja con DNI o pasaporte. Confirma siempre la documentación vigente antes de salir." },
+      { question: "¿Qué clima y presupuesto extra debo prever en Praga?", answer: "En noviembre y diciembre Praga tiene invierno frío, días cortos y temperaturas cercanas a 0-5°C; calcula 30-55€ al día y 150-275€ de extras orientativos para 5 días." },
+      { question: "¿Cuál es el siguiente paso para viajar a Praga?", answer: "El siguiente paso es escribir a Travel Hood por WhatsApp para confirmar fecha, plazas, precio final y dudas antes de reservar. La web no procesa pagos ni confirma reservas automáticamente." },
+    ],
+    seo: {
+      title: "Viaje a Praga en grupo en Navidad | Travel Hood",
+      description: "Viaje en grupo a Praga para jóvenes: mercados navideños, Ciudad Vieja, Barrio Judío, castillo, río Moldava y tour de la cerveza.",
+      keywords: "viaje praga, viaje en grupo praga, praga navidad, mercados navideños praga, travel hood praga",
+      cuandoViajarTitle: "Cuándo viajar a Praga | Travel Hood",
+      cuandoViajarDescription: "Noviembre y diciembre son ideales para vivir Praga con ambiente navideño, mercados, frío invernal y calles iluminadas.",
+      presupuestoTitle: "Presupuesto Praga | Travel Hood",
+      presupuestoDescription: "Calcula el presupuesto de un viaje a Praga: precio desde 425€, vuelo estimado aparte y gastos diarios orientativos.",
+    },
+    climateByMonth: [
+      { month: "Enero", avgTemp: "-2 a 3°C", rainfall: "Baja", recommendation: "Buena", note: "Frío invernal y posible nieve" },
+      { month: "Febrero", avgTemp: "-1 a 5°C", rainfall: "Baja", recommendation: "Buena" },
+      { month: "Marzo", avgTemp: "2-9°C", rainfall: "Media", recommendation: "Buena", note: "Inicio de primavera" },
+      { month: "Abril", avgTemp: "6-15°C", rainfall: "Media", recommendation: "Ideal" },
+      { month: "Mayo", avgTemp: "10-20°C", rainfall: "Media", recommendation: "Ideal" },
+      { month: "Junio", avgTemp: "14-23°C", rainfall: "Media", recommendation: "Ideal" },
+      { month: "Julio", avgTemp: "16-26°C", rainfall: "Media", recommendation: "Buena" },
+      { month: "Agosto", avgTemp: "15-25°C", rainfall: "Media", recommendation: "Buena" },
+      { month: "Septiembre", avgTemp: "11-20°C", rainfall: "Baja", recommendation: "Ideal" },
+      { month: "Octubre", avgTemp: "6-14°C", rainfall: "Baja", recommendation: "Buena" },
+      { month: "Noviembre", avgTemp: "1-7°C", rainfall: "Baja", recommendation: "Ideal", note: "Travel Hood opera; empiezan mercados navideños" },
+      { month: "Diciembre", avgTemp: "-1 a 4°C", rainfall: "Baja", recommendation: "Ideal", note: "Travel Hood opera; ambiente navideño" },
+    ],
+    pdfUrl: "/imports/fillNewDestination/processed/pdfs/praga.pdf",
+    hasCoordinator: true,
+  },
+  {
+    id: "guatemala",
+    name: "Guatemala",
+    slug: "guatemala",
+    countryId: "gt",
+    continentId: "central-america",
+    description:
+      "12 días descubriendo uno de los países más auténticos de Centroamérica: templos mayas entre la selva, ciudades coloniales, volcanes, lagos de postal y playas salvajes del Pacífico.",
+    shortDescription: "Templos mayas, volcanes, lago Atitlán y Pacífico en grupo.",
+    heroImage: "/imports/fillNewDestination/processed/images/guatemala/guatemala-hero-atardecer-el-paredon.webp",
+    heroImageAlt: "Atardecer en la playa de El Paredón durante un viaje por Guatemala",
+    gallery: [
+      {
+        url: "/imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-iglesia-amarilla-mercado.webp",
+        alt: "Mercado local frente a una iglesia amarilla en Guatemala",
+      },
+      {
+        url: "/imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-mural-tuk-tuk.webp",
+        alt: "Mural de cultura local y tuk tuk rojo en San Pedro La Laguna",
+      },
+      {
+        url: "/imports/fillNewDestination/processed/images/guatemala/guatemala-galeria-antigua-volcan-pexels.webp",
+        alt: "Vista de Antigua Guatemala y el volcán desde el Cerro de la Cruz",
+      },
+    ],
+    highlights: ["Lago Petén Itzá", "Yaxhá", "Tikal", "Antigua", "Volcán Acatenango", "Lago Atitlán", "El Paredón", "Liberación de tortugas", "Clase de cocina guatemalteca"],
+    idealFor: "Personas que quieren aventura, cultura local y naturaleza intensa viajando acompañadas.",
+    climate: "Enero cae en época seca y fría de Guatemala: días generalmente secos, noches frescas en Antigua/Atitlán y zonas altas, y calor húmedo en Petén y costa del Pacífico.",
+    categories: ["aventura", "cultural", "naturaleza"],
+    extraIncluded: guatemalaExtraIncluded,
+    extraNotIncluded: guatemalaExtraNotIncluded,
+    coordinates: { lat: 14.5586, lng: -90.7295 },
+    budgetPerDay: { mealCostLow: "4-7€", mealCostMid: "10-18€", beerCost: "2-4€", dailyBudget: "25-45€/día", totalExtras: "300-540€ (12 días)" },
+    itinerary: guatemalaItinerary,
+    faqs: [
+      { question: "¿Qué incluye el viaje a Guatemala?", answer: "El viaje a Guatemala incluye alojamiento, traslados principales, coordinador Travel Hood, tasas y entradas indicadas, lanchas del itinerario, guías locales certificados, kayak en Lago Petén Itzá, ascenso al Acatenango con material de montaña, clase de cocina, liberación de tortugas y cena de bienvenida." },
+      { question: "¿El precio de Guatemala incluye vuelos?", answer: "No, el precio desde 1.300€ de Guatemala no incluye vuelos internacionales. La estimación de vuelo es orientativa y debe confirmarse antes de reservar." },
+      { question: "¿Cómo es el grupo del viaje a Guatemala?", answer: "El viaje a Guatemala está pensado para personas de 20 a 35 años que quieren aventura, cultura local y naturaleza intensa viajando acompañadas." },
+      { question: "¿Hay coordinador en el viaje a Guatemala?", answer: "Sí, el viaje a Guatemala incluye coordinador Travel Hood para acompañar al grupo durante la experiencia." },
+      { question: "¿Necesito experiencia para subir el Acatenango?", answer: "No hace falta ser alpinista, pero el ascenso al volcán Acatenango exige buena condición física y ganas de caminar en montaña. Existe alternativa para quienes no quieran realizar el ascenso." },
+      { question: "¿El seguro está incluido en Guatemala?", answer: "No, el seguro de viaje no está incluido en el precio de Guatemala. Antes de viajar conviene revisar cobertura médica, aventura y cancelación según tu perfil." },
+      { question: "¿Hace falta visado o vacunas para Guatemala?", answer: "Para ciudadanos españoles, revisa la documentación vigente antes de viajar; para vacunas, consulta Sanidad Exterior según ruta y perfil viajero." },
+      { question: "¿Qué clima y presupuesto extra debo prever en Guatemala?", answer: "En enero Guatemala está en época seca: noches frescas en Antigua, Atitlán y zonas altas, y calor húmedo en Petén y la costa del Pacífico; calcula 25-45€ al día y 300-540€ de extras orientativos para 12 días." },
+      { question: "¿Cuál es el siguiente paso para viajar a Guatemala?", answer: "El siguiente paso es escribir a Travel Hood por WhatsApp para confirmar fecha, plazas, precio final y dudas antes de reservar. La web no procesa pagos ni confirma reservas automáticamente." },
+    ],
+    seo: {
+      title: "Viaje a Guatemala en grupo | Travel Hood",
+      description: "Viaje en grupo a Guatemala para jóvenes: Tikal, Yaxhá, Antigua, Acatenango, Lago Atitlán, El Paredón y cultura local.",
+      keywords: "viaje guatemala, viaje en grupo guatemala, guatemala jóvenes, acatenango, lago atitlán, travel hood guatemala",
+      cuandoViajarTitle: "Cuándo viajar a Guatemala | Travel Hood",
+      cuandoViajarDescription: "Enero es época seca en Guatemala, con noches frescas en zonas altas y calor húmedo en Petén y costa del Pacífico.",
+      presupuestoTitle: "Presupuesto Guatemala | Travel Hood",
+      presupuestoDescription: "Calcula el presupuesto de un viaje a Guatemala: precio desde 1.300€, vuelo estimado aparte y gastos diarios orientativos.",
+    },
+    climateByMonth: [
+      { month: "Enero", avgTemp: "14-28°C", rainfall: "Baja", recommendation: "Ideal", note: "Travel Hood opera; época seca" },
+      { month: "Febrero", avgTemp: "15-29°C", rainfall: "Baja", recommendation: "Ideal" },
+      { month: "Marzo", avgTemp: "16-31°C", rainfall: "Baja", recommendation: "Ideal" },
+      { month: "Abril", avgTemp: "18-32°C", rainfall: "Media", recommendation: "Buena", note: "Mes cálido antes de lluvias" },
+      { month: "Mayo", avgTemp: "18-31°C", rainfall: "Alta", recommendation: "Aceptable", note: "Inicio de lluvias" },
+      { month: "Junio", avgTemp: "18-30°C", rainfall: "Alta", recommendation: "Aceptable" },
+      { month: "Julio", avgTemp: "17-29°C", rainfall: "Media", recommendation: "Buena", note: "Canícula variable" },
+      { month: "Agosto", avgTemp: "17-29°C", rainfall: "Media", recommendation: "Buena" },
+      { month: "Septiembre", avgTemp: "17-28°C", rainfall: "Alta", recommendation: "Aceptable" },
+      { month: "Octubre", avgTemp: "16-28°C", rainfall: "Alta", recommendation: "Aceptable" },
+      { month: "Noviembre", avgTemp: "15-28°C", rainfall: "Media", recommendation: "Buena", note: "Transición hacia época seca" },
+      { month: "Diciembre", avgTemp: "14-28°C", rainfall: "Baja", recommendation: "Ideal", note: "Época seca" },
+    ],
+    pdfUrl: "/imports/fillNewDestination/processed/pdfs/guatemala.pdf",
+    hasCoordinator: true,
+  },
 ]
 
 export const defaultIncluded = [
   "Alojamiento durante todo el viaje",
-  "Desayunos incluidos",
-  "Traslados principales",
   "Coordinador Travel Hood 24/7",
-  "Tasas turísticas y entradas incluidas en el itinerario",
 ]
 export const defaultNotIncluded = [
   "Vuelos internacionales",
@@ -1714,6 +2027,10 @@ export const trips: Trip[] = [
   { id: "sri-lanka-invierno-2026-11-16", destinationId: "sri-lanka-invierno", title: "Sri Lanka Invierno — Noviembre 2026 (2)", departureDate: "2026-11-16", returnDate: "2026-11-26", durationDays: 11, priceFrom: 1050, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "marta", status: "open", included: [...defaultIncluded, "Entradas a templos", "Clases de surf", "2 safaris", "Snorkel"], notIncluded: [...defaultNotIncluded, "Visado"], itinerary: [], tags: ["puente-noviembre"] },
   // Japón
   { id: "japon-2026-08-01", destinationId: "japon", title: "Japón — Agosto 2026", departureDate: "2026-08-01", returnDate: "2026-08-12", durationDays: 12, priceFrom: 0, flightEstimate: 800, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Entrada al Universal Studios", "Guía en Kioto", "Entrada al Santuario de Fushimi", "Tasas turísticas y parques nacionales"], notIncluded: [...defaultNotIncluded, "Seguro médico de viaje"], itinerary: [], tags: ["verano"] }, // TODO: precio pendiente
+  // Praga y Guatemala (fillNewDestination)
+  { id: "praga-2026-11-26", destinationId: "praga", title: "Praga — Noviembre 2026", departureDate: "2026-11-26", returnDate: "2026-11-30", durationDays: 5, priceFrom: 425, flightEstimate: 300, totalPlaces: 15, placesLeft: 15, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, ...pragaExtraIncluded], notIncluded: [...defaultNotIncluded, ...pragaExtraNotIncluded], extraIncluded: pragaExtraIncluded, extraNotIncluded: pragaExtraNotIncluded, itinerary: pragaItinerary, tags: ["puente-noviembre"] },
+  { id: "praga-2026-12-02", destinationId: "praga", title: "Praga — Diciembre 2026", departureDate: "2026-12-02", returnDate: "2026-12-06", durationDays: 5, priceFrom: 425, flightEstimate: 300, totalPlaces: 15, placesLeft: 15, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, ...pragaExtraIncluded], notIncluded: [...defaultNotIncluded, ...pragaExtraNotIncluded], extraIncluded: pragaExtraIncluded, extraNotIncluded: pragaExtraNotIncluded, itinerary: pragaItinerary, tags: ["navidad"] },
+  { id: "guatemala-2027-01-19", destinationId: "guatemala", title: "Guatemala — Enero 2027", departureDate: "2027-01-19", returnDate: "2027-01-30", durationDays: 12, priceFrom: 1300, flightEstimate: 900, totalPlaces: 15, placesLeft: 15, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, ...guatemalaExtraIncluded], notIncluded: [...defaultNotIncluded, ...guatemalaExtraNotIncluded], extraIncluded: guatemalaExtraIncluded, extraNotIncluded: guatemalaExtraNotIncluded, itinerary: guatemalaItinerary, tags: [] },
 ]
 
 export const coordinators: Coordinator[] = [
@@ -1733,7 +2050,7 @@ export const coordinators: Coordinator[] = [
     age: 32,
     role: "Coordinador de Aventura",
     bio: "Experto en destinos fríos y experiencias extremas. Si hay nieve, huskies o auroras, él lo gestiona.",
-    destinations: ["laponia", "maldivas", "islandia", "azores", "colombia", "tailandia-verano", "tailandia-invierno", "filipinas-invierno", "sri-lanka-otono"],
+    destinations: ["laponia", "maldivas", "islandia", "azores", "colombia", "tailandia-verano", "tailandia-invierno", "filipinas-invierno", "sri-lanka-otono", "praga", "guatemala"],
     quote: "El frío no existe cuando estás con buena gente.",
     image: "/images/hero-laponia.jpg",
   },

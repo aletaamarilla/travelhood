@@ -1,0 +1,32 @@
+---
+description: "Convenciones frontend para componentes Astro y React de Travelhood."
+globs: ["**/*.tsx","**/*.jsx"]
+alwaysApply: false
+---
+
+# Frontend
+
+- Usa la regla `design-tokens` para color, tipografía, radios y espaciado.
+- Mantén React para islands con estado o efectos (`SearchIsland`, `SearchPage`, `CookieBanner`, acordeones); usa `.astro` para secciones estáticas y layout.
+- Exporta componentes React por defecto cuando son islands/piezas de página (`export default function ReviewCard`) y exports nombrados en primitives reutilizables (`Accordion`, `AccordionItem`).
+- Tipar props con `interface Props` o `ComponentNameProps`; importa tipos con `import type`.
+
+## Estado E Interacción
+
+- Usa hooks locales (`useState`, `useMemo`, `useEffect`, `useRef`) y extrae hooks pequeños solo cuando encapsulan comportamiento real, como `useClickOutside`.
+- Cierra dropdowns al seleccionar y al clicar fuera; evita estado global salvo necesidad real.
+- Para navegación desde islands, usa URLs internas con trailing slash (`/viajes/`, `/destino/${slug}/`) y `URLSearchParams` para filtros.
+
+## Estilos
+
+- Usa Tailwind inline con tokens (`bg-card`, `text-foreground`, `text-muted-foreground`, `bg-coral`, `text-teal-deep`).
+- Combina clases con `cn` desde `@/lib/utils` o helper local `cx` si el componente es simple.
+- Sigue patrones de cards: `rounded-2xl border border-border/40 bg-card shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5`.
+- Evita introducir librerías de UI nuevas; el repo ya usa Radix Accordion, lucide-react, `clsx` y `tailwind-merge`.
+
+## Accesibilidad Y Contenido
+
+- Añade `alt` descriptivo a imágenes reales; usa `alt=""` o `aria-hidden` solo en imágenes decorativas.
+- Usa `button type="button"` en controles que no envían formularios.
+- Incluye `aria-label` cuando el texto visible no describe el control, como paginación o rating.
+- Mantén copy en español, de tú a tú y orientado a comunidad/seguridad.

@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-07-10T21:08:25.590Z",
+  "sanity": {
+    "dataset": "production",
+    "apiVersion": "2026-03-16",
+    "perspective": "raw",
+    "tokenConfigured": true,
+    "projectIdConfigured": true
+  },
+  "preexistingDocuments": {
+    "continents": [
+      {
+        "_id": "continent-centroamerica",
+        "_rev": "XlNwq3xbphLrhVKM5zc61j",
+        "_type": "continent",
+        "name": "Centroamérica",
+        "slug": "centroamerica"
+      },
+      {
+        "_id": "continent-europa",
+        "_rev": "u93Z2ge2ROiYmlpy4o6TJh",
+        "_type": "continent",
+        "name": "Europa",
+        "slug": "europa"
+      }
+    ],
+    "countryMatches": [],
+    "destinationCollisions": [],
+    "tripCollisions": [],
+    "coordinators": [
+      {
+        "_id": "coordinator-carlos",
+        "_rev": "XlNwq3xbphLrhVKM5ybFBr",
+        "_type": "coordinator",
+        "name": "Carlos Ruiz",
+        "slug": "carlos",
+        "destinationRefs": [
+          "destination-laponia",
+          "destination-maldivas",
+          "destination-islandia",
+          "destination-azores",
+          "destination-colombia",
+          "destination-tailandia-verano",
+          "destination-tailandia-invierno",
+          "destination-filipinas-invierno",
+          "destination-sri-lanka-otono"
+        ]
+      },
+      {
+        "_id": "coordinator-marta",
+        "_rev": "XlNwq3xbphLrhVKM5ybFBr",
+        "_type": "coordinator",
+        "name": "Marta López",
+        "slug": "marta",
+        "destinationRefs": [
+          "destination-brasil",
+          "destination-zanzibar",
+          "destination-egipto",
+          "destination-lofoten",
+          "destination-indonesia",
+          "destination-filipinas-verano",
+          "destination-puerto-rico",
+          "destination-sri-lanka-verano",
+          "destination-sri-lanka-invierno"
+        ]
+      }
+    ]
+  },
+  "blockers": []
+}

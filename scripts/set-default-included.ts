@@ -33,10 +33,7 @@ const client = createClient({
 
 const defaultIncluded = [
   'Alojamiento durante todo el viaje',
-  'Desayunos incluidos',
-  'Traslados principales',
   'Coordinador Travel Hood 24/7',
-  'Tasas turísticas y entradas incluidas en el itinerario',
 ]
 
 const defaultNotIncluded = [

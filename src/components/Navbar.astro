@@ -34,14 +34,14 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
   data-solid={solid ? "true" : "false"}
 >
   <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-    <a href="/" class="relative z-50 flex items-center" aria-label="Ir a la home de Travel Hood">
+    <a href="/" class="relative z-50 flex min-h-11 items-center" aria-label="Ir a la home de Travel Hood">
       <img
         id="navbar-logo"
         src={fallbackLogo}
         alt="Travel Hood"
         width={67}
         height={44}
-        class="h-10 w-auto shrink-0 sm:h-11"
+        class="h-11 w-auto shrink-0"
       />
     </a>
 
@@ -68,7 +68,7 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
         href="/viajes/#resultados"
         class={`inline-flex items-center rounded-full px-[1.125rem] py-2 text-xs font-bold transition-all duration-300 ${
           solid
-            ? "bg-coral text-white shadow-sm shadow-coral/20 hover:bg-coral/90 hover:shadow-md hover:shadow-coral/25"
+            ? "bg-teal-deep text-sand shadow-sm shadow-teal-deep/20 hover:bg-teal-deep/90 hover:shadow-md hover:shadow-teal-deep/25"
             : "bg-white/15 text-white backdrop-blur-sm hover:bg-white/25"
         }`}
       >
@@ -78,7 +78,7 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
 
     <button
       id="navbar-hamburger"
-      class={`relative z-50 flex h-10 w-10 items-center justify-center lg:hidden transition-colors duration-300 ${
+      class={`relative z-50 flex h-11 w-11 items-center justify-center lg:hidden transition-colors duration-300 ${
         solid ? "text-foreground" : "text-white"
       }`}
       aria-label="Abrir menú"
@@ -137,7 +137,7 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
               href={link.href}
               class="nav-link group flex items-center gap-4 border-b border-sand/8 py-5"
             >
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sand/10 text-[11px] font-bold tabular-nums text-coral transition-colors duration-200 group-hover:bg-coral group-hover:text-white">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sand/10 text-[11px] font-bold tabular-nums text-coral transition-colors duration-200 group-hover:bg-yellow-sun group-hover:text-teal-deep">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span class="font-serif text-[1.5rem] font-bold text-sand transition-colors duration-200 group-hover:text-white">
@@ -156,7 +156,7 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
     >
       <a
         href="/viajes/#resultados"
-        class="nav-link inline-flex w-full items-center justify-center gap-2 rounded-full bg-coral px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:brightness-110"
+        class="nav-link inline-flex w-full items-center justify-center gap-2 rounded-full bg-yellow-sun px-6 py-3.5 text-base font-bold text-teal-deep shadow-lg shadow-yellow-sun/25 transition-all hover:shadow-xl hover:brightness-110"
       >
         Ver próximos viajes
         <svg
@@ -274,9 +274,9 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
       if (desktopCta) {
         if (isScrolled) {
           desktopCta.classList.remove("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
-          desktopCta.classList.add("bg-coral", "text-white", "shadow-sm", "shadow-coral/20", "hover:bg-coral/90", "hover:shadow-md", "hover:shadow-coral/25");
+          desktopCta.classList.add("bg-teal-deep", "text-sand", "shadow-sm", "shadow-teal-deep/20", "hover:bg-teal-deep/90", "hover:shadow-md", "hover:shadow-teal-deep/25");
         } else {
-          desktopCta.classList.remove("bg-coral", "shadow-sm", "shadow-coral/20", "hover:bg-coral/90", "hover:shadow-md", "hover:shadow-coral/25");
+          desktopCta.classList.remove("bg-teal-deep", "shadow-sm", "shadow-teal-deep/20", "hover:bg-teal-deep/90", "hover:shadow-md", "hover:shadow-teal-deep/25");
           desktopCta.classList.add("bg-white/15", "text-white", "backdrop-blur-sm", "hover:bg-white/25");
         }
       }

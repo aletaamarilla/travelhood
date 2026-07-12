@@ -20,6 +20,52 @@ import { buildWhatsAppUrl } from "@/lib/config"
 import { selectVisibleReviews } from "@/lib/reviews"
 import ReviewCard from "@/components/ReviewCard"
 
+// ── Conversion Tracking ─────────────────────────────────
+
+const CONSENT_COOKIE_NAME = "th_cookie_consent"
+
+type DestinationConversionEvent =
+  | "destination_view"
+  | "destination_dates_price_interaction"
+  | "destination_pdf_download"
+  | "destination_whatsapp_click"
+
+interface DestinationTrackingParams {
+  destination_slug: string
+  trip_id?: string
+  cta_location?: string
+  pdf_url?: string
+}
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[]
+    __travelhoodDestinationViews?: Set<string>
+  }
+}
+
+function hasAnalyticsConsent(): boolean {
+  if (typeof document === "undefined") return false
+  try {
+    const match = document.cookie.match(new RegExp(`(?:^|; )${CONSENT_COOKIE_NAME}=([^;]*)`))
+    if (!match) return false
+    const consent = JSON.parse(decodeURIComponent(match[1])) as { analytics?: boolean }
+    return consent.analytics === true
+  } catch {
+    return false
+  }
+}
+
+function pushDestinationEvent(event: DestinationConversionEvent, params: DestinationTrackingParams): boolean {
+  if (typeof window === "undefined" || !hasAnalyticsConsent()) return false
+  const payload = Object.fromEntries(
+    Object.entries({ event, ...params }).filter(([, value]) => value !== undefined)
+  )
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push(payload)
+  return true
+}
+
 // ── Types ──────────────────────────────────────────────
 
 interface ExtendedTrip extends Omit<Trip, "itinerary"> {
@@ -31,6 +77,7 @@ interface ExtendedTrip extends Omit<Trip, "itinerary"> {
 interface TripDetailPageProps {
   destination: Destination
   photos: string[]
+  photoAlts?: string[]
   faqs: DestinationFAQ[]
   generalFaqs?: { question: string; answer: string }[]
   trips: ExtendedTrip[]
@@ -120,16 +167,40 @@ const NOT_INCLUDED_ICONS: Record<string, typeof Plane> = {
   "Ropa térmica": Snowflake,
 }
 
+const SANITY_IMAGE_WIDTHS = [480, 800, 1200, 1600]
+const SANITY_MODAL_WIDTHS = [640, 960, 1280, 1920]
+const SANITY_THUMB_WIDTHS = [160, 240, 320]
+
+function createSanitySrcSet(src: string, widths: number[]): string | undefined {
+  if (!src.includes("cdn.sanity.io/images/")) return undefined
+  try {
+    return widths
+      .map((width) => {
+        const url = new URL(src)
+        url.searchParams.set("w", String(width))
+        url.searchParams.set("auto", "format")
+        return `${url.toString()} ${width}w`
+      })
+      .join(", ")
+  } catch {
+    return undefined
+  }
+}
+
 
 // ── Photo Gallery Modal ────────────────────────────────
 
 function PhotoModal({
   photos,
+  photoAlts,
+  destinationName,
   isOpen,
   onClose,
   initialIndex = 0,
 }: {
   photos: string[]
+  photoAlts?: string[]
+  destinationName: string
   isOpen: boolean
   onClose: () => void
   initialIndex?: number
@@ -157,13 +228,15 @@ function PhotoModal({
 
   if (!isOpen) return null
 
+  const currentPhoto = photos[current]
+
   return (
     <div className="fixed inset-0 z-[60] flex flex-col bg-black/95 backdrop-blur-sm">
       <div className="flex items-center justify-between px-6 py-4">
         <span className="text-sm text-white/70">
           {current + 1} / {photos.length}
         </span>
-        <button onClick={onClose} className="rounded-full p-2 text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+        <button onClick={onClose} className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white" aria-label="Cerrar galería">
           <X size={24} />
         </button>
       </div>
@@ -179,12 +252,15 @@ function PhotoModal({
         )}
 
         <img
-          src={photos[current]}
-          alt={`Foto ${current + 1}`}
+          src={currentPhoto}
+          alt={photoAlts?.[current] || `Foto del viaje a ${destinationName}`}
+          srcSet={createSanitySrcSet(currentPhoto, SANITY_MODAL_WIDTHS)}
+          sizes="100vw"
           width={1920}
           height={1080}
           className="max-h-[80vh] max-w-full rounded-lg object-contain"
           loading="lazy"
+          decoding="async"
         />
 
         {current < photos.length - 1 && (
@@ -205,8 +281,9 @@ function PhotoModal({
             className={`h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
               i === current ? "border-coral opacity-100" : "border-transparent opacity-50 hover:opacity-80"
             }`}
+            aria-label={`Ver foto ${i + 1} de ${photos.length}`}
           >
-            <img src={p} alt="" width={240} height={160} className="h-full w-full object-cover" loading="lazy" />
+            <img src={p} alt="" srcSet={createSanitySrcSet(p, SANITY_THUMB_WIDTHS)} sizes="96px" width={240} height={160} className="h-full w-full object-cover" loading="lazy" decoding="async" />
           </button>
         ))}
       </div>
@@ -225,6 +302,7 @@ function DeparturesModal({
   whatsappPhone,
   whatsappCommunityUrl,
   depositAmount = 250,
+  onWhatsAppClick,
 }: {
   availableTrips: ExtendedTrip[]
   fullTrips: ExtendedTrip[]
@@ -234,6 +312,7 @@ function DeparturesModal({
   whatsappPhone: string
   whatsappCommunityUrl?: string
   depositAmount?: number
+  onWhatsAppClick: (tripId: string | undefined, ctaLocation: string) => void
 }) {
   useEffect(() => {
     if (!isOpen) return
@@ -279,7 +358,7 @@ function DeparturesModal({
                     : "No hay salidas disponibles en este momento"}
             </p>
           </div>
-          <button onClick={onClose} className="rounded-full p-1.5 sm:p-2 hover:bg-muted transition-colors">
+          <button onClick={onClose} className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-muted transition-colors" aria-label="Cerrar salidas">
             <X size={18} className="sm:hidden" />
             <X size={20} className="hidden sm:block" />
           </button>
@@ -301,7 +380,7 @@ function DeparturesModal({
                 className="relative rounded-xl border border-border bg-card p-3 sm:p-5 transition-shadow hover:shadow-md"
               >
                 {hasPromo && (
-                  <span className="absolute -top-2 right-3 sm:-top-2.5 sm:right-4 rounded-full bg-coral px-2 py-0.5 text-[10px] sm:px-3 sm:text-[11px] font-bold text-white">
+                  <span className="absolute -top-2 right-3 sm:-top-2.5 sm:right-4 rounded-full bg-teal-deep px-2 py-0.5 text-[10px] sm:px-3 sm:text-[11px] font-bold text-sand">
                     {trip.promoLabel}
                   </span>
                 )}
@@ -361,7 +440,8 @@ function DeparturesModal({
                         href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title}. ¿Puedo reservar?`)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-coral px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-white transition-all hover:brightness-110"
+                        onClick={() => onWhatsAppClick(trip.id, "departures_modal_reserve")}
+                        className="inline-flex min-h-11 items-center gap-2 rounded-full bg-teal-deep px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-sand transition-all hover:brightness-110"
                       >
                         Reservar
                       </a>
@@ -424,7 +504,8 @@ function DeparturesModal({
                         href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title} pero veo que está completo. ¿Me avisáis si se libera plaza?`)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-semibold text-muted-foreground transition-all hover:bg-muted"
+                        onClick={() => onWhatsAppClick(trip.id, "departures_modal_waitlist")}
+                        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-muted/50 px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-semibold text-muted-foreground transition-all hover:bg-muted"
                       >
                         Lista de espera
                       </a>
@@ -442,7 +523,8 @@ function DeparturesModal({
                 href={whatsappCommunityUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                onClick={() => onWhatsAppClick(undefined, "departures_modal_community")}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#25D366] px-6 py-2.5 text-sm font-bold text-teal-deep transition-all hover:brightness-110"
               >
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 Avísame en la comunidad
@@ -605,7 +687,7 @@ function ShareButton({ destinationName, slug }: { destinationName: string; slug:
         href={`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors"
+        className="flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 transition-colors"
         aria-label="Compartir por WhatsApp"
       >
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -614,7 +696,7 @@ function ShareButton({ destinationName, slug }: { destinationName: string; slug:
       </a>
       <button
         onClick={copyLink}
-        className="flex h-9 items-center gap-1.5 rounded-full bg-muted px-3 text-xs font-medium text-muted-foreground hover:bg-muted/80 transition-colors"
+        className="flex min-h-11 items-center gap-1.5 rounded-full bg-muted px-3 text-xs font-medium text-muted-foreground hover:bg-muted/80 transition-colors"
       >
         {copied ? <Check size={14} /> : <Share2 size={14} />}
         {copied ? "Copiado" : "Copiar enlace"}
@@ -628,6 +710,7 @@ function ShareButton({ destinationName, slug }: { destinationName: string; slug:
 export default function TripDetailPage({
   destination,
   photos,
+  photoAlts = [],
   faqs,
   generalFaqs,
   trips,
@@ -666,6 +749,68 @@ export default function TripDetailPage({
   const totalTravelers = allTrips.reduce((sum, t) => sum + (t.totalPlaces - t.placesLeft), 0)
   const visibleTestimonials = selectVisibleReviews(testimonials, 4)
 
+  const trackDestinationEvent = useCallback(
+    (event: DestinationConversionEvent, params: Omit<DestinationTrackingParams, "destination_slug">) => {
+      pushDestinationEvent(event, {
+        destination_slug: destination.slug,
+        ...params,
+      })
+    },
+    [destination.slug]
+  )
+
+  const trackDestinationView = useCallback(() => {
+    if (typeof window === "undefined") return
+    window.__travelhoodDestinationViews = window.__travelhoodDestinationViews || new Set()
+    if (window.__travelhoodDestinationViews.has(destination.slug)) return
+    const pushed = pushDestinationEvent("destination_view", {
+      destination_slug: destination.slug,
+      trip_id: featured?.id,
+    })
+    if (pushed) window.__travelhoodDestinationViews.add(destination.slug)
+  }, [destination.slug, featured?.id])
+
+  useEffect(() => {
+    trackDestinationView()
+    const onConsentUpdated = (event: Event) => {
+      const consent = (event as CustomEvent<{ analytics?: boolean }>).detail
+      if (consent?.analytics === true) trackDestinationView()
+    }
+    window.addEventListener("cookieConsentUpdated", onConsentUpdated)
+    return () => window.removeEventListener("cookieConsentUpdated", onConsentUpdated)
+  }, [trackDestinationView])
+
+  const openDepartures = useCallback(
+    (ctaLocation: string) => {
+      trackDestinationEvent("destination_dates_price_interaction", {
+        cta_location: ctaLocation,
+      })
+      setDeparturesOpen(true)
+    },
+    [trackDestinationEvent]
+  )
+
+  const trackWhatsAppClick = useCallback(
+    (tripId: string | undefined, ctaLocation: string) => {
+      trackDestinationEvent("destination_whatsapp_click", {
+        trip_id: tripId,
+        cta_location: ctaLocation,
+      })
+    },
+    [trackDestinationEvent]
+  )
+
+  const trackPdfDownload = useCallback(
+    (ctaLocation: string) => {
+      if (!pdfUrl) return
+      trackDestinationEvent("destination_pdf_download", {
+        cta_location: ctaLocation,
+        pdf_url: pdfUrl,
+      })
+    },
+    [pdfUrl, trackDestinationEvent]
+  )
+
   useEffect(() => {
     const el = mobileGalleryRef.current
     if (!el) return
@@ -702,11 +847,15 @@ export default function TripDetailPage({
     return (
       <img
         src={photos[index]}
-        alt={`${destination.name} - foto ${index + 1}`}
+        alt={photoAlts[index] || `Foto del viaje a ${destination.name}`}
+        srcSet={createSanitySrcSet(photos[index], SANITY_IMAGE_WIDTHS)}
+        sizes={index === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 100vw"}
         width={1200}
         height={800}
         className={`object-cover ${className}`}
-        loading={index < 3 ? "eager" : "lazy"}
+        loading={index === 0 ? "eager" : "lazy"}
+        fetchPriority={index === 0 ? "high" : "auto"}
+        decoding={index === 0 ? "sync" : "async"}
         onError={() => handleImageError(index)}
       />
     )
@@ -1019,7 +1168,7 @@ export default function TripDetailPage({
                 <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => setFaqTab("destino")}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+                    className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
                       faqTab === "destino"
                         ? "bg-teal-deep text-white shadow-sm"
                         : "bg-muted text-muted-foreground hover:text-foreground"
@@ -1030,7 +1179,7 @@ export default function TripDetailPage({
                   </button>
                   <button
                     onClick={() => setFaqTab("general")}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+                    className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold transition-all ${
                       faqTab === "general"
                         ? "bg-teal-deep text-white shadow-sm"
                         : "bg-muted text-muted-foreground hover:text-foreground"
@@ -1077,7 +1226,8 @@ export default function TripDetailPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   download
-                  className="inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition-all hover:brightness-110 shrink-0"
+                  onClick={() => trackPdfDownload("detail_pdf_section")}
+                  className="inline-flex items-center gap-2 rounded-full bg-teal-deep px-6 py-3 text-sm font-bold text-sand transition-all hover:brightness-110 shrink-0"
                 >
                   <Download size={16} />
                   Descargar PDF
@@ -1101,7 +1251,8 @@ export default function TripDetailPage({
                       href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      onClick={() => trackWhatsAppClick(undefined, "bottom_cta_no_dates")}
+                      className="inline-flex items-center gap-2 rounded-full bg-teal-deep px-8 py-3.5 text-base font-bold text-sand transition-all hover:brightness-110"
                     >
                       Preguntar por nuevas fechas
                     </a>
@@ -1110,7 +1261,8 @@ export default function TripDetailPage({
                         href={whatsappCommunityUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                        onClick={() => trackWhatsAppClick(undefined, "bottom_cta_community")}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-teal-deep transition-all hover:brightness-110"
                       >
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Únete a la comunidad
@@ -1128,8 +1280,8 @@ export default function TripDetailPage({
                   </p>
                   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
                     <button
-                      onClick={() => setDeparturesOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      onClick={() => openDepartures("bottom_cta")}
+                      className="inline-flex items-center gap-2 rounded-full bg-teal-deep px-8 py-3.5 text-base font-bold text-sand transition-all hover:brightness-110"
                     >
                       Ver salidas y precios
                     </button>
@@ -1137,7 +1289,8 @@ export default function TripDetailPage({
                       href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Podéis darme más info?`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      onClick={() => trackWhatsAppClick(undefined, "bottom_cta_whatsapp")}
+                      className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-teal-deep transition-all hover:brightness-110"
                     >
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                       Preguntar por WhatsApp
@@ -1157,8 +1310,8 @@ export default function TripDetailPage({
                   </p>
                   <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
                     <button
-                      onClick={() => setDeparturesOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-full bg-coral px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      onClick={() => openDepartures("bottom_cta_full")}
+                      className="inline-flex items-center gap-2 rounded-full bg-teal-deep px-8 py-3.5 text-base font-bold text-sand transition-all hover:brightness-110"
                     >
                       Ver salidas y precios
                     </button>
@@ -1166,7 +1319,8 @@ export default function TripDetailPage({
                       href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name} pero veo que está completo. ¿Me avisáis si se libera plaza?`)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-white transition-all hover:brightness-110"
+                      onClick={() => trackWhatsAppClick(undefined, "bottom_cta_waitlist")}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3.5 text-base font-bold text-teal-deep transition-all hover:brightness-110"
                     >
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                       Lista de espera
@@ -1191,7 +1345,8 @@ export default function TripDetailPage({
                         href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-coral px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                        onClick={() => trackWhatsAppClick(undefined, "sidebar_no_dates")}
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-teal-deep px-5 py-3 text-sm font-bold text-sand transition-all hover:brightness-110"
                       >
                         Preguntar por nuevas fechas
                       </a>
@@ -1200,7 +1355,8 @@ export default function TripDetailPage({
                           href={whatsappCommunityUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                          onClick={() => trackWhatsAppClick(undefined, "sidebar_community")}
+                          className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-bold text-teal-deep transition-all hover:brightness-110"
                         >
                           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                           Únete a la comunidad
@@ -1237,8 +1393,8 @@ export default function TripDetailPage({
                       )}
 
                       <button
-                        onClick={() => setDeparturesOpen(true)}
-                        className="mt-4 w-full rounded-full bg-coral px-5 py-3 text-sm font-bold text-white transition-all hover:brightness-110"
+                        onClick={() => openDepartures("sidebar")}
+                        className="mt-4 w-full rounded-full bg-teal-deep px-5 py-3 text-sm font-bold text-sand transition-all hover:brightness-110"
                       >
                         Ver salidas y precios
                       </button>
@@ -1285,7 +1441,8 @@ export default function TripDetailPage({
                     target="_blank"
                     rel="noopener noreferrer"
                     download
-                    className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-medium text-foreground/70 transition-colors hover:bg-muted"
+                    onClick={() => trackPdfDownload("sidebar_pdf")}
+                    className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-medium text-foreground/70 transition-colors hover:bg-muted"
                   >
                     <Download size={12} />
                     Descargar PDF
@@ -1299,7 +1456,8 @@ export default function TripDetailPage({
                   href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#25D366] hover:underline"
+                  onClick={() => trackWhatsAppClick(undefined, "sidebar_doubts")}
+                  className="inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-[#25D366] hover:underline"
                 >
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -1328,7 +1486,8 @@ export default function TripDetailPage({
                   href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje a ${destination.name}. ¿Habrá nuevas fechas próximamente?`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full bg-coral px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                  onClick={() => trackWhatsAppClick(undefined, "mobile_bottom_bar_no_dates")}
+                  className="inline-flex min-h-11 items-center rounded-full bg-teal-deep px-5 py-2.5 text-sm font-bold text-sand transition-all hover:brightness-110"
                 >
                   Preguntar por fechas
                 </a>
@@ -1371,14 +1530,15 @@ export default function TripDetailPage({
                   href={buildWhatsAppUrl(whatsappPhone, `Hola! Tengo dudas sobre el viaje a ${destination.name}`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25D366] text-white transition-all hover:brightness-110"
+                  onClick={() => trackWhatsAppClick(undefined, "mobile_bottom_bar_whatsapp")}
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] text-teal-deep transition-all hover:brightness-110"
                   aria-label="WhatsApp"
                 >
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 </a>
                 <button
-                  onClick={() => setDeparturesOpen(true)}
-                  className="rounded-full bg-coral px-5 py-2.5 text-sm font-bold text-white transition-all hover:brightness-110"
+                  onClick={() => openDepartures("mobile_bottom_bar")}
+                  className="min-h-11 rounded-full bg-teal-deep px-5 py-2.5 text-sm font-bold text-sand transition-all hover:brightness-110"
                 >
                   Ver salidas
                 </button>
@@ -1394,6 +1554,8 @@ export default function TripDetailPage({
       {/* ── Modals ───────────────────────────── */}
       <PhotoModal
         photos={photos}
+        photoAlts={photoAlts}
+        destinationName={destination.name}
         isOpen={galleryOpen}
         onClose={() => setGalleryOpen(false)}
         initialIndex={galleryIndex}
@@ -1407,6 +1569,7 @@ export default function TripDetailPage({
         whatsappPhone={whatsappPhone}
         whatsappCommunityUrl={whatsappCommunityUrl}
         depositAmount={depositAmount}
+        onWhatsAppClick={trackWhatsAppClick}
       />
     </>
   )
