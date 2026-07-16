@@ -73,13 +73,15 @@ const body = [
   block('normal', 'Se utilizan para realizar un seguimiento de los visitantes en los sitios web con el fin de mostrar anuncios relevantes y atractivos. Solo se activan si das tu consentimiento.'),
   bullet('_gcl_au: Almacena información de conversiones para Google Ads. Duración: 90 días. Proveedor: Google Ads.'),
   bullet('IDE / DSID: Utilizadas por Google DoubleClick para registrar y generar informes sobre las acciones del usuario tras ver o hacer clic en un anuncio. Duración: 1 año. Proveedor: Google.'),
+  bullet('_ttp: Identificador de TikTok Pixel para medir conversiones y optimizar campañas publicitarias. Duración: 13 meses. Proveedor: TikTok.'),
+  bullet('tt_clid: Identificador de clic de TikTok Ads para atribución de conversiones. Duración: 13 meses. Proveedor: TikTok.'),
 
   block('h2', '4. ¿Cómo gestionamos tu consentimiento?'),
   block('normal', 'Cuando visitas travelhood.es por primera vez, te mostramos un banner de cookies donde puedes:'),
   bullet('Aceptar todas las cookies.'),
   bullet('Aceptar solo las necesarias (rechazando analíticas y de marketing).'),
   bullet('Personalizar tus preferencias eligiendo qué categorías de cookies aceptas.'),
-  block('normal', 'Utilizamos Google Tag Manager con el modo de consentimiento (Consent Mode v2) para garantizar que las cookies analíticas y de marketing solo se activan si has dado tu consentimiento explícito.'),
+  block('normal', 'Utilizamos Google Tag Manager con el modo de consentimiento (Consent Mode v2) y TikTok Pixel con consentimiento explícito para garantizar que las cookies analíticas y de marketing solo se activan si has dado tu consentimiento.'),
 
   block('h2', '5. ¿Cómo puedes gestionar o eliminar las cookies?'),
   block('normal', 'Puedes cambiar tus preferencias de cookies en cualquier momento. Además, puedes configurar tu navegador para bloquear o eliminar cookies. A continuación te indicamos cómo hacerlo en los navegadores más comunes:'),
@@ -90,7 +92,7 @@ const body = [
   block('normal', 'Ten en cuenta que si bloqueas todas las cookies, es posible que algunas funcionalidades del sitio no estén disponibles.'),
 
   block('h2', '6. Transferencias internacionales de datos'),
-  block('normal', 'Algunas de las cookies de terceros que utilizamos (Google Analytics, Google Ads) pueden transferir datos a servidores ubicados fuera del Espacio Económico Europeo, en particular a Estados Unidos. Google cumple con el Marco de Privacidad de Datos UE-EE.UU. (EU-US Data Privacy Framework) como base legal para dichas transferencias.'),
+  block('normal', 'Algunas de las cookies de terceros que utilizamos (Google Analytics, Google Ads, TikTok) pueden transferir datos a servidores ubicados fuera del Espacio Económico Europeo, en particular a Estados Unidos. Google cumple con el Marco de Privacidad de Datos UE-EE.UU. (EU-US Data Privacy Framework) como base legal para dichas transferencias.'),
 
   block('h2', '7. Actualización de esta política'),
   block('normal', 'Esta política de cookies puede ser actualizada periódicamente para reflejar cambios en las cookies que utilizamos o en la normativa aplicable. La fecha de la última actualización se indica al principio de esta página.'),

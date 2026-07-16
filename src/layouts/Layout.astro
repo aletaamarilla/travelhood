@@ -34,6 +34,7 @@ const {
 } = Astro.props;
 
 const gtmId = import.meta.env.PUBLIC_GTM_ID || "";
+const tiktokPixelId = import.meta.env.PUBLIC_TIKTOK_PIXEL_ID || "";
 
 const currentPath = Astro.url.pathname;
 const canonicalUrl = canonical ?? `${SITE_URL}${currentPath.endsWith('/') ? currentPath : currentPath + '/'}`;
@@ -78,6 +79,7 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
     <link rel="dns-prefetch" href="https://cdn.sanity.io" />
     <link rel="dns-prefetch" href="https://flagcdn.com" />
     {gtmId && <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />}
+    {tiktokPixelId && <link rel="preconnect" href="https://analytics.tiktok.com" crossorigin />}
     {heroImage && <link rel="preload" as="image" href={heroImage} fetchpriority="high" />}
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -132,6 +134,77 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
             ad_user_data: mk,
             ad_personalization: mk
           });
+        });
+      </script>
+    )}
+    {tiktokPixelId && (
+      <script is:inline define:vars={{ tiktokPixelId }}>
+        !function (w, d, t) {
+          w.TiktokAnalyticsObject = t;
+          var ttq = w[t] = w[t] || [];
+          ttq.methods = ["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"];
+          ttq.setAndDefer = function(t, e) {
+            t[e] = function() { t.push([e].concat(Array.prototype.slice.call(arguments, 0))); };
+          };
+          for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
+          ttq.instance = function(t) {
+            for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++) ttq.setAndDefer(e, ttq.methods[n]);
+            return e;
+          };
+          ttq.load = function(e, n) {
+            var r = "https://analytics.tiktok.com/i18n/pixel/events.js";
+            ttq._i = ttq._i || {};
+            ttq._i[e] = [];
+            ttq._i[e]._u = r;
+            ttq._t = ttq._t || {};
+            ttq._t[e] = +new Date();
+            ttq._o = ttq._o || {};
+            ttq._o[e] = n || {};
+            var s = d.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = r + "?sdkid=" + e + "&lib=" + t;
+            var f = d.getElementsByTagName("script")[0];
+            f.parentNode.insertBefore(s, f);
+          };
+        }(window, document, "ttq");
+
+        var thTikTokLoaded = false;
+
+        function thReadMarketingConsent() {
+          try {
+            var m = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
+            if (!m) return false;
+            return JSON.parse(decodeURIComponent(m[1])).marketing === true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function thLoadTikTokPixel() {
+          if (thTikTokLoaded) return;
+          thTikTokLoaded = true;
+          ttq.grantConsent();
+          ttq.load(tiktokPixelId);
+          ttq.page();
+        }
+
+        function thRevokeTikTokPixel() {
+          if (typeof ttq !== "undefined") ttq.revokeConsent();
+          thTikTokLoaded = false;
+        }
+
+        if (thReadMarketingConsent()) {
+          thLoadTikTokPixel();
+        }
+
+        window.addEventListener("cookieConsentUpdated", function(e) {
+          var detail = e.detail || {};
+          if (detail.marketing === true) {
+            thLoadTikTokPixel();
+          } else {
+            thRevokeTikTokPixel();
+          }
         });
       </script>
     )}
