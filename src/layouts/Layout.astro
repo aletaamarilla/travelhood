@@ -169,42 +169,32 @@ const ogPageUrl = ogUrl ?? canonicalUrl;
           };
         }(window, document, "ttq");
 
-        var thTikTokLoaded = false;
-
-        function thReadMarketingConsent() {
+        function thReadCookieConsent() {
           try {
             var m = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
-            if (!m) return false;
-            return JSON.parse(decodeURIComponent(m[1])).marketing === true;
+            if (!m) return null;
+            return JSON.parse(decodeURIComponent(m[1]));
           } catch (e) {
-            return false;
+            return null;
           }
         }
 
-        function thLoadTikTokPixel() {
-          if (thTikTokLoaded) return;
-          thTikTokLoaded = true;
-          ttq.grantConsent();
-          ttq.load(tiktokPixelId);
-          ttq.page();
+        function thApplyTikTokConsent(consent) {
+          if (consent && consent.marketing === true) {
+            ttq.grantConsent();
+            ttq.page();
+          } else if (consent && consent.marketing === false) {
+            ttq.revokeConsent();
+          } else {
+            ttq.holdConsent();
+          }
         }
 
-        function thRevokeTikTokPixel() {
-          if (typeof ttq !== "undefined") ttq.revokeConsent();
-          thTikTokLoaded = false;
-        }
-
-        if (thReadMarketingConsent()) {
-          thLoadTikTokPixel();
-        }
+        ttq.load(tiktokPixelId);
+        thApplyTikTokConsent(thReadCookieConsent());
 
         window.addEventListener("cookieConsentUpdated", function(e) {
-          var detail = e.detail || {};
-          if (detail.marketing === true) {
-            thLoadTikTokPixel();
-          } else {
-            thRevokeTikTokPixel();
-          }
+          thApplyTikTokConsent(e.detail || {});
         });
       </script>
     )}
