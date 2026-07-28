@@ -225,6 +225,15 @@ export default defineType({
       fieldset: 'includes',
       description: 'No-incluidos extra del destino (ej: "Ropa térmica").',
     }),
+    defineField({
+      name: 'travelInsuranceIncluded',
+      title: '¿Incluye seguro de viaje?',
+      type: 'boolean',
+      fieldset: 'includes',
+      description:
+        'Actívalo si este destino incluye el seguro de viaje. Si está desactivado, se mantiene como no incluido.',
+      initialValue: false,
+    }),
 
     // --- Itinerario ---
     defineField({

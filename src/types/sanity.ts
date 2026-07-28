@@ -161,6 +161,7 @@ export interface SanityDestination {
   continent?: SanityRef & Pick<SanityContinent, 'name' | 'slug'>
   included?: string[]
   notIncluded?: string[]
+  travelInsuranceIncluded?: boolean
   itinerary?: SanityItineraryDay[]
   faqs?: SanityFaq[]
   seo?: SanityDestinationSeo
@@ -207,7 +208,7 @@ export interface SanityTrip {
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'
   tags?: string[]
-  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'itinerary' | 'hasCoordinator'> & {
+  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'travelInsuranceIncluded' | 'itinerary' | 'hasCoordinator'> & {
     country?: Pick<SanityCountry, 'name' | 'flag'>
     continent?: Pick<SanityContinent, 'name' | 'slug'>
   }

@@ -525,9 +525,19 @@ interface MergeContext {
   defaultNotIncluded: string[]
 }
 
+const TRAVEL_INSURANCE_LABEL = 'Seguro de viaje'
+
 function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
-  const destIncluded = removeLegacyDefaultIncluded(s.destination?.included ?? [])
-  const destNotIncluded = s.destination?.notIncluded ?? []
+  const travelInsuranceIncluded = s.destination?.travelInsuranceIncluded === true
+  const isTravelInsurance = (item: string) =>
+    item.trim().toLowerCase() === TRAVEL_INSURANCE_LABEL.toLowerCase()
+  const destIncluded = [
+    ...removeLegacyDefaultIncluded(s.destination?.included ?? []),
+    ...(travelInsuranceIncluded ? [TRAVEL_INSURANCE_LABEL] : []),
+  ]
+  const destNotIncluded = (s.destination?.notIncluded ?? []).filter(
+    (item) => !travelInsuranceIncluded || !isTravelInsurance(item)
+  )
   const destItinerary = s.destination?.itinerary ?? []
   const destHasCoordinator = s.destination?.hasCoordinator ?? true
 
@@ -543,7 +553,14 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     : destIncluded
 
   const notIncluded = ctx
-    ? [...new Set([...ctx.defaultNotIncluded, ...destNotIncluded])]
+    ? [
+        ...new Set([
+          ...ctx.defaultNotIncluded.filter(
+            (item) => !travelInsuranceIncluded || !isTravelInsurance(item)
+          ),
+          ...destNotIncluded,
+        ]),
+      ]
     : destNotIncluded
 
   const itinerary = destItinerary.map((d) => ({
