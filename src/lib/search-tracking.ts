@@ -76,10 +76,17 @@ export function intentToTrackingFields(
   const date_mode = intent.date.mode
   let date_value: string | undefined
   if (intent.date.mode === "specific") {
-    date_value =
-      intent.date.kind === "period"
-        ? intent.date.periodId
+    if (intent.date.kind === "period") {
+      date_value = intent.date.periodId
+    } else if (intent.date.kind === "preset") {
+      date_value = intent.date.presetId
+    } else if (intent.date.kind === "month") {
+      date_value = intent.date.year
+        ? intent.date.year + "-" + String(intent.date.monthIndex + 1).padStart(2, "0")
         : String(intent.date.monthIndex)
+    } else {
+      date_value = intent.date.startDate + ":" + intent.date.endDate
+    }
   }
 
   return { destination_mode, destination_slug, date_mode, date_value }

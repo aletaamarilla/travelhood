@@ -12,6 +12,8 @@ export const SEARCH_RESULTS_HASH = "#resultados" as const
 export type DestinationMode = "any" | "specific"
 export type DateMode = "any" | "specific"
 
+export type DatePresetId = "proximas" | "puentes" | "navidad-fin-de-anio"
+
 export type DestinationSelection =
   | { mode: "any" }
   | { mode: "specific"; kind: "destination"; destinationId: string }
@@ -20,7 +22,9 @@ export type DestinationSelection =
 export type DateSelection =
   | { mode: "any" }
   | { mode: "specific"; kind: "period"; periodId: TripTag }
-  | { mode: "specific"; kind: "month"; monthIndex: number }
+  | { mode: "specific"; kind: "preset"; presetId: DatePresetId }
+  | { mode: "specific"; kind: "month"; monthIndex: number; year?: number }
+  | { mode: "specific"; kind: "range"; startDate: string; endDate: string }
 
 export interface SearchIntent {
   destination: DestinationSelection
@@ -83,6 +87,23 @@ function isValidMonthIndex(value: number): boolean {
   return Number.isInteger(value) && value >= 0 && value <= 11
 }
 
+const DATE_PRESET_IDS: readonly DatePresetId[] = ["proximas", "puentes", "navidad-fin-de-anio"]
+
+function isDatePresetId(value: string): value is DatePresetId {
+  return (DATE_PRESET_IDS as readonly string[]).includes(value)
+}
+
+function isValidYear(value: number): boolean {
+  return Number.isInteger(value) && value >= 2000 && value <= 2100
+}
+
+function isValidDateOnly(value: string | null): value is string {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const [year, month, day] = value.split("-").map(Number)
+  const date = new Date(year, month - 1, day)
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+}
+
 export function createDefaultSearchIntent(): SearchIntent {
   return {
     destination: { mode: "any" },
@@ -136,14 +157,29 @@ export function parseSearchIntentFromUrlSearch(
   }
 
   let date: DateSelection = { mode: "any" }
+  const desde = params.get("desde")
+  const hasta = params.get("hasta")
   const cuando = params.get("cuando")
-  if (cuando && cuando !== ANY_DATE_ID) {
+  if (isValidDateOnly(desde) && isValidDateOnly(hasta) && desde <= hasta) {
+    date = { mode: "specific", kind: "range", startDate: desde, endDate: hasta }
+  } else if (cuando && cuando !== ANY_DATE_ID) {
     if (isTripPeriodId(cuando)) {
       date = { mode: "specific", kind: "period", periodId: cuando }
+    } else if (isDatePresetId(cuando)) {
+      date = { mode: "specific", kind: "preset", presetId: cuando }
     } else {
-      const monthIndex = Number(cuando)
-      if (isValidMonthIndex(monthIndex)) {
-        date = { mode: "specific", kind: "month", monthIndex }
+      const monthYear = cuando.match(/^(\d{4})-(\d{2})$/)
+      if (monthYear) {
+        const year = Number(monthYear[1])
+        const monthIndex = Number(monthYear[2]) - 1
+        if (isValidYear(year) && isValidMonthIndex(monthIndex)) {
+          date = { mode: "specific", kind: "month", monthIndex, year }
+        }
+      } else {
+        const monthIndex = Number(cuando)
+        if (isValidMonthIndex(monthIndex)) {
+          date = { mode: "specific", kind: "month", monthIndex }
+        }
       }
     }
   }
@@ -166,8 +202,18 @@ export function buildSearchResultsHref(intent: SearchIntent): string {
   if (intent.date.mode === "specific") {
     if (intent.date.kind === "period") {
       params.set("cuando", intent.date.periodId)
+    } else if (intent.date.kind === "preset") {
+      params.set("cuando", intent.date.presetId)
+    } else if (intent.date.kind === "month") {
+      params.set(
+        "cuando",
+        intent.date.year
+          ? intent.date.year + "-" + String(intent.date.monthIndex + 1).padStart(2, "0")
+          : String(intent.date.monthIndex),
+      )
     } else {
-      params.set("cuando", String(intent.date.monthIndex))
+      params.set("desde", intent.date.startDate)
+      params.set("hasta", intent.date.endDate)
     }
   }
 

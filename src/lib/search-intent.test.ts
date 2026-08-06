@@ -189,4 +189,38 @@ function intent(partial: Partial<SearchIntent> & Pick<SearchIntent, "destination
   )
   assert.equal(href, "/viajes/?donde=south-america&cuando=navidad#resultados")
 }
+
+// New month selections include the year, so repeated months never collide.
+{
+  const href = buildSearchResultsHref(
+    intent({
+      destination: { mode: "any" },
+      date: { mode: "specific", kind: "month", monthIndex: 9, year: 2027 },
+    }),
+  )
+  assert.equal(href, "/viajes/?cuando=2027-10#resultados")
+  assert.deepEqual(
+    parseSearchIntentFromUrlSearch("?cuando=2027-10", destinations, continents).date,
+    { mode: "specific", kind: "month", monthIndex: 9, year: 2027 },
+  )
+}
+
+// Date ranges have explicit start/end params and round-trip safely.
+{
+  const rangeIntent = intent({
+    destination: { mode: "any" },
+    date: { mode: "specific", kind: "range", startDate: "2027-03-10", endDate: "2027-03-24" },
+  })
+  assert.equal(buildSearchResultsHref(rangeIntent), "/viajes/?desde=2027-03-10&hasta=2027-03-24#resultados")
+  assert.deepEqual(
+    parseSearchIntentFromUrlSearch("?desde=2027-03-10&hasta=2027-03-24", destinations).date,
+    rangeIntent.date,
+  )
+}
+
+// Grouped date suggestions remain serializable.
+{
+  const parsed = parseSearchIntentFromUrlSearch("?cuando=puentes", destinations)
+  assert.deepEqual(parsed.date, { mode: "specific", kind: "preset", presetId: "puentes" })
+}
 console.log("search-intent.test.ts: all assertions passed")

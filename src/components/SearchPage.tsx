@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef, useMemo, useCallback, Component } from "react"
 import type { ReactNode, ErrorInfo } from "react"
-import { Search, MapPin, Calendar, CalendarClock, X, Users, Shield, Compass, Globe } from "lucide-react"
-import type { Trip, Destination, Continent, Country, DestinationCategory, TripTag } from "@/lib/travel-data"
+import { Search, MapPin, Calendar, X, Users, Shield, Compass } from "lucide-react"
+import SearchDateSelector, { formatDateSelectionLabel } from "@/components/SearchDateSelector"
+import SearchDestinationSelector from "@/components/SearchDestinationSelector"
+import type { Trip, Destination, Continent, Country, DestinationCategory } from "@/lib/travel-data"
 import { deduplicateTripsByDestination } from "@/lib/utils"
 import { buildWhatsAppUrl, FALLBACK_WHATSAPP_PHONE } from "@/lib/config"
 import {
   createDefaultSearchIntent,
+  buildSearchResultsHref,
   parseSearchIntentFromUrlSearch,
   type DateSelection,
   type DestinationSelection,
@@ -18,17 +21,11 @@ import {
   parseTripDate,
 } from "@/lib/search-availability"
 import {
-  trackDateAnySelected,
   trackDestinationAnySelected,
   trackDestinationSpecificSelected,
   trackSearchStarted,
 } from "@/lib/search-tracking"
-import {
-  ANY_WHEN_LABEL,
-  ANY_WHERE_LABEL,
-  SEARCH_MONTH_OPTIONS,
-  SEARCH_PERIOD_OPTIONS,
-} from "@/lib/search-options"
+import { ANY_WHERE_LABEL } from "@/lib/search-options"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
@@ -87,15 +84,11 @@ const categoryFilters: { id: DestinationCategory | "all"; label: string; emoji: 
   { id: "naturaleza", label: "Naturaleza", emoji: "🌴" },
 ]
 
-const continentEmoji: Record<string, string> = {
-  europe: "🌍", asia: "🌏", africa: "🌍", "south-america": "🌎", "central-america": "🌎", oceania: "🌏",
-}
-
 const SEARCH_SOURCE = "viajes_page" as const
 
 function buildSearchPageIntent(
   where: { type: "continent" | "destination"; id: string } | null,
-  when: { type: "period" | "month"; id: string } | null,
+  date: DateSelection,
 ): SearchIntent {
   const intent = createDefaultSearchIntent()
 
@@ -105,12 +98,7 @@ function buildSearchPageIntent(
       : { mode: "specific", kind: "continent", continentId: where.id }
   }
 
-  if (when) {
-    intent.date = when.type === "period"
-      ? { mode: "specific", kind: "period", periodId: when.id as TripTag }
-      : { mode: "specific", kind: "month", monthIndex: Number(when.id) }
-  }
-
+  intent.date = date
   return intent
 }
 
@@ -122,16 +110,6 @@ function toDestinationSelection(
   return where.type === "destination"
     ? { mode: "specific", kind: "destination", destinationId: where.id }
     : { mode: "specific", kind: "continent", continentId: where.id }
-}
-
-function toDateSelection(
-  when: { type: "period" | "month"; id: string } | null,
-): DateSelection {
-  if (!when) return { mode: "any" }
-
-  return when.type === "period"
-    ? { mode: "specific", kind: "period", periodId: when.id as TripTag }
-    : { mode: "specific", kind: "month", monthIndex: Number(when.id) }
 }
 
 function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () => void, active: boolean) {
@@ -149,9 +127,7 @@ function parseUrlParams(allContinents: Continent[], allDestinations: Destination
   donde?: string
   dondeTipo?: "continent" | "destination"
   dondeLabel?: string
-  cuando?: string
-  cuandoTipo?: "period" | "month"
-  cuandoLabel?: string
+  date?: DateSelection
   tipo?: string
 } {
   if (typeof window === "undefined") return {}
@@ -179,24 +155,7 @@ function parseUrlParams(allContinents: Continent[], allDestinations: Destination
     }
   }
 
-  if (intent.date.mode === "specific") {
-    if (intent.date.kind === "period") {
-      const { periodId } = intent.date
-      const period = SEARCH_PERIOD_OPTIONS.find((item) => item.id === periodId)
-      if (period) {
-        result.cuando = period.id
-        result.cuandoTipo = "period"
-        result.cuandoLabel = period.label
-      }
-    } else {
-      const month = SEARCH_MONTH_OPTIONS[intent.date.monthIndex]
-      if (month) {
-        result.cuando = String(month.index)
-        result.cuandoTipo = "month"
-        result.cuandoLabel = month.label.charAt(0).toUpperCase() + month.label.slice(1)
-      }
-    }
-  }
+  if (intent.date.mode === "specific") result.date = intent.date
 
   const tipo = params.get("tipo")
   if (tipo) {
@@ -323,26 +282,20 @@ interface SearchPageProps {
 
 function SearchPageInner({ trips, destinations, continents, countries, heroImage, heroImageAlt, whatsappPhone }: SearchPageProps) {
   const [whereValue, setWhereValue] = useState<{ type: "continent" | "destination"; id: string; label: string } | null>(null)
-  const [whenValue, setWhenValue] = useState<{ type: "period" | "month"; id: string; label: string } | null>(null)
+  const [dateSelection, setDateSelection] = useState<DateSelection>({ mode: "any" })
   const [categoryValue, setCategoryValue] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [whereOpen, setWhereOpen] = useState(false)
   const [whenOpen, setWhenOpen] = useState(false)
-  const [whenTab, setWhenTab] = useState<"flexible" | "meses">("meses")
   const todayStart = useMemo(() => getTodayStart(), [])
   const destinationSelection = useMemo(() => toDestinationSelection(whereValue), [whereValue])
-  const dateSelection = useMemo(() => toDateSelection(whenValue), [whenValue])
 
   useEffect(() => {
     const params = parseUrlParams(continents, destinations)
     if (params.donde) {
       setWhereValue({ type: params.dondeTipo!, id: params.donde, label: params.dondeLabel! })
-      if (params.dondeTipo === "destination") setSearchQuery(params.dondeLabel || "")
     }
-    if (params.cuando) {
-      setWhenValue({ type: params.cuandoTipo!, id: params.cuando, label: params.cuandoLabel! })
-      setWhenTab(params.cuandoTipo === "period" ? "flexible" : "meses")
-    }
+    if (params.date) setDateSelection(params.date)
     if (params.tipo) setCategoryValue(params.tipo)
   }, [])
 
@@ -384,8 +337,6 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
     [categoryValue, dateSelection, destinations, trips, todayStart],
   )
 
-  const popularDestinations = useMemo(() => availableDestinations.slice(0, 6), [availableDestinations])
-
   const availableContinents = useMemo(
     () =>
       continents.filter((continent) =>
@@ -396,41 +347,6 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
         }),
       ),
     [categoryValue, continents, dateSelection, destinations, trips, todayStart],
-  )
-
-  const suggestions = useMemo(() => {
-    if (searchQuery.length < 1) return []
-    const q = searchQuery.toLowerCase().trim()
-    return availableDestinations.filter(
-      (d) =>
-        d.name.toLowerCase().includes(q) ||
-        d.slug.toLowerCase().includes(q) ||
-        d.categories.some((c) => c.toLowerCase().includes(q))
-    )
-  }, [searchQuery, availableDestinations])
-
-  const availablePeriodOptions = useMemo(
-    () =>
-      SEARCH_PERIOD_OPTIONS.filter((period) =>
-        hasMatchesForSearch(trips, destinations, todayStart, {
-          destination: destinationSelection,
-          date: { mode: "specific", kind: "period", periodId: period.id },
-          category: categoryValue as DestinationCategory | "all",
-        }),
-      ),
-    [categoryValue, destinationSelection, destinations, trips, todayStart],
-  )
-
-  const availableMonthOptions = useMemo(
-    () =>
-      SEARCH_MONTH_OPTIONS.filter((month) =>
-        hasMatchesForSearch(trips, destinations, todayStart, {
-          destination: destinationSelection,
-          date: { mode: "specific", kind: "month", monthIndex: month.index },
-          category: categoryValue as DestinationCategory | "all",
-        }),
-      ),
-    [categoryValue, destinationSelection, destinations, trips, todayStart],
   )
 
   const availableCategoryFilters = useMemo(
@@ -458,7 +374,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [whereValue, whenValue, categoryValue])
+  }, [categoryValue, dateSelection, whereValue])
 
   const goToPage = useCallback((page: number) => {
     setCurrentPage(page)
@@ -487,7 +403,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
       )
       .slice(0, 3)
   }, [categoryValue, dateSelection, destinations, trips, todayStart, selectedDestination?.id])
-  const activeFilterCount = [whereValue, whenValue, categoryValue !== "all" ? categoryValue : null].filter(Boolean).length
+  const activeFilterCount = [whereValue, dateSelection.mode === "specific" ? dateSelection : null, categoryValue !== "all" ? categoryValue : null].filter(Boolean).length
   const searchCtaLabel = selectedDestination ? `Ver viajes a ${selectedDestination.name}` : "Ver resultados"
   const emptyStateWhatsAppMessage = selectedDestination
     ? `Hola! Me interesa viajar a ${selectedDestination.name}, pero no encuentro una salida con estos filtros. ¿Podéis ayudarme?`
@@ -498,6 +414,12 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
       resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
     })
   }, [])
+
+  const handleDateApply = useCallback((date: DateSelection) => {
+    setDateSelection(date)
+    setWhenOpen(false)
+    scrollToResults()
+  }, [scrollToResults])
 
   useEffect(() => {
     const hash = window.location.hash
@@ -510,7 +432,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
 
   const clearAll = useCallback(() => {
     setWhereValue(null)
-    setWhenValue(null)
+    setDateSelection({ mode: "any" })
     setCategoryValue("all")
     setSearchQuery("")
     if (typeof window !== "undefined") {
@@ -520,14 +442,11 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
 
   const updateUrl = useCallback(() => {
     if (typeof window === "undefined") return
-    const params = new URLSearchParams()
-    if (whereValue) params.set("donde", whereValue.id)
-    if (whenValue) params.set("cuando", whenValue.id)
-    if (categoryValue !== "all") params.set("tipo", categoryValue)
-    const qs = params.toString()
-    const hash = window.location.hash
-    window.history.replaceState({}, "", qs ? `/viajes/?${qs}${hash}` : `/viajes/${hash}`)
-  }, [whereValue, whenValue, categoryValue])
+    const href = buildSearchResultsHref(buildSearchPageIntent(whereValue, dateSelection))
+    const url = new URL(href, window.location.origin)
+    if (categoryValue !== "all") url.searchParams.set("tipo", categoryValue)
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash)
+  }, [categoryValue, dateSelection, whereValue])
 
   useEffect(() => {
     updateUrl()
@@ -537,9 +456,9 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
     const handlePopState = () => {
       const params = parseUrlParams(continents, destinations)
       setWhereValue(params.donde ? { type: params.dondeTipo!, id: params.donde, label: params.dondeLabel! } : null)
-      setWhenValue(params.cuando ? { type: params.cuandoTipo!, id: params.cuando, label: params.cuandoLabel! } : null)
+      setDateSelection(params.date ?? { mode: "any" })
       setCategoryValue(params.tipo || "all")
-      setSearchQuery(params.dondeTipo === "destination" ? params.dondeLabel || "" : "")
+      setSearchQuery("")
     }
     window.addEventListener("popstate", handlePopState)
     return () => window.removeEventListener("popstate", handlePopState)
@@ -595,6 +514,8 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                   setWhereOpen(!whereOpen)
                   setWhenOpen(false)
                 }}
+                aria-expanded={whereOpen}
+                aria-controls="results-destination-options"
                 className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-muted/30 sm:rounded-full sm:px-5"
               >
                 <MapPin className="h-[18px] w-[18px] shrink-0 text-coral" />
@@ -604,139 +525,47 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
               </button>
 
               {whereOpen && (
-                <div className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-xl border border-border/50 bg-card p-1.5 shadow-lg sm:w-80">
-                  <div className="mb-1 flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2.5">
-                    <Search className="h-4 w-4 shrink-0 text-muted-foreground/60" />
-                    <input
-                      type="text"
-                      placeholder="Buscar destino o país..."
-                      value={searchQuery}
-                      onChange={(e) => { setSearchQuery(e.target.value); setWhereValue(null) }}
-                      autoFocus
-                      className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-                    />
-                    {searchQuery && (
-                      <button type="button" onClick={() => setSearchQuery("")} className="text-muted-foreground/40 hover:text-muted-foreground">
-                        <X className="h-3.5 w-3.5" />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="max-h-72 overflow-y-auto">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setWhereValue(null)
-                        setSearchQuery("")
-                        setWhereOpen(false)
-                        trackDestinationAnySelected(
-                          SEARCH_SOURCE,
-                          buildSearchPageIntent(null, whenValue),
-                          destinationRefs,
-                        )
-                      }}
-                      className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-                        !whereValue ? "bg-teal-deep/5 text-teal-deep" : "text-foreground hover:bg-muted/40"
-                      }`}
-                    >
-                      <Globe className="h-5 w-5 shrink-0 text-coral" />
-                      <span>
-                        <span className="block text-sm font-semibold">{ANY_WHERE_LABEL}</span>
-                        <span className="block text-xs text-muted-foreground">Quiero descubrir opciones</span>
-                      </span>
-                    </button>
-                    {searchQuery && suggestions.length > 0 ? (
-                      <div className="py-1">
-                        {suggestions.map((dest) => (
-                          <button
-                            key={dest.id}
-                            type="button"
-                            onClick={() => {
-                              const where = { type: "destination" as const, id: dest.id, label: dest.name }
-                              setWhereValue(where)
-                              setSearchQuery(dest.name)
-                              setWhereOpen(false)
-                              trackDestinationSpecificSelected(
-                                SEARCH_SOURCE,
-                                buildSearchPageIntent(where, whenValue),
-                                destinationRefs,
-                              )
-                            }}
-                            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
-                          >
-                            <img src={dest.heroImage} alt={dest.name} width={36} height={36} className="h-9 w-9 shrink-0 rounded-lg object-cover" />
-                            <div className="min-w-0">
-                              <p className="text-sm font-medium text-foreground">{dest.name}</p>
-                              <p className="truncate text-xs text-muted-foreground/70">{dest.shortDescription}</p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    ) : searchQuery && suggestions.length === 0 ? (
-                      <p className="px-3 py-6 text-center text-sm text-muted-foreground/60">
-                        No encontramos ese destino
-                      </p>
-                    ) : (
-                      <>
-                        <p className="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Continentes</p>
-                        <div className="grid grid-cols-2 gap-1 px-1">
-                          {availableContinents.map((c) => (
-                            <button
-                              key={c.id}
-                              type="button"
-                              onClick={() => {
-                                const where = { type: "continent" as const, id: c.id, label: c.name }
-                                setWhereValue(where)
-                                setSearchQuery("")
-                                setWhereOpen(false)
-                                trackDestinationSpecificSelected(
-                                  SEARCH_SOURCE,
-                                  buildSearchPageIntent(where, whenValue),
-                                  destinationRefs,
-                                )
-                              }}
-                              className={`flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                                whereValue?.id === c.id ? "bg-teal-deep/5 font-medium text-teal-deep" : "text-foreground/80 hover:bg-muted/40"
-                              }`}
-                            >
-                              <span>{continentEmoji[c.id]}</span>
-                              {c.name}
-                            </button>
-                          ))}
-                        </div>
-
-                        <p className="px-3 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/50">Populares</p>
-                        {popularDestinations.length > 0 ? (
-                          popularDestinations.map((dest) => (
-                            <button
-                              key={dest.id}
-                              type="button"
-                              onClick={() => {
-                                const where = { type: "destination" as const, id: dest.id, label: dest.name }
-                                setWhereValue(where)
-                                setSearchQuery(dest.name)
-                                setWhereOpen(false)
-                                trackDestinationSpecificSelected(
-                                  SEARCH_SOURCE,
-                                  buildSearchPageIntent(where, whenValue),
-                                  destinationRefs,
-                                )
-                              }}
-                              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/40"
-                            >
-                              <img src={dest.heroImage} alt={dest.name} width={32} height={32} className="h-8 w-8 shrink-0 rounded-md object-cover" />
-                              <p className="text-sm text-foreground">{dest.name}</p>
-                            </button>
-                          ))
-                        ) : (
-                          <p className="px-3 py-4 text-center text-sm text-muted-foreground/60">
-                            No hay destinos con salidas para esos filtros
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
+                <SearchDestinationSelector
+                  id="results-destination-options"
+                  query={searchQuery}
+                  destinations={availableDestinations}
+                  continents={availableContinents}
+                  selected={whereValue ? { kind: whereValue.type, id: whereValue.id } : null}
+                  popularLimit={6}
+                  onQueryChange={setSearchQuery}
+                  onSelectAny={() => {
+                    setWhereValue(null)
+                    setSearchQuery("")
+                    setWhereOpen(false)
+                    trackDestinationAnySelected(
+                      SEARCH_SOURCE,
+                      buildSearchPageIntent(null, dateSelection),
+                      destinationRefs,
+                    )
+                  }}
+                  onSelectDestination={(destination) => {
+                    const where = { type: "destination" as const, id: destination.id, label: destination.name }
+                    setWhereValue(where)
+                    setSearchQuery("")
+                    setWhereOpen(false)
+                    trackDestinationSpecificSelected(
+                      SEARCH_SOURCE,
+                      buildSearchPageIntent(where, dateSelection),
+                      destinationRefs,
+                    )
+                  }}
+                  onSelectContinent={(continent) => {
+                    const where = { type: "continent" as const, id: continent.id, label: continent.name }
+                    setWhereValue(where)
+                    setSearchQuery("")
+                    setWhereOpen(false)
+                    trackDestinationSpecificSelected(
+                      SEARCH_SOURCE,
+                      buildSearchPageIntent(where, dateSelection),
+                      destinationRefs,
+                    )
+                  }}
+                />
               )}
             </div>
 
@@ -751,116 +580,28 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                   setWhenOpen(!whenOpen)
                   setWhereOpen(false)
                 }}
+                aria-expanded={whenOpen}
+                aria-controls="results-date-options"
                 className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors hover:bg-muted/30 sm:rounded-full sm:px-5"
               >
                 <Calendar className="h-[18px] w-[18px] shrink-0 text-coral" />
                 <span className="flex-1 truncate text-sm font-medium text-foreground">
-                  {whenValue?.label ?? ANY_WHEN_LABEL}
+                  {formatDateSelectionLabel(dateSelection)}
                 </span>
               </button>
 
-              {whenOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-border/50 bg-card shadow-lg sm:w-80">
-                  <div className="p-1.5">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setWhenValue(null)
-                        setWhenOpen(false)
-                        trackDateAnySelected(
-                          SEARCH_SOURCE,
-                          buildSearchPageIntent(whereValue, null),
-                          destinationRefs,
-                        )
-                      }}
-                      className={`flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-                        !whenValue ? "bg-teal-deep/5 text-teal-deep" : "text-foreground hover:bg-muted/40"
-                      }`}
-                    >
-                      <CalendarClock className="h-5 w-5 shrink-0 text-coral" />
-                      <span>
-                        <span className="block text-sm font-semibold">{ANY_WHEN_LABEL}</span>
-                        <span className="block text-xs text-muted-foreground">Tengo flexibilidad</span>
-                      </span>
-                    </button>
-                  </div>
-                  <div className="flex border-b border-border/40">
-                    <button
-                      type="button"
-                      onClick={() => setWhenTab("meses")}
-                      className={`flex-1 px-4 py-2.5 text-xs font-semibold transition-colors ${
-                        whenTab === "meses" ? "border-b-2 border-teal-deep text-teal-deep" : "text-muted-foreground/60 hover:text-foreground"
-                      }`}
-                    >
-                      Por mes
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setWhenTab("flexible")}
-                      className={`flex-1 px-4 py-2.5 text-xs font-semibold transition-colors ${
-                        whenTab === "flexible" ? "border-b-2 border-teal-deep text-teal-deep" : "text-muted-foreground/60 hover:text-foreground"
-                      }`}
-                    >
-                      Temporada
-                    </button>
-                  </div>
-
-                  <div className="p-1.5">
-                    {whenTab === "flexible" ? (
-                      <div className="flex flex-col gap-0.5">
-                        {availablePeriodOptions.length > 0 ? (
-                          availablePeriodOptions.map((p) => (
-                            <button
-                              key={p.id}
-                              type="button"
-                              onClick={() => { setWhenValue({ type: "period", id: p.id, label: p.label }); setWhenOpen(false) }}
-                              className={`rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
-                                whenValue?.id === p.id ? "bg-teal-deep/5 font-medium text-teal-deep" : "text-foreground/80 hover:bg-muted/40"
-                              }`}
-                            >
-                              {p.label}
-                            </button>
-                          ))
-                        ) : (
-                          <p className="px-3 py-4 text-center text-sm text-muted-foreground/60">
-                            No hay temporadas con salidas para esos filtros
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-3 gap-1 p-1">
-                        {availableMonthOptions.length > 0 ? (
-                          availableMonthOptions.map((month) => (
-                            <button
-                              key={month.index}
-                              type="button"
-                              onClick={() => {
-                                setWhenValue({
-                                  type: "month",
-                                  id: String(month.index),
-                                  label: month.label.charAt(0).toUpperCase() + month.label.slice(1),
-                                })
-                                setWhenOpen(false)
-                              }}
-                              className={`rounded-lg py-2.5 text-center text-sm transition-colors ${
-                                whenValue?.id === String(month.index) && whenValue.type === "month"
-                                  ? "bg-teal-deep font-medium text-white"
-                                  : "text-foreground/80 hover:bg-muted/40"
-                              }`}
-                            >
-                              {month.shortLabel}
-                            </button>
-                          ))
-                        ) : (
-                          <p className="col-span-3 px-3 py-4 text-center text-sm text-muted-foreground/60">
-                            No hay meses con salidas para esos filtros
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
+              <SearchDateSelector
+                id="results-date-options"
+                open={whenOpen}
+                value={dateSelection}
+                trips={trips}
+                destinations={destinations}
+                destination={destinationSelection}
+                category={categoryValue as DestinationCategory | "all"}
+                todayStart={todayStart}
+                onClose={() => setWhenOpen(false)}
+                onApply={handleDateApply}
+              />
             </div>
 
             {/* En /viajes/ el CTA aplica filtros y mantiene la exploración; las cards llevan al detalle. */}
@@ -922,11 +663,11 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                     </button>
                   </span>
                 )}
-                {whenValue && (
+                {dateSelection.mode === "specific" && (
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-deep/8 px-3 py-1 text-xs font-medium text-teal-deep">
                     <Calendar className="h-3 w-3" />
-                    {whenValue.label}
-                    <button onClick={() => setWhenValue(null)} className="hover:text-coral">
+                    {formatDateSelectionLabel(dateSelection)}
+                    <button onClick={() => setDateSelection({ mode: "any" })} aria-label="Quitar filtro de fecha" className="hover:text-coral">
                       <X className="h-3 w-3" />
                     </button>
                   </span>
@@ -1053,7 +794,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
             {alternativeDestinations.length > 0 && (
               <div className="mt-2">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  {whenValue ? "Otros destinos con salidas en esa fecha" : "Otros destinos con salidas"}
+                  {dateSelection.mode === "specific" ? "Otros destinos con salidas en esa fecha" : "Otros destinos con salidas"}
                 </p>
                 <div className="mt-3 flex flex-wrap justify-center gap-2">
                   {alternativeDestinations.map((destination) => (
@@ -1062,7 +803,7 @@ function SearchPageInner({ trips, destinations, continents, countries, heroImage
                       type="button"
                       onClick={() => {
                         setWhereValue({ type: "destination", id: destination.id, label: destination.name })
-                        setSearchQuery(destination.name)
+                        setSearchQuery("")
                       }}
                       className="min-h-11 rounded-full border border-border/50 bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-teal-vivid hover:text-teal-vivid"
                     >

@@ -1,5 +1,5 @@
 import type { DestinationCategory, Trip, TripTag } from "@/lib/travel-data"
-import type { DateSelection, DestinationSelection } from "@/lib/search-intent"
+import type { DatePresetId, DateSelection, DestinationSelection } from "@/lib/search-intent"
 
 export type SearchAvailabilityTrip = Pick<Trip, "destinationId" | "departureDate" | "status" | "tags"> &
   Partial<Pick<Trip, "returnDate">>
@@ -40,6 +40,7 @@ export function isBookableTrip(trip: Pick<Trip, "departureDate" | "status">, tod
 export function tripDepartsInMonth(
   trip: Pick<Trip, "departureDate"> & Partial<Pick<Trip, "returnDate">>,
   monthIndex: number,
+  year?: number,
 ): boolean {
   if (!Number.isInteger(monthIndex) || monthIndex < 0 || monthIndex > 11) return false
 
@@ -52,7 +53,7 @@ export function tripDepartsInMonth(
   const endMonth = new Date(returnDate.getFullYear(), returnDate.getMonth(), 1)
 
   while (cursor <= endMonth) {
-    if (cursor.getMonth() === monthIndex) return true
+    if (cursor.getMonth() === monthIndex && (year === undefined || cursor.getFullYear() === year)) return true
     cursor.setMonth(cursor.getMonth() + 1)
   }
 
@@ -75,6 +76,36 @@ function tripDateFitsPeriod(trip: Pick<Trip, "departureDate">, periodId: TripTag
   return !!departureDate && PERIOD_MONTHS[periodId].includes(departureDate.getMonth())
 }
 
+const PRESET_PERIODS: Record<Exclude<DatePresetId, "proximas">, readonly TripTag[]> = {
+  puentes: ["puente-mayo", "puente-octubre", "puente-noviembre"],
+  "navidad-fin-de-anio": ["navidad", "fin-de-anio"],
+}
+
+function tripMatchesPreset(
+  trip: Pick<Trip, "departureDate" | "tags">,
+  presetId: DatePresetId,
+): boolean {
+  if (presetId === "proximas") return true
+  return PRESET_PERIODS[presetId].some(
+    (periodId) => trip.tags.includes(periodId) && tripDateFitsPeriod(trip, periodId),
+  )
+}
+
+function tripOverlapsRange(
+  trip: Pick<Trip, "departureDate"> & Partial<Pick<Trip, "returnDate">>,
+  startDate: string,
+  endDate: string,
+): boolean {
+  const departureDate = parseTripDate(trip.departureDate)
+  const selectedStart = parseTripDate(startDate)
+  const selectedEnd = parseTripDate(endDate)
+  if (!departureDate || !selectedStart || !selectedEnd || selectedEnd < selectedStart) return false
+
+  const parsedReturnDate = parseTripDate(trip.returnDate)
+  const returnDate = parsedReturnDate && parsedReturnDate >= departureDate ? parsedReturnDate : departureDate
+  return departureDate <= selectedEnd && returnDate >= selectedStart
+}
+
 export function tripMatchesDateSelection(
   trip: Pick<Trip, "departureDate" | "tags"> & Partial<Pick<Trip, "returnDate">>,
   date: DateSelection = { mode: "any" },
@@ -85,7 +116,15 @@ export function tripMatchesDateSelection(
     return trip.tags.includes(date.periodId) && tripDateFitsPeriod(trip, date.periodId)
   }
 
-  return tripDepartsInMonth(trip, date.monthIndex)
+  if (date.kind === "preset") {
+    return tripMatchesPreset(trip, date.presetId)
+  }
+
+  if (date.kind === "range") {
+    return tripOverlapsRange(trip, date.startDate, date.endDate)
+  }
+
+  return tripDepartsInMonth(trip, date.monthIndex, date.year)
 }
 
 function tripMatchesDestinationSelection(
@@ -136,4 +175,43 @@ export function hasMatchesForSearch(
   filters: SearchAvailabilityFilters = {},
 ): boolean {
   return filterTripsForSearch(trips, destinations, todayStart, filters).length > 0
+}
+
+export interface AvailableSearchMonth {
+  year: number
+  monthIndex: number
+  count: number
+}
+
+export function getAvailableMonthsForSearch(
+  trips: readonly SearchAvailabilityTrip[],
+  destinations: readonly SearchAvailabilityDestination[],
+  todayStart: Date,
+  filters: Omit<SearchAvailabilityFilters, "date"> = {},
+): AvailableSearchMonth[] {
+  const bookableTrips = filterTripsForSearch(trips, destinations, todayStart, {
+    ...filters,
+    date: { mode: "any" },
+  })
+  const counts = new Map<string, AvailableSearchMonth>()
+
+  for (const trip of bookableTrips) {
+    const departureDate = parseTripDate(trip.departureDate)
+    if (!departureDate) continue
+    const parsedReturnDate = parseTripDate(trip.returnDate)
+    const returnDate = parsedReturnDate && parsedReturnDate >= departureDate ? parsedReturnDate : departureDate
+    const cursor = new Date(departureDate.getFullYear(), departureDate.getMonth(), 1)
+    const lastMonth = new Date(returnDate.getFullYear(), returnDate.getMonth(), 1)
+
+    while (cursor <= lastMonth) {
+      const year = cursor.getFullYear()
+      const monthIndex = cursor.getMonth()
+      const key = year + "-" + monthIndex
+      const current = counts.get(key)
+      counts.set(key, { year, monthIndex, count: (current?.count ?? 0) + 1 })
+      cursor.setMonth(cursor.getMonth() + 1)
+    }
+  }
+
+  return [...counts.values()].sort((a, b) => a.year - b.year || a.monthIndex - b.monthIndex)
 }
