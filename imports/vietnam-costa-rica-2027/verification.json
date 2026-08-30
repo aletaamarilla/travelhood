@@ -1,0 +1,100 @@
+{
+  "verifiedAt": "2026-08-30T10:10:29.575Z",
+  "publishedDestinations": 0,
+  "destinations": [
+    {
+      "_id": "destination-costa-rica",
+      "altCount": 8,
+      "continent": "Centroamérica",
+      "country": "Costa Rica",
+      "days": 12,
+      "hero": {
+        "metadata": {
+          "dimensions": {
+            "_type": "sanity.imageDimensions",
+            "aspectRatio": 1.5,
+            "height": 3648,
+            "width": 5472
+          }
+        },
+        "url": "https://cdn.sanity.io/images/73m9u2gt/production/5378a5d010c6fba2b3dbd40a13c4e5885ce60f19-5472x3648.jpg"
+      },
+      "name": "Costa Rica",
+      "pdf": {
+        "mimeType": "application/pdf",
+        "originalFilename": "PDF Costa Rica_compressed.pdf",
+        "sha1hash": "407060ca079404d788829fb071f5543b369abe1e",
+        "size": 10464682,
+        "url": "https://cdn.sanity.io/files/73m9u2gt/production/407060ca079404d788829fb071f5543b369abe1e.pdf"
+      },
+      "photos": 8,
+      "slug": "costa-rica"
+    },
+    {
+      "_id": "destination-vietnam",
+      "altCount": 7,
+      "continent": "Asia",
+      "country": "Vietnam",
+      "days": 14,
+      "hero": {
+        "metadata": {
+          "dimensions": {
+            "_type": "sanity.imageDimensions",
+            "aspectRatio": 0.6666172985781991,
+            "height": 6752,
+            "width": 4501
+          }
+        },
+        "url": "https://cdn.sanity.io/images/73m9u2gt/production/45c5ce299c40d907ef74ff86a6867efdb5fd7336-4501x6752.jpg"
+      },
+      "name": "Vietnam",
+      "pdf": {
+        "mimeType": "application/pdf",
+        "originalFilename": "PDF Vietnam 2.0_compressed.pdf",
+        "sha1hash": "7b7bf1a7d9363752490b5c9cc7282bf1900367f7",
+        "size": 11091126,
+        "url": "https://cdn.sanity.io/files/73m9u2gt/production/7b7bf1a7d9363752490b5c9cc7282bf1900367f7.pdf"
+      },
+      "photos": 7,
+      "slug": "vietnam"
+    }
+  ],
+  "trips": [
+    {
+      "_id": "trip-costa-rica-2027-02-07",
+      "departureDate": "2027-02-07",
+      "destination": "Costa Rica",
+      "durationDays": 12,
+      "priceFrom": 1500,
+      "returnDate": "2027-02-18",
+      "title": "Costa Rica — Febrero 2027 (7 febrero)"
+    },
+    {
+      "_id": "trip-costa-rica-2027-02-19",
+      "departureDate": "2027-02-19",
+      "destination": "Costa Rica",
+      "durationDays": 12,
+      "priceFrom": 1500,
+      "returnDate": "2027-03-02",
+      "title": "Costa Rica — Febrero 2027 (19 febrero)"
+    },
+    {
+      "_id": "trip-vietnam-2027-03-16",
+      "departureDate": "2027-03-16",
+      "destination": "Vietnam",
+      "durationDays": 14,
+      "priceFrom": 1200,
+      "returnDate": "2027-03-29",
+      "title": "Vietnam — Marzo 2027"
+    },
+    {
+      "_id": "trip-vietnam-2027-04-01",
+      "departureDate": "2027-04-01",
+      "destination": "Vietnam",
+      "durationDays": 14,
+      "priceFrom": 1200,
+      "returnDate": "2027-04-14",
+      "title": "Vietnam — Abril 2027"
+    }
+  ]
+}

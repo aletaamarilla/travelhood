@@ -14,7 +14,8 @@ function getClient(): SanityClient {
       projectId,
       dataset: import.meta.env.SANITY_DATASET || 'production',
       apiVersion: import.meta.env.SANITY_API_VERSION || '2026-03-16',
-      useCdn: true,
+      // Read fresh CMS content locally; keep the CDN for production builds.
+      useCdn: !import.meta.env.DEV,
     })
   }
   return _client

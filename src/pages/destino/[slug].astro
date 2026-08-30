@@ -82,15 +82,27 @@ const [faqs, globalFaqBlocks] = await Promise.all([
   getDestinationSanityFaqs(slug!),
   getGlobalFaqs('trip-detail'),
 ]);
-const galleryPhotos = destination.gallery ?? [];
-const photos = [
-  destination.heroImage,
-  ...galleryPhotos.map((photo) => photo.url),
-].filter(Boolean);
-const photoAlts = [
-  destination.heroImageAlt || `Viaje en grupo a ${destination.name}`,
-  ...galleryPhotos.map((photo) => photo.alt || `Foto del viaje a ${destination.name}`),
-];
+const seenPhotos = new Set<string>();
+const destinationPhotos = [
+  {
+    url: destination.heroImage,
+    alt: destination.heroImageAlt || `Viaje en grupo a ${destination.name}`,
+  },
+  ...(destination.gallery ?? []),
+].filter((photo) => {
+  if (!photo.url) return false;
+  // Sanity serves the same asset at different widths for the hero and gallery.
+  const imageKey = photo.url.startsWith("https://cdn.sanity.io/images/")
+    ? photo.url.split("?")[0]
+    : photo.url;
+  if (seenPhotos.has(imageKey)) return false;
+  seenPhotos.add(imageKey);
+  return true;
+});
+const photos = destinationPhotos.map((photo) => photo.url);
+const photoAlts = destinationPhotos.map(
+  (photo) => photo.alt || `Foto del viaje a ${destination.name}`,
+);
 const generalFaqs = globalFaqBlocks.flatMap((b) => b.faqs);
 
 const [allComparisons, searchableDestinations, allTripsGlobal] = await Promise.all([

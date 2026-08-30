@@ -1,0 +1,464 @@
+{
+  "sourceDate": "2026-08-30",
+  "notes": [
+    "Precios y fechas proceden exclusivamente de Vietnam.docx y Costa Rica.pdf. Los PDF comprimidos se suben íntegros.",
+    "Costa Rica: interpretado «19 al 2 marzo 2027» como 19 de febrero–2 de marzo de 2027, consistente con los 12 días indicados.",
+    "Vietnam día 7: se omite la frase contradictoria «Noche: Hoi An.»; el resto del día se conserva. Hoi An se alcanza el día 9. No se modifica el PDF.",
+    "Vietnam día 9: «vuelo a Hoi An» se expresa como «vuelo interno para continuar hasta Hoi An», sin inventar aeropuerto ni ruta adicional.",
+    "Incluidos y no incluidos se combinan con la configuración global sin modificarla. El seguro de viaje no está incluido en ninguno.",
+    "El clima general y las monedas se extraen de las páginas de preparación de los PDF comprimidos; descripciones, FAQ y SEO sintetizan el material facilitado.",
+    "30/08/2026: el usuario autoriza 15 plazas por salida, estimar vuelos y elegir cualquier coordinador. Se establecen 15 plazas totales y disponibles, estado open, Carlos Ruiz y estimaciones de vuelo de 1.000 € (Vietnam) y 800 € (Costa Rica). No son cotizaciones confirmadas para fechas concretas."
+  ],
+  "destinations": [
+    {
+      "slug": "vietnam",
+      "name": "Vietnam",
+      "continentId": "continent-asia",
+      "country": {
+        "id": "country-vietnam",
+        "name": "Vietnam",
+        "flag": "VN",
+        "currency": "Dong vietnamita (VND)",
+        "language": "Vietnamita"
+      },
+      "source": "new_destination/vietnam/Vietnam.docx",
+      "pdf": "new_destination/vietnam/PDF Vietnam 2.0_compressed.pdf",
+      "description": "Vietnam en 14 días para compartir carretera, cultura y aventura con un grupo y el acompañamiento de Travel Hood. Empezamos entre los mercados de Hanoi y nos adentramos en el Ha Giang Loop, tres días en moto con conductores locales y noches en casas de la zona. Seguimos entre barcas y montañas en Ninh Binh, farolillos y arrozales en Hoi An y la historia imperial de Hue. Cerramos la ruta en Ho Chi Minh, con los vuelos internos incluidos y un montón de momentos para llevarte a casa.",
+      "shortDescription": "Ha Giang en moto, barcas en Ninh Binh y farolillos en Hoi An.",
+      "highlights": [
+        "3 días de aventura en el Ha Giang Loop",
+        "Navegar entre montañas en Ninh Binh",
+        "Hoi An sobre dos ruedas y en basket boat",
+        "Un viaje al Vietnam imperial en Hue"
+      ],
+      "idealFor": "Quienes quieren compartir aventura, paisajes y cultura local de norte a sur de Vietnam.",
+      "categories": [
+        "aventura",
+        "cultural",
+        "naturaleza"
+      ],
+      "hasCoordinator": true,
+      "travelInsuranceIncluded": false,
+      "climate": "Tropical y húmedo, con temperaturas variables según la zona y más frescor en las montañas del norte.",
+      "included": [
+        "Vuelos internos",
+        "Traslados principales",
+        "Ha Giang Loop todo incluido",
+        "Excursión por Ninh Binh con almuerzo incluido",
+        "Alquiler de bicicletas en Hoi An y paseo en coconut basket boat",
+        "Excursión a la capital imperial de Hue con almuerzo incluido",
+        "Alojamientos con desayuno incluido",
+        "Traslados de aeropuerto",
+        "Asesoramiento y acompañamiento del coordinador de Travel Hood"
+      ],
+      "notIncluded": [
+        "Seguro de viaje",
+        "Vuelos internacionales",
+        "Propinas",
+        "Comidas y cenas no especificadas",
+        "Actividades no incluidas en el itinerario"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a Hanoi",
+          "description": "Bienvenidos a Vietnam! Recepción en el aeropuerto de Hanoi y cena de bienvenida. Noche de fiesta en la ciudad en la famosa Beer Street. Noche: Hanoi"
+        },
+        {
+          "day": 2,
+          "title": "Explorando Hanoi",
+          "description": "Después de desayunar, recorreremos a pie el casco histórico de Hanoi, descubriendo sus callejuelas y mercados. También visitaremos algún templo chino y pasearemos junto al lago Hoan Kiem. Probaremos el famoso café con huevo vietnamita y acabaremos recorriendo la mítica Train Street. Noche: Hanoi"
+        },
+        {
+          "day": 3,
+          "title": "Rumbo a Ha Giang",
+          "description": "Mañana libre para hacer compras en Hanoi antes de poner rumbo al Ha Giang Loop. Después iremos en bus de Hanoi a Ha Giang y llegaremos por la noche para descansar antes de comenzar la aventura. Noche: Ha Giang"
+        },
+        {
+          "day": 4,
+          "title": "Empieza el Ha Giang Loop",
+          "description": "Nos levantamos pronto y comenzamos el Ha Giang Loop. Iremos en una moto con un local para recorrer montañas, lagos, etc. Dormiremos en casas locales y aprenderemos de su cultura y costumbres. Noche: Ha Giang Loop"
+        },
+        {
+          "day": 5,
+          "title": "Ha Giang Loop: montañas y aldeas",
+          "description": "Seguiremos recorriendo paisajes increíbles, miradores de película y aldeas tradicionales. Aprenderemos más sobre el norte de Vietnam y sus costumbres. Noche: Ha Giang Loop"
+        },
+        {
+          "day": 6,
+          "title": "Ha Giang Loop y traslado a Ninh Binh",
+          "description": "Último día disfrutando del Ha Giang Loop entre cascadas y paseos en barca entre montañas y lagos. Despedida con el grupo y ponemos rumbo a Ninh Binh en autobús VIP. Noche: Ninh Binh"
+        },
+        {
+          "day": 7,
+          "title": "Descanso en Tam Coc",
+          "description": "Llegada a Ninh Binh de madrugada. Día libre en Tam Coc para descansar, bajar revoluciones después del Ha Giang Loop, y descansar en la piscina del hotel o darte un masaje tradicional vietnamita. Paseo por el pueblo de Tam Coc y cenar en uno de los mejores sitios de banh mi."
+        },
+        {
+          "day": 8,
+          "title": "Explorando Ninh Binh",
+          "description": "Exploraremos algunos de los lugares más impresionantes de Vietnam. Visita a Hoa Lu, la antigua capital de Vietnam y los templos de la dinastía Dinh y Le. Daremos un paseo en barca por Trang An donde atravesaremos cuevas y veremos espectaculares paisajes. Visitaremos la Pagoda de Bich Dong y subiremos a la Cueva de Mua para contemplar las mejores vistas de Ninh Binh. Noche: Ninh Binh"
+        },
+        {
+          "day": 9,
+          "title": "Llegada a Hoi An",
+          "description": "Traslado de Ninh Binh al aeropuerto de Hanoi y vuelo interno para continuar hasta Hoi An. Descubriremos Hoi An de noche, paseando por el río Thu Bon, el mercado nocturno y las calles iluminadas por sus famosos farolillos. Noche: Hoi An"
+        },
+        {
+          "day": 10,
+          "title": "Explorando Hoi An",
+          "description": "Recorreremos el casco histórico de Hoi An a pie, declarado Patrimonio de la Humanidad por la UNESCO. Visitaremos algunos de sus lugares más emblemáticos como el Puente Japonés, templos y casas tradicionales, además de conocer sus famosas sastrerías. Noche: Hoi An"
+        },
+        {
+          "day": 11,
+          "title": "Hoi An en bici y basket boat",
+          "description": "Recorreremos en bicicleta los arrozales y caminos rurales, visitaremos la zona de Cam Thanh y nos subiremos a los tradicionales basket boats para navegar entre los manglares. También viviremos la experiencia de ser un real Duck Leader. Noche: Hoi An"
+        },
+        {
+          "day": 12,
+          "title": "Hue, la antigua capital imperial",
+          "description": "Conoceremos un poco más de historia con la excursión a la ciudad imperial de Hue, donde veremos sus famosas pagodas, tumbas de emperadores y miradores. Traslado directo a Da Nang. Noche: Da Nang"
+        },
+        {
+          "day": 13,
+          "title": "Rumbo a Ho Chi Minh",
+          "description": "Vuelo de Da Nang a Ho Chi Minh. Recorreremos a pie los principales lugares de interés de Saigón, como la Oficina Central de Correos, la Catedral de Notre Dame, el Palacio de la Independencia y el Mercado de Ben Thanh. Tendremos también tiempo libre para realizar las últimas compras. Noche: Ho Chi Minh"
+        },
+        {
+          "day": 14,
+          "title": "Despedida de Vietnam",
+          "description": "Se acaba la aventura, pero los recuerdos quedarán para siempre. Mañana libre para disfrutar los últimos momentos a tu aire. Traslado al aeropuerto y vuelta a casa."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "¿Cuánto dura y qué ruta sigue el viaje a Vietnam?",
+          "answer": "El viaje a Vietnam dura 14 días. La ruta recorre Hanoi, el Ha Giang Loop, Ninh Binh, Hoi An, Hue, Da Nang y Ho Chi Minh."
+        },
+        {
+          "question": "¿Están incluidos los vuelos en el viaje a Vietnam?",
+          "answer": "Los vuelos internos están incluidos, junto con los traslados principales y los de aeropuerto. Los vuelos internacionales se pagan aparte."
+        },
+        {
+          "question": "¿Cómo se hace el Ha Giang Loop?",
+          "answer": "El Ha Giang Loop se recorre durante tres días en moto con un conductor local. Esta parte del viaje está incluida y se duerme en casas locales para conocer la cultura y las costumbres de la zona."
+        },
+        {
+          "question": "¿Qué comidas incluye el viaje a Vietnam?",
+          "answer": "El viaje incluye alojamientos con desayuno, el Ha Giang Loop todo incluido y el almuerzo en las excursiones de Ninh Binh y Hue. Las comidas y cenas no especificadas se pagan aparte."
+        },
+        {
+          "question": "¿El viaje a Vietnam incluye coordinador y seguro?",
+          "answer": "El itinerario incluye el asesoramiento y acompañamiento del coordinador de Travel Hood. El seguro de viaje no está incluido."
+        }
+      ],
+      "seo": {
+        "title": "Vietnam en grupo: 14 días de aventura | Travelhood",
+        "description": "Viaja a Vietnam en grupo desde 1.200 €: 14 días por Ha Giang, Ninh Binh y Hoi An, con coordinador y vuelos internos incluidos.",
+        "keywords": "viaje Vietnam en grupo, Vietnam 14 días, Ha Giang Loop, Ninh Binh, Hoi An, viajes jóvenes Vietnam",
+        "cuandoViajarTitle": "Cuándo viajar a Vietnam en grupo | Travelhood",
+        "cuandoViajarDescription": "Consulta las salidas de Vietnam en marzo y abril de 2027: 14 días entre Hanoi, Ha Giang, Ninh Binh, Hoi An y Ho Chi Minh.",
+        "presupuestoTitle": "Precio del viaje a Vietnam en grupo | Travelhood",
+        "presupuestoDescription": "Vietnam en 14 días desde 1.200 € con vuelos internos, alojamientos y coordinador. Consulta los incluidos y los gastos que se pagan aparte."
+      },
+      "photos": [
+        {
+          "path": "new_destination/vietnam/pexels-duynod-31136921.jpg",
+          "alt": "Carretera de curvas entre las montañas verdes del norte de Vietnam",
+          "hero": false,
+          "sha1": "f1763800d795b28463a32a2314fcb908a6d01e4f"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-hussain-badshah-2084644-39152667.jpg",
+          "alt": "Viajeros paseando entre farolillos y fachadas amarillas en Hoi An",
+          "hero": false,
+          "sha1": "5d0c756ddd0d36daadd30fa71b71e7e7c72bfdb0"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-macnalodao-22028910.jpg",
+          "alt": "Valle y carretera entre montañas del norte de Vietnam",
+          "hero": false,
+          "sha1": "bf8f7882755b6fbc6435df3c08a4c4bc392af14a"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-maxed-raw-527582413-27356559.jpg",
+          "alt": "Vista de Ninh Binh con arrozales, ríos y montañas desde las alturas",
+          "hero": true,
+          "sha1": "45c5ce299c40d907ef74ff86a6867efdb5fd7336"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-saurabh-deshpande-373680337-17946218.jpg",
+          "alt": "Barca tradicional junto a un pequeño templo y paredes de roca en Ninh Binh",
+          "hero": false,
+          "sha1": "f2ba655d68336248b2ce4a298646ef9f5d5fd47e"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-thuan-34124512 (1).jpg",
+          "alt": "Calle de Vietnam con banderas rojas y una vendedora con sombrero cónico",
+          "hero": false,
+          "sha1": "c93d4e93125f8d0ffc5c2a0112da7d5cf1551d05"
+        },
+        {
+          "path": "new_destination/vietnam/pexels-tuchu-29628891.jpg",
+          "alt": "Puesto de fruta y bicicletas en una calle de Vietnam",
+          "hero": false,
+          "sha1": "d4311a854eb277194195c1d0eba479975f45e98e"
+        }
+      ],
+      "trips": [
+        {
+          "id": "trip-vietnam-2027-03-16",
+          "title": "Vietnam — Marzo 2027",
+          "departureDate": "2027-03-16",
+          "returnDate": "2027-03-29",
+          "durationDays": 14,
+          "priceFrom": 1200,
+          "flightEstimate": 1000,
+          "totalPlaces": 15,
+          "placesLeft": 15,
+          "status": "open",
+          "coordinatorId": "coordinator-carlos",
+          "tags": []
+        },
+        {
+          "id": "trip-vietnam-2027-04-01",
+          "title": "Vietnam — Abril 2027",
+          "departureDate": "2027-04-01",
+          "returnDate": "2027-04-14",
+          "durationDays": 14,
+          "priceFrom": 1200,
+          "flightEstimate": 1000,
+          "totalPlaces": 15,
+          "placesLeft": 15,
+          "status": "open",
+          "coordinatorId": "coordinator-carlos",
+          "tags": []
+        }
+      ],
+      "pdfSha1": "7b7bf1a7d9363752490b5c9cc7282bf1900367f7"
+    },
+    {
+      "slug": "costa-rica",
+      "name": "Costa Rica",
+      "continentId": "continent-centroamerica",
+      "country": {
+        "id": "country-costa-rica",
+        "name": "Costa Rica",
+        "flag": "CR",
+        "currency": "Colón costarricense (CRC)",
+        "language": "Español"
+      },
+      "source": "new_destination/costa_rica/Costa Rica.pdf",
+      "pdf": "new_destination/costa_rica/PDF Costa Rica_compressed.pdf",
+      "description": "Costa Rica en 12 días de volcanes, selva y Pacífico para vivir con un grupo y el acompañamiento de Travel Hood. Caminamos por las faldas del Arenal, remamos en su lago y seguimos el azul de Río Celeste hasta el bosque nuboso de Monteverde. Después llegan el surf y los atardeceres de Santa Teresa, el snorkel en Isla Tortuga y la naturaleza de Uvita y Manuel Antonio. Una ruta con traslados terrestres con chófer local y tiempo para disfrutar de cada parada juntos.",
+      "shortDescription": "Volcanes, Río Celeste, surf en Santa Teresa y snorkel en Isla Tortuga.",
+      "highlights": [
+        "Entre volcanes y selva tropical",
+        "El azul imposible de Río Celeste",
+        "Surf, playa y atardeceres en Santa Teresa",
+        "Snorkel y aventura en Isla Tortuga"
+      ],
+      "idealFor": "Quienes quieren combinar naturaleza, aventura, surf y días de playa en grupo.",
+      "categories": [
+        "playa",
+        "aventura",
+        "naturaleza"
+      ],
+      "hasCoordinator": true,
+      "travelInsuranceIncluded": false,
+      "climate": "Tropical, cálido y húmedo, con temperaturas más frescas en las zonas de montaña y volcanes.",
+      "included": [
+        "Alojamientos con 5 desayunos incluidos",
+        "Traslados terrestres con chófer local, gasolina, peajes y ferries",
+        "Entradas a parques nacionales",
+        "Actividades del itinerario excepto las indicadas como no incluidas",
+        "Una actividad en Monteverde a elegir: puentes colgantes o tirolinas",
+        "Asesoramiento y acompañamiento del coordinador de Travel Hood"
+      ],
+      "notIncluded": [
+        "Seguro de viaje",
+        "Vuelos internacionales",
+        "Actividad de quads, cataratas y caminata nocturna (night walk)",
+        "Desayunos, comidas y cenas no especificadas"
+      ],
+      "itinerary": [
+        {
+          "day": 1,
+          "title": "Llegada a San José y Alajuela",
+          "description": "Llegada al aeropuerto de San José, y traslado al alojamiento en Alajuela. Por la tarde/noche saldremos a dar un paseo por el pueblo y tendremos nuestra cena de bienvenida Noche: Alajuela"
+        },
+        {
+          "day": 2,
+          "title": "La Fortuna, cascada y termas",
+          "description": "Después de desayunar pondremos rumbo a La Fortuna, en un trayecto de aproximadamente 3 horas. Una vez allí (si hay tiempo) visitaremos su impresionante catarata de 70 metros de altura, rodeada de naturaleza salvaje, donde además tendremos la oportunidad de bañarnos. Después de comer disfrutaremos de unas termas, perfectas para relajarnos después del día. Por la noche volveremos al hotel para cambiarnos y saldremos a conocer el pueblo, cenar y, si nos apetece, probar algunas de sus bebidas locales. Noche: La Fortuna"
+        },
+        {
+          "day": 3,
+          "title": "Volcán Arenal y kayak",
+          "description": "Realizaremos una ruta por las faldas del volcán, rodeados de la increíble fauna y flora de la zona y descubriendo las coladas de lava de antiguas erupciones. Después de comer cambiaremos de perspectiva para hacer kayak por el Lago Arenal, desde donde podremos contemplar el volcán desde el agua. Regresaremos al hotel para disfrutar de un rato de descanso y piscina. Por la noche saldremos a cenar por el pueblo antes de descansar para el día siguiente. Noche: La Fortuna"
+        },
+        {
+          "day": 4,
+          "title": "Río Celeste, tubing y Monteverde",
+          "description": "Saldremos temprano hacia el Parque Nacional Volcán Tenorio. Una vez allí realizaremos una ruta de unas 3 horas, ida y vuelta, para descubrir el espectacular Río Celeste, la Laguna Azul y su famosa cascada. Después iremos a comer a un restaurante local y por la tarde haremos tubing por el río, dejándonos llevar por sus corrientes. Continuaremos después hacia Monteverde, haciendo una parada para tomar un café en un lugar con unas vistas espectaculares del Lago Arenal. Por la noche tiempo libre y cena. Noche: Monteverde"
+        },
+        {
+          "day": 5,
+          "title": "Bosque Nuboso de Monteverde",
+          "description": "Descubriremos el increíble Bosque Nuboso de Monteverde realizando una ruta sencilla rodeados de naturaleza. Después podremos elegir entre dos experiencias: recorrer sus famosos puentes colgantes o descargar adrenalina haciendo tirolinas sobre el bosque. Una de las dos actividades estará incluida y quien quiera podrá realizar ambas abonando la segunda. Por la noche habrá posibilidad de realizar una caminata nocturna opcional por la selva para buscar ranas, aves, reptiles y otros animales. Noche: Monteverde"
+        },
+        {
+          "day": 6,
+          "title": "Rumbo al Pacífico",
+          "description": "Dejamos las montañas atrás para poner rumbo a Santa Teresa, en la costa del Pacífico. Tendremos la tarde libre para disfrutar de la playa, la piscina y uno de esos atardeceres que hacen especial a Costa Rica. Por la noche podremos disfrutar del alojamiento y de sus juegos: billar, dardos, ping-pong… Noche: Santa Teresa"
+        },
+        {
+          "day": 7,
+          "title": "Surf en Santa Teresa",
+          "description": "Hoy toca surf! Empezaremos la mañana con una clase de surf en Santa Teresa y después tendremos tiempo para seguir disfrutando de la playa. Por la tarde podremos relajarnos o, quien quiera un poco más de aventura, realizar una ruta opcional en quad por Playa Carmen y Malpaís. Noche: Santa Teresa"
+        },
+        {
+          "day": 8,
+          "title": "Isla Tortuga",
+          "description": "Nos trasladaremos hasta Montezuma, donde cogeremos una lancha para hacer un tour por Isla Tortuga. Pasaremos el día haciendo snorkel entre arrecifes volcánicos, descubriendo su fauna marina y disfrutando de sus aguas. También tendremos tiempo para bañarnos, caminar por la playa o simplemente relajarnos bajo las palmeras. Noche: Santa Teresa"
+        },
+        {
+          "day": 9,
+          "title": "Quepos y Uvita",
+          "description": "Seguimos recorriendo la costa del Pacífico hacia Quepos. El trayecto combinará furgoneta y ferry hasta llegar a nuestro siguiente destino. Por la tarde iremos hasta Uvita, donde podremos conocer su famosa formación natural con forma de cola de ballena y disfrutar de un espectacular atardecer. Terminaremos el día con una posible barbacoa al estilo tico. Noche: Quepos"
+        },
+        {
+          "day": 10,
+          "title": "Parque Nacional Manuel Antonio",
+          "description": "Hoy conoceremos una de las grandes joyas naturales del país: el Parque Nacional Manuel Antonio. Caminaremos por sus senderos rodeados de fauna y vegetación tropical hasta llegar a algunas de sus playas más bonitas, como Espadilla Sur y Manuel Antonio. Después de comer tendremos la tarde libre para seguir disfrutando de la zona. Noche: Quepos"
+        },
+        {
+          "day": 11,
+          "title": "Volvemos a San José",
+          "description": "Hoy dejamos atrás la costa del Pacífico para poner rumbo a San José. Será un día principalmente de traslado, ya que nos esperan varias horas de carretera atravesando diferentes paisajes de Costa Rica. Por la tarde llegaremos a San José. Dependiendo del horario, podremos recorrer el centro o acercarnos directamente al Barrio Escalante para cenar, tomar algo y celebrar nuestra última noche juntos. Noche: San José"
+        },
+        {
+          "day": 12,
+          "title": "Despedida de Costa Rica",
+          "description": "Se acaba la aventura, pero los recuerdos quedarán para siempre. Mañana libre para disfrutar los últimos momentos a tu aire. Traslado al aeropuerto y vuelta a casa."
+        }
+      ],
+      "faqs": [
+        {
+          "question": "¿Cuánto dura y qué ruta sigue el viaje a Costa Rica?",
+          "answer": "El viaje dura 12 días. Desde San José y Alajuela recorre La Fortuna, el Arenal, Río Celeste, Monteverde, Santa Teresa, Isla Tortuga, Quepos, Uvita y Manuel Antonio antes de regresar a San José."
+        },
+        {
+          "question": "¿Cómo nos desplazamos por Costa Rica?",
+          "answer": "Los traslados terrestres se hacen con chófer local e incluyen gasolina, peajes y ferries. El itinerario combina carretera, ferry y las embarcaciones previstas para las excursiones."
+        },
+        {
+          "question": "¿Qué actividades se pagan aparte en Costa Rica?",
+          "answer": "El documento indica como no incluidas las actividades de quads, cataratas y la caminata nocturna. En Monteverde se incluye una actividad a elegir entre puentes colgantes y tirolinas; si haces ambas, la segunda se paga aparte."
+        },
+        {
+          "question": "¿Cuántos desayunos están incluidos?",
+          "answer": "Los alojamientos del viaje a Costa Rica incluyen cinco desayunos. Los desayunos, comidas y cenas no especificados se pagan aparte."
+        },
+        {
+          "question": "¿Costa Rica incluye vuelos, seguro y coordinador?",
+          "answer": "El viaje incluye asesoramiento y acompañamiento del coordinador de Travel Hood. Los vuelos internacionales y el seguro de viaje no están incluidos."
+        },
+        {
+          "question": "¿Hay surf y snorkel en el itinerario?",
+          "answer": "Sí. La ruta incluye una clase de surf en Santa Teresa y una excursión en lancha a Isla Tortuga para hacer snorkel y disfrutar de la playa."
+        }
+      ],
+      "seo": {
+        "title": "Costa Rica en grupo: 12 días de aventura | Travelhood",
+        "description": "Costa Rica en grupo desde 1.500 €: 12 días entre Arenal, Río Celeste, Monteverde y el Pacífico, con surf, snorkel y coordinador.",
+        "keywords": "Costa Rica en grupo, Costa Rica 12 días, Santa Teresa surf, Río Celeste, Monteverde, viajes jóvenes Costa Rica",
+        "cuandoViajarTitle": "Cuándo viajar a Costa Rica en grupo | Travelhood",
+        "cuandoViajarDescription": "Consulta las salidas de Costa Rica en febrero de 2027: 12 días de volcanes, selva, surf y snorkel con Travelhood.",
+        "presupuestoTitle": "Precio del viaje a Costa Rica en grupo | Travelhood",
+        "presupuestoDescription": "Costa Rica en 12 días desde 1.500 €, con alojamientos, cinco desayunos, traslados y coordinador. Consulta qué actividades se pagan aparte."
+      },
+      "photos": [
+        {
+          "path": "new_destination/costa_rica/pexels-costa-rica-drone-tours-280719527-13501101.jpg",
+          "alt": "Vista aérea de playas y bosque tropical en la costa del Pacífico de Costa Rica",
+          "hero": true,
+          "sha1": "5378a5d010c6fba2b3dbd40a13c4e5885ce60f19"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-derek-sutton-562260809-16806198.jpg",
+          "alt": "Puente colgante rojo entre la vegetación del bosque nuboso de Costa Rica",
+          "hero": false,
+          "sha1": "cb36c63e54b1113f13dc06f0a4a9bd689cff466c"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-dominik-simecek-898214-4807058.jpg",
+          "alt": "Volcán Arenal entre nubes y vegetación tropical",
+          "hero": false,
+          "sha1": "69073207503d7e9e6b7311f780a939e78283b9d0"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-jean-paul-montanaro-49563862-28832592.jpg",
+          "alt": "Cascada de Río Celeste rodeada de bosque tropical y agua turquesa",
+          "hero": false,
+          "sha1": "c069a132a85b45fd4f1b0f71578567e00f80e5aa"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-mora-varela-152664718-10621182.jpg",
+          "alt": "Atardecer naranja sobre el océano Pacífico en Costa Rica",
+          "hero": false,
+          "sha1": "40f5cb5811471c965c9e2e28b25f4ecee5d0a724"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-renee-johnson-2149058096-30603643.jpg",
+          "alt": "Cascada entre las montañas y la selva de Costa Rica",
+          "hero": false,
+          "sha1": "2e8953619bf6227c0dcaa4f026c469d1aaff0634"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-spencphoto-37720201.jpg",
+          "alt": "Mono de cara blanca entre las ramas del bosque tropical",
+          "hero": false,
+          "sha1": "33bb76d01c7382c8e02128d7ba88a7c159765d00"
+        },
+        {
+          "path": "new_destination/costa_rica/pexels-suegoro-sone-scassi-buffa-2160486127-37089668.jpg",
+          "alt": "Playa de Costa Rica junto a una selva de palmeras y vegetación tropical",
+          "hero": false,
+          "sha1": "c0a8a5b3d0a2a55007ecb81d7a45414a700bfbd0"
+        }
+      ],
+      "trips": [
+        {
+          "id": "trip-costa-rica-2027-02-07",
+          "title": "Costa Rica — Febrero 2027 (7 febrero)",
+          "departureDate": "2027-02-07",
+          "returnDate": "2027-02-18",
+          "durationDays": 12,
+          "priceFrom": 1500,
+          "flightEstimate": 800,
+          "totalPlaces": 15,
+          "placesLeft": 15,
+          "status": "open",
+          "coordinatorId": "coordinator-carlos",
+          "tags": []
+        },
+        {
+          "id": "trip-costa-rica-2027-02-19",
+          "title": "Costa Rica — Febrero 2027 (19 febrero)",
+          "departureDate": "2027-02-19",
+          "returnDate": "2027-03-02",
+          "durationDays": 12,
+          "priceFrom": 1500,
+          "flightEstimate": 800,
+          "totalPlaces": 15,
+          "placesLeft": 15,
+          "status": "open",
+          "coordinatorId": "coordinator-carlos",
+          "tags": []
+        }
+      ],
+      "pdfSha1": "407060ca079404d788829fb071f5543b369abe1e"
+    }
+  ]
+}

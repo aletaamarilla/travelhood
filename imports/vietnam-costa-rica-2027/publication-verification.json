@@ -1,0 +1,82 @@
+{
+  "verifiedAt": "2026-08-30T11:35:25.132Z",
+  "studioValidation": "passed",
+  "destinations": [
+    {
+      "_id": "destination-costa-rica",
+      "continent": "Centroamérica",
+      "country": "Costa Rica",
+      "days": 12,
+      "images": 8,
+      "name": "Costa Rica",
+      "pdf": "PDF Costa Rica_compressed.pdf"
+    },
+    {
+      "_id": "destination-vietnam",
+      "continent": "Asia",
+      "country": "Vietnam",
+      "days": 14,
+      "images": 7,
+      "name": "Vietnam",
+      "pdf": "PDF Vietnam 2.0_compressed.pdf"
+    }
+  ],
+  "trips": [
+    {
+      "_id": "trip-costa-rica-2027-02-07",
+      "coordinator": "Carlos Ruiz",
+      "departureDate": "2027-02-07",
+      "destination": "Costa Rica",
+      "durationDays": 12,
+      "flightEstimate": 800,
+      "placesLeft": 15,
+      "priceFrom": 1500,
+      "returnDate": "2027-02-18",
+      "status": "open",
+      "title": "Costa Rica — Febrero 2027 (7 febrero)",
+      "totalPlaces": 15
+    },
+    {
+      "_id": "trip-costa-rica-2027-02-19",
+      "coordinator": "Carlos Ruiz",
+      "departureDate": "2027-02-19",
+      "destination": "Costa Rica",
+      "durationDays": 12,
+      "flightEstimate": 800,
+      "placesLeft": 15,
+      "priceFrom": 1500,
+      "returnDate": "2027-03-02",
+      "status": "open",
+      "title": "Costa Rica — Febrero 2027 (19 febrero)",
+      "totalPlaces": 15
+    },
+    {
+      "_id": "trip-vietnam-2027-03-16",
+      "coordinator": "Carlos Ruiz",
+      "departureDate": "2027-03-16",
+      "destination": "Vietnam",
+      "durationDays": 14,
+      "flightEstimate": 1000,
+      "placesLeft": 15,
+      "priceFrom": 1200,
+      "returnDate": "2027-03-29",
+      "status": "open",
+      "title": "Vietnam — Marzo 2027",
+      "totalPlaces": 15
+    },
+    {
+      "_id": "trip-vietnam-2027-04-01",
+      "coordinator": "Carlos Ruiz",
+      "departureDate": "2027-04-01",
+      "destination": "Vietnam",
+      "durationDays": 14,
+      "flightEstimate": 1000,
+      "placesLeft": 15,
+      "priceFrom": 1200,
+      "returnDate": "2027-04-14",
+      "status": "open",
+      "title": "Vietnam — Abril 2027",
+      "totalPlaces": 15
+    }
+  ]
+}

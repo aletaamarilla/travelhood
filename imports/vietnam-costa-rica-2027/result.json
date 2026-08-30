@@ -1,0 +1,298 @@
+{
+  "mode": "write-drafts",
+  "createdAt": "2026-08-30T10:08:33.306Z",
+  "projectId": "73m9u2gt",
+  "dataset": "production",
+  "plannedDocuments": [
+    "drafts.country-vietnam",
+    "drafts.destination-vietnam",
+    "drafts.trip-vietnam-2027-03-16",
+    "drafts.trip-vietnam-2027-04-01",
+    "drafts.country-costa-rica",
+    "drafts.destination-costa-rica",
+    "drafts.trip-costa-rica-2027-02-07",
+    "drafts.trip-costa-rica-2027-02-19"
+  ],
+  "pending": [
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "status"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "status"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "status"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "status"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "coordinatorId"
+    }
+  ],
+  "notes": [
+    "Precios y fechas proceden exclusivamente de Vietnam.docx y Costa Rica.pdf. Los PDF comprimidos se suben íntegros.",
+    "Costa Rica: interpretado «19 al 2 marzo 2027» como 19 de febrero–2 de marzo de 2027, consistente con los 12 días indicados.",
+    "Vietnam día 7: se omite la frase contradictoria «Noche: Hoi An.»; el resto del día se conserva. Hoi An se alcanza el día 9. No se modifica el PDF.",
+    "Vietnam día 9: «vuelo a Hoi An» se expresa como «vuelo interno para continuar hasta Hoi An», sin inventar aeropuerto ni ruta adicional.",
+    "No se inventan estimaciones de vuelos, plazas, disponibilidad, coordinadores, presupuesto diario, clima mensual, visados ni vacunas. Campos comerciales faltantes pendientes de respuesta del usuario.",
+    "Incluidos y no incluidos se combinan con la configuración global sin modificarla. El seguro de viaje no está incluido en ninguno.",
+    "El clima general y las monedas se extraen de las páginas de preparación de los PDF comprimidos; descripciones, FAQ y SEO sintetizan el material facilitado."
+  ],
+  "assets": [
+    {
+      "path": "new_destination/vietnam/PDF Vietnam 2.0_compressed.pdf",
+      "id": "file-7b7bf1a7d9363752490b5c9cc7282bf1900367f7-pdf",
+      "sha1": "7b7bf1a7d9363752490b5c9cc7282bf1900367f7",
+      "url": "https://cdn.sanity.io/files/73m9u2gt/production/7b7bf1a7d9363752490b5c9cc7282bf1900367f7.pdf",
+      "originalFilename": "PDF Vietnam 2.0_compressed.pdf",
+      "size": 11091126,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-duynod-31136921.jpg",
+      "id": "image-f1763800d795b28463a32a2314fcb908a6d01e4f-4160x6240-jpg",
+      "sha1": "f1763800d795b28463a32a2314fcb908a6d01e4f",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/f1763800d795b28463a32a2314fcb908a6d01e4f-4160x6240.jpg",
+      "originalFilename": "pexels-duynod-31136921.jpg",
+      "size": 2834629,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-hussain-badshah-2084644-39152667.jpg",
+      "id": "image-5d0c756ddd0d36daadd30fa71b71e7e7c72bfdb0-2215x3942-jpg",
+      "sha1": "5d0c756ddd0d36daadd30fa71b71e7e7c72bfdb0",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/5d0c756ddd0d36daadd30fa71b71e7e7c72bfdb0-2215x3942.jpg",
+      "originalFilename": "pexels-hussain-badshah-2084644-39152667.jpg",
+      "size": 2039798,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-macnalodao-22028910.jpg",
+      "id": "image-bf8f7882755b6fbc6435df3c08a4c4bc392af14a-3648x5472-jpg",
+      "sha1": "bf8f7882755b6fbc6435df3c08a4c4bc392af14a",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/bf8f7882755b6fbc6435df3c08a4c4bc392af14a-3648x5472.jpg",
+      "originalFilename": "pexels-macnalodao-22028910.jpg",
+      "size": 3394786,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-maxed-raw-527582413-27356559.jpg",
+      "id": "image-45c5ce299c40d907ef74ff86a6867efdb5fd7336-4501x6752-jpg",
+      "sha1": "45c5ce299c40d907ef74ff86a6867efdb5fd7336",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/45c5ce299c40d907ef74ff86a6867efdb5fd7336-4501x6752.jpg",
+      "originalFilename": "pexels-maxed-raw-527582413-27356559.jpg",
+      "size": 8055908,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-saurabh-deshpande-373680337-17946218.jpg",
+      "id": "image-f2ba655d68336248b2ce4a298646ef9f5d5fd47e-4000x6000-jpg",
+      "sha1": "f2ba655d68336248b2ce4a298646ef9f5d5fd47e",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/f2ba655d68336248b2ce4a298646ef9f5d5fd47e-4000x6000.jpg",
+      "originalFilename": "pexels-saurabh-deshpande-373680337-17946218.jpg",
+      "size": 5393172,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-thuan-34124512 (1).jpg",
+      "id": "image-c93d4e93125f8d0ffc5c2a0112da7d5cf1551d05-4160x6240-jpg",
+      "sha1": "c93d4e93125f8d0ffc5c2a0112da7d5cf1551d05",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/c93d4e93125f8d0ffc5c2a0112da7d5cf1551d05-4160x6240.jpg",
+      "originalFilename": "pexels-thuan-34124512 (1).jpg",
+      "size": 2979732,
+      "reused": false
+    },
+    {
+      "path": "new_destination/vietnam/pexels-tuchu-29628891.jpg",
+      "id": "image-d4311a854eb277194195c1d0eba479975f45e98e-5472x3648-jpg",
+      "sha1": "d4311a854eb277194195c1d0eba479975f45e98e",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/d4311a854eb277194195c1d0eba479975f45e98e-5472x3648.jpg",
+      "originalFilename": "pexels-tuchu-29628891.jpg",
+      "size": 1804356,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/PDF Costa Rica_compressed.pdf",
+      "id": "file-407060ca079404d788829fb071f5543b369abe1e-pdf",
+      "sha1": "407060ca079404d788829fb071f5543b369abe1e",
+      "url": "https://cdn.sanity.io/files/73m9u2gt/production/407060ca079404d788829fb071f5543b369abe1e.pdf",
+      "originalFilename": "PDF Costa Rica_compressed.pdf",
+      "size": 10464682,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-costa-rica-drone-tours-280719527-13501101.jpg",
+      "id": "image-5378a5d010c6fba2b3dbd40a13c4e5885ce60f19-5472x3648-jpg",
+      "sha1": "5378a5d010c6fba2b3dbd40a13c4e5885ce60f19",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/5378a5d010c6fba2b3dbd40a13c4e5885ce60f19-5472x3648.jpg",
+      "originalFilename": "pexels-costa-rica-drone-tours-280719527-13501101.jpg",
+      "size": 2684429,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-derek-sutton-562260809-16806198.jpg",
+      "id": "image-cb36c63e54b1113f13dc06f0a4a9bd689cff466c-4672x7008-jpg",
+      "sha1": "cb36c63e54b1113f13dc06f0a4a9bd689cff466c",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/cb36c63e54b1113f13dc06f0a4a9bd689cff466c-4672x7008.jpg",
+      "originalFilename": "pexels-derek-sutton-562260809-16806198.jpg",
+      "size": 5118346,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-dominik-simecek-898214-4807058.jpg",
+      "id": "image-69073207503d7e9e6b7311f780a939e78283b9d0-4032x3024-jpg",
+      "sha1": "69073207503d7e9e6b7311f780a939e78283b9d0",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/69073207503d7e9e6b7311f780a939e78283b9d0-4032x3024.jpg",
+      "originalFilename": "pexels-dominik-simecek-898214-4807058.jpg",
+      "size": 1281967,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-jean-paul-montanaro-49563862-28832592.jpg",
+      "id": "image-c069a132a85b45fd4f1b0f71578567e00f80e5aa-2784x3480-jpg",
+      "sha1": "c069a132a85b45fd4f1b0f71578567e00f80e5aa",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/c069a132a85b45fd4f1b0f71578567e00f80e5aa-2784x3480.jpg",
+      "originalFilename": "pexels-jean-paul-montanaro-49563862-28832592.jpg",
+      "size": 905003,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-mora-varela-152664718-10621182.jpg",
+      "id": "image-40f5cb5811471c965c9e2e28b25f4ecee5d0a724-2544x1696-jpg",
+      "sha1": "40f5cb5811471c965c9e2e28b25f4ecee5d0a724",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/40f5cb5811471c965c9e2e28b25f4ecee5d0a724-2544x1696.jpg",
+      "originalFilename": "pexels-mora-varela-152664718-10621182.jpg",
+      "size": 430182,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-renee-johnson-2149058096-30603643.jpg",
+      "id": "image-2e8953619bf6227c0dcaa4f026c469d1aaff0634-9000x12000-jpg",
+      "sha1": "2e8953619bf6227c0dcaa4f026c469d1aaff0634",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/2e8953619bf6227c0dcaa4f026c469d1aaff0634-9000x12000.jpg",
+      "originalFilename": "pexels-renee-johnson-2149058096-30603643.jpg",
+      "size": 13576027,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-spencphoto-37720201.jpg",
+      "id": "image-33bb76d01c7382c8e02128d7ba88a7c159765d00-3530x5295-jpg",
+      "sha1": "33bb76d01c7382c8e02128d7ba88a7c159765d00",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/33bb76d01c7382c8e02128d7ba88a7c159765d00-3530x5295.jpg",
+      "originalFilename": "pexels-spencphoto-37720201.jpg",
+      "size": 945437,
+      "reused": false
+    },
+    {
+      "path": "new_destination/costa_rica/pexels-suegoro-sone-scassi-buffa-2160486127-37089668.jpg",
+      "id": "image-c0a8a5b3d0a2a55007ecb81d7a45414a700bfbd0-4000x6000-jpg",
+      "sha1": "c0a8a5b3d0a2a55007ecb81d7a45414a700bfbd0",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/c0a8a5b3d0a2a55007ecb81d7a45414a700bfbd0-4000x6000.jpg",
+      "originalFilename": "pexels-suegoro-sone-scassi-buffa-2160486127-37089668.jpg",
+      "size": 3046737,
+      "reused": false
+    }
+  ],
+  "transactionId": "gjkfc8SvArehcTnnCbS0aR",
+  "verifiedAt": "2026-08-30T10:09:59.477Z",
+  "verifiedDocuments": [
+    {
+      "id": "drafts.country-costa-rica",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.country-vietnam",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.destination-costa-rica",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.destination-vietnam",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.trip-costa-rica-2027-02-07",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.trip-costa-rica-2027-02-19",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.trip-vietnam-2027-03-16",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    },
+    {
+      "id": "drafts.trip-vietnam-2027-04-01",
+      "revision": "gjkfc8SvArehcTnnCbS0aR"
+    }
+  ]
+}

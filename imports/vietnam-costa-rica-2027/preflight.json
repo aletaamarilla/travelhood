@@ -1,0 +1,108 @@
+{
+  "mode": "dry-run",
+  "createdAt": "2026-08-30T10:08:12.919Z",
+  "projectId": "73m9u2gt",
+  "dataset": "production",
+  "plannedDocuments": [
+    "drafts.country-vietnam",
+    "drafts.destination-vietnam",
+    "drafts.trip-vietnam-2027-03-16",
+    "drafts.trip-vietnam-2027-04-01",
+    "drafts.country-costa-rica",
+    "drafts.destination-costa-rica",
+    "drafts.trip-costa-rica-2027-02-07",
+    "drafts.trip-costa-rica-2027-02-19"
+  ],
+  "pending": [
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "status"
+    },
+    {
+      "trip": "trip-vietnam-2027-03-16",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "status"
+    },
+    {
+      "trip": "trip-vietnam-2027-04-01",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "status"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-07",
+      "field": "coordinatorId"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "flightEstimate"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "totalPlaces"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "placesLeft"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "status"
+    },
+    {
+      "trip": "trip-costa-rica-2027-02-19",
+      "field": "coordinatorId"
+    }
+  ],
+  "notes": [
+    "Precios y fechas proceden exclusivamente de Vietnam.docx y Costa Rica.pdf. Los PDF comprimidos se suben íntegros.",
+    "Costa Rica: interpretado «19 al 2 marzo 2027» como 19 de febrero–2 de marzo de 2027, consistente con los 12 días indicados.",
+    "Vietnam día 7: se omite la frase contradictoria «Noche: Hoi An.»; el resto del día se conserva. Hoi An se alcanza el día 9. No se modifica el PDF.",
+    "Vietnam día 9: «vuelo a Hoi An» se expresa como «vuelo interno para continuar hasta Hoi An», sin inventar aeropuerto ni ruta adicional.",
+    "No se inventan estimaciones de vuelos, plazas, disponibilidad, coordinadores, presupuesto diario, clima mensual, visados ni vacunas. Campos comerciales faltantes pendientes de respuesta del usuario.",
+    "Incluidos y no incluidos se combinan con la configuración global sin modificarla. El seguro de viaje no está incluido en ninguno.",
+    "El clima general y las monedas se extraen de las páginas de preparación de los PDF comprimidos; descripciones, FAQ y SEO sintetizan el material facilitado."
+  ],
+  "assets": []
+}

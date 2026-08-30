@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-08-30",
+  "currency": "EUR",
+  "scope": "Vuelo internacional por persona, ida y vuelta desde España; Madrid como aeropuerto de referencia. No incluye ni modifica el precio base del viaje.",
+  "exactDateQuote": false,
+  "estimates": [
+    {
+      "destination": "Vietnam",
+      "amount": 1000,
+      "route": "España–Hanoi y regreso Ho Chi Minh–España",
+      "rationale": "Estimación editorial con margen sobre ofertas de ida y vuelta a un mismo aeropuerto; el circuito requiere entrada por Hanoi y regreso desde Ho Chi Minh. Se conservan los vuelos internos ya incluidos en el paquete.",
+      "sources": [
+        {
+          "url": "https://www.turkishairlines.com/es//book-flights-from-madrid-to-vietnam",
+          "observed": "Resultados consultados: ida y vuelta Madrid–Hanoi desde 748 € y Madrid–Ho Chi Minh desde 896 €, en fechas distintas de las salidas."
+        },
+        {
+          "url": "https://www.etihad.com/es-es/flights/vuelos-desde-madrid-a-vietnam",
+          "observed": "Ofertas Madrid–Hanoi ida y vuelta desde 642–719 € en distintas fechas de septiembre a noviembre de 2026; no equivalen al itinerario multidestino de marzo/abril de 2027."
+        }
+      ]
+    },
+    {
+      "destination": "Costa Rica",
+      "amount": 800,
+      "route": "España–San José (SJO)–España",
+      "rationale": "Estimación editorial por encima de la tarifa promocional mínima, con margen para fechas fijas y condiciones de equipaje. No se ha comprobado una cotización reservable para las cuatro fechas exactas.",
+      "sources": [
+        {
+          "url": "https://www.iberia.com/es/vuelos-baratos/Madrid-San-Jose-de-Costa-Rica/",
+          "observed": "Oferta Madrid–San José (Costa Rica, SJO) ida y vuelta desde 553 €, para fechas de septiembre/octubre de 2026. No es una oferta confirmada para febrero de 2027."
+        }
+      ]
+    }
+  ]
+}

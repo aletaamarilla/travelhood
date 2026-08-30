@@ -1,0 +1,27 @@
+{
+  "correctedAt": "2026-08-30T11:45:13.821Z",
+  "transactionId": "CMKaiGJlL5aoFt7ANqH8AE",
+  "source": "Sección Lo mejor del viaje de Vietnam.docx y Costa Rica.pdf; texto exacto, conservando emojis.",
+  "documents": [
+    {
+      "id": "destination-costa-rica",
+      "revision": "CMKaiGJlL5aoFt7ANqH8AE",
+      "highlights": [
+        "🌋 Entre volcanes y selva tropical",
+        "💦 El azul imposible de Río Celeste",
+        "🏄‍♀️ Surf, playa y atardeceres en Santa Teresa",
+        "🐢 Snorkel y aventura en Isla Tortuga"
+      ]
+    },
+    {
+      "id": "destination-vietnam",
+      "revision": "CMKaiGJlL5aoFt7ANqH8AE",
+      "highlights": [
+        "🏍️ 3 días de aventura en el Ha Giang Loop",
+        "🚣‍♀️ Navegar entre montañas en Ninh Binh",
+        "🏮 Hoi An sobre dos ruedas y en basket boat",
+        "🏯 Un viaje al Vietnam imperial en Hue"
+      ]
+    }
+  ]
+}

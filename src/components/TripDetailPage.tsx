@@ -995,21 +995,11 @@ export default function TripDetailPage({
                 Lo mejor de {destination.name}
               </h2>
               <div className="mt-4 grid grid-cols-2 gap-2 sm:gap-3">
-                {destination.highlights.map((h, i) => {
-                  const icons = [MapPin, Compass, Star, Globe]
-                  const Icon = icons[i % icons.length]
-                  return (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 rounded-lg bg-white/8 px-3.5 py-3"
-                    >
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-coral/20">
-                        <Icon size={14} className="text-coral" />
-                      </div>
-                      <span className="text-sm font-medium text-sand/90">{h}</span>
-                    </div>
-                  )
-                })}
+                {destination.highlights.map((highlight, i) => (
+                  <div key={i} className="rounded-lg bg-white/8 px-3.5 py-3">
+                    <span className="text-sm font-medium text-sand/90">{highlight}</span>
+                  </div>
+                ))}
               </div>
             </section>
 

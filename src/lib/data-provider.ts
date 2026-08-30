@@ -113,6 +113,11 @@ function removeLegacyDefaultIncluded(items: string[]): string[] {
   return items.filter((item) => !LEGACY_DEFAULT_INCLUDED.has(item))
 }
 
+// Explicit destination transfers are valid; keep filtering other legacy defaults.
+function normalizeDestinationIncluded(items: string[]): string[] {
+  return items.filter((item) => item === 'Traslados principales' || !LEGACY_DEFAULT_INCLUDED.has(item))
+}
+
 function normalizeDefaultIncluded(items: string[]): string[] {
   return removeLegacyDefaultIncluded(items).filter((item) => !/\bdesayunos?\b/i.test(item))
 }
@@ -300,7 +305,7 @@ function mapDestination(s: SanityDestination): Destination {
     idealFor: s.idealFor ?? '',
     climate: s.climate,
     categories: (s.categories ?? []) as Destination['categories'],
-    included: removeLegacyDefaultIncluded(s.included ?? []),
+    included: normalizeDestinationIncluded(s.included ?? []),
     notIncluded: s.notIncluded ?? [],
     coordinates: resolveCoordinates(s.coordinates),
     climateByMonth: (s.climateByMonth ?? []) as Destination['climateByMonth'],
@@ -532,12 +537,13 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
   const isTravelInsurance = (item: string) =>
     item.trim().toLowerCase() === TRAVEL_INSURANCE_LABEL.toLowerCase()
   const destIncluded = [
-    ...removeLegacyDefaultIncluded(s.destination?.included ?? []),
+    ...normalizeDestinationIncluded(s.destination?.included ?? []),
     ...(travelInsuranceIncluded ? [TRAVEL_INSURANCE_LABEL] : []),
   ]
   const destNotIncluded = (s.destination?.notIncluded ?? []).filter(
     (item) => !travelInsuranceIncluded || !isTravelInsurance(item)
   )
+  const hasSeparateTips = destNotIncluded.some((item) => item.trim().toLowerCase() === 'propinas')
   const destItinerary = s.destination?.itinerary ?? []
   const destHasCoordinator = s.destination?.hasCoordinator ?? true
 
@@ -555,9 +561,13 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
   const notIncluded = ctx
     ? [
         ...new Set([
-          ...ctx.defaultNotIncluded.filter(
-            (item) => !travelInsuranceIncluded || !isTravelInsurance(item)
-          ),
+          ...ctx.defaultNotIncluded
+            .filter((item) => !travelInsuranceIncluded || !isTravelInsurance(item))
+            .map((item) =>
+              hasSeparateTips && item.trim().toLowerCase() === 'gastos personales y propinas'
+                ? 'Gastos personales'
+                : item
+            ),
           ...destNotIncluded,
         ]),
       ]

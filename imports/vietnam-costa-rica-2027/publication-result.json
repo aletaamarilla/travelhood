@@ -1,0 +1,25 @@
+{
+  "publishedAt": "2026-08-30T11:33:06.531Z",
+  "transactionId": "1P1rpTOfnFQtoxeCUg36KE",
+  "documentIds": [
+    "country-vietnam",
+    "destination-vietnam",
+    "trip-vietnam-2027-03-16",
+    "trip-vietnam-2027-04-01",
+    "country-costa-rica",
+    "destination-costa-rica",
+    "trip-costa-rica-2027-02-07",
+    "trip-costa-rica-2027-02-19"
+  ],
+  "coordinator": {
+    "_id": "coordinator-carlos",
+    "name": "Carlos Ruiz"
+  },
+  "flightEstimates": {
+    "vietnam": 1000,
+    "costa-rica": 800
+  },
+  "totalPlaces": 15,
+  "placesLeft": 15,
+  "status": "open"
+}

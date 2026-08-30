@@ -1,0 +1,313 @@
+{
+  "note": "Únicamente faltan los datos comerciales solicitados y la publicación de las referencias a países/destinos que siguen como borradores. No hay errores en imágenes, itinerarios, fechas, precios, SEO o PDF.",
+  "results": [
+    {
+      "documentId": "drafts.destination-costa-rica",
+      "documentType": "destination",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "country"
+          ]
+        }
+      ],
+      "level": "error"
+    },
+    {
+      "documentId": "drafts.trip-vietnam-2027-03-16",
+      "documentType": "trip",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 1",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "status"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "destination"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Este destino requiere un coordinador asignado",
+          "path": [
+            "coordinator"
+          ]
+        }
+      ],
+      "level": "error"
+    },
+    {
+      "documentId": "drafts.trip-costa-rica-2027-02-19",
+      "documentType": "trip",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 1",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "status"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "destination"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Este destino requiere un coordinador asignado",
+          "path": [
+            "coordinator"
+          ]
+        }
+      ],
+      "level": "error"
+    },
+    {
+      "documentId": "drafts.destination-vietnam",
+      "documentType": "destination",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "country"
+          ]
+        }
+      ],
+      "level": "error"
+    },
+    {
+      "documentId": "drafts.trip-vietnam-2027-04-01",
+      "documentType": "trip",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 1",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "status"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "destination"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Este destino requiere un coordinador asignado",
+          "path": [
+            "coordinator"
+          ]
+        }
+      ],
+      "level": "error"
+    },
+    {
+      "documentId": "drafts.trip-costa-rica-2027-02-07",
+      "documentType": "trip",
+      "markers": [
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "flightEstimate"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 1",
+          "path": [
+            "totalPlaces"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Must be greater than or equal to 0",
+          "path": [
+            "placesLeft"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Required",
+          "path": [
+            "status"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Referenced document must be published",
+          "path": [
+            "destination"
+          ]
+        },
+        {
+          "level": "error",
+          "message": "Este destino requiere un coordinador asignado",
+          "path": [
+            "coordinator"
+          ]
+        }
+      ],
+      "level": "error"
+    }
+  ]
+}

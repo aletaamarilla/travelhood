@@ -1,0 +1,58 @@
+{
+  "correctedAt": "2026-08-30T11:51:49.897Z",
+  "transactionId": "gjkfc8SvArehcTnnCbiZ3P",
+  "documents": [
+    {
+      "id": "destination-costa-rica",
+      "revision": "gjkfc8SvArehcTnnCbiZ3P",
+      "included": [
+        "Alojamientos con 5 desayunos incluidos",
+        "Traslados terrestres con chófer local, gasolina, peajes y ferries",
+        "Entradas a parques nacionales",
+        "Actividades del itinerario excepto las indicadas como no incluidas",
+        "Una actividad en Monteverde a elegir: puentes colgantes o tirolinas",
+        "Asesoramiento y acompañamiento del coordinador de Travel Hood"
+      ],
+      "notIncluded": [
+        "Seguro de viaje",
+        "Vuelos internacionales",
+        "Actividad de quads, cataratas y caminata nocturna (night walk)",
+        "Desayunos, comidas y cenas no especificadas"
+      ],
+      "highlights": [
+        "Entre volcanes y selva tropical",
+        "El azul imposible de Río Celeste",
+        "Surf, playa y atardeceres en Santa Teresa",
+        "Snorkel y aventura en Isla Tortuga"
+      ]
+    },
+    {
+      "id": "destination-vietnam",
+      "revision": "gjkfc8SvArehcTnnCbiZ3P",
+      "included": [
+        "Vuelos internos",
+        "Traslados principales",
+        "Ha Giang Loop todo incluido",
+        "Excursión por Ninh Binh con almuerzo incluido",
+        "Alquiler de bicicletas en Hoi An y paseo en coconut basket boat",
+        "Excursión a la capital imperial de Hue con almuerzo incluido",
+        "Alojamientos con desayuno incluido",
+        "Traslados de aeropuerto",
+        "Asesoramiento y acompañamiento del coordinador de Travel Hood"
+      ],
+      "notIncluded": [
+        "Seguro de viaje",
+        "Vuelos internacionales",
+        "Propinas",
+        "Comidas y cenas no especificadas",
+        "Actividades no incluidas en el itinerario"
+      ],
+      "highlights": [
+        "3 días de aventura en el Ha Giang Loop",
+        "Navegar entre montañas en Ninh Binh",
+        "Hoi An sobre dos ruedas y en basket boat",
+        "Un viaje al Vietnam imperial en Hue"
+      ]
+    }
+  ]
+}
