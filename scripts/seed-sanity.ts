@@ -199,7 +199,10 @@ async function seed() {
         : undefined,
       hasCoordinator: d.hasCoordinator ?? true,
       included: [...defaultIncluded, ...(d.extraIncluded ?? [])],
-      notIncluded: [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])],
+      inheritDefaultNotIncluded: d.inheritDefaultNotIncluded ?? true,
+      notIncluded: d.inheritDefaultNotIncluded === false
+        ? d.notIncluded ?? []
+        : [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])],
       itinerary: destItinerary,
       faqs,
       seo: d.seo

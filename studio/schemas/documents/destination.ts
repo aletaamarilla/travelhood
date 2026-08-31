@@ -218,12 +218,22 @@ export default defineType({
         'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo"). Se combinan con los defaults globales.',
     }),
     defineField({
+      name: 'inheritDefaultNotIncluded',
+      title: 'Usar no incluidos globales',
+      type: 'boolean',
+      fieldset: 'includes',
+      description:
+        'Se usan los globales salvo que desactives esta opción. Al desactivarla, escribe la lista completa en "No incluido en el destino". Solo afecta a este destino.',
+      initialValue: true,
+    }),
+    defineField({
       name: 'notIncluded',
       title: 'No incluido en el destino',
       type: 'array',
       of: [{type: 'string'}],
       fieldset: 'includes',
-      description: 'No-incluidos extra del destino (ej: "Ropa térmica").',
+      description:
+        'Extras que se añaden a los no incluidos globales. Si desactivas "Usar no incluidos globales", esta será la lista completa para el destino y sus viajes.',
     }),
     defineField({
       name: 'travelInsuranceIncluded',

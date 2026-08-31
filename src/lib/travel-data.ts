@@ -85,6 +85,7 @@ export interface Destination {
   extraNotIncluded?: string[]
   included?: string[]
   notIncluded?: string[]
+  inheritDefaultNotIncluded?: boolean
   itinerary?: ItineraryDay[]
   heroImageAlt?: string
   coordinates?: { lat: number; lng: number }
@@ -561,6 +562,15 @@ export const countries: Country[] = [
     visaInfo: "Hasta 90 días sin visado para ciudadanos españoles; confirma siempre la documentación vigente antes de viajar.",
     vaccinesRecommended: "Consulta Sanidad Exterior antes del viaje según ruta y perfil viajero.",
   },
+]
+
+const puertoRicoNotIncluded = [
+  "Vuelos internacionales",
+  "Desayunos, comidas y cenas no especificadas",
+  "Seguro de viaje",
+  "Actividades opcionales en Vieques",
+  "Gastos personales y propinas",
+  "Visado (ESTA)",
 ]
 
 export const destinations: Destination[] = [
@@ -1470,7 +1480,8 @@ export const destinations: Destination[] = [
     climate: "Tropical caribeño, 26-32°C",
     categories: ["playa", "cultural", "aventura", "naturaleza"],
     extraIncluded: ["Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"],
-    extraNotIncluded: ["Visado (ESTA)", "Desayunos"],
+    inheritDefaultNotIncluded: false,
+    notIncluded: puertoRicoNotIncluded,
     coordinates: { lat: 18.4655, lng: -66.1057 },
     budgetPerDay: { mealCostLow: "5-8€", mealCostMid: "12-20€", beerCost: "3-5€", dailyBudget: "25-40€/día", totalExtras: "200-320€ (8 días)" },
     itinerary: [
@@ -2002,9 +2013,9 @@ export const trips: Trip[] = [
   // Filipinas Invierno
   { id: "filipinas-invierno-2026-11-13", destinationId: "filipinas-invierno", title: "Filipinas Invierno — Noviembre 2026", departureDate: "2026-11-13", returnDate: "2026-11-25", durationDays: 13, priceFrom: 1350, flightEstimate: 750, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Comidas indicadas", "Tours en privado (Bohol, Port Barton, El Nido, Coron)", "Guía de habla hispana/inglesa", "Tasas de puertos y aeropuertos"], notIncluded: [...defaultNotIncluded, "Gastos derivados de problemas externos"], itinerary: [], tags: ["puente-noviembre"] },
   // Puerto Rico
-  { id: "puerto-rico-2026-04-29", destinationId: "puerto-rico", title: "Puerto Rico — Abr-May 2026", departureDate: "2026-04-29", returnDate: "2026-05-05", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 3, coordinatorId: "marta", status: "almost-full", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: [...defaultNotIncluded, "Visado (ESTA)", "Desayunos"], itinerary: [], tags: ["puente-mayo"] },
-  { id: "puerto-rico-2026-08-27", destinationId: "puerto-rico", title: "Puerto Rico — Ago-Sep 2026", departureDate: "2026-08-27", returnDate: "2026-09-02", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: [...defaultNotIncluded, "Visado (ESTA)", "Desayunos"], itinerary: [], tags: ["verano"] },
-  { id: "puerto-rico-2026-09-02", destinationId: "puerto-rico", title: "Puerto Rico — Septiembre 2026", departureDate: "2026-09-02", returnDate: "2026-09-08", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "marta", status: "open", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: [...defaultNotIncluded, "Visado (ESTA)", "Desayunos"], itinerary: [], tags: ["septiembre"] },
+  { id: "puerto-rico-2026-04-29", destinationId: "puerto-rico", title: "Puerto Rico — Abr-May 2026", departureDate: "2026-04-29", returnDate: "2026-05-05", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 3, coordinatorId: "marta", status: "almost-full", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: puertoRicoNotIncluded, itinerary: [], tags: ["puente-mayo"] },
+  { id: "puerto-rico-2026-08-27", destinationId: "puerto-rico", title: "Puerto Rico — Ago-Sep 2026", departureDate: "2026-08-27", returnDate: "2026-09-02", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "carlos", status: "open", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: puertoRicoNotIncluded, itinerary: [], tags: ["verano"] },
+  { id: "puerto-rico-2026-09-02", destinationId: "puerto-rico", title: "Puerto Rico — Septiembre 2026", departureDate: "2026-09-02", returnDate: "2026-09-08", durationDays: 8, priceFrom: 1150, flightEstimate: 700, totalPlaces: 13, placesLeft: 13, coordinatorId: "marta", status: "open", included: [...defaultIncluded, "Ferry a Vieques", "Guías locales en español", "Entradas a lugares de interés"], notIncluded: puertoRicoNotIncluded, itinerary: [], tags: ["septiembre"] },
   // Tailandia Invierno
   { id: "tailandia-invierno-2026-04-16", destinationId: "tailandia-invierno", title: "Tailandia Invierno — Abril 2026", departureDate: "2026-04-16", returnDate: "2026-04-28", durationDays: 13, priceFrom: 1300, flightEstimate: 650, totalPlaces: 13, placesLeft: 4, coordinatorId: "carlos", status: "almost-full", included: [...defaultIncluded, "Traslados principales y ferrys", "Vuelos internos", "Tren nocturno Bangkok→Chiang Mai", "Templos de Chiang Mai", "Santuario de elefantes + trekking + rafting + almuerzo", "Tour Hong Island en lancha + almuerzo", "Tour Phi Phi en barca + almuerzo + snorkel"], notIncluded: [...defaultNotIncluded, "Tuk tuk y grabs", "Templos de Ayutthaya y Bangkok"], itinerary: [], tags: ["semana-santa"] },
   { id: "tailandia-invierno-2026-11-16", destinationId: "tailandia-invierno", title: "Tailandia Invierno — Noviembre 2026", departureDate: "2026-11-16", returnDate: "2026-11-28", durationDays: 13, priceFrom: 1300, flightEstimate: 650, totalPlaces: 13, placesLeft: 13, coordinatorId: "marta", status: "open", included: [...defaultIncluded, "Traslados principales y ferrys", "Vuelos internos", "Tren nocturno Bangkok→Chiang Mai", "Templos de Chiang Mai", "Santuario de elefantes + trekking + rafting + almuerzo", "Tour Hong Island en lancha + almuerzo", "Tour Phi Phi en barca + almuerzo + snorkel"], notIncluded: [...defaultNotIncluded, "Tuk tuk y grabs", "Templos de Ayutthaya y Bangkok"], itinerary: [], tags: ["puente-noviembre"] },

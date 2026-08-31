@@ -307,6 +307,7 @@ function mapDestination(s: SanityDestination): Destination {
     categories: (s.categories ?? []) as Destination['categories'],
     included: normalizeDestinationIncluded(s.included ?? []),
     notIncluded: s.notIncluded ?? [],
+    inheritDefaultNotIncluded: s.inheritDefaultNotIncluded ?? true,
     coordinates: resolveCoordinates(s.coordinates),
     climateByMonth: (s.climateByMonth ?? []) as Destination['climateByMonth'],
     budgetPerDay: s.budgetPerDay
@@ -561,7 +562,7 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
   const notIncluded = ctx
     ? [
         ...new Set([
-          ...ctx.defaultNotIncluded
+          ...(s.destination?.inheritDefaultNotIncluded === false ? [] : ctx.defaultNotIncluded)
             .filter((item) => !travelInsuranceIncluded || !isTravelInsurance(item))
             .map((item) =>
               hasSeparateTips && item.trim().toLowerCase() === 'gastos personales y propinas'

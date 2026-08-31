@@ -63,7 +63,8 @@ async function main() {
     slug: { current: string }
     included?: string[]
     notIncluded?: string[]
-  }>>(`*[_type == "destination"]{ _id, title, slug, included, notIncluded } | order(title asc)`)
+    inheritDefaultNotIncluded?: boolean
+  }>>(`*[_type == "destination"]{ _id, title, slug, included, notIncluded, inheritDefaultNotIncluded } | order(title asc)`)
 
   console.log(`📋 ${destinations.length} destinos encontrados\n`)
 
@@ -76,8 +77,13 @@ async function main() {
     const removedIncluded = origIncluded.filter(item => defIncSet.has(normalize(item)))
     const keptIncluded = origIncluded.filter(item => !defIncSet.has(normalize(item)))
 
-    const removedNotIncluded = origNotIncluded.filter(item => defNotSet.has(normalize(item)))
-    const keptNotIncluded = origNotIncluded.filter(item => !defNotSet.has(normalize(item)))
+    // A destination with its own complete list must keep entries that match global defaults.
+    const removedNotIncluded = dest.inheritDefaultNotIncluded === false
+      ? []
+      : origNotIncluded.filter(item => defNotSet.has(normalize(item)))
+    const keptNotIncluded = dest.inheritDefaultNotIncluded === false
+      ? origNotIncluded
+      : origNotIncluded.filter(item => !defNotSet.has(normalize(item)))
 
     const hasChanges = removedIncluded.length > 0 || removedNotIncluded.length > 0
 
