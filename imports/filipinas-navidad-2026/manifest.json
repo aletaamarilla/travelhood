@@ -1,0 +1,165 @@
+{
+  "destination": {
+    "id": "destination-filipinas-navidad",
+    "name": "Filipinas — Edición Especial Navidad",
+    "slug": "filipinas-navidad",
+    "description": "Filipinas en 11 días para celebrar la Navidad entre islas, playas y aguas cristalinas con un grupo y el acompañamiento de Travel Hood. La ruta conecta Manila, Bohol, Port Barton y El Nido: tarsiers y Chocolate Hills, island hopping, snorkel, kayak y atardeceres en Palawan. Los alojamientos con desayuno, los traslados, las entradas y los tours indicados están incluidos para que tú te centres en disfrutar. Cerramos la aventura de vuelta en Manila después de vivir el paraíso filipino juntos.",
+    "shortDescription": "Bohol, tortugas en Port Barton y el paraíso de El Nido en Navidad.",
+    "idealFor": "Quienes quieren celebrar la Navidad entre islas, snorkel, kayak y aventura en grupo.",
+    "climate": "Tropical, 27-32°C, época seca",
+    "categories": [
+      "playa",
+      "naturaleza",
+      "aventura"
+    ],
+    "highlights": [
+      "Tarsiers & Chocolate Hills",
+      "Tortugas en Port Barton",
+      "El paraíso de El Nido",
+      "Kayak en Big Lagoon"
+    ],
+    "included": [
+      "Todos los alojamientos con desayuno",
+      "Comidas indicadas",
+      "Tours en privado: visita a la isla de Bohol, island hopping en Port Barton y El Nido",
+      "Guía de habla hispana en Bohol y El Nido (sujeto a disponibilidad)",
+      "Guía de habla inglesa en el resto de destinos",
+      "Todos los traslados",
+      "Entradas",
+      "Tasas de puertos y aeropuertos",
+      "Asesoramiento y la seguridad de viajar con el coordinador de Travel Hood"
+    ],
+    "notIncluded": [
+      "Vuelos internacionales",
+      "Comidas no indicadas",
+      "Seguro médico de viaje",
+      "Actividades no especificadas como incluidas en el itinerario (kayak en Bohol, snorkel o buceo en Balicasag)",
+      "Gastos por problemas externos debidos al clima"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Llegada a Manila",
+        "description": "Llegada, traslado al hotel y tiempo para descansar. Primer contacto con el grupo y noche en Manila."
+      },
+      {
+        "day": 2,
+        "title": "Manila — Bohol",
+        "description": "Vuelo interno a Bohol, llegada al hotel de Alona Beach y tarde libre para disfrutar de la playa y el atardecer."
+      },
+      {
+        "day": 3,
+        "title": "Explorando Bohol",
+        "description": "Santuario de tarsiers, Chocolate Hills y arrozales del río Loboc, con opción de kayak o paddle y posible tirolina."
+      },
+      {
+        "day": 4,
+        "title": "Bohol a tu ritmo",
+        "description": "Día libre para playas, snorkel o buceo, la iglesia de San Agustín, gastronomía filipina, masaje y atardecer."
+      },
+      {
+        "day": 5,
+        "title": "Rumbo a Port Barton",
+        "description": "Ferry a Cebu y vuelo a San Vicente para llegar a Palawan. Traslado y noche en Port Barton."
+      },
+      {
+        "day": 6,
+        "title": "Island hopping en Port Barton",
+        "description": "Ruta en bangka por German Island, Twin o Wide Reef, Exotic Island con almuerzo incluido y Maxima Island."
+      },
+      {
+        "day": 7,
+        "title": "Traslado a El Nido",
+        "description": "Llegada a El Nido, atardecer en Las Cabañas y tiempo libre por los beach clubs y la música de Corong-Corong."
+      },
+      {
+        "day": 8,
+        "title": "Island hopping en El Nido",
+        "description": "Navegación por Bacuit: 7 Commandos, Secret Lagoon, Schimizu, Payong-Payong con almuerzo y Big Lagoon en kayak."
+      },
+      {
+        "day": 9,
+        "title": "El Nido a tu ritmo",
+        "description": "Día libre para recorrer Nacpan y Duli, subir a Taraw Cliff, bucear, hacer surf o remar en kayak."
+      },
+      {
+        "day": 10,
+        "title": "El Nido — Manila",
+        "description": "Vuelo de regreso a Manila y última noche del viaje para descansar y compartir la despedida del grupo."
+      },
+      {
+        "day": 11,
+        "title": "Fin de la aventura",
+        "description": "Mañana libre en Manila y traslado al aeropuerto para el vuelo de vuelta a casa."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "¿Cuánto dura y qué lugares recorre el viaje?",
+        "answer": "Son 11 días, del 25 de diciembre de 2026 al 4 de enero de 2027, pasando por Manila, Bohol, Port Barton y El Nido."
+      },
+      {
+        "question": "¿Qué traslados y excursiones están incluidos?",
+        "answer": "Están incluidos todos los traslados, las entradas y los tours privados indicados en Bohol, Port Barton y El Nido."
+      },
+      {
+        "question": "¿Qué comidas incluye el viaje?",
+        "answer": "Todos los alojamientos incluyen desayuno y también están incluidas las comidas señaladas expresamente en el itinerario."
+      },
+      {
+        "question": "¿Qué actividades opcionales se pagan aparte?",
+        "answer": "Las actividades no indicadas como incluidas, como el kayak en Bohol o el snorkel y buceo en Balicasag, corren por cuenta del viajero."
+      },
+      {
+        "question": "¿Incluye vuelos internacionales y seguro médico?",
+        "answer": "No. Los vuelos internacionales y el seguro médico de viaje no están incluidos en el precio del paquete."
+      }
+    ],
+    "seo": {
+      "title": "Filipinas en Navidad 2026 | Travelhood",
+      "description": "Viaje en grupo a Filipinas en Navidad: Bohol, Port Barton y El Nido durante 11 días desde 1.300 €. Traslados y tours incluidos.",
+      "keywords": "Filipinas Navidad 2026, viaje en grupo Filipinas, Bohol, Port Barton, El Nido"
+    },
+    "pdf": "new_destination/filipinas/PDF Filipinas navidad_compressed.pdf",
+    "photos": [
+      {
+        "path": "new_destination/filipinas/pexels-garfield-besa-95119-18487438.jpg",
+        "hero": true,
+        "alt": "Playa tropical de Filipinas con barcos tradicionales sobre aguas turquesas"
+      },
+      {
+        "path": "new_destination/filipinas/pexels-kat-carabio-2160013554-38493237.jpg",
+        "hero": false,
+        "alt": "Chocolate Hills cubiertas de vegetación en Bohol, Filipinas"
+      },
+      {
+        "path": "new_destination/filipinas/pexels-lukasfst-21077133.jpg",
+        "hero": false,
+        "alt": "Río tropical rodeado de palmeras y vegetación en Bohol, Filipinas"
+      }
+    ]
+  },
+  "trip": {
+    "id": "trip-filipinas-navidad-2026",
+    "title": "Filipinas — Navidad 2026",
+    "slug": "filipinas-navidad-2026",
+    "departureDate": "2026-12-25",
+    "returnDate": "2027-01-04",
+    "durationDays": 11,
+    "priceFrom": 1300,
+    "flightEstimate": 950,
+    "totalPlaces": 15,
+    "placesLeft": 15,
+    "status": "open",
+    "coordinatorId": "coordinator-carlos",
+    "tags": [
+      "navidad",
+      "fin-de-anio"
+    ]
+  },
+  "notes": [
+    "El documento indica 25 de diciembre a 4 de enero sin año; se interpreta como la próxima edición 2026/2027.",
+    "Las fechas y el itinerario numerado del PDF comprimido suman 11 días, aunque una portada indica 10 días.",
+    "Solo hay tres fotos: una se usa como hero y las otras dos como galería, sin repetir la principal."
+  ]
+}

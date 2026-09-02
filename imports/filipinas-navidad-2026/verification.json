@@ -1,0 +1,170 @@
+{
+  "destination": {
+    "_id": "destination-filipinas-navidad",
+    "_rev": "1TEBkO0nRSaX1V6zMOMdSM",
+    "gallery": [
+      {
+        "_key": "photo-1",
+        "_type": "image",
+        "alt": "Chocolate Hills cubiertas de vegetación en Bohol, Filipinas",
+        "asset": {
+          "_ref": "image-c7be27e21b85e9dda89c5a0226abf2f5134de889-3953x5929-jpg",
+          "_type": "reference"
+        }
+      },
+      {
+        "_key": "photo-2",
+        "_type": "image",
+        "alt": "Río tropical rodeado de palmeras y vegetación en Bohol, Filipinas",
+        "asset": {
+          "_ref": "image-00a68726ae5c9fd83efe2ab8879a3de8f6d247af-2268x4032-jpg",
+          "_type": "reference"
+        }
+      }
+    ],
+    "heroImage": {
+      "_type": "image",
+      "asset": {
+        "_ref": "image-f12134119ad2f231e3e09dbfdc5b9795349d3517-2250x4000-jpg",
+        "_type": "reference"
+      }
+    },
+    "highlights": [
+      "Tarsiers & Chocolate Hills",
+      "Tortugas en Port Barton",
+      "El paraíso de El Nido",
+      "Kayak en Big Lagoon"
+    ],
+    "included": [
+      "Todos los alojamientos con desayuno",
+      "Comidas indicadas",
+      "Tours en privado: visita a la isla de Bohol, island hopping en Port Barton y El Nido",
+      "Guía de habla hispana en Bohol y El Nido (sujeto a disponibilidad)",
+      "Guía de habla inglesa en el resto de destinos",
+      "Todos los traslados",
+      "Entradas",
+      "Tasas de puertos y aeropuertos",
+      "Asesoramiento y la seguridad de viajar con el coordinador de Travel Hood"
+    ],
+    "inheritDefaultNotIncluded": false,
+    "itinerary": [
+      {
+        "_key": "itineraryDay-1",
+        "_type": "itineraryDay",
+        "day": 1,
+        "description": "Llegada, traslado al hotel y tiempo para descansar. Primer contacto con el grupo y noche en Manila.",
+        "title": "Llegada a Manila"
+      },
+      {
+        "_key": "itineraryDay-2",
+        "_type": "itineraryDay",
+        "day": 2,
+        "description": "Vuelo interno a Bohol, llegada al hotel de Alona Beach y tarde libre para disfrutar de la playa y el atardecer.",
+        "title": "Manila — Bohol"
+      },
+      {
+        "_key": "itineraryDay-3",
+        "_type": "itineraryDay",
+        "day": 3,
+        "description": "Santuario de tarsiers, Chocolate Hills y arrozales del río Loboc, con opción de kayak o paddle y posible tirolina.",
+        "title": "Explorando Bohol"
+      },
+      {
+        "_key": "itineraryDay-4",
+        "_type": "itineraryDay",
+        "day": 4,
+        "description": "Día libre para playas, snorkel o buceo, la iglesia de San Agustín, gastronomía filipina, masaje y atardecer.",
+        "title": "Bohol a tu ritmo"
+      },
+      {
+        "_key": "itineraryDay-5",
+        "_type": "itineraryDay",
+        "day": 5,
+        "description": "Ferry a Cebu y vuelo a San Vicente para llegar a Palawan. Traslado y noche en Port Barton.",
+        "title": "Rumbo a Port Barton"
+      },
+      {
+        "_key": "itineraryDay-6",
+        "_type": "itineraryDay",
+        "day": 6,
+        "description": "Ruta en bangka por German Island, Twin o Wide Reef, Exotic Island con almuerzo incluido y Maxima Island.",
+        "title": "Island hopping en Port Barton"
+      },
+      {
+        "_key": "itineraryDay-7",
+        "_type": "itineraryDay",
+        "day": 7,
+        "description": "Llegada a El Nido, atardecer en Las Cabañas y tiempo libre por los beach clubs y la música de Corong-Corong.",
+        "title": "Traslado a El Nido"
+      },
+      {
+        "_key": "itineraryDay-8",
+        "_type": "itineraryDay",
+        "day": 8,
+        "description": "Navegación por Bacuit: 7 Commandos, Secret Lagoon, Schimizu, Payong-Payong con almuerzo y Big Lagoon en kayak.",
+        "title": "Island hopping en El Nido"
+      },
+      {
+        "_key": "itineraryDay-9",
+        "_type": "itineraryDay",
+        "day": 9,
+        "description": "Día libre para recorrer Nacpan y Duli, subir a Taraw Cliff, bucear, hacer surf o remar en kayak.",
+        "title": "El Nido a tu ritmo"
+      },
+      {
+        "_key": "itineraryDay-10",
+        "_type": "itineraryDay",
+        "day": 10,
+        "description": "Vuelo de regreso a Manila y última noche del viaje para descansar y compartir la despedida del grupo.",
+        "title": "El Nido — Manila"
+      },
+      {
+        "_key": "itineraryDay-11",
+        "_type": "itineraryDay",
+        "day": 11,
+        "description": "Mañana libre en Manila y traslado al aeropuerto para el vuelo de vuelta a casa.",
+        "title": "Fin de la aventura"
+      }
+    ],
+    "name": "Filipinas — Edición Especial Navidad",
+    "notIncluded": [
+      "Vuelos internacionales",
+      "Comidas no indicadas",
+      "Seguro médico de viaje",
+      "Actividades no especificadas como incluidas en el itinerario (kayak en Bohol, snorkel o buceo en Balicasag)",
+      "Gastos por problemas externos debidos al clima"
+    ],
+    "pdfFile": {
+      "_type": "file",
+      "asset": {
+        "_ref": "file-c4c6b607ddb1e7dce2f6d022ae2213389fcc866f-pdf",
+        "_type": "reference"
+      }
+    },
+    "slug": {
+      "_type": "slug",
+      "current": "filipinas-navidad"
+    }
+  },
+  "trip": {
+    "_id": "trip-filipinas-navidad-2026",
+    "_rev": "1TEBkO0nRSaX1V6zMOMdSM",
+    "coordinator": {
+      "_ref": "coordinator-carlos",
+      "_type": "reference"
+    },
+    "departureDate": "2026-12-25",
+    "durationDays": 11,
+    "flightEstimate": 950,
+    "placesLeft": 15,
+    "priceFrom": 1300,
+    "returnDate": "2027-01-04",
+    "status": "open",
+    "tags": [
+      "navidad",
+      "fin-de-anio"
+    ],
+    "title": "Filipinas — Navidad 2026",
+    "totalPlaces": 15
+  }
+}
