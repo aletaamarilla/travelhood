@@ -2,12 +2,14 @@
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
-import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import HeroSection from "@/components/HeroSection.astro";
 import { getCollaboratorsPage, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
-import { generateFaqSchema, toJsonLd } from "@/lib/schemas";
+import { generateBreadcrumbSchema, generateFaqSchema, toJsonLd } from "@/lib/schemas";
 
 const [content, settings] = await Promise.all([getCollaboratorsPage(), getSiteSettings()]);
 const images = settings ? resolveSettingsImages(settings) : null;
+const heroImage = images?.travelhood_heroImage || "";
+const heroImageAlt = images?.travelhood_heroImageAlt || "Viajeros de Travelhood en un viaje en grupo";
 const faqs = [
   {
     question: "¿Cómo reservo o contrato?",
@@ -15,29 +17,26 @@ const faqs = [
   },
 ];
 ---
-<Layout title={content.seoTitle} description={content.seoDescription} keywords="colaboradores Travelhood, IATI seguros de viaje, Nomadcamper Almería">
+<Layout title={content.seoTitle} description={content.seoDescription} heroImage={heroImage} ogImage={heroImage || undefined} keywords="colaboradores Travelhood, IATI seguros de viaje, Nomadcamper Almería">
   <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Colaboradores", url: "/colaboradores/" }]))} />
     {content.collaborators.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
   </Fragment>
-  <Navbar solid logoUrl={images?.orgLogoUrl} />
   <main class="bg-background">
-    <section class="relative overflow-hidden pb-10 pt-24 sm:pb-14 sm:pt-28">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6">
-        <Breadcrumbs items={[{ name: "Colaboradores", url: "/colaboradores/" }]} />
-        <div class="mt-8 max-w-3xl sm:mt-12">
-          <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Seguros y alquiler de campers</p>
-          <h1 class="mt-4 font-serif text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl text-balance">{content.title}</h1>
-          <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">{content.intro}</p>
-          {content.collaborators.length > 0 && (
-            <a href="#colaboradores" class="mt-6 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-coral px-6 py-3 text-base font-bold text-white transition-colors hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-deep">
-              Ver colaboradores <span aria-hidden="true">↓</span>
-            </a>
-          )}
-        </div>
-      </div>
-    </section>
+    <Navbar solid logoUrl={images?.orgLogoUrl} />
+    <HeroSection
+      image={heroImage}
+      imageAlt={heroImageAlt}
+      breadcrumbs={[
+        { label: "Home", href: "/" },
+        { label: "Colaboradores" },
+      ]}
+      title={content.title}
+      subtitle={content.intro}
+      minHeight="55vh"
+    />
 
-    <section id="colaboradores" aria-label="Colaboradores y proyectos de Travelhood" class="scroll-mt-24 pb-14 sm:pb-20">
+    <section id="colaboradores" aria-label="Colaboradores y proyectos de Travelhood" class="scroll-mt-24 py-14 sm:py-20">
       <div class="mx-auto max-w-7xl space-y-6 px-4 sm:space-y-8 sm:px-6">
         {content.collaborators.map((partner) => (
           <article id={partner.slug} aria-labelledby={partner.slug + "-title"} class="scroll-mt-24 overflow-hidden rounded-3xl border border-border/60 bg-card">
