@@ -396,6 +396,7 @@ export function generateSiteNavigationSchema() {
     { name: "Cómo funciona", path: "/como-funciona/" },
     { name: "Opiniones", path: "/opiniones/" },
     { name: "Travel Hood", path: "/travelhood/" },
+    { name: "Colaboradores", path: "/colaboradores/" },
     { name: "Blog", path: "/blog/" },
     { name: "Preguntas frecuentes", path: "/preguntas-frecuentes/" },
   ]

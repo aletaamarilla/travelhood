@@ -4,29 +4,56 @@ import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
 import HeroSection from "@/components/HeroSection.astro";
 import { getCollaboratorsPage, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
-import { generateBreadcrumbSchema, generateFaqSchema, toJsonLd } from "@/lib/schemas";
+import { generateBreadcrumbSchema, generateCollectionPageSchema, generateFaqSchema, generateItemListSchema, toJsonLd } from "@/lib/schemas";
+
+import { TRAVEL_INSURANCE_NOTICE } from "../../shared/travel-insurance";
 
 const [content, settings] = await Promise.all([getCollaboratorsPage(), getSiteSettings()]);
 const images = settings ? resolveSettingsImages(settings) : null;
-const heroImage = images?.travelhood_heroImage || "";
-const heroImageAlt = images?.travelhood_heroImageAlt || "Viajeros de Travelhood en un viaje en grupo";
 const faqs = [
+  {
+    question: "¿El seguro está incluido en los viajes de Travelhood?",
+    answer: TRAVEL_INSURANCE_NOTICE,
+  },
   {
     question: "¿Cómo reservo o contrato?",
     answer: "Al pulsar en cada botón irás a su web. Allí podrás mirar las opciones, consultar precios y disponibilidad, y hacer la reserva o contratar directamente con ellos.",
   },
 ];
+const pageSchema = {
+  ...generateCollectionPageSchema({
+    name: content.title,
+    description: content.intro,
+    url: "/colaboradores/",
+  }),
+  inLanguage: "es-ES",
+  mainEntity: generateItemListSchema({
+    name: content.title,
+    items: content.collaborators.map((partner, index) => ({
+      name: partner.name,
+      url: "/colaboradores/#" + partner.slug,
+      position: index + 1,
+    })),
+  }),
+  about: content.collaborators.map((partner) => ({
+    "@type": "Organization",
+    name: partner.name,
+    description: partner.description,
+    url: partner.url,
+  })),
+};
 ---
-<Layout title={content.seoTitle} description={content.seoDescription} heroImage={heroImage} ogImage={heroImage || undefined} keywords="colaboradores Travelhood, IATI seguros de viaje, Nomadcamper Almería">
+<Layout title={content.seoTitle} description={content.seoDescription} keywords="colaboradores Travelhood, IATI seguros de viaje, Nomadcamper Almería">
   <Fragment slot="head">
+    <script type="application/ld+json" set:html={toJsonLd(pageSchema)} />
     <script type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([{ name: "Home", url: "/" }, { name: "Colaboradores", url: "/colaboradores/" }]))} />
     {content.collaborators.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
   </Fragment>
   <main class="bg-background">
     <Navbar solid logoUrl={images?.orgLogoUrl} />
     <HeroSection
-      image={heroImage}
-      imageAlt={heroImageAlt}
+      image=""
+      imageAlt=""
       breadcrumbs={[
         { label: "Home", href: "/" },
         { label: "Colaboradores" },

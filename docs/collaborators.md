@@ -36,3 +36,12 @@ Los recursos se sirven localmente en public/images/collaborators/. Los bitmaps e
 - npm run check:visibility -- http://localhost:4329
 - npm run check:favicons
 - npm --prefix studio run build
+
+## SEO y GEO
+
+- Cabecera compartida, centrada y sin fotografía ni precarga de una imagen de fondo.
+- Título, descripción, canonical y vistas previas sociales propios de la página; imagen social general de la marca.
+- Contenido y FAQ disponibles en HTML estático, con un único H1 y jerarquía de encabezados.
+- CollectionPage, ItemList y entidades de colaboradores derivados de los mismos datos visibles; BreadcrumbList y FAQPage coherentes con el contenido.
+- Enlaces desde la navegación, la home, el footer, llms.txt y la versión Markdown de la home; URL incluida en el sitemap y permitida en robots.txt.
+- Referencias: https://developers.google.com/search/docs/appearance/ai-features y https://developers.google.com/search/docs/appearance/structured-data/sd-policies.

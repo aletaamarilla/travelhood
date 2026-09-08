@@ -130,6 +130,7 @@ export async function renderHomeMarkdown(): Promise<string> {
     `- ${markdownLink("Como funciona Travel Hood", "/como-funciona/")}.`,
     `- ${markdownLink("Preguntas frecuentes", "/preguntas-frecuentes/")}.`,
     `- ${markdownLink("Sobre Travel Hood", "/travelhood/")}.`,
+    `- ${markdownLink("Colaboradores de Travel Hood", "/colaboradores/")}.`,
     `- ${markdownLink("Escribir por WhatsApp", buildWhatsAppUrl(whatsappPhone, WHATSAPP_INTENT))}.`,
     whatsappCommunityUrl ? `- ${markdownLink("Unirse a la comunidad de WhatsApp", whatsappCommunityUrl)}.` : null,
     "",
