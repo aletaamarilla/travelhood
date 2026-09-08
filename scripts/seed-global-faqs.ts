@@ -143,7 +143,7 @@ const FAQ_BLOCKS: FaqBlock[] = [
       },
       {
         question: '¿Incluye seguro de viaje?',
-        answer: 'No, el seguro de viaje no está incluido en el precio. Te recomendamos contratar uno por tu cuenta antes de viajar. Podemos orientarte sobre opciones recomendadas.',
+        answer: 'No, el seguro de viaje no está incluido en ninguno de nuestros viajes. Se contrata aparte. Podemos orientarte si tienes dudas.',
       },
       {
         question: '¿Qué pasa si me pongo enfermo durante el viaje?',

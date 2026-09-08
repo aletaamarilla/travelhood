@@ -1,0 +1,145 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import { getCollaboratorsPage, getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+import { generateFaqSchema, toJsonLd } from "@/lib/schemas";
+
+const [content, settings] = await Promise.all([getCollaboratorsPage(), getSiteSettings()]);
+const images = settings ? resolveSettingsImages(settings) : null;
+const faqs = [
+  {
+    question: "¿Cómo reservo o contrato?",
+    answer: "Al pulsar en cada botón irás a su web. Allí podrás mirar las opciones, consultar precios y disponibilidad, y hacer la reserva o contratar directamente con ellos.",
+  },
+];
+---
+<Layout title={content.seoTitle} description={content.seoDescription} keywords="colaboradores Travelhood, IATI seguros de viaje, Nomadcamper Almería">
+  <Fragment slot="head">
+    {content.collaborators.length > 0 && <script type="application/ld+json" set:html={toJsonLd(generateFaqSchema(faqs))} />}
+  </Fragment>
+  <Navbar solid logoUrl={images?.orgLogoUrl} />
+  <main class="bg-background">
+    <section class="relative overflow-hidden pb-10 pt-24 sm:pb-14 sm:pt-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <Breadcrumbs items={[{ name: "Colaboradores", url: "/colaboradores/" }]} />
+        <div class="mt-8 max-w-3xl sm:mt-12">
+          <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Seguros y alquiler de campers</p>
+          <h1 class="mt-4 font-serif text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl text-balance">{content.title}</h1>
+          <p class="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">{content.intro}</p>
+          {content.collaborators.length > 0 && (
+            <a href="#colaboradores" class="mt-6 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-coral px-6 py-3 text-base font-bold text-white transition-colors hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-deep">
+              Ver colaboradores <span aria-hidden="true">↓</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section id="colaboradores" aria-label="Colaboradores y proyectos de Travelhood" class="scroll-mt-24 pb-14 sm:pb-20">
+      <div class="mx-auto max-w-7xl space-y-6 px-4 sm:space-y-8 sm:px-6">
+        {content.collaborators.map((partner) => (
+          <article id={partner.slug} aria-labelledby={partner.slug + "-title"} class="scroll-mt-24 overflow-hidden rounded-3xl border border-border/60 bg-card">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 px-6 py-5 sm:px-8">
+              <div class="flex items-center gap-4">
+                {partner.logoUrl && <img
+                  src={partner.logoUrl}
+                  alt=""
+                  width={partner.slug === "nomadcamper" ? 56 : 109}
+                  height={partner.slug === "nomadcamper" ? 56 : 60}
+                  class:list={["shrink-0", partner.slug === "nomadcamper" ? "h-14 w-14 rounded-full object-cover" : "h-14 w-24 object-contain object-left"]}
+                  loading="lazy"
+                  decoding="async"
+                />}
+                <div>
+                  <h2 id={partner.slug + "-title"} class="font-serif text-xl font-bold text-foreground">{partner.name}</h2>
+                  <p class="mt-1 text-sm text-muted-foreground">{partner.category}</p>
+                </div>
+              </div>
+              <span class="rounded-full border border-border/70 px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+                {partner.relationship === "affiliate" ? "Colaborador de Travelhood" : "De la familia Travelhood"}
+              </span>
+            </div>
+            <div class:list={["grid", (partner.imageUrl || partner.benefit?.trim()) && "lg:grid-cols-[1.1fr_0.9fr]"]}>
+              <div class="flex flex-col items-start p-6 sm:p-8 lg:p-10">
+                <h3 class="max-w-xl font-serif text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl">{partner.headline}</h3>
+                <p class="mt-4 max-w-xl whitespace-pre-line text-base leading-relaxed text-muted-foreground">{partner.description}</p>
+                {partner.benefit?.trim() && (
+                  <div class:list={["mt-5 rounded-2xl bg-sand p-4", !partner.imageUrl && "lg:hidden"]}>
+                    <p class="font-bold text-teal-deep">{partner.benefit}</p>
+                    {partner.benefitDetails && <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{partner.benefitDetails}</p>}
+                  </div>
+                )}
+                <a
+                  href={partner.url}
+                  target="_blank"
+                  rel={partner.relationship === "affiliate" ? "sponsored noopener" : "noopener"}
+                  data-collaborator={partner.slug}
+                  data-collaborator-source="collaborators_page"
+                  data-collaborator-kind="outbound"
+                  aria-describedby={partner.relationship === "affiliate" ? partner.slug + "-disclosure" : undefined}
+                  class="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-teal-deep px-6 py-3 text-center text-base font-bold text-sand transition-colors hover:bg-teal-deep/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-deep sm:w-auto"
+                >
+                  {partner.ctaLabel} <span aria-hidden="true">↗</span><span class="sr-only"> (abre en otra pestaña)</span>
+                </a>
+                {partner.relationship === "affiliate" && (
+                  <p id={partner.slug + "-disclosure"} class="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                    Enlace de afiliación.
+                  </p>
+                )}
+              </div>
+              {partner.imageUrl ? (
+                <figure class="relative min-h-64 bg-sand lg:min-h-full">
+                  <img src={partner.imageUrl} alt={partner.imageAlt} width="1000" height="667" loading="lazy" decoding="async" class="h-full max-h-[28rem] w-full object-cover lg:absolute lg:inset-0 lg:max-h-none" />
+                </figure>
+              ) : partner.benefit?.trim() && (
+                <aside aria-label={"Ventaja de " + partner.name} class="hidden flex-col justify-center bg-sand p-6 sm:p-8 lg:flex lg:p-10">
+                  <span aria-hidden="true" class="mb-6 flex h-12 w-12 items-center justify-center rounded-full border border-teal-deep/20 text-2xl text-teal-deep">↗</span>
+                  <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Para tu próximo viaje</p>
+                  <p class="mt-3 max-w-sm font-serif text-4xl font-bold leading-tight tracking-tight text-teal-deep sm:text-5xl">{partner.benefit}</p>
+                  {partner.benefitDetails && <p class="mt-4 max-w-sm text-base leading-relaxed text-muted-foreground">{partner.benefitDetails}</p>}
+                </aside>
+              )}
+            </div>
+          </article>
+        ))}
+        {content.collaborators.length === 0 && (
+          <p class="rounded-2xl border border-border bg-card p-6 text-base text-muted-foreground">Estamos preparando nuevas colaboraciones. Mientras tanto, puedes descubrir nuestros próximos viajes.</p>
+        )}
+      </div>
+    </section>
+
+    {content.collaborators.length > 0 && (
+      <section id="faq" aria-labelledby="collaborators-faq-title" class="border-t border-border/50 py-12 sm:py-16">
+        <div class="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Información útil</p>
+            <h2 id="collaborators-faq-title" class="mt-3 font-serif text-2xl font-bold text-foreground sm:text-3xl">Reservas y contratación</h2>
+          </div>
+          <div class="divide-y divide-border/60">
+            {faqs.map((faq) => (
+              <details class="group py-1">
+                <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 rounded-lg py-4 text-base font-bold text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-deep [&::-webkit-details-marker]:hidden">
+                  {faq.question}
+                  <span aria-hidden="true" class="shrink-0 text-xl transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p class="pb-5 text-base leading-relaxed text-muted-foreground">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    <section class="bg-teal-deep py-12 text-sand sm:py-16">
+      <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 sm:px-6 lg:flex-row lg:items-center">
+        <div>
+          <h2 class="font-serif text-2xl font-bold sm:text-3xl">Consulta los próximos viajes en grupo</h2>
+          <p class="mt-3 max-w-xl text-base leading-relaxed text-sand/85">Revisa los destinos, las fechas y los precios de los viajes de Travelhood.</p>
+        </div>
+        <a href="/viajes/" class="inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-3 rounded-full bg-coral px-7 py-3 text-base font-bold text-white hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand sm:w-auto">Ver viajes en grupo <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -1,6 +1,6 @@
 import type {StructureBuilder} from 'sanity/structure'
 
-const SINGLETON_TYPES = new Set(['siteSettings'])
+const SINGLETON_TYPES = new Set(['siteSettings', 'collaboratorsPage'])
 
 export const structure = (S: StructureBuilder) =>
   S.list()
@@ -44,6 +44,10 @@ export const structure = (S: StructureBuilder) =>
               S.documentTypeListItem('testimonial').title('Testimonios'),
             ]),
         ),
+
+      S.listItem()
+        .title('Colaboradores')
+        .child(S.document().schemaType('collaboratorsPage').documentId('collaboratorsPage')),
 
       // --- Blog ---
       S.documentTypeListItem('blogPost').title('Blog'),

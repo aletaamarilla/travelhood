@@ -1,5 +1,6 @@
 // Travel Hood Data Graph
 // Structured data: Continents → Countries → Destinations → Trips
+import {TRAVEL_INSURANCE_NOT_INCLUDED} from '../../shared/travel-insurance'
 
 export interface Continent {
   id: string
@@ -567,7 +568,7 @@ export const countries: Country[] = [
 const puertoRicoNotIncluded = [
   "Vuelos internacionales",
   "Desayunos, comidas y cenas no especificadas",
-  "Seguro de viaje",
+  TRAVEL_INSURANCE_NOT_INCLUDED,
   "Actividades opcionales en Vieques",
   "Gastos personales y propinas",
   "Visado (ESTA)",
@@ -1938,7 +1939,7 @@ export const defaultIncluded = [
 export const defaultNotIncluded = [
   "Vuelos internacionales",
   "Comidas y cenas no especificadas",
-  "Seguro de viaje",
+  TRAVEL_INSURANCE_NOT_INCLUDED,
   "Actividades no incluidas en el itinerario",
   "Gastos personales y propinas",
 ]

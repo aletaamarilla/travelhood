@@ -4,7 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 import {structure} from './deskStructure'
 
-const SINGLETON_TYPES = new Set(['siteSettings'])
+const SINGLETON_TYPES = new Set(['siteSettings', 'collaboratorsPage'])
 
 export default defineConfig({
   name: 'travelhood',

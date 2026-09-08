@@ -31,6 +31,7 @@ import {
   allLegalPagesQuery,
   legalPageBySlugQuery,
   siteSettingsQuery,
+  collaboratorsPageQuery,
   globalFaqsByPageQuery,
   allGlobalFaqsQuery,
 } from './queries'
@@ -48,6 +49,7 @@ import type {
   SanityLandingPage,
   SanityLegalPage,
   SanitySiteSettings,
+  SanityCollaboratorsPage,
   SanityGlobalFaq,
 } from '@/types/sanity'
 import type { SanityImageSource } from '@sanity/image-url'
@@ -78,6 +80,15 @@ import { lookupCoords } from './destination-details'
 import { filterVisibleReviews, sortReviews } from './reviews'
 import type { SearchCatalogContinent, SearchCatalogDestination, SearchDestinationRef } from './search-intent'
 
+import { resolveCollaboratorsContent, type CollaboratorsContent } from '@/lib/collaborators'
+
+import {
+  enforceSeparateTravelInsurance,
+  withoutTravelInsurance,
+  withSeparateTravelInsurance,
+  TRAVEL_INSURANCE_NOTICE,
+} from '../../shared/travel-insurance'
+
 const isSanityConfigured = (): boolean => {
   try {
     const pid = import.meta.env.SANITY_PROJECT_ID
@@ -98,14 +109,14 @@ const LEGACY_DEFAULT_INCLUDED = new Set([
 
 async function ensureSettings(): Promise<{ defaultIncluded: string[]; defaultNotIncluded: string[] }> {
   if (!isSanityConfigured()) {
-    return { defaultIncluded: normalizeDefaultIncluded(hardDefaultIncluded), defaultNotIncluded: hardDefaultNotIncluded }
+    return { defaultIncluded: normalizeDefaultIncluded(hardDefaultIncluded), defaultNotIncluded: withSeparateTravelInsurance(hardDefaultNotIncluded) }
   }
   if (!cachedSettings) {
     cachedSettings = await sanityFetch<SanitySiteSettings | null>(siteSettingsQuery)
   }
   return {
     defaultIncluded: normalizeDefaultIncluded(cachedSettings?.defaultIncluded ?? []),
-    defaultNotIncluded: cachedSettings?.defaultNotIncluded ?? [],
+    defaultNotIncluded: withSeparateTravelInsurance(cachedSettings?.defaultNotIncluded ?? []),
   }
 }
 
@@ -115,11 +126,11 @@ function removeLegacyDefaultIncluded(items: string[]): string[] {
 
 // Explicit destination transfers are valid; keep filtering other legacy defaults.
 function normalizeDestinationIncluded(items: string[]): string[] {
-  return items.filter((item) => item === 'Traslados principales' || !LEGACY_DEFAULT_INCLUDED.has(item))
+  return withoutTravelInsurance(items).filter((item) => item === 'Traslados principales' || !LEGACY_DEFAULT_INCLUDED.has(item))
 }
 
 function normalizeDefaultIncluded(items: string[]): string[] {
-  return removeLegacyDefaultIncluded(items).filter((item) => !/\bdesayunos?\b/i.test(item))
+  return withoutTravelInsurance(removeLegacyDefaultIncluded(items)).filter((item) => !/\bdesayunos?\b/i.test(item))
 }
 
 export function resolveImage(img?: SanityImageSource | null): string {
@@ -306,7 +317,7 @@ function mapDestination(s: SanityDestination): Destination {
     climate: s.climate,
     categories: (s.categories ?? []) as Destination['categories'],
     included: normalizeDestinationIncluded(s.included ?? []),
-    notIncluded: s.notIncluded ?? [],
+    notIncluded: withSeparateTravelInsurance(s.notIncluded ?? []),
     inheritDefaultNotIncluded: s.inheritDefaultNotIncluded ?? true,
     coordinates: resolveCoordinates(s.coordinates),
     climateByMonth: (s.climateByMonth ?? []) as Destination['climateByMonth'],
@@ -338,14 +349,22 @@ function mapDestination(s: SanityDestination): Destination {
   }
 }
 
+function mapFallbackDestination(destination: Destination): Destination {
+  return {
+    ...enforceSeparateTravelInsurance(destination),
+    extraIncluded: withoutTravelInsurance(destination.extraIncluded ?? []),
+    extraNotIncluded: withSeparateTravelInsurance(destination.extraNotIncluded ?? []),
+  }
+}
+
 export async function getDestinations(): Promise<Destination[]> {
-  if (!isSanityConfigured()) return hardDestinations
+  if (!isSanityConfigured()) return hardDestinations.map(mapFallbackDestination)
   const data = await sanityFetch<SanityDestination[]>(allDestinationsQuery)
   return data.map(mapDestination)
 }
 
 export async function getDestinationBySlug(slug: string): Promise<Destination | undefined> {
-  if (!isSanityConfigured()) return hardDestinations.find((d) => d.slug === slug)
+  if (!isSanityConfigured()) return hardDestinations.map(mapFallbackDestination).find((d) => d.slug === slug)
   const data = await sanityFetch<SanityDestination | null>(destinationBySlugQuery, { slug })
   return data ? mapDestination(data) : undefined
 }
@@ -493,7 +512,7 @@ export async function getSearchCatalog(): Promise<{ destinations: Destination[];
 export async function getDestinationsByContinent(continentSlugOrId: string): Promise<Destination[]> {
   if (!isSanityConfigured()) {
     const continent = hardContinents.find((c) => c.slug === continentSlugOrId || c.id === continentSlugOrId)
-    return continent ? hardGetDestsByContinent(continent.id) : []
+    return continent ? hardGetDestsByContinent(continent.id).map(mapFallbackDestination) : []
   }
   const data = await sanityFetch<SanityDestination[]>(destinationsByContinentQuery, { slug: continentSlugOrId })
   return data.map(mapDestination)
@@ -531,19 +550,9 @@ interface MergeContext {
   defaultNotIncluded: string[]
 }
 
-const TRAVEL_INSURANCE_LABEL = 'Seguro de viaje'
-
 function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
-  const travelInsuranceIncluded = s.destination?.travelInsuranceIncluded === true
-  const isTravelInsurance = (item: string) =>
-    item.trim().toLowerCase() === TRAVEL_INSURANCE_LABEL.toLowerCase()
-  const destIncluded = [
-    ...normalizeDestinationIncluded(s.destination?.included ?? []),
-    ...(travelInsuranceIncluded ? [TRAVEL_INSURANCE_LABEL] : []),
-  ]
-  const destNotIncluded = (s.destination?.notIncluded ?? []).filter(
-    (item) => !travelInsuranceIncluded || !isTravelInsurance(item)
-  )
+  const destIncluded = normalizeDestinationIncluded(s.destination?.included ?? [])
+  const destNotIncluded = s.destination?.notIncluded ?? []
   const hasSeparateTips = destNotIncluded.some((item) => item.trim().toLowerCase() === 'propinas')
   const destItinerary = s.destination?.itinerary ?? []
   const destHasCoordinator = s.destination?.hasCoordinator ?? true
@@ -563,7 +572,6 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     ? [
         ...new Set([
           ...(s.destination?.inheritDefaultNotIncluded === false ? [] : ctx.defaultNotIncluded)
-            .filter((item) => !travelInsuranceIncluded || !isTravelInsurance(item))
             .map((item) =>
               hasSeparateTips && item.trim().toLowerCase() === 'gastos personales y propinas'
                 ? 'Gastos personales'
@@ -597,15 +605,15 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     placesLeft: s.placesLeft,
     coordinatorId: s.coordinator?._id ?? '',
     status: s.status,
-    included,
-    notIncluded,
+    included: withoutTravelInsurance(included),
+    notIncluded: withSeparateTravelInsurance(notIncluded),
     itinerary,
     tags: (s.tags ?? []) as Trip['tags'],
   }
 }
 
 export async function getTrips(): Promise<Trip[]> {
-  if (!isSanityConfigured()) return hardTrips
+  if (!isSanityConfigured()) return hardTrips.map(enforceSeparateTravelInsurance)
   const [data, settings] = await Promise.all([
     sanityFetch<SanityTrip[]>(allTripsQuery),
     ensureSettings(),
@@ -616,7 +624,7 @@ export async function getTrips(): Promise<Trip[]> {
 export async function getTripsByDestination(slug: string): Promise<Trip[]> {
   if (!isSanityConfigured()) {
     const dest = hardDestinations.find((d) => d.slug === slug)
-    return dest ? hardTrips.filter((t) => t.destinationId === dest.id) : []
+    return dest ? hardTrips.filter((t) => t.destinationId === dest.id).map(enforceSeparateTravelInsurance) : []
   }
   const [data, settings] = await Promise.all([
     sanityFetch<SanityTrip[]>(tripsByDestinationQuery, { slug }),
@@ -626,7 +634,7 @@ export async function getTripsByDestination(slug: string): Promise<Trip[]> {
 }
 
 export async function getTripsByTag(tag: string): Promise<Trip[]> {
-  if (!isSanityConfigured()) return hardTrips.filter((t) => t.tags.includes(tag as Trip['tags'][number]))
+  if (!isSanityConfigured()) return hardTrips.filter((t) => t.tags.includes(tag as Trip['tags'][number])).map(enforceSeparateTravelInsurance)
   const [data, settings] = await Promise.all([
     sanityFetch<SanityTrip[]>(tripsByTagQuery, { tag }),
     ensureSettings(),
@@ -833,11 +841,25 @@ export async function getComparisonBySlug(slug: string): Promise<Comparison | un
   return data ? mapComparison(data) : undefined
 }
 
+// ── Collaborators ──
+
+export async function getCollaboratorsPage(): Promise<CollaboratorsContent> {
+  const data = isSanityConfigured()
+    ? await sanityFetch<SanityCollaboratorsPage | null>(collaboratorsPageQuery)
+    : null
+  return resolveCollaboratorsContent(data, (image) => resolveImageThumb(image, 1000))
+}
+
 // ── Site Settings ──
 
 export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
   if (!isSanityConfigured()) return null
-  return sanityFetch<SanitySiteSettings | null>(siteSettingsQuery)
+  const settings = await sanityFetch<SanitySiteSettings | null>(siteSettingsQuery)
+  return settings ? {
+    ...settings,
+    defaultIncluded: withoutTravelInsurance(settings.defaultIncluded ?? []),
+    defaultNotIncluded: withSeparateTravelInsurance(settings.defaultNotIncluded ?? []),
+  } : null
 }
 
 // ── Landing Pages ──
@@ -883,7 +905,11 @@ const FALLBACK_FAQS: SanityGlobalFaq[] = [
       },
       {
         question: '¿Es seguro viajar con Travel Hood?',
-        answer: 'Todos nuestros viajes incluyen seguro de viaje y están organizados por coordinadores experimentados que conocen el destino. Tu seguridad es nuestra prioridad.',
+        answer: 'Nuestros viajes están organizados por coordinadores experimentados que conocen el destino. El seguro de viaje no está incluido y se contrata aparte.',
+      },
+      {
+        question: '¿Incluye seguro de viaje?',
+        answer: TRAVEL_INSURANCE_NOTICE,
       },
       {
         question: '¿Puedo cancelar mi reserva?',

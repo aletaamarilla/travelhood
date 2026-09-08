@@ -4,6 +4,8 @@ Travelhood es una web de viajes en grupo para personas jovenes de 20 a 35 anos e
 
 Travelhood organiza viajes abiertos en grupo reducido con itinerario, alojamiento y coordinador en destino cuando aplica. El canal principal para resolver dudas, confirmar plazas y pedir informacion es WhatsApp.
 
+El seguro de viaje no esta incluido en ningun viaje de Travelhood. Se contrata aparte.
+
 ## Enlaces clave
 
 - Home: https://travelhood.es/
@@ -12,6 +14,7 @@ Travelhood organiza viajes abiertos en grupo reducido con itinerario, alojamient
 - Preguntas frecuentes: https://travelhood.es/preguntas-frecuentes/
 - Opiniones: https://travelhood.es/opiniones/
 - Sobre Travelhood: https://travelhood.es/travelhood/
+- Colaboradores (afiliación y proyectos vinculados): https://travelhood.es/colaboradores/
 - Blog: https://travelhood.es/blog/
 - Viajes privados para grupos: https://travelhood.es/viajes-privados/
 

@@ -13,6 +13,7 @@ import LeadMagnet from "@/components/LeadMagnet";
 import FAQSection from "@/components/FAQSection";
 import CTAFooter from "@/components/CTAFooter.astro";
 import Footer from "@/components/Footer.astro";
+import CollaboratorsSection from "@/components/CollaboratorsSection.astro";
 import { generateTravelAgencySchema, generateWebSiteSchema, toJsonLd } from "@/lib/schemas";
 import { getTrips, getSearchCatalog, getSiteSettings, resolveSettingsImages, getGlobalFaqs, calculatePriceRange, toSearchCatalogDestinations, toSearchCatalogContinents } from "@/lib/data-provider";
 import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL, buildWhatsAppUrl } from "@/lib/config";
@@ -109,6 +110,7 @@ const webSiteSchema = generateWebSiteSchema();
     <HowItWorksSection bgImage={images?.homeHowItWorksImage} />
     <TestimonialsSection />
     <AboutSection bgImage={images?.homeAboutBgImage} photo={images?.homeAboutPhoto} photoAlt={images?.homeAboutPhotoAlt} />
+    <CollaboratorsSection />
     <GEODataBlock
       title="Viajes en grupo para jóvenes — Datos clave"
       subtitle="Información actualizada sobre viajes organizados con Travel Hood"

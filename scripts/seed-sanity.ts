@@ -10,6 +10,7 @@
  */
 
 import { createClient } from '@sanity/client'
+import {withoutTravelInsurance, withSeparateTravelInsurance} from '../shared/travel-insurance'
 import * as dotenv from 'dotenv'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
@@ -198,11 +199,11 @@ async function seed() {
           }
         : undefined,
       hasCoordinator: d.hasCoordinator ?? true,
-      included: [...defaultIncluded, ...(d.extraIncluded ?? [])],
+      included: withoutTravelInsurance([...defaultIncluded, ...(d.extraIncluded ?? [])]),
       inheritDefaultNotIncluded: d.inheritDefaultNotIncluded ?? true,
-      notIncluded: d.inheritDefaultNotIncluded === false
+      notIncluded: withSeparateTravelInsurance(d.inheritDefaultNotIncluded === false
         ? d.notIncluded ?? []
-        : [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])],
+        : [...defaultNotIncluded, ...(d.extraNotIncluded ?? [])]),
       itinerary: destItinerary,
       faqs,
       seo: d.seo

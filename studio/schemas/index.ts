@@ -9,6 +9,7 @@ import blogSection from './objects/blogSection'
 import blogSeo from './objects/blogSeo'
 import statItem from './objects/statItem'
 import siteSettings from './documents/siteSettings'
+import collaboratorsPage from './documents/collaboratorsPage'
 import continent from './documents/continent'
 import country from './documents/country'
 import destination from './documents/destination'
@@ -38,6 +39,7 @@ export const schemaTypes = [
 
   // Documents
   siteSettings,
+  collaboratorsPage,
   continent,
   country,
   destination,

@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {isTravelInsuranceItem} from '../../../shared/travel-insurance'
 
 export default defineType({
   name: 'siteSettings',
@@ -159,14 +160,18 @@ export default defineType({
       title: 'Incluye (por defecto)',
       type: 'array',
       of: [{type: 'string'}],
-      description: 'Lo que incluyen TODOS los viajes de Travelhood por defecto.',
+      description: 'Lo que incluyen TODOS los viajes. El seguro de viaje siempre se contrata aparte.',
+      validation: (Rule) => Rule.custom((items) =>
+        items?.some((item) => isTravelInsuranceItem(String(item)))
+          ? 'Ningún viaje incluye seguro. Añádelo a «No incluye».'
+          : true),
     }),
     defineField({
       name: 'defaultNotIncluded',
       title: 'No incluye (por defecto)',
       type: 'array',
       of: [{type: 'string'}],
-      description: 'Lo que NO incluye ningún viaje por defecto.',
+      description: 'Lo que NO incluye ningún viaje. El seguro de viaje se muestra siempre como contratación aparte, aunque no lo añadas aquí.',
     }),
     // ── Home images ──────────────────────────────────────────────
     defineField({

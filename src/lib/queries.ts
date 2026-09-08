@@ -27,7 +27,7 @@ export const allDestinationsQuery = `*[_type == "destination"] | order(name asc)
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   gallery, highlights, idealFor, climate, categories, hasCoordinator,
   climateByMonth, budgetPerDay, coordinates,
-  included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary,
+  included, notIncluded, inheritDefaultNotIncluded, itinerary,
   country->{_id, name, slug, flag},
   continent->{_id, name, slug},
   faqs, seo,
@@ -38,7 +38,7 @@ export const destinationBySlugQuery = `*[_type == "destination" && slug.current 
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   gallery, highlights, idealFor, climate, categories, hasCoordinator,
   climateByMonth, budgetPerDay, coordinates,
-  included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary,
+  included, notIncluded, inheritDefaultNotIncluded, itinerary,
   country->{_id, name, slug, flag, currency, currencyRate, language, timezone, visaRequired, visaInfo, vaccinesRecommended},
   continent->{_id, name, slug},
   faqs, seo,
@@ -49,7 +49,7 @@ export const destinationsByContinentQuery = `*[_type == "destination" && contine
   _id, name, slug, description, shortDescription, heroImage, heroImageAlt,
   gallery, highlights, idealFor, categories, climate, hasCoordinator,
   climateByMonth, budgetPerDay, coordinates,
-  included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary,
+  included, notIncluded, inheritDefaultNotIncluded, itinerary,
   country->{_id, name, slug, flag},
   continent->{_id, name, slug},
   faqs, seo,
@@ -61,7 +61,7 @@ export const allTripsQuery = `*[_type == "trip" && status != "full"] | order(dep
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -69,7 +69,7 @@ export const tripsByDestinationQuery = `*[_type == "trip" && destination->slug.c
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  destination->{_id, name, slug, included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary, hasCoordinator},
+  destination->{_id, name, slug, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator},
   coordinator->{_id, name, slug, image, imageAlt, role, bio, quote}
 }`
 
@@ -77,7 +77,7 @@ export const tripsByTagQuery = `*[_type == "trip" && $tag in tags] | order(depar
   _id, title, slug, departureDate, returnDate, durationDays,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
-  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, travelInsuranceIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},
+  destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},
   coordinator->{_id, name, slug, image, imageAlt, role}
 }`
 
@@ -211,6 +211,15 @@ export const allGlobalFaqsQuery = `*[_type == "globalFaq"] | order(order asc) {
   title,
   "slug": slug.current,
   faqs[]{ question, answer }
+}`
+
+// ── Collaborators ──
+export const collaboratorsPageQuery = `*[_type == "collaboratorsPage" && _id == "collaboratorsPage"][0] {
+  title, intro, homeTitle, homeIntro, seoTitle, seoDescription,
+  collaborators[]{
+    _key, slug, name, relationship, category, summary, headline, description,
+    benefit, benefitDetails, url, ctaLabel, logo, logoUrl, image, imageUrl, imageAlt, isVisible
+  }
 }`
 
 // ── Site Settings ──

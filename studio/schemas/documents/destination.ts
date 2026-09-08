@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {isTravelInsuranceItem} from '../../../shared/travel-insurance'
 
 export default defineType({
   name: 'destination',
@@ -215,7 +216,11 @@ export default defineType({
       of: [{type: 'string'}],
       fieldset: 'includes',
       description:
-        'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo"). Se combinan con los defaults globales.',
+        'Extras específicos de este destino (ej: "Japan Rail Pass", "Crucero por el Nilo"). El seguro de viaje siempre se contrata aparte.',
+      validation: (Rule) => Rule.custom((items) =>
+        items?.some((item) => isTravelInsuranceItem(String(item)))
+          ? 'El seguro de viaje no está incluido en ningún destino. Ponlo en «No incluido».'
+          : true),
     }),
     defineField({
       name: 'inheritDefaultNotIncluded',
@@ -223,7 +228,7 @@ export default defineType({
       type: 'boolean',
       fieldset: 'includes',
       description:
-        'Se usan los globales salvo que desactives esta opción. Al desactivarla, escribe la lista completa en "No incluido en el destino". Solo afecta a este destino.',
+        'Se usan los globales salvo que desactives esta opción. Al desactivarla, escribe la lista completa en "No incluido en el destino". El seguro de viaje seguirá apareciendo siempre como no incluido.',
       initialValue: true,
     }),
     defineField({
@@ -233,16 +238,7 @@ export default defineType({
       of: [{type: 'string'}],
       fieldset: 'includes',
       description:
-        'Extras que se añaden a los no incluidos globales. Si desactivas "Usar no incluidos globales", esta será la lista completa para el destino y sus viajes.',
-    }),
-    defineField({
-      name: 'travelInsuranceIncluded',
-      title: '¿Incluye seguro de viaje?',
-      type: 'boolean',
-      fieldset: 'includes',
-      description:
-        'Actívalo si este destino incluye el seguro de viaje. Si está desactivado, se mantiene como no incluido.',
-      initialValue: false,
+        'Extras que se añaden a los no incluidos globales. Si desactivas "Usar no incluidos globales", esta será la lista del destino y sus viajes. El seguro de viaje siempre se añade como contratación aparte.',
     }),
 
     // --- Itinerario ---

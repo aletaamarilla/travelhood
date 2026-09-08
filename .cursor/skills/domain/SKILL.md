@@ -28,6 +28,7 @@ Travelhood organiza viajes en grupo para personas de 20-35 años que quieren via
 - Los viajes `full` no aparecen en `allTripsQuery`; `almost-full` representa últimas plazas y suele activarse con `placesLeft <= 4` en UI.
 - El grupo habitual se comunica como 12-13 personas; `totalPlaces` se valida como número positivo.
 - `priceFrom` y `flightEstimate` son euros por persona; el vuelo internacional no está incluido.
+- Ningún viaje incluye seguro de viaje: se contrata aparte. Debe figurar siempre en «No incluye», incluso en destinos que no heredan los valores globales.
 - `promoPrice` sustituye al precio base solo si es menor; usa `resolvePrice`.
 - Si `destination.hasCoordinator` es `false`, se elimina el incluido global que mencione coordinador y el viaje no exige coordinador.
 - Las imágenes reales deben tener alt; galería de destino recomienda mínimo 6 fotos, ideal 8-10.

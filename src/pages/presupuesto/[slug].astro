@@ -43,8 +43,8 @@ const avgFlightEstimate = destTrips.length > 0
   ? Math.round(destTrips.reduce((acc, t) => acc + t.flightEstimate, 0) / destTrips.length)
   : 0;
 
-const included = destTrips.length > 0 ? destTrips[0].included : [];
-const notIncluded = destTrips.length > 0 ? destTrips[0].notIncluded : [];
+const included = destTrips.length > 0 ? destTrips[0].included : destination.included ?? [];
+const notIncluded = destTrips.length > 0 ? destTrips[0].notIncluded : destination.notIncluded ?? [];
 const heroAlt = destination.heroImageAlt || `Viaje en grupo a ${destination.name}`;
 const waPhone = siteSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
 const whatsappMessage = `Hola! Estoy calculando el presupuesto para ${destination.name}. ¿Me contáis precio, vuelo y gastos reales?`;
@@ -58,7 +58,7 @@ const budgetItems = destination.budgetPerDay ? [
 ].filter((item) => item.value) : [];
 
 const faqs = [
-  { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos. Incluye alojamiento, transporte y coordinador.` },
+  { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos ni seguro de viaje. El seguro se contrata aparte. Incluye alojamiento, transporte y coordinador.` },
   { question: `¿Cuánto cuestan los vuelos a ${destination.name}?`, answer: `Los vuelos desde España a ${destination.name} cuestan aproximadamente ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'} ida y vuelta. El precio varía según la temporada y la antelación de la reserva.` },
   { question: `¿Qué incluye el precio del viaje a ${destination.name}?`, answer: `El precio incluye ${included.slice(0, 3).join(', ').toLowerCase()} y más. No incluye ${notIncluded.slice(0, 2).join(' ni ').toLowerCase()}.` },
 ];
@@ -135,7 +135,7 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
           <div class="rounded-xl border border-border/40 bg-card p-6 text-center">
             <p class="text-sm text-muted-foreground">Viaje en grupo</p>
             <p class="text-3xl font-extrabold text-teal-vivid">{minPrice > 0 ? `${minPrice}€` : "Consultar"}</p>
-            <p class="text-xs text-muted-foreground mt-1">por persona, sin vuelo</p>
+            <p class="text-xs text-muted-foreground mt-1">por persona, sin vuelo ni seguro</p>
           </div>
           <div class="rounded-xl border border-border/40 bg-card p-6 text-center">
             <p class="text-sm text-muted-foreground">Vuelo estimado</p>
@@ -151,7 +151,7 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
 
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>El precio de un viaje en grupo a {destination.name} con Travel Hood parte desde {minPrice > 0 ? `${minPrice}€` : 'consultar'} por persona{maxPrice > minPrice ? `, pudiendo llegar a ${maxPrice}€ según la temporada y duración` : ''}. Este precio no incluye el vuelo internacional, que desde España ronda los {avgFlightEstimate > 0 ? `${avgFlightEstimate}€` : 'consultar'} ida y vuelta.</p>
-          <p>El presupuesto total estimado para {destTrips.length > 0 ? `${destTrips[0].durationDays} días` : 'un viaje'} en {destination.name} es de aproximadamente {totalBudget > 0 ? `${totalBudget}€` : 'consultar'}, incluyendo viaje y vuelo. A esto puedes sumar entre 100-300€ para gastos personales (comidas libres, souvenirs, actividades opcionales).</p>
+          <p>El presupuesto total estimado para {destTrips.length > 0 ? `${destTrips[0].durationDays} días` : 'un viaje'} en {destination.name} es de aproximadamente {totalBudget > 0 ? `${totalBudget}€` : 'consultar'}, incluyendo viaje y vuelo. El seguro de viaje se contrata aparte y debes añadirlo a este presupuesto. A esto puedes sumar entre 100-300€ para gastos personales (comidas libres, souvenirs, actividades opcionales).</p>
         </div>
       </div>
     </section>

@@ -14,6 +14,9 @@
     "preflight:fill-new-destination": "npx tsx scripts/preflight-fill-new-destination.ts --preflight",
     "import:praga-guatemala": "npx tsx scripts/import-praga-guatemala.ts",
     "test:import-praga-guatemala": "npx tsx scripts/import-praga-guatemala.test.ts",
+    "test:travel-insurance": "npx tsx src/lib/travel-insurance.test.ts",
+    "fix:travel-insurance": "npx tsx scripts/fix-travel-insurance.ts",
+    "test:collaborators": "npx tsx src/lib/collaborators.test.ts",
     "test:search-intent": "npx tsx src/lib/search-intent.test.ts",
     "test:searchable-destinations": "npx tsx src/lib/searchable-destinations.test.ts",
     "seed": "npx tsx scripts/seed-sanity.ts"

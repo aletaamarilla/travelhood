@@ -60,6 +60,7 @@ const navLinks = [
   { label: "Preguntas frecuentes", href: "/preguntas-frecuentes/" },
   { label: "Ofertas", href: "/ofertas/" },
   { label: "Travel Hood", href: "/travelhood/" },
+  { label: "Colaboradores", href: "/colaboradores/" },
   { label: "Blog", href: "/blog/" },
 ];
 ---
@@ -151,7 +152,11 @@ const navLinks = [
         <ul class="flex flex-col gap-1.5">
           {navLinks.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-sand/60 hover:text-sand transition-colors">{link.label}</a>
+              <a href={link.href}
+                data-collaborator={link.href === "/colaboradores/" ? "all" : undefined}
+                data-collaborator-source={link.href === "/colaboradores/" ? "footer" : undefined}
+                data-collaborator-kind={link.href === "/colaboradores/" ? "discovery" : undefined}
+                class="text-sm text-sand/60 hover:text-sand transition-colors">{link.label}</a>
             </li>
           ))}
         </ul>
@@ -228,3 +233,9 @@ const navLinks = [
     </div>
   </div>
 </footer>
+
+<script>
+  import { handleCollaboratorClick } from "@/lib/collaborator-tracking";
+  document.addEventListener("click", handleCollaboratorClick);
+  document.addEventListener("auxclick", handleCollaboratorClick);
+</script>

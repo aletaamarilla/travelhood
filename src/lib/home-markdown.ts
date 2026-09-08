@@ -121,6 +121,7 @@ export async function renderHomeMarkdown(): Promise<string> {
     "- Grupo habitual: 12-13 personas de 20 a 35 anos.",
     "- La mayoria de viajeros reservan sin acompanante.",
     "- Precio cerrado: sin fondo comun ni costes sorpresa en destino.",
+    "- Seguro de viaje: no incluido en ningun viaje; se contrata aparte.",
     "- Incluye normalmente: coordinador, alojamiento y actividades indicadas en cada ficha.",
     "",
     "## Enlaces principales",

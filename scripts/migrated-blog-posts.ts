@@ -475,7 +475,7 @@ export const migratedBlogPosts: BlogPost[] = [
     },
     {
       heading: "🛡️ ¿Y el seguro médico?",
-      body: "Obligatorio no es… pero altamente recomendable. Aunque Tailandia tiene buena infraestructura médica, cualquier imprevisto puede salir caro. Con Travel Hood, viajas siempre cubierto con nuestro seguro médico opcional y la tranquilidad de tener un coordinador contigo en todo momento."
+      body: "Obligatorio no es… pero altamente recomendable. Aunque Tailandia tiene buena infraestructura médica, cualquier imprevisto puede salir caro. En Travel Hood, el seguro de viaje no está incluido en el precio de ningún viaje: se contrata aparte. El coordinador puede orientarte, pero la cobertura depende del seguro que contrates."
     },
     {
       heading: "📊 Resumen rápido de vacunas",

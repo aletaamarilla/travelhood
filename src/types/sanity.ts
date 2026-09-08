@@ -1,4 +1,12 @@
 import type {SanityImageSource} from '@sanity/image-url'
+import type {CollaboratorContent, CollaboratorsContent} from '../../shared/collaborators'
+
+export interface SanityCollaboratorsPage extends Partial<Omit<CollaboratorsContent, 'collaborators'>> {
+  collaborators?: (CollaboratorContent & {
+    logo?: SanityImageSource
+    image?: SanityImageSource
+  })[]
+}
 
 // ── Shared ──
 
@@ -162,7 +170,6 @@ export interface SanityDestination {
   included?: string[]
   notIncluded?: string[]
   inheritDefaultNotIncluded?: boolean
-  travelInsuranceIncluded?: boolean
   itinerary?: SanityItineraryDay[]
   faqs?: SanityFaq[]
   seo?: SanityDestinationSeo
@@ -209,7 +216,7 @@ export interface SanityTrip {
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'
   tags?: string[]
-  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'inheritDefaultNotIncluded' | 'travelInsuranceIncluded' | 'itinerary' | 'hasCoordinator'> & {
+  destination?: SanityRef & Pick<SanityDestination, 'name' | 'slug' | 'heroImage' | 'heroImageAlt' | 'shortDescription' | 'included' | 'notIncluded' | 'inheritDefaultNotIncluded' | 'itinerary' | 'hasCoordinator'> & {
     country?: Pick<SanityCountry, 'name' | 'flag'>
     continent?: Pick<SanityContinent, 'name' | 'slug'>
   }
