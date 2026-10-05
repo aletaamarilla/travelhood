@@ -33,3 +33,6 @@ _extracted/
 concepts/
 roadmaps/
 *.bak
+
+# Local MyGoQu review spreadsheets
+/imports/mygoqu-2027/*.xlsx
