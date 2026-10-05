@@ -17,6 +17,7 @@ import {
 import type { Destination, Trip, Testimonial, Coordinator, Country, Continent } from "@/lib/travel-data"
 import type { DestinationFAQ } from "@/lib/destination-details"
 import { buildWhatsAppUrl } from "@/lib/config"
+import { getTripBookingLink, type BookingProvider } from "@/lib/booking"
 import { selectVisibleReviews } from "@/lib/reviews"
 import ReviewCard from "@/components/ReviewCard"
 
@@ -29,12 +30,14 @@ type DestinationConversionEvent =
   | "destination_dates_price_interaction"
   | "destination_pdf_download"
   | "destination_whatsapp_click"
+  | "destination_booking_click"
 
 interface DestinationTrackingParams {
   destination_slug: string
   trip_id?: string
   cta_location?: string
   pdf_url?: string
+  booking_provider?: BookingProvider
 }
 
 declare global {
@@ -293,7 +296,7 @@ function PhotoModal({
 
 // ── Departures Modal ───────────────────────────────────
 
-function DeparturesModal({
+export function DeparturesModal({
   availableTrips,
   fullTrips,
   destinationName,
@@ -303,6 +306,7 @@ function DeparturesModal({
   whatsappCommunityUrl,
   depositAmount = 250,
   onWhatsAppClick,
+  onBookingClick,
 }: {
   availableTrips: ExtendedTrip[]
   fullTrips: ExtendedTrip[]
@@ -313,6 +317,7 @@ function DeparturesModal({
   whatsappCommunityUrl?: string
   depositAmount?: number
   onWhatsAppClick: (tripId: string | undefined, ctaLocation: string) => void
+  onBookingClick: (tripId: string, provider: BookingProvider) => void
 }) {
   useEffect(() => {
     if (!isOpen) return
@@ -374,6 +379,7 @@ function DeparturesModal({
 
           {availableTrips.map((trip) => {
             const hasPromo = !!trip.promoPrice
+            const booking = getTripBookingLink(trip, whatsappPhone)
             return (
               <div
                 key={trip.id}
@@ -437,10 +443,10 @@ function DeparturesModal({
                     </div>
                     <div className="flex flex-col items-end gap-1">
                       <a
-                        href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title}. ¿Puedo reservar?`)}
+                        href={booking.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => onWhatsAppClick(trip.id, "departures_modal_reserve")}
+                        onClick={() => onBookingClick(trip.id, booking.provider)}
                         className="inline-flex min-h-11 items-center gap-2 rounded-full bg-teal-deep px-4 py-2 text-xs sm:px-5 sm:py-2.5 sm:text-sm font-bold text-sand transition-all hover:brightness-110"
                       >
                         Reservar
@@ -798,6 +804,21 @@ export default function TripDetailPage({
       })
     },
     [trackDestinationEvent]
+  )
+
+  const trackBookingClick = useCallback(
+    (tripId: string, provider: BookingProvider) => {
+      if (provider === "whatsapp") {
+        trackWhatsAppClick(tripId, "departures_modal_reserve")
+        return
+      }
+      trackDestinationEvent("destination_booking_click", {
+        trip_id: tripId,
+        cta_location: "departures_modal_reserve",
+        booking_provider: provider,
+      })
+    },
+    [trackDestinationEvent, trackWhatsAppClick]
   )
 
   const trackPdfDownload = useCallback(
@@ -1560,6 +1581,7 @@ export default function TripDetailPage({
         whatsappCommunityUrl={whatsappCommunityUrl}
         depositAmount={depositAmount}
         onWhatsAppClick={trackWhatsAppClick}
+        onBookingClick={trackBookingClick}
       />
     </>
   )

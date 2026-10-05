@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {normalizeBookingUrl} from '../../../shared/booking'
 
 const seasonTags = [
   {title: 'Semana Santa', value: 'semana-santa'},
@@ -86,6 +87,20 @@ export default defineType({
       description:
         'Precio estimado del vuelo ida/vuelta desde España en euros (ej: 650). Orientativo para el viajero.',
       validation: (Rule) => Rule.required().min(0),
+    }),
+
+    defineField({
+      name: 'bookingUrl',
+      title: 'Enlace de reserva (MyGoQu)',
+      type: 'url',
+      fieldset: 'dates',
+      description:
+        'Pega el enlace de MyGoQu correspondiente a estas fechas. El botón Reservar abrirá ese enlace. Déjalo vacío para recibir la reserva por WhatsApp.',
+      validation: (Rule) => Rule.custom((value) =>
+        !value || normalizeBookingUrl(value)
+          ? true
+          : 'Introduce una URL completa con https://, sin espacios ni credenciales.',
+      ),
     }),
 
     // --- Promoción ---

@@ -207,6 +207,7 @@ export interface SanityTrip {
   slug?: SanitySlug
   departureDate: string
   returnDate: string
+  bookingUrl?: string | null
   durationDays: number
   priceFrom: number
   promoPrice?: number

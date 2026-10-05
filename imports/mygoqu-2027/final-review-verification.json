@@ -1,0 +1,234 @@
+{
+  "verifiedAt": "2026-10-02T08:47:28.587Z",
+  "sourceRows": 60,
+  "loaded": 53,
+  "pending": 0,
+  "excluded": 7,
+  "datesAndLinksVerified": 53,
+  "guatemalaHasNoBookingUrl": true,
+  "rejectedMaldivesUrlUnused": true,
+  "onlyChangedField": "bookingUrl",
+  "loadedRows": [
+    {
+      "mygoquId": "17756",
+      "tripId": "cecb59cb-82ff-43ee-9c8e-cfc194c8f768"
+    },
+    {
+      "mygoquId": "17755",
+      "tripId": "ae5ab054-ae4d-4a5a-8ffc-dee09f66c614"
+    },
+    {
+      "mygoquId": "17754",
+      "tripId": "de0a5308-94a0-4cbc-aff7-efbf5e279128"
+    },
+    {
+      "mygoquId": "17753",
+      "tripId": "557551d4-d190-42fa-b404-08aabe8ca316"
+    },
+    {
+      "mygoquId": "17752",
+      "tripId": "f7535a8f-b0f2-4eac-b8a4-99555f38bc84"
+    },
+    {
+      "mygoquId": "17536",
+      "tripId": "43b26841-9058-446c-a548-42dd69e5c08a"
+    },
+    {
+      "mygoquId": "17535",
+      "tripId": "eca38192-f2f9-4212-b66d-a567e5c4822b"
+    },
+    {
+      "mygoquId": "17534",
+      "tripId": "8ff5dd49-cefe-4609-9bf3-257549bcf451"
+    },
+    {
+      "mygoquId": "17532",
+      "tripId": "afaf2746-c306-4f35-a2fe-a4cbfb7532e2"
+    },
+    {
+      "mygoquId": "17530",
+      "tripId": "ffd6640e-4816-4aec-800c-2b9e5017b65d"
+    },
+    {
+      "mygoquId": "17528",
+      "tripId": "8f07a306-3706-4282-969a-0cc46c2c27ac"
+    },
+    {
+      "mygoquId": "17527",
+      "tripId": "e0191f01-29eb-4c7b-8cb3-1ba7ad779b7d"
+    },
+    {
+      "mygoquId": "17524",
+      "tripId": "2d9f5c8a-ea57-40fd-ba33-28e2dce4ca49"
+    },
+    {
+      "mygoquId": "17523",
+      "tripId": "25add280-29aa-40e3-bb41-1e5f8daf72a0"
+    },
+    {
+      "mygoquId": "17522",
+      "tripId": "49cf7ef3-d61a-4eaa-a5e8-b662f3db838c"
+    },
+    {
+      "mygoquId": "17521",
+      "tripId": "568922d0-6af9-4466-92ed-a477e3cdf460"
+    },
+    {
+      "mygoquId": "17520",
+      "tripId": "b535212b-6639-475a-95e5-807e5abc289c"
+    },
+    {
+      "mygoquId": "17519",
+      "tripId": "788d4153-ca03-4333-95c7-5f454ca566f2"
+    },
+    {
+      "mygoquId": "17518",
+      "tripId": "ff8a3916-76fb-4810-a935-274b45e4315c"
+    },
+    {
+      "mygoquId": "17517",
+      "tripId": "773ed150-eb51-4947-b01d-8cf9466876ab"
+    },
+    {
+      "mygoquId": "17516",
+      "tripId": "1ead47cc-55dd-4ea2-9745-72fcc5a617e9"
+    },
+    {
+      "mygoquId": "16411",
+      "tripId": "2deb8817-152d-4851-a09d-0f4490453762"
+    },
+    {
+      "mygoquId": "15793",
+      "tripId": "d05007e9-529a-4859-8d94-d984cff617d1"
+    },
+    {
+      "mygoquId": "15736",
+      "tripId": "trip-brasil-carnaval-2027-01-31"
+    },
+    {
+      "mygoquId": "15366",
+      "tripId": "1f125205-683f-4855-8d57-4f756d848197"
+    },
+    {
+      "mygoquId": "15287",
+      "tripId": "a8fcce1d-d9f2-4206-9d36-a2de703f3569"
+    },
+    {
+      "mygoquId": "15286",
+      "tripId": "041e997f-c1a4-41cb-aa8f-441d1068bf42"
+    },
+    {
+      "mygoquId": "15285",
+      "tripId": "4c35eeda-beda-4dc7-bc24-c820d6ba2c22"
+    },
+    {
+      "mygoquId": "15284",
+      "tripId": "a5475707-e15f-44de-9d88-ef4a5dec53ea"
+    },
+    {
+      "mygoquId": "14733",
+      "tripId": "7f184b59-1cd1-44e0-a835-64f6a053e9bc"
+    },
+    {
+      "mygoquId": "14732",
+      "tripId": "3f8fb473-0966-4d0b-8cac-b5cb5c7166a0"
+    },
+    {
+      "mygoquId": "14731",
+      "tripId": "28ce53cd-8845-4f22-898a-c9012bb72e64"
+    },
+    {
+      "mygoquId": "14729",
+      "tripId": "38e22878-48ab-42dc-b0ea-e0f30a80beca"
+    },
+    {
+      "mygoquId": "14728",
+      "tripId": "708c2ad5-7447-4b2b-819b-a8996b0fa500"
+    },
+    {
+      "mygoquId": "17751",
+      "tripId": "7be9b27b-a684-40b8-a222-7fb7bc8a9443"
+    },
+    {
+      "mygoquId": "17750",
+      "tripId": "38c00e15-d68c-4162-bdb5-3c5491866d23"
+    },
+    {
+      "mygoquId": "17749",
+      "tripId": "df7b14b5-01ef-4dd8-a377-d06b5a3edd9c"
+    },
+    {
+      "mygoquId": "17748",
+      "tripId": "e481a5ee-57f7-4a62-94d3-703436a4bbde"
+    },
+    {
+      "mygoquId": "17747",
+      "tripId": "bf184830-1e7c-46d3-b072-e710accd4dd7"
+    },
+    {
+      "mygoquId": "17746",
+      "tripId": "df407035-9d40-4dda-a909-dc8a26964696"
+    },
+    {
+      "mygoquId": "17745",
+      "tripId": "2b1c59e5-9307-4ae5-8281-3b27fc562620"
+    },
+    {
+      "mygoquId": "17744",
+      "tripId": "09f1c23a-0288-4239-a3ce-92e57f5016e1"
+    },
+    {
+      "mygoquId": "17743",
+      "tripId": "e87fb890-6f84-4247-a647-35c1e486d230"
+    },
+    {
+      "mygoquId": "17742",
+      "tripId": "cbc103a1-52d8-45d3-a19b-55985b02aed6"
+    },
+    {
+      "mygoquId": "16260",
+      "tripId": "c65285e7-a67c-4591-9217-79cb95bad5e5"
+    },
+    {
+      "mygoquId": "16080",
+      "tripId": "50240ddd-6c8c-46af-b895-75fa266ed8d8"
+    },
+    {
+      "mygoquId": "15866",
+      "tripId": "1f87887d-5c3b-47d6-81f8-8e9e13018b99"
+    },
+    {
+      "mygoquId": "14727",
+      "tripId": "66d7fed7-4882-4123-a8b0-18103e6b6a4b"
+    },
+    {
+      "mygoquId": "14726",
+      "tripId": "a50e4df2-3168-49d2-97cf-a39b3904d2db"
+    },
+    {
+      "mygoquId": "14725",
+      "tripId": "d2638911-fd4a-41df-abe7-4269d76b0e17"
+    },
+    {
+      "mygoquId": "17533",
+      "tripId": "e27485f4-cc5c-4ac4-95d7-88cf960b39e8"
+    },
+    {
+      "mygoquId": "17515",
+      "tripId": "92deb9c8-221b-4a82-80ff-04fe9595b895"
+    },
+    {
+      "mygoquId": "17525",
+      "tripId": "0ddaeb26-8f46-48c8-a340-cc630e016ac8"
+    }
+  ],
+  "excludedRows": [
+    "16409",
+    "15794",
+    "15485",
+    "15365",
+    "15012",
+    "14736",
+    "14573"
+  ]
+}

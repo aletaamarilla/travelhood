@@ -596,6 +596,7 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     title: s.title,
     departureDate: s.departureDate,
     returnDate: s.returnDate,
+    bookingUrl: s.bookingUrl ?? undefined,
     durationDays: s.durationDays,
     priceFrom: s.priceFrom,
     promoPrice: s.promoPrice,

@@ -1,4 +1,4 @@
-export const SITE_URL = import.meta.env.PUBLIC_SITE_URL || "https://travelhood.es"
+export const SITE_URL = import.meta.env?.PUBLIC_SITE_URL || "https://travelhood.es"
 
 export const FALLBACK_SITE_NAME = "Travel Hood"
 export const FALLBACK_CONTACT_EMAIL = "contacta@travelhood.es"

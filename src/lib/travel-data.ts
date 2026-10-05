@@ -114,6 +114,7 @@ export interface Trip {
   title: string
   departureDate: string
   returnDate: string
+  bookingUrl?: string
   durationDays: number
   priceFrom: number
   promoPrice?: number

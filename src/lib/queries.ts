@@ -58,7 +58,7 @@ export const destinationsByContinentQuery = `*[_type == "destination" && contine
 
 // ── Trips ──
 export const allTripsQuery = `*[_type == "trip" && status != "full"] | order(departureDate asc) {
-  _id, title, slug, departureDate, returnDate, durationDays,
+  _id, title, slug, departureDate, returnDate, durationDays, bookingUrl,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
   destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},
@@ -66,7 +66,7 @@ export const allTripsQuery = `*[_type == "trip" && status != "full"] | order(dep
 }`
 
 export const tripsByDestinationQuery = `*[_type == "trip" && destination->slug.current == $slug] | order(departureDate asc) {
-  _id, title, slug, departureDate, returnDate, durationDays,
+  _id, title, slug, departureDate, returnDate, durationDays, bookingUrl,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
   destination->{_id, name, slug, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator},
@@ -74,7 +74,7 @@ export const tripsByDestinationQuery = `*[_type == "trip" && destination->slug.c
 }`
 
 export const tripsByTagQuery = `*[_type == "trip" && $tag in tags] | order(departureDate asc) {
-  _id, title, slug, departureDate, returnDate, durationDays,
+  _id, title, slug, departureDate, returnDate, durationDays, bookingUrl,
   priceFrom, promoPrice, promoLabel, flightEstimate,
   totalPlaces, placesLeft, status, tags,
   destination->{_id, name, slug, heroImage, heroImageAlt, shortDescription, included, notIncluded, inheritDefaultNotIncluded, itinerary, hasCoordinator, country->{name, flag}, continent->{name, slug}},

@@ -19,6 +19,7 @@
     "test:collaborators": "npx tsx src/lib/collaborators.test.ts",
     "test:search-intent": "npx tsx src/lib/search-intent.test.ts",
     "test:searchable-destinations": "npx tsx src/lib/searchable-destinations.test.ts",
+    "test:booking": "npx tsx src/lib/booking.test.ts",
     "seed": "npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {

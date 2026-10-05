@@ -261,6 +261,7 @@ async function seed() {
       destination: makeRef(destIdMap.get(t.destinationId) ?? ''),
       departureDate: t.departureDate,
       returnDate: t.returnDate,
+      bookingUrl: t.bookingUrl,
       durationDays: t.durationDays,
       priceFrom: t.priceFrom,
       promoPrice: t.promoPrice,
