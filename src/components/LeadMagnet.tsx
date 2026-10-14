@@ -38,7 +38,7 @@ export default function LeadMagnet({ whatsappCommunityUrl }: { whatsappCommunity
           <div className="flex items-center gap-2.5 text-white">
             <Heart className="h-5 w-5 text-yellow-sun" />
             <div className="text-left">
-              <p className="text-xs font-bold">+500 viajeros</p>
+              <p className="text-xs font-bold">+1500 viajeros</p>
               <p className="text-[11px] text-white/60">Comunidad real y activa</p>
             </div>
           </div>
