@@ -394,6 +394,7 @@ export function generateSiteNavigationSchema() {
   const navItems = [
     { name: "Viajes y destinos", path: "/viajes/" },
     { name: "Cómo funciona", path: "/como-funciona/" },
+    { name: "El coordinador", path: "/coordinador/" },
     { name: "Opiniones", path: "/opiniones/" },
     { name: "Travel Hood", path: "/travelhood/" },
     { name: "Colaboradores", path: "/colaboradores/" },

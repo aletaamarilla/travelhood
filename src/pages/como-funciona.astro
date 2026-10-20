@@ -39,8 +39,10 @@ const steps = [
   },
   {
     number: "04",
-    title: "Tu coordinador te guía",
-    description: "Un coordinador Travel Hood viaja contigo. No es un guía turístico: es alguien del equipo que gestiona la logística, resuelve imprevistos y se asegura de que el grupo funcione.",
+    title: "Tu coordinador te acompaña",
+    description: "Tu coordinador organiza la logística, acompaña las actividades programadas y facilita la convivencia. También tiene sus momentos de descanso y tiempo libre.",
+    href: "/coordinador/",
+    linkText: "Conoce el papel de tu coordinador",
     icon: '<path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path>',
   },
   {
@@ -122,6 +124,11 @@ const faqs = comoFaqBlocks.flatMap((b) => b.faqs);
                   <h3 class="font-serif text-xl font-bold text-foreground">{step.title}</h3>
                 </div>
                 <p class="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                {step.href && (
+                  <a href={step.href} class="mt-2 inline-flex min-h-11 items-center font-semibold text-teal-deep underline underline-offset-4">
+                    {step.linkText} <span aria-hidden="true" class="ml-2">→</span>
+                  </a>
+                )}
               </div>
             </div>
           ))}

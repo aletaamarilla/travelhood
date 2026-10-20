@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Testimonios", href: "/opiniones/" },
   { label: "Travel Hood", href: "/travelhood/", children: [
     { label: "Conócenos", href: "/travelhood/" },
+    { label: "El coordinador", href: "/coordinador/" },
     { label: "Colaboradores", href: "/colaboradores/" },
   ] },
   { label: "Blog", href: "/blog/" },
@@ -183,9 +184,9 @@ const instagramHandle = instagramUrl.split('/').pop() || 'travelhood.es';
                 {link.children.filter((child) => child.href !== link.href).map((child) => (
                   <li>
                     <a href={child.href}
-                      data-collaborator="all"
-                      data-collaborator-source="mobile_menu"
-                      data-collaborator-kind="discovery"
+                      data-collaborator={child.href === "/colaboradores/" ? "all" : undefined}
+                      data-collaborator-source={child.href === "/colaboradores/" ? "mobile_menu" : undefined}
+                      data-collaborator-kind={child.href === "/colaboradores/" ? "discovery" : undefined}
                       class="nav-link flex min-h-11 items-center rounded-lg py-2 text-base font-semibold text-sand/85 transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand"
                     >{child.label}</a>
                   </li>

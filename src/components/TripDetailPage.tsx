@@ -1123,6 +1123,23 @@ export default function TripDetailPage({
               </section>
             )}
 
+            {destination.hasCoordinator !== false && (
+              <section className="mt-8 rounded-2xl border border-border/60 bg-card p-5 sm:p-6" aria-labelledby="coordinator-info-title">
+                <div className="flex items-start gap-3">
+                  <UserCheck size={24} aria-hidden="true" className="mt-1 shrink-0 text-teal-deep" />
+                  <div>
+                    <h2 id="coordinator-info-title" className="font-serif text-xl font-bold text-foreground">El coordinador de viaje</h2>
+                    <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+                      Coordina horarios, transportes y actividades del itinerario. También facilita la comunicación entre los viajeros.
+                    </p>
+                    <a href="/coordinador/" className="mt-2 inline-flex min-h-11 items-center gap-2 font-semibold text-teal-deep underline underline-offset-4">
+                      Qué hace tu coordinador <ArrowRight size={16} aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* ── Testimonials ──────────────────── */}
             {visibleTestimonials.length > 0 && (
               <section className="mt-12" id="testimonios">

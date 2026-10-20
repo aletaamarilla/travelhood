@@ -47,6 +47,18 @@ const allFaqs = faqBlocks.flatMap((block) => block.faqs);
       </div>
     </section>
 
+    <section aria-labelledby="coordinator-help-title" class="bg-background px-4 py-8 sm:px-6">
+      <div class="mx-auto flex max-w-3xl flex-col items-start gap-4 rounded-2xl border border-border/60 bg-card p-6">
+        <div>
+          <h2 id="coordinator-help-title" class="font-serif text-xl font-bold">¿Qué puedes esperar de tu coordinador?</h2>
+          <p class="mt-2 text-base leading-relaxed text-muted-foreground">Sus funciones, los horarios de las actividades y el tiempo libre.</p>
+        </div>
+        <a href="/coordinador/" class="inline-flex min-h-11 items-center gap-2 font-bold text-teal-deep underline underline-offset-4">
+          Descubre el papel del coordinador <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
     <!-- FAQ Blocks -->
     {faqBlocks.map((block, blockIdx) => (
       <section class={blockIdx % 2 === 0 ? "bg-background py-14" : "bg-card py-14"}>

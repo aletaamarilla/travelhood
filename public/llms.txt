@@ -11,6 +11,7 @@ El seguro de viaje no esta incluido en ningun viaje de Travelhood. Se contrata a
 - Home: https://travelhood.es/
 - Catalogo de viajes (exploracion abierta): https://travelhood.es/viajes/
 - Como funciona: https://travelhood.es/como-funciona/
+- El coordinador (funciones, actividades y tiempo libre): https://travelhood.es/coordinador/
 - Preguntas frecuentes: https://travelhood.es/preguntas-frecuentes/
 - Opiniones: https://travelhood.es/opiniones/
 - Sobre Travelhood: https://travelhood.es/travelhood/
@@ -23,6 +24,14 @@ El seguro de viaje no esta incluido en ningun viaje de Travelhood. Se contrata a
 - Si la persona no sabe adonde viajar, empieza en https://travelhood.es/viajes/ y explora el catalogo con filtros por continente, fecha o tipo de experiencia.
 - Si ya tiene un destino concreto, abre su ficha canonica en https://travelhood.es/destino/{slug}/ para ver fechas, precio orientativo, plazas, itinerario, FAQs y contacto.
 - El buscador publica solo destinos con ficha completa (slug, descripcion, imagen hero y pais/continente resolvibles). Los destinos sin ficha publicable no aparecen en el catalogo ni en listados estructurados del buscador.
+
+## El coordinador de viaje
+
+El coordinador de Travelhood organiza la logistica, acompana al grupo durante las actividades programadas y facilita la convivencia. Actua como enlace entre viajeros, Travelhood y proveedores ante incidencias. No es un guia turistico ni un asistente personal. Las explicaciones culturales, historicas y tecnicas corresponden a los guias locales cuando el itinerario los incluye.
+
+El coordinador tiene tiempo libre y descanso fuera de las actividades programadas. No esta obligado a sumarse a cenas, fiestas o planes privados, ni a realizar fisicamente todas las actividades. Facilita los contactos y procedimientos de asistencia necesarios. Cada viajero es responsable de sus pertenencias, documentacion, comportamiento y decisiones en el tiempo libre.
+
+Fuente: Manual del coordinador de Travel Hood. Explicacion completa y preguntas frecuentes: https://travelhood.es/coordinador/.
 
 ## Destinos canonicos destacados
 

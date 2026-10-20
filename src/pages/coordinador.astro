@@ -1,0 +1,259 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import { getSiteSettings, resolveSettingsImages } from "@/lib/data-provider";
+import { buildWhatsAppUrl, FALLBACK_SITE_NAME, FALLBACK_WHATSAPP_PHONE, SITE_URL } from "@/lib/config";
+import { generateBreadcrumbSchema, generateFaqSchema, toJsonLd } from "@/lib/schemas";
+
+const settings = await getSiteSettings();
+const images = settings ? resolveSettingsImages(settings) : null;
+const groupPhoto = images?.travelhood_diffPhoto || images?.homeAboutPhoto;
+const groupPhotoAlt = images?.travelhood_diffPhoto
+  ? images.travelhood_diffPhotoAlt
+  : images?.homeAboutPhotoAlt;
+function photoAtWidth(width: number): string | undefined {
+  if (!groupPhoto?.startsWith("https://cdn.sanity.io/")) return groupPhoto;
+  const url = new URL(groupPhoto);
+  url.searchParams.set("w", String(width));
+  return url.toString();
+}
+const groupPhotoSrcset = groupPhoto?.startsWith("https://cdn.sanity.io/")
+  ? [480, 800, 1200].map((width) => `${photoAtWidth(width)} ${width}w`).join(", ")
+  : undefined;
+const whatsappUrl = buildWhatsAppUrl(
+  settings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE,
+  "¡Hola! Tengo una duda sobre las funciones del coordinador de viaje.",
+);
+const pageTitle = "El coordinador de viaje: funciones y horarios | Travel Hood";
+const description = "Qué hace el coordinador de Travel Hood durante el viaje: organización, actividades, tiempo libre y convivencia. Información del Manual del coordinador.";
+const pageUrl = new URL("/coordinador/", SITE_URL).href;
+const lastUpdated = "2026-10-20";
+
+// Única fuente del contenido sobre el rol: MANUAL COORDINADOR.pdf, páginas 2–6.
+const responsibilities = [
+  { title: "Organiza la logística", text: "Coordina horarios, transportes, alojamientos y actividades del itinerario. Mantiene el contacto con los proveedores locales." },
+  { title: "Acompaña las actividades", text: "Acompaña al grupo en las actividades programadas y supervisa su organización. No tiene que participar físicamente en todas ellas." },
+  { title: "Facilita la convivencia", text: "Ayuda a que los viajeros se integren, facilita la comunicación y fomenta un ambiente positivo y respetuoso." },
+  { title: "Ayuda con los imprevistos", text: "Si surge una incidencia relacionada con el viaje, actúa como enlace entre los viajeros, Travel Hood y los proveedores locales para buscar soluciones." },
+];
+const availability = {
+  question: "¿Está siempre con el grupo?",
+  answer: "No. El coordinador acompaña al grupo durante las actividades programadas. Fuera de ese horario tiene tiempo libre y descanso, y no está obligado a participar en los planes que los viajeros organicen por su cuenta.",
+};
+const faqs = [
+  { question: "¿Tiene que hacer todas las actividades?", answer: "No. En actividades como snorkel, surf o buceo, el coordinador gestiona la organización y supervisa su desarrollo, pero no tiene la obligación de realizarlas personalmente." },
+  { question: "¿Puede gestionar mis compras o reservas personales?", answer: "El coordinador no es un asistente personal. No está obligado a gestionar compras, planes privados, reservas individuales ni peticiones fuera de los servicios contratados." },
+  { question: "¿Puede evitar todos los imprevistos?", answer: "El clima, los retrasos o los cambios de última hora pueden afectar al itinerario. El coordinador no puede controlarlos, pero ayuda a gestionar estas situaciones junto con Travel Hood." },
+];
+const sharedResponsibilities = [
+  { title: "Puntualidad", text: "Respeta los horarios. Los retrasos individuales pueden afectar a todo el grupo." },
+  { title: "Respeto", text: "Cuida el trato con tus compañeros, el coordinador, los proveedores y las comunidades locales." },
+  { title: "Flexibilidad", text: "Mantén una actitud positiva cuando haya que adaptarse a una situación inesperada." },
+  { title: "Responsabilidad personal", text: "Tus pertenencias, documentación, comportamiento y decisiones durante el tiempo libre son tu responsabilidad." },
+  { title: "Comunicación", text: "Si tienes dudas o necesitas ayuda con una actividad, habla con tu coordinador durante los horarios de coordinación establecidos." },
+];
+const faqSchema = {
+  ...generateFaqSchema([availability, ...faqs]),
+  "@id": `${pageUrl}#faq`, url: pageUrl, name: pageTitle, description,
+  inLanguage: "es-ES", dateModified: lastUpdated,
+  author: { "@type": "Organization", name: FALLBACK_SITE_NAME, url: SITE_URL },
+  citation: { "@type": "CreativeWork", name: "Manual del coordinador de Travel Hood" },
+  about: { "@type": "Thing", name: "Funciones del coordinador de viaje de Travel Hood" },
+};
+---
+
+<Layout title={pageTitle} description={description} keywords="coordinador de viaje, funciones del coordinador, coordinador Travel Hood, tiempo libre viaje en grupo">
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={toJsonLd(generateBreadcrumbSchema([
+      { name: "Inicio", url: "/" }, { name: "El coordinador", url: "/coordinador/" },
+    ]))} />
+    <script is:inline type="application/ld+json" set:html={toJsonLd(faqSchema)} />
+  </Fragment>
+
+  <a href="#contenido-coordinador" class="skip-link">Saltar al contenido</a>
+  <Navbar solid />
+  <main id="contenido-coordinador" tabindex="-1" class="coordinator-page">
+    <header class="color-hero px-5 pb-8 pt-24 sm:px-6 sm:pb-12 sm:pt-28">
+      <div class="mx-auto max-w-6xl">
+        <nav aria-label="Ruta de navegación" class="mb-5 flex items-center gap-3 text-sm text-muted-foreground sm:mb-8">
+          <a href="/" class="inline-flex min-h-11 items-center underline-offset-4 hover:underline">Inicio</a>
+          <span aria-hidden="true">/</span><span aria-current="page">El coordinador</span>
+        </nav>
+        <div class:list={["grid items-center gap-7 lg:gap-16", groupPhoto && "lg:grid-cols-2"]}>
+          <div>
+            <h1 class="hero-title font-serif font-bold tracking-tight text-teal-deep">El coordinador<br /><span class="title-accent">de tu viaje</span></h1>
+            <p class="geo-data-block mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Se ocupa de los horarios, el transporte y las actividades del itinerario. También facilita la comunicación y ayuda a que haya buen ambiente en el grupo.
+            </p>
+            <a href="#funciones" class="mt-6 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-coral px-2 min-[360px]:px-4 py-3 text-xl font-bold text-white shadow-sm shadow-coral/20 transition-colors hover:bg-coral/90">
+              Qué hace tu coordinador <span aria-hidden="true" class="hidden min-[360px]:inline">↓</span>
+            </a>
+          </div>
+          {groupPhoto && (
+            <img
+              src={photoAtWidth(800)} srcset={groupPhotoSrcset}
+              sizes="(min-width: 1280px) 520px, (min-width: 1024px) 45vw, calc(100vw - 40px)"
+              alt={groupPhotoAlt || "Grupo de viajeros de Travel Hood"}
+              width="800" height="560" loading="eager" fetchpriority="high" decoding="async"
+              class="h-48 w-full rounded-2xl object-cover shadow-lg shadow-teal-deep/15 sm:h-72 lg:h-96"
+            />
+          )}
+        </div>
+      </div>
+    </header>
+
+    <nav aria-label="En esta página" class="page-index sticky top-[68px] z-30 border-y border-border/40 bg-background/95 px-2 py-2.5 backdrop-blur-md sm:px-6">
+      <div class="mx-auto grid w-full max-w-md grid-cols-3 gap-1 rounded-full bg-teal-deep p-1 shadow-sm shadow-teal-deep/15">
+        {[
+          { label: "Funciones", href: "#funciones" },
+          { label: "Tiempo libre", href: "#tiempo-libre" },
+          { label: "Convivencia", href: "#convivencia" },
+        ].map((item) => (
+          <a href={item.href} class="index-link inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full px-1 text-[13px] font-bold text-sand transition-colors hover:bg-sand/10 hover:text-yellow-sun sm:px-4 sm:text-sm">{item.label}</a>
+        ))}
+      </div>
+    </nav>
+
+    <section id="funciones" aria-labelledby="functions-title" class="anchor-section bg-card px-5 py-10 sm:px-6 sm:py-16">
+      <div class="mx-auto max-w-6xl">
+        <h2 id="functions-title" class="section-title font-serif font-bold">¿De qué se encarga?</h2>
+        <aside aria-labelledby="coordinator-role-title" class="mt-6 rounded-2xl border-l-4 border-coral bg-teal-vivid/10 p-5 sm:p-6">
+          <h3 id="coordinator-role-title" class="font-serif text-xl font-bold leading-snug text-teal-deep sm:text-2xl">El coordinador no es un guía turístico</h3>
+          <p class="mt-3 max-w-4xl text-base leading-relaxed text-teal-deep">
+            El coordinador se ocupa de la organización del grupo. Las explicaciones culturales, históricas y técnicas corresponden a los guías locales cuando el itinerario los incluye.
+          </p>
+        </aside>
+        <div class="mt-6 grid gap-x-12 sm:grid-cols-2 sm:gap-y-3">
+          {responsibilities.map((item, i) => (
+            <article class="flex gap-4 border-t border-teal-vivid/30 py-5 sm:py-6">
+              <span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-coral font-serif text-xl font-bold text-white">{i + 1}</span>
+              <div>
+                <h3 class="font-serif text-lg font-bold leading-snug sm:text-xl">{item.title}</h3>
+                <p class="mt-2 text-base leading-relaxed text-muted-foreground">{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="tiempo-libre" aria-labelledby="free-time-title" class="anchor-section px-5 sm:px-6">
+      <div class="free-time-panel mx-auto max-w-6xl rounded-2xl bg-teal-deep px-6 py-8 text-sand sm:rounded-3xl sm:p-10 lg:p-12">
+        <div class="max-w-3xl">
+          <p class="mb-3 text-sm font-semibold text-yellow-sun">Horarios y tiempo libre</p>
+          <h2 id="free-time-title" class="section-title font-serif font-bold">{availability.question}</h2>
+          <p data-availability-answer class="mt-4 text-base leading-relaxed text-sand/90 sm:text-lg">{availability.answer}</p>
+        </div>
+        <div class="mt-7 grid gap-6 border-t border-sand/20 pt-6 sm:grid-cols-2 sm:gap-10">
+          <div>
+            <h3 class="font-serif text-lg font-bold">Cenas y fiestas</h3>
+            <p class="mt-2 text-base leading-relaxed text-sand/85">Si el grupo sale después de las actividades, el coordinador puede unirse, pero no está obligado a acompañaros.</p>
+          </div>
+          <div>
+            <h3 class="font-serif text-lg font-bold">Planes por tu cuenta</h3>
+            <p class="mt-2 text-base leading-relaxed text-sand/85">Durante los ratos libres, cada viajero puede organizar sus propios planes. El coordinador también dispone de su tiempo personal.</p>
+          </div>
+        </div>
+        <p class="mt-7 border-l-2 border-yellow-sun pl-4 text-base leading-relaxed text-sand/90">
+          Las actividades contratadas siguen desarrollándose según lo previsto. El coordinador facilitará los contactos y procedimientos de asistencia necesarios.
+        </p>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-title" class="anchor-section px-5 py-10 sm:px-6 sm:py-16">
+      <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <h2 id="faq-title" class="section-title max-w-sm font-serif font-bold">Otras dudas sobre el coordinador</h2>
+        <div class="divide-y divide-border/80 border-y border-border/80">
+          {faqs.map((faq) => (
+            <details class="group faq-item">
+              <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 rounded-lg py-5 text-base font-bold [&::-webkit-details-marker]:hidden">
+                {faq.question}
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-coral group-open:rotate-180"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <p class="pb-5 pr-7 text-base leading-relaxed text-muted-foreground">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="convivencia" aria-labelledby="group-title" class="anchor-section border-y border-teal-vivid/20 bg-teal-vivid/10 px-5 py-10 sm:px-6 sm:py-16">
+      <div class="mx-auto grid max-w-6xl gap-7 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <h2 id="group-title" class="section-title max-w-sm font-serif font-bold">Viajar en grupo es responsabilidad de todos</h2>
+          <p class="mt-4 max-w-sm text-base leading-relaxed text-muted-foreground">Para que el viaje funcione, cada uno tiene que poner de su parte.</p>
+        </div>
+        <ul class="divide-y divide-border/70">
+          {sharedResponsibilities.map((item) => (
+            <li class="py-4 first:pt-0 last:pb-0">
+              <h3 class="font-serif text-lg font-bold">{item.title}</h3>
+              <p class="mt-1 text-base leading-relaxed text-muted-foreground">{item.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="contact-title" class="bg-card px-5 py-10 sm:px-6 sm:py-12">
+      <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+        <h2 id="contact-title" class="font-serif text-2xl font-bold">¿Te queda alguna duda?</h2>
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-6">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" data-coordinator-action="whatsapp" data-coordinator-source="bottom" class="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-coral px-6 py-3 text-xl font-bold text-white shadow-sm shadow-coral/20 hover:bg-coral/90">
+            Preguntar por WhatsApp<span aria-hidden="true">↗</span><span class="sr-only"> (abre en otra pestaña)</span>
+          </a>
+          <a href="/viajes/" data-coordinator-action="view_trips" data-coordinator-source="bottom" class="inline-flex min-h-12 items-center justify-center gap-2 font-bold text-teal-deep underline underline-offset-4">Ver viajes <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <p class="mx-auto mt-8 max-w-6xl text-sm leading-relaxed text-muted-foreground">
+        Fuente: Manual del coordinador de Travel Hood. Actualizado el <time datetime={lastUpdated}>20 de octubre de 2026</time>.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .color-hero {
+    background:
+      radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--coral) 16%, transparent), transparent 65%),
+      radial-gradient(ellipse at 100% 90%, color-mix(in srgb, var(--teal-vivid) 18%, transparent), transparent 65%),
+      var(--background);
+  }
+  .title-accent {
+    text-decoration: underline;
+    text-decoration-color: var(--yellow-sun);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.1em;
+    text-decoration-skip-ink: none;
+  }
+  .free-time-panel {
+    background: linear-gradient(120deg, var(--teal-deep) 45%, color-mix(in srgb, var(--teal-deep) 72%, var(--teal-vivid)));
+  }
+  .faq-item[open] {
+    background: color-mix(in srgb, var(--teal-vivid) 7%, var(--background));
+  }
+  .hero-title { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.08; }
+  .section-title { font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.2; letter-spacing: -0.025em; }
+  .anchor-section { scroll-margin-top: 9rem; }
+  .skip-link { position: fixed; top: 0.75rem; left: 0.75rem; z-index: 100; padding: 0.75rem 1rem; border-radius: var(--radius); background: var(--sand); color: var(--teal-deep); transform: translateY(-200%); }
+  .skip-link:focus { transform: translateY(0); }
+  .index-link:focus-visible { outline: 2px solid var(--yellow-sun); outline-offset: -3px; }
+  summary:focus-visible { outline: 3px solid var(--teal-deep); outline-offset: 4px; }
+  #contenido-coordinador:focus { outline: none; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-coordinator-action]").forEach((link) => {
+    link.addEventListener("click", () => {
+      try {
+        const consent = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
+        if (!consent || JSON.parse(decodeURIComponent(consent[1])).analytics !== true) return;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "coordinator_cta_click", action: link.dataset.coordinatorAction, source: link.dataset.coordinatorSource });
+      } catch {
+        // A missing or unreadable consent never prevents navigation.
+      }
+    });
+  });
+</script>
