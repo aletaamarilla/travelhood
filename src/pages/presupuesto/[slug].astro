@@ -39,40 +39,34 @@ const prices = destTrips.map((t) => resolvePrice(t).price);
 const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
 
-const avgFlightEstimate = destTrips.length > 0
-  ? Math.round(destTrips.reduce((acc, t) => acc + t.flightEstimate, 0) / destTrips.length)
-  : 0;
-
 const included = destTrips.length > 0 ? destTrips[0].included : destination.included ?? [];
 const notIncluded = destTrips.length > 0 ? destTrips[0].notIncluded : destination.notIncluded ?? [];
 const heroAlt = destination.heroImageAlt || `Viaje en grupo a ${destination.name}`;
 const waPhone = siteSettings?.whatsappPhone ?? FALLBACK_WHATSAPP_PHONE;
-const whatsappMessage = `Hola! Estoy calculando el presupuesto para ${destination.name}. ¿Me contáis precio, vuelo y gastos reales?`;
+const whatsappMessage = `Hola! Estoy calculando el presupuesto para ${destination.name}. ¿Me contáis el precio, qué incluye y qué gastos van aparte?`;
 const whatsappUrl = buildWhatsAppUrl(waPhone, whatsappMessage);
 const budgetItems = destination.budgetPerDay ? [
   { label: "Comida sencilla", value: destination.budgetPerDay.mealCostLow, detail: "Para comidas locales o rápidas durante tiempo libre." },
   { label: "Comida media", value: destination.budgetPerDay.mealCostMid, detail: "Restaurante medio sin convertir cada comida en un lujo." },
   { label: "Cerveza", value: destination.budgetPerDay.beerCost, detail: "Referencia útil para ocio y momentos de grupo." },
   { label: "Gasto diario", value: destination.budgetPerDay.dailyBudget, detail: "Margen orientativo de extras por día en destino." },
-  { label: "Extras estimados", value: destination.budgetPerDay.totalExtras, detail: "Estimación para todo el viaje, aparte del precio y vuelo." },
+  { label: "Extras estimados", value: destination.budgetPerDay.totalExtras, detail: "Estimación para todo el viaje, aparte del precio del viaje." },
 ].filter((item) => item.value) : [];
 
 const faqs = [
   { question: `¿Cuánto cuesta un viaje a ${destination.name} en grupo?`, answer: `Un viaje en grupo a ${destination.name} con Travel Hood cuesta desde ${minPrice > 0 ? minPrice + '€' : 'consultar'} por persona, sin incluir vuelos ni seguro de viaje. El seguro se contrata aparte. Incluye alojamiento, transporte y coordinador.` },
-  { question: `¿Cuánto cuestan los vuelos a ${destination.name}?`, answer: `Los vuelos desde España a ${destination.name} cuestan aproximadamente ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'} ida y vuelta. El precio varía según la temporada y la antelación de la reserva.` },
+  { question: `¿El precio incluye los vuelos a ${destination.name}?`, answer: `No. Los vuelos se reservan por separado y no forman parte del precio publicado por Travel Hood.` },
   { question: `¿Qué incluye el precio del viaje a ${destination.name}?`, answer: `El precio incluye ${included.slice(0, 3).join(', ').toLowerCase()} y más. No incluye ${notIncluded.slice(0, 2).join(' ni ').toLowerCase()}.` },
 ];
 
-const totalBudget = minPrice > 0 && avgFlightEstimate > 0 ? minPrice + avgFlightEstimate : 0;
-const dailyCost = totalBudget > 0 && destTrips.length > 0 ? Math.round(totalBudget / destTrips[0].durationDays) : 0;
-const currentYear = new Date().getFullYear();
+const currentYear = [...new Set(destTrips.map((trip) => trip.departureDate.slice(0, 4)))].join("–") || String(now.getFullYear());
 
 const destinationPath = `/destino/${destination.slug}/`;
 const pagePath = `/presupuesto/${destination.slug}/`;
 const canonicalUrl = `${SITE_URL}${pagePath}`;
 const seoImage = destination.seo?.ogImage || destination.heroImage;
 const pageTitle = destination.seo?.presupuestoTitle || `¿Cuánto cuesta viajar a ${destination.name}? Presupuesto ${currentYear} — Travel Hood`;
-const pageDescription = destination.seo?.presupuestoDescription || `Presupuesto detallado para viajar a ${destination.name} en ${currentYear}. Viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, vuelos estimados ${avgFlightEstimate > 0 ? avgFlightEstimate + '€' : 'consultar'}. Desglose completo de costes.`;
+const pageDescription = destination.seo?.presupuestoDescription || `Presupuesto para viajar a ${destination.name} en ${currentYear}: viaje en grupo desde ${minPrice > 0 ? minPrice + '€' : 'consultar'}, qué incluye y qué gastos se pagan aparte.`;
 const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${destination.name}, presupuesto ${destination.name}, precio viaje ${destination.name}, gastos ${destination.name}`;
 ---
 
@@ -102,12 +96,12 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
           <div>
             <p class="text-xs font-bold uppercase tracking-widest text-secondary">Respuesta rápida</p>
             <h2 class="mt-2 font-serif text-xl font-extrabold text-foreground sm:text-2xl">
-              Viajar a {destination.name} cuesta desde {minPrice > 0 ? `${minPrice}€` : "consultar"} sin vuelo{avgFlightEstimate > 0 ? `, con vuelo estimado de ${avgFlightEstimate}€` : ""}.
+              Viajar a {destination.name} cuesta desde {minPrice > 0 ? `${minPrice}€` : "consultar"} por persona. Los vuelos y el seguro no están incluidos.
             </h2>
             <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
               {budgetItems.length > 0
                 ? `Para gastos en destino, calcula ${destination.budgetPerDay?.dailyBudget} y un extra total aproximado de ${destination.budgetPerDay?.totalExtras}.`
-                : "Te damos una estimación clara por WhatsApp según fechas, vuelos y disponibilidad real."}
+                : "Te explicamos por WhatsApp qué incluye el precio y qué gastos van aparte según las fechas elegidas."}
             </p>
           </div>
           <a
@@ -138,20 +132,20 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
             <p class="text-xs text-muted-foreground mt-1">por persona, sin vuelo ni seguro</p>
           </div>
           <div class="rounded-xl border border-border/40 bg-card p-6 text-center">
-            <p class="text-sm text-muted-foreground">Vuelo estimado</p>
-            <p class="text-3xl font-extrabold text-coral">{avgFlightEstimate > 0 ? `${avgFlightEstimate}€` : "—"}</p>
-            <p class="text-xs text-muted-foreground mt-1">ida y vuelta desde España</p>
+            <p class="text-sm text-muted-foreground">Vuelos</p>
+            <p class="text-2xl font-extrabold text-coral">No incluidos</p>
+            <p class="text-xs text-muted-foreground mt-1">se reservan por separado</p>
           </div>
           <div class="rounded-xl border border-border/40 bg-card p-6 text-center">
-            <p class="text-sm text-muted-foreground">Presupuesto total</p>
-            <p class="text-3xl font-extrabold text-foreground">{totalBudget > 0 ? `~${totalBudget}€` : "Consultar"}</p>
-            <p class="text-xs text-muted-foreground mt-1">{dailyCost > 0 ? `~${dailyCost}€/día` : ""}</p>
+            <p class="text-sm text-muted-foreground">Seguro de viaje</p>
+            <p class="text-2xl font-extrabold text-foreground">Se contrata aparte</p>
+            <p class="text-xs text-muted-foreground mt-1">obligatorio añadirlo a tu presupuesto</p>
           </div>
         </div>
 
         <div class="space-y-4 text-base leading-relaxed text-muted-foreground">
-          <p>El precio de un viaje en grupo a {destination.name} con Travel Hood parte desde {minPrice > 0 ? `${minPrice}€` : 'consultar'} por persona{maxPrice > minPrice ? `, pudiendo llegar a ${maxPrice}€ según la temporada y duración` : ''}. Este precio no incluye el vuelo internacional, que desde España ronda los {avgFlightEstimate > 0 ? `${avgFlightEstimate}€` : 'consultar'} ida y vuelta.</p>
-          <p>El presupuesto total estimado para {destTrips.length > 0 ? `${destTrips[0].durationDays} días` : 'un viaje'} en {destination.name} es de aproximadamente {totalBudget > 0 ? `${totalBudget}€` : 'consultar'}, incluyendo viaje y vuelo. El seguro de viaje se contrata aparte y debes añadirlo a este presupuesto. A esto puedes sumar entre 100-300€ para gastos personales (comidas libres, souvenirs, actividades opcionales).</p>
+          <p>El precio de un viaje en grupo a {destination.name} con Travel Hood parte desde {minPrice > 0 ? `${minPrice}€` : 'consultar'} por persona{maxPrice > minPrice ? `, pudiendo llegar a ${maxPrice}€ según la temporada y duración` : ''}. Los vuelos internacionales no están incluidos y se reservan por separado.</p>
+          <p>Para calcular tu presupuesto completo, añade al precio del viaje el vuelo que elijas, el seguro de viaje y tus gastos personales, como comidas libres, recuerdos o actividades opcionales. Compara siempre opciones reales para tus fechas.</p>
         </div>
       </div>
     </section>
@@ -225,7 +219,7 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
                 <a href={`/destino/${destination.slug}/`} class="flex items-center justify-between rounded-xl border border-border/40 bg-card p-5 hover:shadow-md transition-all">
                   <div>
                     <p class="font-serif font-bold text-foreground">{trip.title}</p>
-                    <p class="text-sm text-muted-foreground">{trip.durationDays} días · {trip.placesLeft} plazas · Vuelo ~{trip.flightEstimate}€</p>
+                    <p class="text-sm text-muted-foreground">{trip.durationDays} días{trip.status === "almost-full" ? " · Últimas plazas" : ""}</p>
                   </div>
                   <div class="text-right">
                     {hasDiscount && <p class="text-sm text-muted-foreground line-through">{trip.priceFrom}€</p>}
@@ -244,10 +238,10 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
       subtitle={`Datos clave de coste para viajar a ${destination.name}`}
       dataPoints={[
         { label: "Viaje desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
-        { label: "Vuelo estimado", value: avgFlightEstimate > 0 ? `${avgFlightEstimate}€ ida/vuelta` : "—" },
-        { label: "Total estimado", value: totalBudget > 0 ? `~${totalBudget}€` : "Consultar" },
-        { label: "Coste por día", value: dailyCost > 0 ? `~${dailyCost}€/día` : "—" },
-        { label: "Gastos extra", value: "100-300€ aprox." },
+        { label: "Vuelos internacionales", value: "No incluidos" },
+        { label: "Seguro de viaje", value: "Se contrata aparte" },
+        { label: "Duración", value: destTrips.length > 0 ? `${destTrips[0].durationDays} días` : "Consultar" },
+        { label: "Gastos en destino", value: destination.budgetPerDay?.totalExtras || "Según tu plan" },
       ]}
     />
 
@@ -258,7 +252,7 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
 
     <CTASection
       title={`¿Listo para viajar a ${destination.name}?`}
-      subtitle={`Te contamos precio, vuelo estimado, fechas y cómo reservar tu plaza desde ${minPrice > 0 ? `${minPrice}€` : "consultar"}.`}
+      subtitle={`Te contamos precio, fechas, qué incluye y cómo reservar tu plaza desde ${minPrice > 0 ? `${minPrice}€` : "consultar"}.`}
       ctaText="Pedir presupuesto por WhatsApp"
       ctaHref={whatsappUrl}
     />

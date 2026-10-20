@@ -53,10 +53,9 @@ for (const d of manifest.destinations) {
     assert.equal(days, t.durationDays)
     assert.equal(t.durationDays, d.itinerary.length)
     assert.equal(t.priceFrom, d.slug === 'vietnam' ? 1200 : 1500)
-    for (const field of ['flightEstimate', 'totalPlaces', 'placesLeft', 'status', 'coordinatorId']) {
+    for (const field of ['totalPlaces', 'placesLeft', 'status', 'coordinatorId']) {
       if (t[field] == null) pending.push({trip: t.id, field})
     }
-    if (t.flightEstimate != null) assert(t.flightEstimate >= 0)
     if (t.totalPlaces != null) assert(Number.isInteger(t.totalPlaces) && t.totalPlaces > 0)
     if (t.placesLeft != null) assert(Number.isInteger(t.placesLeft) && t.placesLeft >= 0 && t.placesLeft <= t.totalPlaces)
     if (t.status != null) assert(['open', 'almost-full', 'full'].includes(t.status))
@@ -119,7 +118,7 @@ for (const d of manifest.destinations) {
     const doc = {_id: `drafts.${t.id}`, _type: 'trip', title: t.title, slug: slug(t.id.replace(/^trip-/, '')),
       destination: draftRef(`destination-${d.slug}`, 'destination'), departureDate: t.departureDate,
       returnDate: t.returnDate, durationDays: t.durationDays, priceFrom: t.priceFrom, tags: t.tags}
-    for (const field of ['flightEstimate', 'totalPlaces', 'placesLeft', 'status']) {
+    for (const field of ['totalPlaces', 'placesLeft', 'status']) {
       if (t[field] != null) doc[field] = t[field]
     }
     if (t.coordinatorId) doc.coordinator = ref(t.coordinatorId)

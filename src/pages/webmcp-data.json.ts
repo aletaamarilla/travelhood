@@ -71,7 +71,6 @@ export async function GET() {
           priceFromExcludingInternationalFlights: minPositivePrice(
             (tripsByDestinationId.get(destination.id) ?? []).map((trip) => trip.promoPrice ?? trip.priceFrom),
           ),
-          flightEstimate: (tripsByDestinationId.get(destination.id) ?? [])[0]?.flightEstimate ?? null,
           durationDays: (tripsByDestinationId.get(destination.id) ?? [])[0]?.durationDays ?? null,
           climate: compactText(destination.climate, 180),
           budget: destination.budgetPerDay

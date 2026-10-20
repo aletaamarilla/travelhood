@@ -31,7 +31,7 @@ type ModalProps = ComponentProps<typeof DeparturesModal>
 const trip: ModalProps['availableTrips'][number] = {
   id: 'islandia-2027-10-18', destinationId: 'islandia', title,
   departureDate: '2027-10-18', returnDate: '2027-10-25', durationDays: 8,
-  priceFrom: 1290, flightEstimate: 280, totalPlaces: 13, placesLeft: 8,
+  priceFrom: 1290, totalPlaces: 13, placesLeft: 8,
   coordinatorId: 'marta', status: 'open', included: [], notIncluded: [], itinerary: [], tags: [],
 }
 const props: ModalProps = {

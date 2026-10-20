@@ -1,0 +1,227 @@
+{
+  "destination": {
+    "id": "destination-dolomitas",
+    "name": "Dolomitas",
+    "slug": "dolomitas",
+    "country": {
+      "id": "country-italia",
+      "name": "Italia",
+      "slug": "italia",
+      "flag": "IT",
+      "currency": "Euro (EUR)",
+      "language": "Italiano"
+    },
+    "continentId": "continent-europa",
+    "description": "Viaja a las Dolomitas en grupo durante 7 días entre lagos turquesa, pueblos alpinos y algunas de las rutas de senderismo más espectaculares de Italia. Recorreremos Tre Cime di Lavaredo, Lago di Sorapis, Lago di Braies, Seceda y Alpe di Siusi, con paradas en Cortina d’Ampezzo, Malcesine y Venecia. El viaje cuesta 1.000 € por persona, sin vuelos, y combina naturaleza, montaña y momentos para disfrutar con el grupo. Puedes venir sin conocer a nadie: tendrás acompañamiento de Travel Hood y transporte en furgoneta durante el recorrido.",
+    "shortDescription": "Senderos, lagos turquesa y pueblos alpinos en 7 días de aventura.",
+    "highlights": [
+      "Tre Cime di Lavaredo",
+      "Lago di Sorapis",
+      "Lago di Braies",
+      "Seceda y Alpe di Siusi",
+      "Lago di Garda y Malcesine"
+    ],
+    "idealFor": "Quienes quieren descubrir las Dolomitas a pie y compartir una aventura de montaña en grupo.",
+    "hasCoordinator": true,
+    "categories": [
+      "aventura",
+      "naturaleza",
+      "cultural"
+    ],
+    "climate": "Clima alpino y cambiante en verano, con días suaves, noches frescas y posibilidad de lluvia en montaña.",
+    "included": [
+      "Transporte en furgoneta durante todo el recorrido",
+      "Traslados principales entre el aeropuerto y el alojamiento",
+      "Visitas y rutas de senderismo indicadas en el itinerario"
+    ],
+    "inheritDefaultNotIncluded": true,
+    "notIncluded": [
+      "Funicular de Seceda (74 € aproximadamente)",
+      "Paseo en barca por el Lago di Braies (opcional)"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Llegada a Venecia",
+        "description": "Llegada al aeropuerto de Venecia Marco Polo o Treviso y traslado al alojamiento. Según los horarios del grupo, podremos aprovechar para pasear por Venecia y descubrir sus canales y calles. Por la noche tendremos la cena de bienvenida. Noche en Venecia."
+      },
+      {
+        "day": 2,
+        "title": "Alleghe, Passo Giau y Tre Cime di Lavaredo",
+        "description": "Comenzaremos la ruta en Alleghe, un pueblo junto al lago, y en el mirador de Passo Giau. Continuaremos hacia Cortina d’Ampezzo y el Lago di Misurina antes de recorrer una de las rutas más conocidas de las Dolomitas: Tre Cime di Lavaredo. Noche en Dolomitas."
+      },
+      {
+        "day": 3,
+        "title": "Lago di Sorapis y Cortina d’Ampezzo",
+        "description": "Haremos una ruta de senderismo hasta el Lago di Sorapis, conocido por sus aguas turquesa y su paisaje alpino. Por la tarde recorreremos Cortina d’Ampezzo, con tiempo para pasear por sus calles, tiendas y cafeterías. Noche en Dolomitas."
+      },
+      {
+        "day": 4,
+        "title": "Lago di Braies, Refugio Odle y Santa Maddalena",
+        "description": "Visitaremos el Lago di Braies para caminar junto al agua o hacer, de forma opcional, un paseo en barca. Después seguiremos una ruta panorámica hasta el Refugio Odle y terminaremos el día en Santa Maddalena, junto a la iglesia de San Giovanni in Ranui. Noche en Dolomitas."
+      },
+      {
+        "day": 5,
+        "title": "Seceda, Ortisei y Alpe di Siusi",
+        "description": "Subiremos a Seceda, uno de los grandes miradores de las Dolomitas; el funicular no está incluido. Después visitaremos Ortisei y exploraremos Alpe di Siusi entre praderas, senderos y paisajes alpinos. Noche en Dolomitas."
+      },
+      {
+        "day": 6,
+        "title": "Lago di Carezza, Lago di Garda y Malcesine",
+        "description": "Visitaremos el Lago di Carezza y continuaremos hacia el Lago di Garda. En Malcesine pasearemos por el casco antiguo y, si el tiempo acompaña, podremos bañarnos en el lago. Por la noche compartiremos la cena de despedida. Noche en Venecia."
+      },
+      {
+        "day": 7,
+        "title": "Despedida de Italia",
+        "description": "Última mañana en Italia. Según el horario de los vuelos, podremos aprovechar para volver a pasear por Venecia antes del traslado al aeropuerto y la despedida del grupo."
+      }
+    ],
+    "faqs": [
+      {
+        "question": "¿Cuánto cuesta el viaje a las Dolomitas y cuánto dura?",
+        "answer": "El viaje dura 7 días y cuesta 1.000 € por persona. El vuelo, las comidas y bebidas no especificadas y el seguro de viaje se contratan aparte."
+      },
+      {
+        "question": "¿Qué fechas hay para viajar a las Dolomitas en 2027?",
+        "answer": "Hay cuatro salidas: del 21 al 27 de junio, del 28 de junio al 4 de julio, del 30 de agosto al 5 de septiembre y del 6 al 12 de septiembre de 2027."
+      },
+      {
+        "question": "¿Puedo apuntarme sin conocer a nadie?",
+        "answer": "Sí. El viaje está pensado para que puedas venir por tu cuenta, conocer al grupo desde la llegada y recorrer la ruta con acompañamiento de Travel Hood."
+      },
+      {
+        "question": "¿Qué nivel físico necesito para las rutas?",
+        "answer": "Conviene tener una condición física adecuada para rutas de senderismo de hasta unas cuatro horas. Necesitarás botas de trekking, ropa por capas, chaqueta impermeable, agua y una mochila pequeña."
+      },
+      {
+        "question": "¿Qué transporte está incluido durante el viaje?",
+        "answer": "Están incluidos los traslados principales al aeropuerto y el transporte en furgoneta durante el recorrido. El funicular de Seceda y el paseo opcional en barca por el Lago di Braies se pagan aparte."
+      },
+      {
+        "question": "¿Están incluidos los vuelos y el seguro de viaje?",
+        "answer": "No. Los vuelos y el seguro de viaje no están incluidos en los 1.000 €. Recomendamos que el seguro cubra senderismo y posibles rescates en montaña."
+      }
+    ],
+    "seo": {
+      "title": "Dolomitas en grupo 2027: ruta de 7 días | Travel Hood",
+      "description": "Viaja a las Dolomitas en grupo durante 7 días por 1.000 €: lagos turquesa, senderismo, pueblos alpinos y cuatro salidas en 2027. Vuelos aparte.",
+      "keywords": "Dolomitas en grupo, viaje Dolomitas 2027, senderismo Dolomitas, Lago di Braies, Tre Cime di Lavaredo, Seceda",
+      "cuandoViajarTitle": "Viajar a Dolomitas en 2027: fechas y ruta | Travel Hood",
+      "cuandoViajarDescription": "Cuatro salidas a Dolomitas entre junio y septiembre de 2027. Ruta de 7 días por lagos, senderos y pueblos alpinos con Travel Hood.",
+      "presupuestoTitle": "Precio del viaje a Dolomitas: 1.000 € | Travel Hood",
+      "presupuestoDescription": "Consulta qué incluye el viaje de 7 días a Dolomitas por 1.000 €: alojamiento, furgoneta, traslados y rutas. Vuelos y seguro aparte."
+    },
+    "pdf": "imports/dolomitas-2027/processed/pdfs/dolomitas-itinerario.pdf",
+    "pdfSha1": "52462a33cffa88cc215a9295c4974b8cea7ebd0e",
+    "photos": [
+      {
+        "path": "imports/dolomitas-2027/processed/images/hero-senderismo.jpg",
+        "alt": "Senderista caminando entre praderas y cumbres rocosas de las Dolomitas",
+        "hero": true,
+        "sha1": "dcbc1095addd7c834ba22549327cce84a4bd7dc8"
+      },
+      {
+        "path": "imports/dolomitas-2027/processed/images/galeria-valle.jpg",
+        "alt": "Valle verde con pueblos alpinos y montañas de las Dolomitas al fondo",
+        "hero": false,
+        "sha1": "8dddabcc4f93704d8631f86e71172e5d00260c24"
+      },
+      {
+        "path": "imports/dolomitas-2027/processed/images/galeria-lago.jpg",
+        "alt": "Lago alpino de aguas turquesa rodeado de bosques y montañas en las Dolomitas",
+        "hero": false,
+        "sha1": "d0c7c4b9751540a5fd5135a70acf7895ed4b8702"
+      },
+      {
+        "path": "imports/dolomitas-2027/processed/images/galeria-cumbres.jpg",
+        "alt": "Cumbres rocosas y senderos de montaña entre praderas de las Dolomitas",
+        "hero": false,
+        "sha1": "d1ef99b36d132a0c8f56ffcd3f04880d0af41a2c"
+      },
+      {
+        "path": "imports/dolomitas-2027/processed/images/galeria-praderas.jpg",
+        "alt": "Refugio entre praderas verdes bajo las paredes de roca de las Dolomitas",
+        "hero": false,
+        "sha1": "ae8c6701ac4141098a44390a03df954bdb7ac76c"
+      }
+    ]
+  },
+  "trips": [
+    {
+      "id": "trip-dolomitas-2027-06-21",
+      "slug": "dolomitas-2027-06-21",
+      "title": "Dolomitas — Junio 2027",
+      "departureDate": "2027-06-21",
+      "returnDate": "2027-06-27",
+      "durationDays": 7,
+      "priceFrom": 1000,
+      "totalPlaces": 15,
+      "placesLeft": 15,
+      "status": "open",
+      "coordinatorId": null,
+      "tags": [
+        "verano"
+      ]
+    },
+    {
+      "id": "trip-dolomitas-2027-06-28",
+      "slug": "dolomitas-2027-06-28",
+      "title": "Dolomitas — Junio–Julio 2027",
+      "departureDate": "2027-06-28",
+      "returnDate": "2027-07-04",
+      "durationDays": 7,
+      "priceFrom": 1000,
+      "totalPlaces": 15,
+      "placesLeft": 15,
+      "status": "open",
+      "coordinatorId": null,
+      "tags": [
+        "verano"
+      ]
+    },
+    {
+      "id": "trip-dolomitas-2027-08-30",
+      "slug": "dolomitas-2027-08-30",
+      "title": "Dolomitas — Agosto–Septiembre 2027",
+      "departureDate": "2027-08-30",
+      "returnDate": "2027-09-05",
+      "durationDays": 7,
+      "priceFrom": 1000,
+      "totalPlaces": 15,
+      "placesLeft": 15,
+      "status": "open",
+      "coordinatorId": null,
+      "tags": [
+        "verano"
+      ]
+    },
+    {
+      "id": "trip-dolomitas-2027-09-06",
+      "slug": "dolomitas-2027-09-06",
+      "title": "Dolomitas — Septiembre 2027",
+      "departureDate": "2027-09-06",
+      "returnDate": "2027-09-12",
+      "durationDays": 7,
+      "priceFrom": 1000,
+      "totalPlaces": 15,
+      "placesLeft": 15,
+      "status": "open",
+      "coordinatorId": null,
+      "tags": [
+        "septiembre"
+      ]
+    }
+  ],
+  "approvals": {
+    "capacityConfirmed": true,
+    "publicationRequested": true,
+    "coordinatorPendingAssignment": true,
+    "reason": "El usuario autoriza publicar y confirma 15 plazas por salida el 20 de octubre de 2026. La persona coordinadora queda pendiente de asignación."
+  },
+  "notes": [
+    "El precio de 1.000 € y las cuatro fechas proceden del mensaje del usuario del 19 de octubre de 2026.",
+    "El PDF describe siete días, pero llama DÍA 12 a la última jornada; los datos y la copia publicable corrigen la errata a DÍA 7.",
+    "Solo hay cinco fotos aportadas: una se usa como hero y cuatro como galería, con excepción documentada al mínimo recomendado de seis.",
+    "Capacidad confirmada: 15 plazas por salida. Incluye coordinación, con persona pendiente de asignación."
+  ]
+}

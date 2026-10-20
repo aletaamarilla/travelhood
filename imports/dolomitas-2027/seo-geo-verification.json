@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-20T08:15:11.448Z",
+  "scope": "Local production build after Sanity publication",
+  "pages": 166,
+  "jsonLdBlocks": 922,
+  "publicTripAppearances": 771,
+  "errors": [],
+  "checks": [
+    "No flight estimates in generated HTML, JSON, Markdown or text",
+    "No placesLeft in open/full trip hydration props",
+    "No remainingAttendeeCapacity for open/full Events",
+    "Four Dolomitas Events with the requested dates, 1000 EUR and P7D",
+    "Dolomitas destination, budget, travel dates and Italy pages: H1, metadata, canonical and indexability",
+    "Dolomitas present in sitemap and WebMCP",
+    "Season and budget headings reflect departure years",
+    "Group capacity uses confirmed 15 rather than hardcoded 12-13",
+    "Independent review of dist and Vercel static output passed"
+  ],
+  "additionalValidation": [
+    "Astro check: 0 errors, 0 warnings",
+    "Booking, search intent, searchable destinations, public trip, flight removal and import regression tests passed",
+    "Seven local agent visibility checks passed; production Vercel headers still require live verification",
+    "Favicon checks passed",
+    "Sanity: published documents match readback, no Dolomitas drafts, zero flightEstimate fields"
+  ]
+}

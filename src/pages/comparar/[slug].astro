@@ -43,9 +43,8 @@ function getDestData(dest: typeof destA) {
     .sort((a, b) => new Date(a.departureDate).getTime() - new Date(b.departureDate).getTime());
   const prices = destTrips.map((t) => resolvePrice(t).price);
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
-  const avgFlight = destTrips.length > 0 ? Math.round(destTrips.reduce((sum, t) => sum + t.flightEstimate, 0) / destTrips.length) : 0;
   const duration = destTrips.length > 0 ? destTrips[0].durationDays : 0;
-  return { destTrips, minPrice, avgFlight, duration };
+  return { destTrips, minPrice, duration };
 }
 
 const dataA = getDestData(destA);
@@ -63,7 +62,6 @@ const pageDescription = `Compara ${destA.name} y ${destB.name}: precios, duraci�
 const criteria = [
   { label: "País", a: countryA.name, b: countryB.name },
   { label: "Precio desde", a: dataA.minPrice > 0 ? `${dataA.minPrice}€` : "—", b: dataB.minPrice > 0 ? `${dataB.minPrice}€` : "—" },
-  { label: "Vuelo estimado", a: dataA.avgFlight > 0 ? `${dataA.avgFlight}€` : "—", b: dataB.avgFlight > 0 ? `${dataB.avgFlight}€` : "—" },
   { label: "Duración", a: dataA.duration > 0 ? `${dataA.duration} días` : "—", b: dataB.duration > 0 ? `${dataB.duration} días` : "—" },
   { label: "Clima", a: destA.climate, b: destB.climate },
   { label: "Tipo de experiencia", a: destA.categories.join(", "), b: destB.categories.join(", ") },
@@ -159,8 +157,7 @@ const criteria = [
       dataPoints={[
         { label: `${destA.name} desde`, value: dataA.minPrice > 0 ? `${dataA.minPrice}€` : "—" },
         { label: `${destB.name} desde`, value: dataB.minPrice > 0 ? `${dataB.minPrice}€` : "—" },
-        { label: `Vuelo ${destA.name}`, value: dataA.avgFlight > 0 ? `~${dataA.avgFlight}€` : "—" },
-        { label: `Vuelo ${destB.name}`, value: dataB.avgFlight > 0 ? `~${dataB.avgFlight}€` : "—" },
+        { label: "Vuelos internacionales", value: "No incluidos" },
         { label: "Coordinador", value: "Incluido en ambos" },
       ]}
     />

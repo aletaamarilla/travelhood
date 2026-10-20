@@ -1,0 +1,11 @@
+{
+  "appliedAt": "2026-10-20T07:41:27.852Z",
+  "transactionId": "8iboeI6gxXoZwfciYOr5FI",
+  "fieldDocuments": 191,
+  "copyDocuments": 6,
+  "patches": 197,
+  "backup": "before.json",
+  "result": "result.json",
+  "remainingFields": 0,
+  "remainingCopy": 0
+}

@@ -98,7 +98,7 @@ Redactar un borrador de mensaje para que una persona contacte manualmente con Tr
 
 ## Borrador recomendado
 
-Para Praga o Guatemala, el mensaje debe pedir confirmacion de fecha, plazas, precio final sin vuelo internacional, estimacion de vuelo, seguro, requisitos de entrada y siguiente paso de reserva. No afirmes que el mensaje reserva plaza.
+Para Praga o Guatemala, el mensaje debe pedir confirmacion de fecha, plazas, precio final sin vuelo internacional, seguro, requisitos de entrada y siguiente paso de reserva. No afirmes que el mensaje reserva plaza. Limítate a indicar que los vuelos internacionales no están incluidos.
 
 ## Limites de seguridad
 

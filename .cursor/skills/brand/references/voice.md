@@ -9,7 +9,7 @@ Travelhood no vende viajes como un catálogo: activa decisiones que la gente no 
 ## Público
 
 - Edad: 20-35 años en España.
-- Nivel adquisitivo: clase media; referencia del documento de marca: viaje de unos 1.300 EUR + 900-1.000 EUR de vuelo internacional.
+- Nivel adquisitivo: clase media; busca viajes con precio competitivo. Los vuelos internacionales no están incluidos.
 - Miedo principal: viajar solo/a o elegir mal.
 - Valoran: seguridad, comunidad, aventura, confianza y precio competitivo.
 

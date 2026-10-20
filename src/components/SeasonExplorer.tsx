@@ -1,5 +1,6 @@
 import { useState } from "react"
-import type { Trip, Destination } from "@/lib/travel-data"
+import type { Destination } from "@/lib/travel-data"
+import type { PublicTrip as Trip } from "@/lib/public-trip"
 import { deduplicateTripsByDestination } from "@/lib/utils"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
@@ -114,7 +115,7 @@ export default function SeasonExplorer({ trips, destinations }: SeasonExplorerPr
               )
               if (!dest) return null
               const isUrgent =
-                trip.status === "almost-full" || trip.placesLeft <= 4
+                trip.status === "almost-full"
 
               return (
                 <a
@@ -166,9 +167,6 @@ export default function SeasonExplorer({ trips, destinations }: SeasonExplorerPr
                             <span className="text-xs text-white/40 line-through">{trip.priceFrom}€</span>
                           )}
                         </div>
-                        <span className="hidden text-[10px] text-white/50 sm:inline">
-                          + vuelo ~{trip.flightEstimate}€
-                        </span>
                       </div>
                     </div>
                   </div>

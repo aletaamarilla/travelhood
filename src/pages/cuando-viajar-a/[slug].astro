@@ -174,7 +174,7 @@ const pageKeywords = destination.seo?.keywords || `mejor época viajar ${destina
                 <a href={`/destino/${destination.slug}/`} class="flex items-center justify-between rounded-xl border border-border/40 bg-background p-5 hover:shadow-md transition-all">
                   <div>
                     <p class="font-serif font-bold text-foreground">{trip.title}</p>
-                    <p class="text-sm text-muted-foreground">{trip.durationDays} días · {trip.placesLeft} plazas</p>
+                    <p class="text-sm text-muted-foreground">{trip.durationDays} días{trip.status === "almost-full" ? " · Últimas plazas" : ""}</p>
                   </div>
                   <span class="text-lg font-bold text-teal-vivid">{price}€</span>
                 </a>
@@ -193,7 +193,7 @@ const pageKeywords = destination.seo?.keywords || `mejor época viajar ${destina
         { label: "Precio desde", value: minPrice > 0 ? `${minPrice}€ (sin vuelo)` : "Próximamente" },
         { label: "País", value: country.name },
         { label: "Continente", value: continent.name },
-        { label: "Grupo medio", value: "12 a 13 personas de 20 a 35 años" },
+        { label: "Grupo", value: destTrips[0]?.totalPlaces ? `Hasta ${destTrips[0].totalPlaces} personas de 20 a 35 años` : "Grupo reducido de 20 a 35 años" },
       ]}
     />
 

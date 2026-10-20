@@ -3,7 +3,8 @@ import type { ReactNode, ErrorInfo } from "react"
 import { Search, MapPin, Calendar, X, Users, Shield, Compass } from "lucide-react"
 import SearchDateSelector, { formatDateSelectionLabel } from "@/components/SearchDateSelector"
 import SearchDestinationSelector from "@/components/SearchDestinationSelector"
-import type { Trip, Destination, Continent, Country, DestinationCategory } from "@/lib/travel-data"
+import type { Destination, Continent, Country, DestinationCategory } from "@/lib/travel-data"
+import type { PublicTrip as Trip } from "@/lib/public-trip"
 import { deduplicateTripsByDestination } from "@/lib/utils"
 import { buildWhatsAppUrl, FALLBACK_WHATSAPP_PHONE } from "@/lib/config"
 import {
@@ -170,7 +171,7 @@ function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDest
   const dest = allDestinations.find((d) => d.id === trip.destinationId)
   if (!dest) return null
   const country = allCountries.find((c) => c.id === dest.countryId)
-  const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4
+  const isUrgent = trip.status === "almost-full"
 
   return (
     <a
@@ -258,7 +259,6 @@ function TripCard({ trip, allDestinations, allCountries }: { trip: Trip; allDest
             )}
           </div>
           <div className="text-right">
-            <p className="text-[10px] text-muted-foreground">+ vuelo ~{trip.flightEstimate}€</p>
             <span className="inline-flex items-center gap-1 rounded-full bg-teal-deep/8 px-2.5 py-1 text-[11px] font-semibold text-teal-deep transition-colors group-hover:bg-coral group-hover:text-white">
               Ver viaje
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>

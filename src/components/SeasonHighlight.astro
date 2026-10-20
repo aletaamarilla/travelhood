@@ -53,15 +53,14 @@ const cards = rawTrips
       priceFrom: trip.priceFrom,
       promoPrice: trip.promoPrice,
       promoLabel: trip.promoLabel,
-      flightEstimate: trip.flightEstimate,
       placesLeft: trip.placesLeft,
-      isUrgent: trip.status === "almost-full" || trip.placesLeft <= 4,
+      isUrgent: trip.status === "almost-full",
     };
   })
   .filter(Boolean) as NonNullable<(typeof rawTrips)[number] & {
     slug: string; name: string; heroImage: string; dateLabel: string;
     durationDays: number; priceFrom: number; promoPrice?: number; promoLabel?: string;
-    flightEstimate: number; placesLeft: number; isUrgent: boolean;
+    placesLeft: number; isUrgent: boolean;
   }>[];
 ---
 
@@ -127,14 +126,11 @@ const cards = rawTrips
                   <span class="text-sm text-muted-foreground line-through">{card.priceFrom}€</span>
                 )}
               </div>
-              <div class="flex flex-col items-end gap-0.5">
-                {card.promoLabel && (
-                  <span class="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
-                    {card.promoLabel}
-                  </span>
-                )}
-                <span class="text-xs text-muted-foreground">+ vuelo ~{card.flightEstimate}€</span>
-              </div>
+              {card.promoLabel && (
+                <span class="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-bold text-coral">
+                  {card.promoLabel}
+                </span>
+              )}
             </div>
           </div>
         </a>

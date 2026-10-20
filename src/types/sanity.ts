@@ -212,7 +212,6 @@ export interface SanityTrip {
   priceFrom: number
   promoPrice?: number
   promoLabel?: string
-  flightEstimate: number
   totalPlaces: number
   placesLeft: number
   status: 'open' | 'almost-full' | 'full'

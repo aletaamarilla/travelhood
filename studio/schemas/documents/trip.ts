@@ -80,16 +80,6 @@ export default defineType({
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: 'flightEstimate',
-      title: 'Vuelo estimado (€)',
-      type: 'number',
-      fieldset: 'dates',
-      description:
-        'Precio estimado del vuelo ida/vuelta desde España en euros (ej: 650). Orientativo para el viajero.',
-      validation: (Rule) => Rule.required().min(0),
-    }),
-
-    defineField({
       name: 'bookingUrl',
       title: 'Enlace de reserva (MyGoQu)',
       type: 'url',
@@ -159,7 +149,7 @@ export default defineType({
       title: 'Coordinador/a',
       type: 'reference',
       to: [{type: 'coordinator'}],
-      description: '¿Qué coordinador/a lleva este viaje? (Solo requerido si el destino tiene coordinador)',
+      description: 'Persona asignada a esta salida. Puede quedar pendiente de asignación aunque el viaje incluya coordinación.',
       validation: (Rule) =>
         Rule.custom(async (value, context) => {
           const doc = context.document as {destination?: {_ref?: string}} | undefined
@@ -170,8 +160,8 @@ export default defineType({
           const dest = await client.fetch(`*[_id == $id][0]{hasCoordinator}`, {id: destRef})
 
           if (dest?.hasCoordinator === false) return true
-          return value ? true : 'Este destino requiere un coordinador asignado'
-        }),
+          return value ? true : 'Coordinador pendiente de asignación'
+        }).warning(),
     }),
 
     // --- Tags de temporada ---

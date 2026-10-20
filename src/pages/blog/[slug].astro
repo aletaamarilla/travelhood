@@ -357,8 +357,8 @@ const breadcrumbLd = {
                             {trip ? (
                               <p class="text-xs text-muted-foreground mt-0.5">
                                 Desde <span class="font-bold text-coral">{trip.promoPrice || trip.priceFrom}€</span>
-                                {trip.placesLeft <= 4 && (
-                                  <span class="ml-1 text-coral">· {trip.placesLeft} plazas</span>
+                                {trip.status === "almost-full" && (
+                                  <span class="ml-1 text-coral">· Últimas plazas</span>
                                 )}
                               </p>
                             ) : (

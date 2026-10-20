@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-19",
+  "sources": [
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/PDF DOLOMITAS_compressed.pdf",
+      "size": 9726722,
+      "sha256": "d376f73f5b8881eeebce0d4656674dc499cb5ba036b3b866e3cf3c7a764a7033",
+      "pages": 15
+    },
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/dolomitas.jpg",
+      "size": 1767373,
+      "sha256": "cebaa85abf50783449bc05546a09c0ff3fbd8572b2021df158079efdecd15786",
+      "dimensions": [4000, 2667]
+    },
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/dolomitas 1.jpg",
+      "size": 1982412,
+      "sha256": "c0287687f5f452b5640fc4f7c35c7362cb158cf1e4796fd8fb9fdf5361f2ac1b",
+      "dimensions": [4000, 2667]
+    },
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/dolomitas 2.jpg",
+      "size": 2416633,
+      "sha256": "cf9b46c3cfe1f1bf7e686364d760e582fc4c03725427c9806d7c09e0d76d4eb8",
+      "dimensions": [4928, 3264]
+    },
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/dolomitas 3.jpg",
+      "size": 2371603,
+      "sha256": "1013d4ffeba83deddb631da43f538f8ea2bd5c8fa590a544276ff6c368b5be1c",
+      "dimensions": [3060, 4080]
+    },
+    {
+      "path": "/mnt/c/Users/Antonio Fernandez/Downloads/dolomitas4.jpg",
+      "size": 5419063,
+      "sha256": "7bc45c0fa4c376512ab3a2550665d2fae1dd69b8b00944a1678076c39137ced4",
+      "dimensions": [5998, 3999]
+    }
+  ],
+  "decisions": {
+    "sourceFilesModified": false,
+    "photoRights": "Aportadas por el usuario para esta alta.",
+    "pdfCorrection": "La copia publicable cambia DÍA 12 por DÍA 7 en la última jornada; el original se conserva intacto.",
+    "imageProcessing": "Los derivados están en sRGB/RGB, se limitan a 2400 px y no contienen EXIF ni GPS."
+  }
+}

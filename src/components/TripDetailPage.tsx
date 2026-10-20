@@ -14,7 +14,8 @@ import {
   Mountain, Waves, Landmark, TreePalm, Snowflake,
   Image as ImageIcon,
 } from "lucide-react"
-import type { Destination, Trip, Testimonial, Coordinator, Country, Continent } from "@/lib/travel-data"
+import type { Destination, Testimonial, Coordinator, Country, Continent } from "@/lib/travel-data"
+import { publicPlacesLeft, type PublicTrip } from "@/lib/public-trip"
 import type { DestinationFAQ } from "@/lib/destination-details"
 import { buildWhatsAppUrl } from "@/lib/config"
 import { getTripBookingLink, type BookingProvider } from "@/lib/booking"
@@ -71,7 +72,7 @@ function pushDestinationEvent(event: DestinationConversionEvent, params: Destina
 
 // ── Types ──────────────────────────────────────────────
 
-interface ExtendedTrip extends Omit<Trip, "itinerary"> {
+interface ExtendedTrip extends Omit<PublicTrip, "itinerary"> {
   promoPrice?: number
   promoLabel?: string
   itinerary: { day: number; title: string; description: string; lat: number; lng: number }[]
@@ -127,17 +128,12 @@ function getFeaturedTrip(trips: ExtendedTrip[]): ExtendedTrip | undefined {
   return upcoming.find((t) => t.itinerary.some((d) => d.lat !== 0)) || upcoming[0] || trips[0]
 }
 
-function getPlacesLeftInfo(placesLeft: number) {
-  if (placesLeft <= 0) {
+function getPlacesLeftInfo(trip: ExtendedTrip) {
+  const placesLeft = publicPlacesLeft(trip)
+  if (placesLeft === undefined) {
     return null
   }
-  if (placesLeft <= 4) {
-    return { text: `¡Solo quedan ${placesLeft} plazas!`, className: "font-semibold text-coral", bgClassName: "bg-coral/10 text-coral", Icon: Zap, urgent: true }
-  }
-  if (placesLeft <= 8) {
-    return { text: `${placesLeft} plazas disponibles`, className: "text-amber-600", bgClassName: "bg-amber-50 text-amber-700", Icon: Users, urgent: false }
-  }
-  return { text: `${placesLeft} plazas disponibles`, className: "text-muted-foreground", bgClassName: "", Icon: Users, urgent: false }
+  return { text: `¡Solo quedan ${placesLeft} plazas!`, className: "font-semibold text-coral", Icon: Zap }
 }
 
 const CATEGORY_ICONS: Record<string, typeof Compass> = {
@@ -412,7 +408,7 @@ export function DeparturesModal({
                       </span>
                     </div>
                     {(() => {
-                      const info = getPlacesLeftInfo(trip.placesLeft)
+                      const info = getPlacesLeftInfo(trip)
                       if (!info) return null
                       return (
                         <div className="mt-1 sm:mt-2 flex items-center gap-1.5 sm:gap-3 text-xs sm:text-sm">
@@ -439,7 +435,6 @@ export function DeparturesModal({
                       <span className="text-lg sm:text-2xl font-extrabold text-foreground">
                         {formatPrice(hasPromo ? trip.promoPrice! : trip.priceFrom)}
                       </span>
-                      <span className="hidden sm:block text-xs text-muted-foreground">+ vuelo ~{formatPrice(trip.flightEstimate)}</span>
                     </div>
                     <div className="flex flex-col items-end gap-1">
                       <a
@@ -504,7 +499,6 @@ export function DeparturesModal({
                         <span className="text-lg sm:text-2xl font-extrabold text-foreground">
                           {formatPrice(trip.priceFrom)}
                         </span>
-                        <span className="hidden sm:block text-xs text-muted-foreground">+ vuelo ~{formatPrice(trip.flightEstimate)}</span>
                       </div>
                       <a
                         href={buildWhatsAppUrl(whatsappPhone, `Hola! Me interesa el viaje ${trip.title} pero veo que está completo. ¿Me avisáis si se libera plaza?`)}
@@ -752,7 +746,6 @@ export default function TripDetailPage({
     setGalleryOpen(true)
   }
 
-  const totalTravelers = allTrips.reduce((sum, t) => sum + (t.totalPlaces - t.placesLeft), 0)
   const visibleTestimonials = selectVisibleReviews(testimonials, 4)
 
   const trackDestinationEvent = useCallback(
@@ -1393,7 +1386,7 @@ export default function TripDetailPage({
                         </span>
                       )}
                       <p className="mt-1 text-[11px] text-muted-foreground">
-                        {cheapest?.durationDays} días · + vuelo ~{formatPrice(cheapest?.flightEstimate || 0)}
+                        {cheapest?.durationDays} días · vuelos no incluidos
                       </p>
 
                       {!hasAvailableTrips && (
@@ -1436,7 +1429,7 @@ export default function TripDetailPage({
                     )}
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Users size={12} className="text-teal-vivid shrink-0" />
-                      Grupo 12-13 · 20-35 años
+                      {cheapest?.totalPlaces ? `Grupo de hasta ${cheapest.totalPlaces}` : "Grupo reducido"} · 20-35 años
                     </div>
                     <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Wallet size={12} className="text-teal-vivid shrink-0" />
@@ -1527,7 +1520,7 @@ export default function TripDetailPage({
                     </span>
                   )}
                 </div>
-                {hasAvailableTrips && cheapest && cheapest.placesLeft > 0 && cheapest.placesLeft <= 4 && (
+                {hasAvailableTrips && cheapest && getPlacesLeftInfo(cheapest) && (
                   <p className="text-[10px] font-semibold text-coral" aria-label={`Quedan ${cheapest.placesLeft} plazas`}>
                     Quedan {cheapest.placesLeft}
                   </p>

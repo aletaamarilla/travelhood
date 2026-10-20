@@ -147,7 +147,6 @@
     "returnDate": "2027-01-04",
     "durationDays": 11,
     "priceFrom": 1300,
-    "flightEstimate": 950,
     "totalPlaces": 15,
     "placesLeft": 15,
     "status": "open",

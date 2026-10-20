@@ -163,7 +163,7 @@ Implicación: las URLs con `donde=` emitidas por el buscador llevan **IDs intern
 
 **Trip (mínimo para filtrar y card)**
 
-- `id`, `destinationId`, `departureDate`, `status`, `tags`, `durationDays`, `priceFrom`, `promoPrice`, `promoLabel`, `flightEstimate`, `placesLeft`
+- `id`, `destinationId`, `departureDate`, `status`, `tags`, `durationDays`, `priceFrom`, `promoPrice`, `promoLabel`, `placesLeft`
 
 **Country (mínimo para TripCard)**
 

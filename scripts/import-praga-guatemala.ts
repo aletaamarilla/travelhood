@@ -147,7 +147,6 @@ type ManifestTrip = {
     returnDate: FieldValue<string>
     durationDays: FieldValue<number>
     priceFrom: FieldValue<number>
-    flightEstimate: FieldValue<number>
     totalPlaces: FieldValue<number>
     placesLeft: FieldValue<number>
     status: FieldValue<AllowedTripStatus | string>
@@ -505,7 +504,6 @@ function validateManifestContract(manifest: Manifest, imageDerivatives: ImageDer
       blockers.push(`${trip._id.draft} duration must be ${expectedDuration}, got ${trip.fields.durationDays.value}.`)
     }
     if (trip.fields.priceFrom.value <= 0) blockers.push(`${trip._id.draft} priceFrom must be positive.`)
-    if (trip.fields.flightEstimate.value <= 0) blockers.push(`${trip._id.draft} flightEstimate must be positive.`)
     if (trip.fields.totalPlaces.value <= 0) blockers.push(`${trip._id.draft} totalPlaces must be positive.`)
     if (trip.fields.placesLeft.value < 0 || trip.fields.placesLeft.value > trip.fields.totalPlaces.value) {
       blockers.push(`${trip._id.draft} placesLeft must be between 0 and totalPlaces.`)
@@ -678,7 +676,6 @@ function buildTripDoc(trip: ManifestTrip): SanityDoc {
     returnDate: trip.fields.returnDate.value,
     durationDays: trip.fields.durationDays.value,
     priceFrom: trip.fields.priceFrom.value,
-    flightEstimate: trip.fields.flightEstimate.value,
     totalPlaces: trip.fields.totalPlaces.value,
     placesLeft: trip.fields.placesLeft.value,
     status: trip.fields.status.value,

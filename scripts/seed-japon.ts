@@ -182,7 +182,6 @@ async function seed() {
       priceFrom: t.priceFrom,
       promoPrice: t.promoPrice,
       promoLabel: t.promoLabel,
-      flightEstimate: t.flightEstimate,
       totalPlaces: t.totalPlaces,
       placesLeft: t.placesLeft,
       coordinator: makeRef(`coordinator-${t.coordinatorId}`),

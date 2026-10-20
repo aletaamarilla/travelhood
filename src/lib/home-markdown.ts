@@ -1,4 +1,5 @@
 import { resources, site } from "@/lib/agent-visibility"
+import { publicPlacesLeft } from "@/lib/public-trip"
 import { buildWhatsAppUrl, FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL } from "@/lib/config"
 import {
   calculatePriceRange,
@@ -98,7 +99,8 @@ export async function renderHomeMarkdown(): Promise<string> {
       : "Destino por confirmar"
     const visiblePrice = trip.promoPrice ?? trip.priceFrom
 
-    return `- ${trip.title}: ${destinationLabel}, salida ${formatDate(trip.departureDate)}, ${trip.durationDays} dias, ${formatTripPrice(visiblePrice)}, ${trip.placesLeft} plazas disponibles.`
+    const placesLeft = publicPlacesLeft(trip)
+    return `- ${trip.title}: ${destinationLabel}, salida ${formatDate(trip.departureDate)}, ${trip.durationDays} dias, ${formatTripPrice(visiblePrice)}${placesLeft === undefined ? "" : `, ultimas ${placesLeft} plazas`}.`
   })
 
   const faqLines = homeFaqs.flatMap((faq) => [

@@ -1,0 +1,53 @@
+{
+  "uploadedAt": "2026-10-20T08:08:57.876Z",
+  "assets": [
+    {
+      "path": "imports/dolomitas-2027/processed/pdfs/dolomitas-itinerario.pdf",
+      "id": "file-52462a33cffa88cc215a9295c4974b8cea7ebd0e-pdf",
+      "sha1": "52462a33cffa88cc215a9295c4974b8cea7ebd0e",
+      "url": "https://cdn.sanity.io/files/73m9u2gt/production/52462a33cffa88cc215a9295c4974b8cea7ebd0e.pdf",
+      "size": 12669856,
+      "reused": false
+    },
+    {
+      "path": "imports/dolomitas-2027/processed/images/hero-senderismo.jpg",
+      "id": "image-dcbc1095addd7c834ba22549327cce84a4bd7dc8-2400x1600-jpg",
+      "sha1": "dcbc1095addd7c834ba22549327cce84a4bd7dc8",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/dcbc1095addd7c834ba22549327cce84a4bd7dc8-2400x1600.jpg",
+      "size": 1162110,
+      "reused": false
+    },
+    {
+      "path": "imports/dolomitas-2027/processed/images/galeria-valle.jpg",
+      "id": "image-8dddabcc4f93704d8631f86e71172e5d00260c24-2400x1600-jpg",
+      "sha1": "8dddabcc4f93704d8631f86e71172e5d00260c24",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/8dddabcc4f93704d8631f86e71172e5d00260c24-2400x1600.jpg",
+      "size": 998558,
+      "reused": false
+    },
+    {
+      "path": "imports/dolomitas-2027/processed/images/galeria-lago.jpg",
+      "id": "image-d0c7c4b9751540a5fd5135a70acf7895ed4b8702-2400x1590-jpg",
+      "sha1": "d0c7c4b9751540a5fd5135a70acf7895ed4b8702",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/d0c7c4b9751540a5fd5135a70acf7895ed4b8702-2400x1590.jpg",
+      "size": 1071990,
+      "reused": false
+    },
+    {
+      "path": "imports/dolomitas-2027/processed/images/galeria-cumbres.jpg",
+      "id": "image-d1ef99b36d132a0c8f56ffcd3f04880d0af41a2c-1800x2400-jpg",
+      "sha1": "d1ef99b36d132a0c8f56ffcd3f04880d0af41a2c",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/d1ef99b36d132a0c8f56ffcd3f04880d0af41a2c-1800x2400.jpg",
+      "size": 1355380,
+      "reused": false
+    },
+    {
+      "path": "imports/dolomitas-2027/processed/images/galeria-praderas.jpg",
+      "id": "image-ae8c6701ac4141098a44390a03df954bdb7ac76c-2400x1600-jpg",
+      "sha1": "ae8c6701ac4141098a44390a03df954bdb7ac76c",
+      "url": "https://cdn.sanity.io/images/73m9u2gt/production/ae8c6701ac4141098a44390a03df954bdb7ac76c-2400x1600.jpg",
+      "size": 1272327,
+      "reused": false
+    }
+  ]
+}

@@ -55,7 +55,7 @@ const continentTrips = trips
 const continentTripCards = continentTrips.map((trip) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
   const resolved = resolvePrice(trip);
-  const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
+  const isUrgent = trip.status === "almost-full";
   return {
     destSlug: dest.slug,
     destName: dest.name,

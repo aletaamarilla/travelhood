@@ -16,7 +16,7 @@ Travelhood organiza viajes en grupo para personas de 20-35 años que quieren via
 - `continent`: continente con slug `/destinos/[slug]/`, intro editorial, hero, mejores meses, FAQs y SEO.
 - `country`: país con continente, bandera ISO, moneda, idioma, zona horaria, visado, vacunas y SEO.
 - `destination`: destino con país/continente, descripciones, hero, highlights, categorías (`playa`, `aventura`, `cultural`, `naturaleza`, `nieve`), clima, galería, presupuesto, incluye/no incluye, itinerario, FAQs, PDF y SEO.
-- `trip`: salida fechada vinculada a destino, fechas, duración, precio base, estimación de vuelo, promo, plazas, estado (`open`, `almost-full`, `full`), coordinador y tags de temporada.
+- `trip`: salida fechada vinculada a destino, fechas, duración, precio base, promo, plazas, estado (`open`, `almost-full`, `full`), coordinador y tags de temporada.
 - `coordinator`: coordinador/a con nombre, slug, edad, rol, bio, quote, foto y destinos.
 - `testimonial`: opinión visible o retirada, rating, fuente (`trustpilot`/`editorial`), trazabilidad editorial, destino opcional y orden manual.
 - `siteSettings`: singleton con nombre/URL, logo, contacto, WhatsApp, licencia, señal de reserva, Trustpilot, incluidos/no incluidos globales e imágenes de páginas.
@@ -25,12 +25,12 @@ Travelhood organiza viajes en grupo para personas de 20-35 años que quieren via
 ## Reglas De Negocio
 
 - Los datos se leen por `src/lib/data-provider.ts`: Sanity si `SANITY_PROJECT_ID` existe y fallback hardcoded si no.
-- Los viajes `full` no aparecen en `allTripsQuery`; `almost-full` representa últimas plazas y suele activarse con `placesLeft <= 4` en UI.
+- Los viajes `full` no aparecen en `allTripsQuery`; solo el estado explícito `almost-full` muestra últimas plazas. En `open`, el contador no se publica en UI, props hidratadas, JSON-LD ni Markdown GEO. Usa `toPublicTrip` al enviar salidas a React.
 - El grupo habitual se comunica como 12-13 personas; `totalPlaces` se valida como número positivo.
-- `priceFrom` y `flightEstimate` son euros por persona; el vuelo internacional no está incluido.
+- `priceFrom` es el precio base en euros por persona; el vuelo internacional no está incluido y no se publica ninguna estimación de su coste.
 - Ningún viaje incluye seguro de viaje: se contrata aparte. Debe figurar siempre en «No incluye», incluso en destinos que no heredan los valores globales.
 - `promoPrice` sustituye al precio base solo si es menor; usa `resolvePrice`.
-- Si `destination.hasCoordinator` es `false`, se elimina el incluido global que mencione coordinador y el viaje no exige coordinador.
+- Si `destination.hasCoordinator` es `false`, se elimina el incluido global que mencione coordinador. En destinos con coordinación, la persona puede quedar pendiente de asignación; Studio lo advierte sin atribuir la salida a alguien no confirmado.
 - Las imágenes reales deben tener alt; galería de destino recomienda mínimo 6 fotos, ideal 8-10.
 - Testimonios: publicar solo `isVisible != false` y `verificationStatus != retired`; no usar logos/widgets/badges de Trustpilot.
 - Slugs publicados no deben cambiarse después de publicar según descripciones del schema.

@@ -47,7 +47,6 @@ Los países, destinos y salidas están publicados y las referencias se han forta
 - `publication-result.json`: transacción de publicación y valores comerciales finales.
 - `published-documents.json`: lectura completa de los ocho documentos ya publicados.
 - `before-publication.json`: copia de los borradores antes de publicar.
-- `flight-estimates.json`: fuentes consultadas y criterio de estimación de vuelos.
 - `documents.json`: copia exacta de los documentos creados.
 - `result.json`: transacción, IDs, revisiones y assets de Sanity.
 - `verification.json`: lectura remota de destinos y salidas, referencias resueltas y PDF accesibles por HTTP.
@@ -63,7 +62,7 @@ Los países, destinos y salidas están publicados y las referencias se han forta
 - Validador real del Studio: **0 errores y 0 avisos** en los ocho documentos publicados.
 - Consulta pública de Sanity sin token: dos destinos y cuatro salidas correctas; ver `publication-verification.json`.
 - `npm run build`: **154 páginas**, incluidas las ocho rutas nuevas (destino, país, presupuesto y cuándo viajar).
-- Comprobado el HTML generado de ambas fichas: dos salidas por destino con precio base, vuelo estimado, 15 plazas totales/disponibles y estado abierto correctos.
+- Comprobado el HTML generado de ambas fichas: dos salidas por destino con precio base, 15 plazas totales/disponibles y estado abierto correctos.
 - No se ha ejecutado un despliegue manual de Vercel; la publicación realizada corresponde a Sanity.
 
 ## Corrección de «Lo mejor del viaje»

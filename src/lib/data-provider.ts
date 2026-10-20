@@ -601,7 +601,6 @@ function mapTrip(s: SanityTrip, ctx?: MergeContext): Trip {
     priceFrom: s.priceFrom,
     promoPrice: s.promoPrice,
     promoLabel: s.promoLabel,
-    flightEstimate: s.flightEstimate,
     totalPlaces: s.totalPlaces,
     placesLeft: s.placesLeft,
     coordinatorId: s.coordinator?._id ?? '',

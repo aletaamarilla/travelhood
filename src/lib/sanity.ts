@@ -14,8 +14,9 @@ function getClient(): SanityClient {
       projectId,
       dataset: import.meta.env.SANITY_DATASET || 'production',
       apiVersion: import.meta.env.SANITY_API_VERSION || '2026-03-16',
-      // Read fresh CMS content locally; keep the CDN for production builds.
-      useCdn: !import.meta.env.DEV,
+      // Static builds must see newly published destinations and trips together.
+      // The resulting pages are cached by the hosting CDN, not by this CMS read.
+      useCdn: false,
     })
   }
   return _client

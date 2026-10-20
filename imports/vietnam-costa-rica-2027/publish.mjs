@@ -34,8 +34,9 @@ for (const id of ids) {
     if (doc[field]) doc[field] = {_type: 'reference', _ref: doc[field]._ref}
   }
   if (doc._type === 'trip') {
+    delete doc.flightEstimate
     const vietnam = doc.destination._ref === 'destination-vietnam'
-    Object.assign(doc, {totalPlaces: 15, placesLeft: 15, status: 'open', flightEstimate: vietnam ? 1000 : 800,
+    Object.assign(doc, {totalPlaces: 15, placesLeft: 15, status: 'open',
       coordinator: {_type: 'reference', _ref: coordinator._id}})
     assert.equal((Date.parse(doc.returnDate) - Date.parse(doc.departureDate)) / 86400000 + 1, doc.durationDays)
     assert.equal(doc.priceFrom, vietnam ? 1200 : 1500)
@@ -49,7 +50,7 @@ for (const doc of published) {
 }
 await save('publication-documents.json', published)
 console.log(JSON.stringify({mode: write ? 'publish' : 'dry-run', documents: published.length,
-  trips: published.filter((d) => d._type === 'trip').map(({_id, totalPlaces, placesLeft, flightEstimate, status}) => ({_id, totalPlaces, placesLeft, flightEstimate, status})),
+  trips: published.filter((d) => d._type === 'trip').map(({_id, totalPlaces, placesLeft, status}) => ({_id, totalPlaces, placesLeft, status})),
   coordinator: coordinator.name}, null, 2))
 if (!write) process.exit(0)
 let tx = client.transaction()
@@ -61,7 +62,7 @@ for (const doc of published) tx = tx.create(doc)
 for (const id of ids) tx = tx.delete(id)
 const result = await tx.commit({visibility: 'sync'})
 await save('publication-result.json', {publishedAt: new Date().toISOString(), transactionId: result.transactionId,
-  documentIds: published.map((d) => d._id), coordinator, flightEstimates: {vietnam: 1000, 'costa-rica': 800}, totalPlaces: 15, placesLeft: 15, status: 'open'})
+  documentIds: published.map((d) => d._id), coordinator, totalPlaces: 15, placesLeft: 15, status: 'open'})
 const actual = await client.fetch('*[_id in $ids]', {ids: [...ids, ...published.map((d) => d._id)]})
 assert.equal(actual.length, 8)
 for (const expected of published) {

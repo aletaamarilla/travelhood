@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { toPublicTrip } from "@/lib/public-trip";
 import Navbar from "@/components/Navbar.astro";
 import SearchIsland from "@/components/SearchIsland";
 import LastChance from "@/components/LastChance.astro";
@@ -85,7 +86,7 @@ const webSiteSchema = generateWebSiteSchema();
     </section>
     <LastChance />
     <WhyUsSection bgImage={images?.homeWhyUsImage} />
-    <SeasonExplorer trips={trips} destinations={destinations} client:visible />
+    <SeasonExplorer trips={trips.map(toPublicTrip)} destinations={destinations} client:visible />
     <section class="bg-background py-12">
       <div class="mx-auto max-w-6xl px-4 sm:px-6">
         <div class="grid gap-6 rounded-3xl border border-border/40 bg-card p-6 shadow-sm sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">

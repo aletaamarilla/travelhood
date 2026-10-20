@@ -22,6 +22,7 @@ import {
 import { getRelatedDestinations } from "@/lib/related-destinations";
 import { FALLBACK_WHATSAPP_PHONE, FALLBACK_WA_COMMUNITY_URL, SITE_URL, buildWhatsAppUrl } from "@/lib/config";
 import { resolvePrice } from "@/lib/utils";
+import { toPublicTrip, publicPlacesLeft } from "@/lib/public-trip";
 import { selectVisibleReviews } from "@/lib/reviews";
 import { generateTouristDestinationSchema, generateFaqSchema, generateBreadcrumbSchema, generateEventSchema, toJsonLd } from "@/lib/schemas";
 
@@ -161,9 +162,8 @@ const hasDestinationDataBlock = hasClimateByMonth || budgetItems.length > 0 || B
         url: destinationPath,
         image: seoImage,
         availability: trip.status === "full" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
-        validFrom: trip.departureDate,
         totalPlaces: trip.totalPlaces,
-        placesLeft: trip.placesLeft,
+        placesLeft: publicPlacesLeft(trip),
       }))} />
     ))}
   </Fragment>
@@ -176,8 +176,8 @@ const hasDestinationDataBlock = hasClimateByMonth || budgetItems.length > 0 || B
       photoAlts={photoAlts}
       faqs={faqs}
       generalFaqs={generalFaqs}
-      trips={availableTrips}
-      allTrips={allFutureTrips}
+      trips={availableTrips.map(toPublicTrip)}
+      allTrips={allFutureTrips.map(toPublicTrip)}
       testimonials={destTestimonials}
       coordinators={destCoordinators}
       country={country}

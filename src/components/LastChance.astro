@@ -25,7 +25,7 @@ const cards = rawTrips
       dateLabel: format(new Date(trip.departureDate), "d MMM", { locale: es }),
       durationDays: trip.durationDays,
       placesLeft: trip.placesLeft,
-      isUrgent: trip.status === "almost-full" || trip.placesLeft <= 4,
+      isUrgent: trip.status === "almost-full",
     };
   })
   .filter(Boolean) as {

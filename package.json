@@ -16,10 +16,13 @@
     "test:import-praga-guatemala": "npx tsx scripts/import-praga-guatemala.test.ts",
     "test:travel-insurance": "npx tsx src/lib/travel-insurance.test.ts",
     "fix:travel-insurance": "npx tsx scripts/fix-travel-insurance.ts",
+    "remove:flight-estimates": "npx tsx scripts/remove-flight-estimates.ts",
+    "test:remove-flight-estimates": "npx tsx scripts/remove-flight-estimates.test.ts",
     "test:collaborators": "npx tsx src/lib/collaborators.test.ts",
     "test:search-intent": "npx tsx src/lib/search-intent.test.ts",
     "test:searchable-destinations": "npx tsx src/lib/searchable-destinations.test.ts",
     "test:booking": "npx tsx src/lib/booking.test.ts",
+    "test:public-trip": "npx tsx src/lib/public-trip.test.ts",
     "seed": "npx tsx scripts/seed-sanity.ts"
   },
   "dependencies": {

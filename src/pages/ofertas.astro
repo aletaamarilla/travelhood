@@ -34,7 +34,7 @@ const promoTrips = allPromoTrips.filter(({ trip }) => {
 const promoCards = promoTrips.map(({ trip, resolved, discount }) => {
   const dest = destinations.find((d) => d.id === trip.destinationId)!;
   const country = countries.find((c) => c.id === dest.countryId);
-  const isUrgent = trip.status === "almost-full" || trip.placesLeft <= 4;
+  const isUrgent = trip.status === "almost-full";
   return {
     destSlug: dest.slug,
     destName: dest.name,
@@ -50,7 +50,6 @@ const promoCards = promoTrips.map(({ trip, resolved, discount }) => {
     promoLabel: resolved.promoLabel ?? "",
     isUrgent,
     placesLeft: trip.placesLeft,
-    flightEstimate: trip.flightEstimate,
   };
 });
 
@@ -128,7 +127,7 @@ const offerCatalogSchema = generateOfferCatalogSchema({
                     </span>
                     {card.isUrgent && (
                       <span class="inline-flex items-center rounded-full bg-yellow-500 px-2.5 py-1 text-[11px] font-bold text-black shadow-sm">
-                        Últimas {card.placesLeft}
+                        Últimas plazas
                       </span>
                     )}
                   </div>
@@ -172,7 +171,7 @@ const offerCatalogSchema = generateOfferCatalogSchema({
                         </p>
                         <span class="text-sm text-muted-foreground line-through">{card.originalPrice}€</span>
                       </div>
-                      <p class="text-[10px] text-muted-foreground mt-0.5">+ vuelo ~{card.flightEstimate}€</p>
+                      <p class="text-[10px] text-muted-foreground mt-0.5">Vuelos no incluidos</p>
                     </div>
                     <span class="inline-flex items-center gap-1 rounded-full bg-coral px-3 py-1.5 text-[11px] font-semibold text-white transition-colors group-hover:bg-teal-vivid">
                       Ver oferta
@@ -212,8 +211,8 @@ const offerCatalogSchema = generateOfferCatalogSchema({
           </div>
           <div class="rounded-xl bg-background p-6 text-center border border-border/40">
             <span class="text-3xl mb-3 block">✈️</span>
-            <h3 class="font-serif font-bold text-foreground mb-2">Vuelos más baratos</h3>
-            <p class="text-sm text-muted-foreground">Cuanto antes reserves, más barato encontrarás el vuelo. Los precios suben conforme se acerca la fecha.</p>
+            <h3 class="font-serif font-bold text-foreground mb-2">Planifica con tiempo</h3>
+            <p class="text-sm text-muted-foreground">Reserva cuando tengas claras las fechas y revisa por separado todo lo que no incluye el viaje.</p>
           </div>
         </div>
       </div>

@@ -1,0 +1,16 @@
+{
+  "publishedAt": "2026-10-20T08:09:18.761Z",
+  "transactionId": "8iboeI6gxXoZwfciYPBOKO",
+  "documentIds": [
+    "country-italia",
+    "destination-dolomitas",
+    "trip-dolomitas-2027-06-21",
+    "trip-dolomitas-2027-06-28",
+    "trip-dolomitas-2027-08-30",
+    "trip-dolomitas-2027-09-06"
+  ],
+  "coordinator": {
+    "status": "pending-assignment"
+  },
+  "priceFrom": 1000
+}

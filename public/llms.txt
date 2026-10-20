@@ -28,11 +28,11 @@ El seguro de viaje no esta incluido en ningun viaje de Travelhood. Se contrata a
 
 - Praga: https://travelhood.es/destino/praga/
   - Viaje en grupo de 5 dias por mercados navidenos, Ciudad Vieja, Barrio Judio, Castillo de Praga, rio Moldava y tour de la cerveza.
-  - Precio publicado desde 425 EUR por persona, sin vuelo internacional. Vuelo estimado orientativo: 300 EUR.
+  - Precio publicado desde 425 EUR por persona. El vuelo internacional no esta incluido.
   - Clima variable: invierno frio en noviembre y diciembre, con dias cortos y temperaturas cercanas a 0-5 C.
 - Guatemala: https://travelhood.es/destino/guatemala/
   - Viaje en grupo de 12 dias por Peten, Yaxha, Tikal, Antigua, volcan Acatenango, Lago Atitlan, El Paredon, liberacion de tortugas y cocina guatemalteca.
-  - Precio publicado desde 1.300 EUR por persona, sin vuelo internacional. Vuelo estimado orientativo: 900 EUR.
+  - Precio publicado desde 1.300 EUR por persona. El vuelo internacional no esta incluido.
   - Clima variable: enero cae en epoca seca, con noches frescas en zonas altas y calor humedo en Peten y costa del Pacifico.
 
 ## Recursos para agentes

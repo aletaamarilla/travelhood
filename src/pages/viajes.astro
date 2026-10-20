@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { toPublicTrip } from "@/lib/public-trip";
 import Navbar from "@/components/Navbar.astro";
 import SearchPage from "@/components/SearchPage";
 import GEODataBlock from "@/components/GEODataBlock.astro";
@@ -57,7 +58,7 @@ const viajesFaqs = [
   </Fragment>
   <main>
     <Navbar solid />
-    <SearchPage trips={trips} destinations={destinations} continents={continents} countries={countries} heroImage={viajesImages?.viajes_heroImage} heroImageAlt={viajesImages?.viajes_heroImageAlt} whatsappPhone={waPhone} client:load />
+    <SearchPage trips={trips.map(toPublicTrip)} destinations={destinations} continents={continents} countries={countries} heroImage={viajesImages?.viajes_heroImage} heroImageAlt={viajesImages?.viajes_heroImageAlt} whatsappPhone={waPhone} client:load />
     <GEODataBlock
       title="Catálogo de viajes en grupo — Datos clave"
       subtitle="Información para explorar destinos si aún no tienes claro adónde viajar"
