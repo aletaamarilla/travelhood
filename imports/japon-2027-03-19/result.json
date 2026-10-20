@@ -1,0 +1,32 @@
+{
+  "projectId": "73m9u2gt",
+  "dataset": "production",
+  "transactionId": "8iKjuVncnr1qSPbNNGY6rr",
+  "verified": true,
+  "document": {
+    "_createdAt": "2026-10-20T13:26:25Z",
+    "_id": "trip-japon-2027-03-19",
+    "_rev": "8iKjuVncnr1qSPbNNGY6rr",
+    "_type": "trip",
+    "_updatedAt": "2026-10-20T13:26:25Z",
+    "departureDate": "2027-03-19",
+    "destination": {
+      "_ref": "destination-japon",
+      "_type": "reference"
+    },
+    "durationDays": 12,
+    "placesLeft": 13,
+    "priceFrom": 1550,
+    "returnDate": "2027-03-30",
+    "slug": {
+      "_type": "slug",
+      "current": "japon-2027-03-19"
+    },
+    "status": "open",
+    "tags": [
+      "semana-santa"
+    ],
+    "title": "Japón — Marzo 2027",
+    "totalPlaces": 13
+  }
+}

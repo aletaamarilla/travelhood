@@ -369,7 +369,7 @@ export function DeparturesModal({
           {availableTrips.length > 0 && (
             <div className="flex items-center justify-center gap-1.5 rounded-xl bg-teal-vivid/8 px-4 py-3 text-xs font-semibold text-teal-vivid">
               <Shield size={13} className="shrink-0" />
-              Asegura tu plaza por solo {depositAmount}€ · El resto lo pagas 30 días antes de salir
+              Asegura tu plaza por solo {depositAmount}€ · El resto, en cómodos plazos sin intereses
             </div>
           )}
 
@@ -1301,7 +1301,7 @@ export default function TripDetailPage({
                     </a>
                   </div>
                   <p className="mt-4 text-xs text-muted-foreground">
-                    Solo necesitas <span className="font-semibold text-foreground">{depositAmount}€</span> para asegurar tu plaza · Resto 30 días antes · Cancelación flexible
+                    Solo necesitas <span className="font-semibold text-foreground">{depositAmount}€</span> para asegurar tu plaza · Resto en plazos sin intereses · Cancelación flexible
                   </p>
                 </>
               ) : (
@@ -1408,7 +1408,7 @@ export default function TripDetailPage({
                           <p className="text-xs font-bold text-teal-vivid">
                             Reserva hoy por solo {depositAmount}€
                           </p>
-                          <p className="mt-0.5 text-[10px] text-muted-foreground">El resto, 30 días antes de salir</p>
+                          <p className="mt-0.5 text-[10px] text-muted-foreground">El resto, en cómodos plazos sin intereses</p>
                         </div>
                       )}
                     </>
