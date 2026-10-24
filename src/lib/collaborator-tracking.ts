@@ -1,3 +1,5 @@
+import { trackEvent } from "@/lib/analytics"
+
 export interface CollaboratorClick {
   partner_id: string
   source: 'home' | 'footer' | 'header' | 'mobile_menu' | 'collaborators_page'
@@ -5,16 +7,7 @@ export interface CollaboratorClick {
 }
 
 export function trackCollaboratorClick(params: CollaboratorClick): boolean {
-  if (typeof window === 'undefined' || typeof document === 'undefined') return false
-  try {
-    const match = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/)
-    if (!match || JSON.parse(decodeURIComponent(match[1])).analytics !== true) return false
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({ event: 'collaborator_click', ...params })
-    return true
-  } catch {
-    return false
-  }
+  return trackEvent('collaborator_click', params)
 }
 
 export function handleCollaboratorClick(event: MouseEvent): void {

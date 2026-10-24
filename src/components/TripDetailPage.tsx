@@ -1,3 +1,4 @@
+import { trackEvent } from "@/lib/analytics"
 import { useState, useEffect, useRef, useCallback } from "react"
 import {
   Accordion,
@@ -24,7 +25,6 @@ import ReviewCard from "@/components/ReviewCard"
 
 // ── Conversion Tracking ─────────────────────────────────
 
-const CONSENT_COOKIE_NAME = "th_cookie_consent"
 
 type DestinationConversionEvent =
   | "destination_view"
@@ -48,26 +48,8 @@ declare global {
   }
 }
 
-function hasAnalyticsConsent(): boolean {
-  if (typeof document === "undefined") return false
-  try {
-    const match = document.cookie.match(new RegExp(`(?:^|; )${CONSENT_COOKIE_NAME}=([^;]*)`))
-    if (!match) return false
-    const consent = JSON.parse(decodeURIComponent(match[1])) as { analytics?: boolean }
-    return consent.analytics === true
-  } catch {
-    return false
-  }
-}
-
 function pushDestinationEvent(event: DestinationConversionEvent, params: DestinationTrackingParams): boolean {
-  if (typeof window === "undefined" || !hasAnalyticsConsent()) return false
-  const payload = Object.fromEntries(
-    Object.entries({ event, ...params }).filter(([, value]) => value !== undefined)
-  )
-  window.dataLayer = window.dataLayer || []
-  window.dataLayer.push(payload)
-  return true
+  return trackEvent(event, params)
 }
 
 // ── Types ──────────────────────────────────────────────

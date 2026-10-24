@@ -1,3 +1,5 @@
+> Actualización fase 1 (2026-10-23): contrato vigente y límites de validación en [analytics/phase-1.md](analytics/phase-1.md). Esta guía previa describe dataLayer, no recepción GA4. Incluye ahora `destination_booking_click` para MyGoQu; una apertura externa no es reserva confirmada.
+
 # GTM destination conversion events
 
 Eventos enviados a `window.dataLayer` para medir el embudo de destinos sin registrar PII. Todos se bloquean si la cookie `th_cookie_consent` no tiene `analytics: true`.

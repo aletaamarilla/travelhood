@@ -23,7 +23,17 @@
     "test:searchable-destinations": "npx tsx src/lib/searchable-destinations.test.ts",
     "test:booking": "npx tsx src/lib/booking.test.ts",
     "test:public-trip": "npx tsx src/lib/public-trip.test.ts",
-    "seed": "npx tsx scripts/seed-sanity.ts"
+    "seed": "npx tsx scripts/seed-sanity.ts",
+    "test:analytics": "npx tsx src/lib/analytics.test.ts",
+    "test:search-tracking": "npx tsx src/lib/search-tracking.test.ts",
+    "check:types": "astro check --tsconfig tsconfig.web.json --minimumSeverity error",
+    "check:analytics-recipe": "npx tsx scripts/analytics-recipe.ts --check",
+    "test:analytics-browser": "node scripts/check-analytics-browser.mjs",
+    "test:analytics-runtime": "node scripts/check-analytics-runtime.mjs",
+    "prepare:analytics-gtm": "npx tsx scripts/prepare-analytics-gtm.ts",
+    "check:analytics-gtm": "npx tsx scripts/prepare-analytics-gtm.ts --check",
+    "test:analytics-gtm": "npx tsx scripts/prepare-analytics-gtm.test.ts",
+    "check:analytics-tools": "tsc --noEmit --project tsconfig.analytics-tools.json"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.0",

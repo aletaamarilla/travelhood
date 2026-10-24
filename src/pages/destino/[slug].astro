@@ -431,24 +431,12 @@ const hasDestinationDataBlock = hasClimateByMonth || budgetItems.length > 0 || B
     </section>
 
     <Footer />
-    <script is:inline>
-      function hasAnalyticsConsent() {
-        try {
-          const match = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
-          if (!match) return false;
-          return JSON.parse(decodeURIComponent(match[1])).analytics === true;
-        } catch {
-          return false;
-        }
-      }
-
+    <script>
+      import { trackEvent } from "@/lib/analytics";
       document.querySelectorAll("[data-destination-whatsapp]").forEach((link) => {
         link.addEventListener("click", () => {
-          if (!hasAnalyticsConsent()) return;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "destination_whatsapp_click",
-            destination_slug: link.getAttribute("data-destination") || window.location.pathname,
+          trackEvent("destination_whatsapp_click", {
+            destination_slug: link.getAttribute("data-destination") || window.location.pathname.split('/')[2],
             cta_location: link.getAttribute("data-cta-location") || "destination_page",
           });
         });

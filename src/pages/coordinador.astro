@@ -244,16 +244,10 @@ const faqSchema = {
 </style>
 
 <script>
+  import { trackEvent } from "@/lib/analytics";
   document.querySelectorAll<HTMLAnchorElement>("[data-coordinator-action]").forEach((link) => {
     link.addEventListener("click", () => {
-      try {
-        const consent = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
-        if (!consent || JSON.parse(decodeURIComponent(consent[1])).analytics !== true) return;
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: "coordinator_cta_click", action: link.dataset.coordinatorAction, source: link.dataset.coordinatorSource });
-      } catch {
-        // A missing or unreadable consent never prevents navigation.
-      }
+      trackEvent("coordinator_cta_click", { action: link.dataset.coordinatorAction, source: link.dataset.coordinatorSource });
     });
   });
 </script>

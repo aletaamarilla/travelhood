@@ -1,3 +1,4 @@
+import { trackEvent } from "@/lib/analytics"
 import {
   resolveSearchNavigation,
   type ResolvedSearchNavigation,
@@ -5,7 +6,6 @@ import {
   type SearchIntent,
 } from "@/lib/search-intent"
 
-const CONSENT_COOKIE_NAME = "th_cookie_consent"
 
 export type SearchTrackingSource = "home_hero" | "viajes_page"
 
@@ -29,35 +29,8 @@ export interface SearchTrackingPayload {
   resolved_href?: string
 }
 
-declare global {
-  interface Window {
-    dataLayer?: unknown[]
-  }
-}
-
-function hasAnalyticsConsent(): boolean {
-  if (typeof document === "undefined") return false
-  try {
-    const match = document.cookie.match(new RegExp(`(?:^|; )${CONSENT_COOKIE_NAME}=([^;]*)`))
-    if (!match) return false
-    const consent = JSON.parse(decodeURIComponent(match[1])) as { analytics?: boolean }
-    return consent.analytics === true
-  } catch {
-    return false
-  }
-}
-
-export function pushSearchEvent(
-  event: SearchConversionEvent,
-  params: SearchTrackingPayload,
-): boolean {
-  if (typeof window === "undefined" || !hasAnalyticsConsent()) return false
-  const payload = Object.fromEntries(
-    Object.entries({ event, ...params }).filter(([, value]) => value !== undefined),
-  )
-  window.dataLayer = window.dataLayer || []
-  window.dataLayer.push(payload)
-  return true
+export function pushSearchEvent(event: SearchConversionEvent, params: SearchTrackingPayload): boolean {
+  return trackEvent(event, params)
 }
 
 export function intentToTrackingFields(

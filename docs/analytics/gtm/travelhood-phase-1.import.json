@@ -1,0 +1,1090 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-10-23 18:12:42",
+  "containerVersion": {
+    "path": "accounts/6305630418/containers/225870368/versions/0",
+    "accountId": "6305630418",
+    "containerId": "225870368",
+    "containerVersionId": "0",
+    "container": {
+      "path": "accounts/6305630418/containers/225870368",
+      "accountId": "6305630418",
+      "containerId": "225870368",
+      "name": "www.travelhood.es",
+      "publicId": "GTM-TB7F773D",
+      "usageContext": [
+        "WEB"
+      ],
+      "fingerprint": "1753545199896",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6305630418/containers/225870368/workspaces?apiLink=container",
+      "features": {
+        "supportUserPermissions": true,
+        "supportEnvironments": true,
+        "supportWorkspaces": true,
+        "supportGtagConfigs": false,
+        "supportBuiltInVariables": true,
+        "supportClients": false,
+        "supportFolders": true,
+        "supportTags": true,
+        "supportTemplates": true,
+        "supportTriggers": true,
+        "supportVariables": true,
+        "supportVersions": true,
+        "supportZones": true,
+        "supportTransformations": false
+      },
+      "tagIds": [
+        "GTM-TB7F773D"
+      ]
+    },
+    "tag": [
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "tagId": "5",
+        "name": "GA4- Configuracion",
+        "type": "googtag",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "tagId",
+            "value": "G-XQMPJG8B08"
+          },
+          {
+            "type": "LIST",
+            "key": "configSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "send_page_view"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "allow_google_signals"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "allow_ad_personalization_signals"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - page_location}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_referrer"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - page_referrer}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "debug_mode"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - debug_mode}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": [
+          "1001"
+        ],
+        "tagFiringOption": "ONCE_PER_LOAD",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NEEDED",
+          "consentType": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "TEMPLATE",
+                "value": "analytics_storage"
+              }
+            ]
+          }
+        },
+        "priority": {
+          "type": "INTEGER",
+          "value": "100"
+        }
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "tagId": "6",
+        "name": "TH Phase 1 - GA4 events",
+        "type": "gaawe",
+        "parentFolderId": "1001",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "G-XQMPJG8B08"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "{{TH Phase 1 - event name}}"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "migratedToV2",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "action"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - action}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "booking_provider"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - booking_provider}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "context"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - context}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - cta}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - cta_location}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "date_mode"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - date_mode}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "date_value"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - date_value}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "debug_mode"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - debug_mode}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "destination_mode"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - destination_mode}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "destination_slug"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - destination_slug}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "has_utm"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - has_utm}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "href"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - href}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - link_type}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "measurement_version"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - measurement_version}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - page}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - page_location}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_referrer"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - page_referrer}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "partner_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - partner_id}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "pdf_url"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - pdf_url}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "resolved_href"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - resolved_href}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "resolved_target"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - resolved_target}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "source"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - source}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "traffic_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - traffic_type}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "trip_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{TH Phase 1 - trip_id}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": [
+          "1001"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "consentSettings": {
+          "consentStatus": "NEEDED",
+          "consentType": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "TEMPLATE",
+                "value": "analytics_storage"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "type": "REFERRER",
+        "name": "Referrer"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "type": "EVENT",
+        "name": "Event"
+      }
+    ],
+    "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6305630418/containers/225870368/versions/0?apiLink=version",
+    "folder": [
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "folderId": "1001",
+        "name": "TH Phase 1 - measurement"
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1001",
+        "name": "TH Phase 1 - envelope",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "th_event"
+          },
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "1"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1002",
+        "name": "TH Phase 1 - event name",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.name;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1003",
+        "name": "TH Phase 1 - action",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"action\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1004",
+        "name": "TH Phase 1 - booking_provider",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"booking_provider\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1005",
+        "name": "TH Phase 1 - context",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"context\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1006",
+        "name": "TH Phase 1 - cta",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"cta\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1007",
+        "name": "TH Phase 1 - cta_location",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"cta_location\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1008",
+        "name": "TH Phase 1 - date_mode",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"date_mode\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1009",
+        "name": "TH Phase 1 - date_value",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"date_value\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1010",
+        "name": "TH Phase 1 - debug_mode",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?(e.parameters.debug_mode===true?1:undefined):undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1011",
+        "name": "TH Phase 1 - destination_mode",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"destination_mode\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1012",
+        "name": "TH Phase 1 - destination_slug",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"destination_slug\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1013",
+        "name": "TH Phase 1 - has_utm",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"has_utm\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1014",
+        "name": "TH Phase 1 - href",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"href\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1015",
+        "name": "TH Phase 1 - link_type",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"link_type\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1016",
+        "name": "TH Phase 1 - measurement_version",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"measurement_version\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1017",
+        "name": "TH Phase 1 - page",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1018",
+        "name": "TH Phase 1 - page_location",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page_location\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1019",
+        "name": "TH Phase 1 - page_referrer",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page_referrer\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1020",
+        "name": "TH Phase 1 - partner_id",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"partner_id\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1021",
+        "name": "TH Phase 1 - pdf_url",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"pdf_url\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1022",
+        "name": "TH Phase 1 - resolved_href",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"resolved_href\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1023",
+        "name": "TH Phase 1 - resolved_target",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"resolved_target\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1024",
+        "name": "TH Phase 1 - source",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"source\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1025",
+        "name": "TH Phase 1 - traffic_type",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"traffic_type\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1026",
+        "name": "TH Phase 1 - trip_id",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"trip_id\"]:undefined;}"
+          }
+        ],
+        "parentFolderId": "1001"
+      },
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "variableId": "1027",
+        "name": "TH Phase 1 - allowed",
+        "type": "jsm",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "javascript",
+            "value": "function(){try{var e={{TH Phase 1 - envelope}},n={{Event}},expected=n==='th_page_view'?'page_view':n;if(!e||e.name!==expected||!e.parameters||e.parameters.measurement_version!=='1')return false;if(window['ga-disable-G-XQMPJG8B08']===true)return false;try{if(localStorage.getItem('th_consent_storage_blocked')==='1')return false;}catch(ignore){}var m=document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);if(!m)return false;var c=JSON.parse(decodeURIComponent(m[1]));return !!c&&c.analytics===true&&typeof c.marketing==='boolean';}catch(ignore){return false;}}"
+          }
+        ],
+        "parentFolderId": "1001"
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "triggerId": "1001",
+        "name": "TH Phase 1 - owned events",
+        "type": "CUSTOM_EVENT",
+        "parentFolderId": "1001",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^(search_started|destination_any_selected|destination_specific_selected|date_any_selected|home_search_submitted|destination_direct_navigation|search_results_navigation|search_option_404_prevented|destination_view|destination_dates_price_interaction|destination_pdf_download|destination_whatsapp_click|destination_booking_click|private_trip_landing_view|private_trip_whatsapp_click|private_trip_secondary_cta_click|collaborator_click|coordinator_cta_click|th_page_view)$"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{TH Phase 1 - allowed}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "true"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

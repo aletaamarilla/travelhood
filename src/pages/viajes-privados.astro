@@ -390,68 +390,34 @@ const trustPoints = [
     <Footer />
   </main>
 
-  <script is:inline>
-    (() => {
-      const params = new URLSearchParams(window.location.search);
-      const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-      const utms = {};
-
-      utmKeys.forEach((key) => {
-        const value = params.get(key);
-        if (value) utms[key] = value;
-      });
-
-      const originParts = ["utm_source", "utm_medium", "utm_campaign"]
-        .map((key) => utms[key])
-        .filter(Boolean);
-      const origin = originParts.join(" / ");
-
-      const pushEvent = (payload) => {
-        if (Array.isArray(window.dataLayer)) {
-          window.dataLayer.push(payload);
-        }
-      };
-
-      pushEvent({
-        event: "private_trip_landing_view",
-        page: "viajes_privados",
-        context: "private_trip",
-        ...utms,
-      });
-
-      document.querySelectorAll("[data-private-trip-whatsapp]").forEach((link) => {
-        const baseMessage = link.getAttribute("data-whatsapp-message") || "";
-        if (origin && link instanceof HTMLAnchorElement) {
-          const url = new URL(link.href);
-          url.searchParams.set("text", `${baseMessage}\n\nOrigen: ${origin}`);
-          link.href = url.toString();
-        }
-
-        link.addEventListener("click", () => {
-          pushEvent({
-            event: "private_trip_whatsapp_click",
-            page: "viajes_privados",
-            context: "private_trip",
-            cta: link.getAttribute("data-cta"),
-            has_utm: Object.keys(utms).length > 0,
-            ...utms,
-          });
-        });
-      });
-
-      document.querySelectorAll("[data-private-trip-secondary-cta]").forEach((link) => {
-        link.addEventListener("click", () => {
-          pushEvent({
-            event: "private_trip_secondary_cta_click",
-            page: "viajes_privados",
-            context: "private_trip",
-            cta: link.getAttribute("data-cta"),
-            href: link instanceof HTMLAnchorElement ? link.href : "",
-            has_utm: Object.keys(utms).length > 0,
-            ...utms,
-          });
-        });
-      });
-    })();
+  <script>
+    import { trackEvent } from "@/lib/analytics";
+    const params = new URLSearchParams(window.location.search);
+    const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+    const hasUtm = utmKeys.some((key) => !!params.get(key));
+    // Preserve existing WhatsApp attribution. Never copy these free-text values to analytics.
+    const origin = ["utm_source", "utm_medium", "utm_campaign"].map((key) => params.get(key)).filter(Boolean).join(" / ");
+    let viewed = false;
+    const view = () => {
+      if (!viewed) viewed = trackEvent("private_trip_landing_view", { page: "viajes_privados", context: "private_trip" });
+    };
+    view();
+    window.addEventListener("cookieConsentUpdated", view);
+    document.querySelectorAll<HTMLAnchorElement>("[data-private-trip-whatsapp]").forEach((link) => {
+      const baseMessage = link.getAttribute("data-whatsapp-message") || "";
+      if (origin) {
+        const url = new URL(link.href);
+        url.searchParams.set("text", `${baseMessage}\n\nOrigen: ${origin}`);
+        link.href = url.toString();
+      }
+      link.addEventListener("click", () => trackEvent("private_trip_whatsapp_click", {
+        page: "viajes_privados", context: "private_trip", cta: link.getAttribute("data-cta"), has_utm: hasUtm,
+      }));
+    });
+    document.querySelectorAll<HTMLAnchorElement>("[data-private-trip-secondary-cta]").forEach((link) => {
+      link.addEventListener("click", () => trackEvent("private_trip_secondary_cta_click", {
+        page: "viajes_privados", context: "private_trip", cta: link.getAttribute("data-cta"), href: link.href, has_utm: hasUtm,
+      }));
+    });
   </script>
 </Layout>

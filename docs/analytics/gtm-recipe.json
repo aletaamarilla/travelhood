@@ -1,0 +1,218 @@
+{
+  "status": "CONFIGURATION_RECIPE_ONLY_NOT_PUBLISHED_OR_IMPORTABLE_GTM_EXPORT",
+  "observedWebContainer": "GTM-TB7F773D",
+  "officialMeasurementId": "G-XQMPJG8B08",
+  "observedWebMeasurementId": "G-XQMPJG8B08",
+  "requires": [
+    "Published GTM export and workspace review",
+    "Real consent, DebugView and processed report verification"
+  ],
+  "envelope": {
+    "dataLayerVariable": "th_event",
+    "version": 1,
+    "eventName": "name",
+    "eventParameters": "parameters"
+  },
+  "consent": "analytics_storage",
+  "googleTag": {
+    "send_page_view": false,
+    "allow_google_signals": false,
+    "allow_ad_personalization_signals": false,
+    "enhancedMeasurement": false
+  },
+  "triggerRegex": "^(search_started|destination_any_selected|destination_specific_selected|date_any_selected|home_search_submitted|destination_direct_navigation|search_results_navigation|search_option_404_prevented|destination_view|destination_dates_price_interaction|destination_pdf_download|destination_whatsapp_click|destination_booking_click|private_trip_landing_view|private_trip_whatsapp_click|private_trip_secondary_cta_click|collaborator_click|coordinator_cta_click|th_page_view)$",
+  "commonParameters": [
+    "measurement_version",
+    "page_location",
+    "page_referrer",
+    "traffic_type",
+    "debug_mode"
+  ],
+  "events": [
+    {
+      "event": "search_started",
+      "ga4Event": "search_started",
+      "parameters": [
+        "source"
+      ]
+    },
+    {
+      "event": "destination_any_selected",
+      "ga4Event": "destination_any_selected",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "date_mode",
+        "date_value"
+      ]
+    },
+    {
+      "event": "destination_specific_selected",
+      "ga4Event": "destination_specific_selected",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode",
+        "date_value"
+      ]
+    },
+    {
+      "event": "date_any_selected",
+      "ga4Event": "date_any_selected",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode"
+      ]
+    },
+    {
+      "event": "home_search_submitted",
+      "ga4Event": "home_search_submitted",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode",
+        "date_value",
+        "resolved_target",
+        "resolved_href"
+      ]
+    },
+    {
+      "event": "destination_direct_navigation",
+      "ga4Event": "destination_direct_navigation",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode",
+        "date_value",
+        "resolved_target",
+        "resolved_href"
+      ]
+    },
+    {
+      "event": "search_results_navigation",
+      "ga4Event": "search_results_navigation",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode",
+        "date_value",
+        "resolved_target",
+        "resolved_href"
+      ]
+    },
+    {
+      "event": "search_option_404_prevented",
+      "ga4Event": "search_option_404_prevented",
+      "parameters": [
+        "source",
+        "destination_mode",
+        "destination_slug",
+        "date_mode",
+        "date_value",
+        "resolved_target",
+        "resolved_href"
+      ]
+    },
+    {
+      "event": "destination_view",
+      "ga4Event": "destination_view",
+      "parameters": [
+        "destination_slug",
+        "trip_id"
+      ]
+    },
+    {
+      "event": "destination_dates_price_interaction",
+      "ga4Event": "destination_dates_price_interaction",
+      "parameters": [
+        "destination_slug",
+        "cta_location"
+      ]
+    },
+    {
+      "event": "destination_pdf_download",
+      "ga4Event": "destination_pdf_download",
+      "parameters": [
+        "destination_slug",
+        "cta_location",
+        "pdf_url"
+      ]
+    },
+    {
+      "event": "destination_whatsapp_click",
+      "ga4Event": "destination_whatsapp_click",
+      "parameters": [
+        "destination_slug",
+        "trip_id",
+        "cta_location"
+      ]
+    },
+    {
+      "event": "destination_booking_click",
+      "ga4Event": "destination_booking_click",
+      "parameters": [
+        "destination_slug",
+        "trip_id",
+        "cta_location",
+        "booking_provider"
+      ]
+    },
+    {
+      "event": "private_trip_landing_view",
+      "ga4Event": "private_trip_landing_view",
+      "parameters": [
+        "page",
+        "context"
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "ga4Event": "private_trip_whatsapp_click",
+      "parameters": [
+        "page",
+        "context",
+        "cta",
+        "has_utm"
+      ]
+    },
+    {
+      "event": "private_trip_secondary_cta_click",
+      "ga4Event": "private_trip_secondary_cta_click",
+      "parameters": [
+        "page",
+        "context",
+        "cta",
+        "href",
+        "has_utm"
+      ]
+    },
+    {
+      "event": "collaborator_click",
+      "ga4Event": "collaborator_click",
+      "parameters": [
+        "partner_id",
+        "source",
+        "link_type"
+      ]
+    },
+    {
+      "event": "coordinator_cta_click",
+      "ga4Event": "coordinator_cta_click",
+      "parameters": [
+        "action",
+        "source"
+      ]
+    },
+    {
+      "event": "th_page_view",
+      "ga4Event": "page_view",
+      "parameters": []
+    }
+  ]
+}

@@ -1,43 +1,13 @@
 import { useState, useEffect } from "react";
 
-interface CookieConsent {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-}
-
-const COOKIE_NAME = "th_cookie_consent";
-const COOKIE_MAX_AGE = 365 * 24 * 60 * 60;
-
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
-function setCookie(name: string, value: string, maxAge: number) {
-  document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${maxAge};SameSite=Lax;Secure`;
-}
-
-function getStoredConsent(): CookieConsent | null {
-  try {
-    const raw = getCookie(COOKIE_NAME);
-    if (!raw) return null;
-    return JSON.parse(raw) as CookieConsent;
-  } catch {
-    return null;
-  }
-}
-
-function saveConsent(consent: CookieConsent) {
-  setCookie(COOKIE_NAME, JSON.stringify(consent), COOKIE_MAX_AGE);
-  window.dispatchEvent(new CustomEvent("cookieConsentUpdated", { detail: consent }));
-}
+import { getStoredConsent, saveConsent, type CookieConsent } from "@/lib/consent";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [showCustomize, setShowCustomize] = useState(false);
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
+  const [storageError, setStorageError] = useState(false);
 
   useEffect(() => {
     const stored = getStoredConsent();
@@ -60,7 +30,13 @@ export default function CookieBanner() {
   }, []);
 
   function accept(consent: CookieConsent) {
-    saveConsent(consent);
+    if (!saveConsent(consent)) {
+      setAnalytics(false);
+      setMarketing(false);
+      setStorageError(true);
+      return;
+    }
+    setStorageError(false);
     setVisible(false);
     setShowCustomize(false);
   }
@@ -82,6 +58,7 @@ export default function CookieBanner() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-[9999] p-4 sm:p-6">
       <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-[#0B2E3A] p-6 shadow-2xl shadow-black/40">
+        {storageError && <p role="alert" className="mb-4 text-sm text-white">No hemos podido guardar tus preferencias. Las cookies opcionales están desactivadas en esta página.</p>}
         {!showCustomize ? (
           <>
             <p className="text-sm leading-relaxed text-white/80">

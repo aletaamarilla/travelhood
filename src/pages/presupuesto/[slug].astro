@@ -257,24 +257,12 @@ const pageKeywords = destination.seo?.keywords || `cuanto cuesta viajar a ${dest
       ctaHref={whatsappUrl}
     />
 
-    <script is:inline define:vars={{ destinationSlug: destination.slug }}>
-      function hasAnalyticsConsent() {
-        try {
-          const match = document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);
-          if (!match) return false;
-          return JSON.parse(decodeURIComponent(match[1])).analytics === true;
-        } catch {
-          return false;
-        }
-      }
-
+    <script>
+      import { trackEvent } from "@/lib/analytics";
       document.querySelectorAll("[data-destination-whatsapp], a[href*='wa.me']").forEach((link) => {
         link.addEventListener("click", () => {
-          if (!hasAnalyticsConsent()) return;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "destination_whatsapp_click",
-            destination_slug: link.getAttribute("data-destination") || destinationSlug,
+          trackEvent("destination_whatsapp_click", {
+            destination_slug: link.getAttribute("data-destination") || window.location.pathname.split('/')[2],
             cta_location: link.getAttribute("data-cta-location") || "presupuesto_bottom_cta",
           });
         });

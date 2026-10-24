@@ -38,8 +38,9 @@ assert.equal(isCollaboratorAssetUrl('//example.com/logo.svg'), false)
 assert.equal(isCollaboratorAssetUrl('/\\example.com/logo.svg'), false)
 
 // No analytics event before consent, after refusal, or with a malformed cookie.
-const browser = { dataLayer: [] as unknown[] }
-const doc = { cookie: '' }
+const browser = { dataLayer: [] as unknown[], __thGoogleConsent: { phase1Ready: true } }
+const doc = { cookie: '', referrer: '', querySelector: () => null }
+Object.defineProperty(globalThis, 'location', { configurable: true, value: { hostname: 'localhost' } })
 Object.defineProperty(globalThis, 'window', { configurable: true, value: browser })
 Object.defineProperty(globalThis, 'document', { configurable: true, value: doc })
 const payload = { partner_id: 'iati', source: 'collaborators_page', link_type: 'outbound' } as const
@@ -48,12 +49,14 @@ for (const cookie of ['', 'th_cookie_consent=invalid', 'th_cookie_consent=null',
   assert.equal(trackCollaboratorClick(payload), false)
 }
 assert.deepEqual(browser.dataLayer, [])
-doc.cookie = 'th_cookie_consent=%7B%22analytics%22%3Atrue%7D'
+doc.cookie = 'th_cookie_consent=%7B%22analytics%22%3Atrue%2C%22marketing%22%3Afalse%7D'
 assert.equal(trackCollaboratorClick(payload), true)
-assert.deepEqual(browser.dataLayer, [{ event: 'collaborator_click', ...payload }])
+assert.equal(browser.dataLayer.length, 1)
+assert.deepEqual((browser.dataLayer[0] as { th_event: { parameters: object } }).th_event.parameters, { ...payload, measurement_version: '1', page_location: 'https://travelhood.es/', page_referrer: '', traffic_type: 'developer', debug_mode: true })
 doc.cookie = 'th_cookie_consent=%7B%22analytics%22%3Afalse%7D'
 assert.equal(trackCollaboratorClick(payload), false)
 assert.equal(browser.dataLayer.length, 1)
 Reflect.deleteProperty(globalThis, 'window')
 Reflect.deleteProperty(globalThis, 'document')
+Reflect.deleteProperty(globalThis, 'location')
 console.log('Collaborators: content, affiliate links and consent checks passed.')

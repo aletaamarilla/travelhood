@@ -1,0 +1,18 @@
+# Solicitud técnica a Mygocu — borrador, NO enviada
+
+Objetivo: continuidad consentida entre `travelhood.es` y el tenant de Travelhood en `reservas.travelhood.es`, con flujo oficial Travelhood `G-XQMPJG8B08`, confirmado por el titular. HTML público del portal muestra `GTM-TXS7NBZ2` y `G-ZMQN5FJE4X`; el linker incluye otras marcas. Esto no prueba ejecución o compartición efectiva: solicitamos confirmación por tenant.
+
+Necesitamos respuesta y prueba en sandbox sobre:
+
+1. ¿Quién controla GTM/Google Tag en nuestro tenant? ¿Podéis añadir flujo Travelhood manteniendo separado vuestro sistema operativo/medición y sin enviar datos Travelhood a otras marcas? Aportar alcance de contenedor, condiciones de disparo por hostname/tenant, tags/destinos, permisos y export revisable. No sustituir ni eliminar histórico de proveedor sin acuerdo.
+2. ¿Se admite el mismo flujo web GA4 oficial en ambos dominios, configuración linker de Google y conservación de `_gl` en redirecciones, formularios y checkout? Enumerar dominios efectivos y pasarelas; demostrar sesión/source-medium/campaña en ida y retorno. Si no está soportado, explicar la pérdida: no prometer medición entre propiedades distintas mediante `_gl`.
+3. ¿Cómo aplicáis Consent Mode v2 y bloqueo básico antes de analítica/marketing? La cookie web es host-only, no asumimos que se comparta. Necesitamos CMP coherente, cambios/retirada por dominio y protocolo de consentimiento soportado, sin forzar permiso ni trasladar identificadores cuando se rechaza. No compartir cookies o identificadores con otros tenants.
+4. ¿Qué eventos verificables existen para inicio checkout, consulta recibida, reserva confirmada/cancelada, viajero, cobro de señal/saldo y reembolso? Aportar esquemas, semántica de estados, tiempos, IDs opacos, importes EUR, firma/autenticación de callbacks, idempotencia, reintentos, duplicados, orden y reconciliación. No enviar PII ni mensajes a GA4; sistema operativo permanece fuente financiera.
+5. ¿Podéis mantener atribución/identificadores de sesión solo con consentimiento y permitir ausencia? No incluir email/teléfono/pasaporte ni tokens en URLs analíticas. Desactivar captura automática de formulario y matching, y minimizar page_location/referrer. Definir almacenamiento, retención, aislamiento y borrado.
+6. ¿Existe sandbox real sin cargos, entorno de QA y procedimiento de reversión? Necesitamos probar última plaza, errores, cancelación/retorno, retirada de consentimiento, bloqueadores y fallos de analítica sin perjudicar reserva.
+
+Configuración objetivo condicionada a soporte: mismo flujo oficial y dominios exactos del tenant, linker validado; una única fuente de page_view en cada documento; referencias de pasarela no deseadas solo tras verificar retorno (no sustituyen linker); cero `purchase` al clicar/volver sin confirmación; una fuente por resultado con IDs e idempotencia. Si no hay soporte, medir únicamente clic externo en web y resultados operativos reconciliados por separado, describiendo la discontinuidad.
+
+Criterios de aceptación del proveedor: vídeo/capturas sin PII + Tag Assistant/red + DebugView + informe procesado por tenant, con matriz de consentimiento y ninguna recogida de otras marcas; sesión/atribución de ida-retorno cuando se soporte; dos reservas de QA multiviajero y señal/saldo que demuestren conteos separados y deduplicación; versión, fecha, responsable y rollback. No ejecutar pagos reales para estas pruebas.
+
+Dependencia fase 2: respuesta formal, sandbox, estados de negocio acordados y acceso autorizado. Este documento prepara la solicitud; no presupone capacidades, no autoriza compartir datos ni ha sido enviado.
