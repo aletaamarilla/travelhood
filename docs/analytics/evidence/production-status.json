@@ -1,19 +1,19 @@
 {
-  "recordedAtUtc": "2026-10-24T19:06:24.914615+00:00",
+  "recordedAtUtc": "2026-10-24T19:54:20.893766+00:00",
   "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
   "sourceManifestFilesUnchanged": 35,
   "implementation": "published and source committed/pushed",
   "localValidation": "passed within documented scope",
-  "productionActivation": "GTM v6; initial CLI deployment dpl_Ga8t8AHeEnHxFiajvf22GQiENBbw; now Git deployment dpl_EaDzd9bcJ48mJ8oC7DqXF3xtcKoz Ready and aliased",
+  "productionActivation": "GTM v6 active; initial CLI deployment followed by Git releases preserving the same source35. Last domain release verified before this follow-up: dpl_3XDPddrnVC7JGaQR37GHKd3nyf9j (documentation commit9d5c6a6), verified2026-10-24T19:13:34.409210Z. Source commit42e873b remains unchanged.",
   "productionReceipt": "One controlled final WhatsApp CTA at18:47:23.751–.838Z; linked published Tag Assistant records one contact and one config; official GA4 DebugView receives one private_trip_whatsapp_click at20:47:24 Europe/Madrid. cta=final, context=private_trip, measurement_version=1, page=viajes_privados, canonical page_location, traffic_type=external, has_utm=false, debug_mode=1 inspected. Trace predates Git promotion; source and inspected HTML are unchanged.",
-  "productionBehaviorValidation": "partial: desktop/mobile preferences and navigation previously checked; linked single document/config/contact trace now confirmed; production withdrawal and UI persistence checked in same document. Initial clean consent/network absence and post-withdrawal network silence remain unverified. No global uniqueness claim.",
-  "processedReports": "pending reconciliation; final version1 summary still No hay datos disponibles on later recheck; neither zero business nor verified attribution",
+  "productionBehaviorValidation": "Browser/cookie tests reported successful by the user, explicitly excluding processed reports/acquisition/PDF. Accepted as manual user-reported result; no per-scenario counts, browser/device, exact execution time or raw trace supplied. Agent prior local/runtime/production UI and linked contact evidence retained. No new independent network capture or global uniqueness claim.",
+  "processedReports": "Real standard Events report Today 24 Oct now contains private_trip_whatsapp_click. This aggregate is not version/action reconciled. Refreshed v1 exploration tabs01/03/07 still No hay datos disponibles; acquisition and custom-field reconciliation pending.",
   "reliable_from": null,
   "businessReportReady": false,
   "phaseValidated": false,
   "qaExclusion": "explicitly deferred by user; filters remain Testing, QA may enter commercial reports",
   "gitDeploymentRisk": "Resolved for this candidate: exact reviewed source35 committed/pushed and Git build Ready; domain alias and identical HTML verified. Future functional changes still require normal validation.",
-  "latestEvidence": "docs/analytics/evidence/phase1-closure.md",
+  "latestEvidence": "docs/analytics/evidence/manual-followup-2026-10-24.md",
   "whatsappContactReceipt": "confirmed in official GA4 Realtime and linked representative DebugView trace",
   "whatsappPerActionCounts": "one expected contact for one controlled final CTA; one config and initial page/landing for the linked document. Full DebugView session includes three known document loads, not three pageviews from one document.",
   "reportingReadiness": {
@@ -27,15 +27,26 @@
     "tabs": 9,
     "sessionSegments": 5,
     "scope": "Saved private exploration in current user; no public sharing. All segments version1 same-event; action tabs version1. Saved configuration is not data reconciliation.",
-    "export": "All-tabs PDF option observed; download not confirmed",
+    "export": "All-tabs PDF requested; no download observed within 15000ms browser wait. No artifact verified; does not prove Google export failure.",
     "searchConsole": "Welcome page; no verified property visible in current account",
     "specification": "docs/analytics/client-reporting.md",
     "evidence": "docs/analytics/evidence/reporting-setup/",
-    "pending": "Processed v1 breakdown reconciliation, attribution, PDF download, Search Console access and initial/post-withdrawal production network checks",
+    "pending": "Processed v1 custom-field/count reconciliation, acquisition, PDF download, Search Console access. Browser/cookie tests reported PASS by user; raw network trace not supplied.",
     "commercialCtaLocations": 9,
-    "mixedDatesAndNotification": "cuando_viajar_bottom_cta separated in tab09; not commercial-contact numerator"
+    "mixedDatesAndNotification": "cuando_viajar_bottom_cta separated in tab09; not commercial-contact numerator",
+    "lastFollowupObservedAtUtc": "2026-10-24T19:53:04.825Z",
+    "standardProcessedContactEventPresent": true
   },
   "sourceCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
   "sourceBaseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
-  "remoteMainVerified": "42e873b83947ac52abe34ac1aab578d46e3928bd"
+  "remoteMainVerified": "9d5c6a62402371598a7819bcfa682e5de2f53d60",
+  "consentManualValidation": {
+    "result": "passed_reported_by_user",
+    "rawTraceArchived": false,
+    "independentlyRepeatedByAgent": false,
+    "record": "docs/analytics/evidence/manual-followup-2026-10-24.json"
+  },
+  "documentationCommitBeforeFollowup": "9d5c6a62402371598a7819bcfa682e5de2f53d60",
+  "remoteMainVerifiedAtUtc": "2026-10-24T19:10:56.598670Z",
+  "remoteMainVerificationScope": "Last recorded remote verification before this documentary follow-up; not a claim about a future commit containing this file."
 }

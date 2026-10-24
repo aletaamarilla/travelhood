@@ -1,0 +1,17 @@
+{
+  "historicalPacketSha256": "79057ffa5c61e455e00d6372b9a99b0449a6b6563506f3a0dd3faf50df1ed43c",
+  "historicalReview": "docs/analytics/evidence/phase1-closure-review.md",
+  "reason": "Preserve the exact two documents from the reviewed closure packet before the manual follow-up update. Other packet contents unchanged.",
+  "snapshots": [
+    {
+      "originalPath": "docs/analytics/README.md",
+      "snapshotPath": "docs/analytics/evidence/phase1-closure-reviewed-docs/README.md",
+      "sha256": "c36b297736f8a81830046c2c0458cd1b173b4095e60d9e21c1c620876a2c2629"
+    },
+    {
+      "originalPath": "docs/analytics/evidence/production-status.json",
+      "snapshotPath": "docs/analytics/evidence/phase1-closure-reviewed-docs/production-status.json",
+      "sha256": "45f757a12cb963425fd325ffb1aaf6137f49d3e462f95d095eea31d680054103"
+    }
+  ]
+}

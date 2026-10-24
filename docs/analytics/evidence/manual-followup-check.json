@@ -1,0 +1,16 @@
+{
+  "checkedAtUtc": "2026-10-24T19:55:52.392924+00:00",
+  "baseCommit": "9d5c6a62402371598a7819bcfa682e5de2f53d60",
+  "candidateIndexTree": "7a12888632201adc2448e86a4ac6735ac80ae842",
+  "manifestSha256": "10fd9fddba34ca3d53d749d1314f2fd53cebd81276347239803a34920439b6b0",
+  "files": 8,
+  "allowlist": "PASS",
+  "hashes": "PASS",
+  "jsonParse": "PASS",
+  "secretMessagePatternScan": "PASS within declared patterns",
+  "diffCheckExit": 0,
+  "diffCheckCommand": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check",
+  "implementationChanged": false,
+  "scope": "Documentary follow-up only; prior source35 build/types/tests/visibility/favicons evidence retained, not rerun for unchanged code.",
+  "metadataCorrection": "Historical deployment/remote verification timestamps made explicit; last domain release3X and last verified remote9d5, not stale initial source-only release."
+}

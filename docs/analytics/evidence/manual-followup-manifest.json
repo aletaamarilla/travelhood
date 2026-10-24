@@ -1,0 +1,38 @@
+{
+  "recordedAtUtc": "2026-10-24T19:54:20.893766+00:00",
+  "baseCommit": "9d5c6a62402371598a7819bcfa682e5de2f53d60",
+  "sourceCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "source35Unchanged": true,
+  "identityScope": "Seven follow-up documentation/evidence files only; manifest/review/check supplemental, no recursive identity. Raw screenshots/AX and aggregate count remain local.",
+  "files": [
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "dcaee600fea032176ffbc3afe03335b9cafcac4a5b8d33e88f44389cef4ee7b2"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "6fa396efb9a8e5cba4d0d7f8ef0adad6dff2924d1dba7fe7c8fec37a03c95be8"
+    },
+    {
+      "path": "docs/analytics/evidence/manual-followup-2026-10-24.json",
+      "sha256": "0671d38bb7cde8ab0b66de3262af19d1edf6b0245d0c9f3ad248ca54a2a03bcd"
+    },
+    {
+      "path": "docs/analytics/evidence/manual-followup-2026-10-24.md",
+      "sha256": "40ea48e1d253dc8c6e8a48aa2fb34cbf6d25e766002f91e9e2ececca6ad259d8"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure-reviewed-docs/README.md",
+      "sha256": "c36b297736f8a81830046c2c0458cd1b173b4095e60d9e21c1c620876a2c2629"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure-reviewed-docs/production-status.json",
+      "sha256": "45f757a12cb963425fd325ffb1aaf6137f49d3e462f95d095eea31d680054103"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure-reviewed-docs/index.json",
+      "sha256": "ea912058f1eb5ad8f00e336109a72770499f0c94fceb820a62891305095f3622"
+    }
+  ]
+}

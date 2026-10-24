@@ -1,0 +1,123 @@
+{
+  "recordedAtUtc": "2026-10-24T19:54:20.893766+00:00",
+  "clientDate": "2026-10-24",
+  "clientTimezone": "Europe/Madrid",
+  "baseCommit": "9d5c6a62402371598a7819bcfa682e5de2f53d60",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "source35Unchanged": true,
+  "userManualValidation": {
+    "statement": "comprobado, todo bien",
+    "scopeClarification": "Comprobé solo las pruebas del navegador y las cookies",
+    "result": "passed_reported_by_user",
+    "scope": "Browser/cookie tests from preceding instructions; explicitly excludes processed reports, acquisition and PDF.",
+    "actualExecutionTimeUtc": null,
+    "browserAndDevice": null,
+    "perScenarioCountsProvided": false,
+    "rawTraceProvided": false,
+    "independentlyRepeatedByAgent": false,
+    "evidenceType": "Explicit user statement in this task; accepted as manual report without inventing per-scenario observations."
+  },
+  "ga4Followup": {
+    "observedAtUtc": "2026-10-24T19:53:04.825Z",
+    "environment": "real authenticated GA4",
+    "property": "498178258",
+    "measurementId": "G-XQMPJG8B08",
+    "explorationId": "slaZLoktRh-iWrXm_1w-LQ",
+    "explorationPeriod": "Este mes 1 oct-24 oct 2026",
+    "refreshPerformed": true,
+    "checkedTabs": [
+      {
+        "name": "01 Resumen",
+        "result": "No hay datos disponibles"
+      },
+      {
+        "name": "03 Fuentes y campañas",
+        "result": "No hay datos disponibles"
+      },
+      {
+        "name": "07 Privados - botones",
+        "result": "No hay datos disponibles",
+        "filters": [
+          "measurement_version=1",
+          "event_name=private_trip_whatsapp_click"
+        ]
+      }
+    ],
+    "standardProcessedReport": {
+      "period": "Hoy 24 oct-24 oct 2026",
+      "event": "private_trip_whatsapp_click",
+      "present": true,
+      "versionFiltered": false,
+      "interpretation": "Real processed event-name receipt now confirmed; not reconciliation by action/version/CTA/acquisition. Possible QA and earlier same-day sessions included."
+    },
+    "pdf": {
+      "requested": "PDF (todas las pestañas)",
+      "downloadObserved": false,
+      "waitTimeoutMs": 15000,
+      "interpretation": "No artifact observed within bounded browser wait; does not prove Google export failure."
+    },
+    "attributionVerified": false,
+    "processedV1Reconciled": false,
+    "configurationChanged": false,
+    "phaseValidated": false
+  },
+  "localArtifactArchive": {
+    "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/manual-followup",
+    "privacyScope": "Raw screenshots/AX and the aggregate count remain local; no raw business data or screenshots published in this Git packet.",
+    "files": [
+      {
+        "name": "private-buttons-readback.txt",
+        "sha256": "dab3aa66c65078fd9c6c26b67c8471cfd2e4b421eb6e8bf05385b2d263d749cd",
+        "bytes": 14488,
+        "includedInGit": false
+      },
+      {
+        "name": "processed-contact-count-local.json",
+        "sha256": "7979d2e394c1f84c3f0ec217daccfe436691f42ad6924487998e89fd91d84263",
+        "bytes": 356,
+        "includedInGit": false
+      },
+      {
+        "name": "processed-contact-standard.png",
+        "sha256": "6d7c570d131bd905ef073044a3a305871e8630cc12aa9c300fe5b895bf436a84",
+        "bytes": 86637,
+        "includedInGit": false
+      },
+      {
+        "name": "processed-contact-standard.txt",
+        "sha256": "622c6dd47911ee6a9551b0e9e96038248218bd4ec1ee8210f3cc3fd179bb2350",
+        "bytes": 11447,
+        "includedInGit": false
+      },
+      {
+        "name": "reports-followup-result.json",
+        "sha256": "c2128f0f1e9a89d9ed1b2dfdc2d5cf94df0b053265bd82ec04f05b7d5816a923",
+        "bytes": 1397,
+        "includedInGit": false
+      },
+      {
+        "name": "sources-readback.txt",
+        "sha256": "eac9cf0d2affa75269004421479ad6ca8791a8e74c9314c6cf8cbef06c5c9aad",
+        "bytes": 15687,
+        "includedInGit": false
+      },
+      {
+        "name": "summary-after-reload.png",
+        "sha256": "499c202e0e323ff5239f4f59f81515823cfed459afa85b77fc5d396cd918fbfd",
+        "bytes": 88738,
+        "includedInGit": false
+      },
+      {
+        "name": "summary-after-reload.txt",
+        "sha256": "030f73da34719ba326a048414d988c2eb9aefd38ab17bec0a6cf9c6fec573adb",
+        "bytes": 15262,
+        "includedInGit": false
+      }
+    ]
+  },
+  "implementationChanged": false,
+  "accountConfigurationChanged": false,
+  "phaseValidated": false,
+  "businessReportReady": false,
+  "reliable_from": null
+}
