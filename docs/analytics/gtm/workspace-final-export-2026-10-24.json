@@ -1,0 +1,1151 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2026-10-24 15:03:23",
+    "containerVersion": {
+        "path": "accounts/6305630418/containers/225870368/versions/0",
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/6305630418/containers/225870368",
+            "accountId": "6305630418",
+            "containerId": "225870368",
+            "name": "www.travelhood.es",
+            "publicId": "GTM-TB7F773D",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1753545199896",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6305630418/containers/225870368/workspaces?apiLink=container",
+            "features": {
+                "supportUserPermissions": true,
+                "supportEnvironments": true,
+                "supportWorkspaces": true,
+                "supportGtagConfigs": false,
+                "supportBuiltInVariables": true,
+                "supportClients": false,
+                "supportFolders": true,
+                "supportTags": true,
+                "supportTemplates": true,
+                "supportTriggers": true,
+                "supportVariables": true,
+                "supportVersions": true,
+                "supportZones": true,
+                "supportTransformations": false
+            },
+            "tagIds": [
+                "GTM-TB7F773D"
+            ]
+        },
+        "tag": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "tagId": "3",
+                "name": "Pixel meta",
+                "type": "html",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "html",
+                        "value": "<!-- Meta Pixel Code -->\n<script>\n!function(f,b,e,v,n,t,s)\n{if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\nn.queue=[];t=b.createElement(e);t.async=!0;\nt.src=v;s=b.getElementsByTagName(e)[0];\ns.parentNode.insertBefore(t,s)}\n(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');\n\nfbq('init', '2395026450933296');\nfbq('track', 'PageView');\n</script>\n<noscript>\n  <img height=\"1\" width=\"1\" style=\"display:none\"\n  src=\"https://www.facebook.com/tr?id=2395026450933296&ev=PageView&noscript=1\"/>\n</noscript>\n<!-- End Meta Pixel Code -->"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "supportDocumentWrite",
+                        "value": "false"
+                    }
+                ],
+                "fingerprint": "1775897947413",
+                "firingTriggerId": [
+                    "2147479553"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "tagId": "5",
+                "name": "GA4- Configuracion",
+                "type": "googtag",
+                "priority": {
+                    "type": "INTEGER",
+                    "value": "100"
+                },
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "tagId",
+                        "value": "G-XQMPJG8B08"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "configSettingsTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "send_page_view"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "false"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "allow_google_signals"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "false"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "allow_ad_personalization_signals"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "false"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "page_location"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - page_location}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "page_referrer"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - page_referrer}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "debug_mode"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - debug_mode}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1792853669349",
+                "firingTriggerId": [
+                    "13"
+                ],
+                "tagFiringOption": "ONCE_PER_LOAD",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NEEDED",
+                    "consentType": {
+                        "type": "LIST",
+                        "list": [
+                            {
+                                "type": "TEMPLATE",
+                                "value": "analytics_storage"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "tagId": "35",
+                "name": "TH Phase 1 - GA4 events",
+                "type": "gaawe",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "sendEcommerceData",
+                        "value": "false"
+                    },
+                    {
+                        "type": "LIST",
+                        "key": "eventSettingsTable",
+                        "list": [
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "action"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - action}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "booking_provider"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - booking_provider}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "context"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - context}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "cta"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - cta}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "cta_location"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - cta_location}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "date_mode"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - date_mode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "date_value"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - date_value}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "debug_mode"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - debug_mode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "destination_mode"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - destination_mode}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "destination_slug"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - destination_slug}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "has_utm"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - has_utm}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "href"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - href}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "link_type"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - link_type}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "measurement_version"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - measurement_version}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "page"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - page}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "page_location"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - page_location}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "page_referrer"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - page_referrer}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "partner_id"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - partner_id}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "pdf_url"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - pdf_url}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "resolved_href"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - resolved_href}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "resolved_target"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - resolved_target}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "source"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - source}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "traffic_type"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - traffic_type}}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "MAP",
+                                "map": [
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameter",
+                                        "value": "trip_id"
+                                    },
+                                    {
+                                        "type": "TEMPLATE",
+                                        "key": "parameterValue",
+                                        "value": "{{TH Phase 1 - trip_id}}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "{{TH Phase 1 - event name}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "measurementIdOverride",
+                        "value": "G-XQMPJG8B08"
+                    }
+                ],
+                "fingerprint": "1792853517139",
+                "firingTriggerId": [
+                    "13"
+                ],
+                "parentFolderId": "6",
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NEEDED",
+                    "consentType": {
+                        "type": "LIST",
+                        "list": [
+                            {
+                                "type": "TEMPLATE",
+                                "value": "analytics_storage"
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "triggerId": "13",
+                "name": "TH Phase 1 - owned events",
+                "type": "CUSTOM_EVENT",
+                "customEventFilter": [
+                    {
+                        "type": "MATCH_REGEX",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{_event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "^(search_started|destination_any_selected|destination_specific_selected|date_any_selected|home_search_submitted|destination_direct_navigation|search_results_navigation|search_option_404_prevented|destination_view|destination_dates_price_interaction|destination_pdf_download|destination_whatsapp_click|destination_booking_click|private_trip_landing_view|private_trip_whatsapp_click|private_trip_secondary_cta_click|collaborator_click|coordinator_cta_click|th_page_view)$"
+                            }
+                        ]
+                    }
+                ],
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{TH Phase 1 - allowed}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "true"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "7",
+                "name": "TH Phase 1 - envelope",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "INTEGER",
+                        "key": "dataLayerVersion",
+                        "value": "1"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "th_event"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "8",
+                "name": "TH Phase 1 - destination_slug",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"destination_slug\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "9",
+                "name": "TH Phase 1 - measurement_version",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"measurement_version\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "10",
+                "name": "TH Phase 1 - page_location",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page_location\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "11",
+                "name": "TH Phase 1 - source",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"source\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "12",
+                "name": "TH Phase 1 - allowed",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){try{var e={{TH Phase 1 - envelope}},n={{Event}},expected=n==='th_page_view'?'page_view':n;if(!e||e.name!==expected||!e.parameters||e.parameters.measurement_version!=='1')return false;if(window['ga-disable-G-XQMPJG8B08']===true)return false;try{if(localStorage.getItem('th_consent_storage_blocked')==='1')return false;}catch(ignore){}var m=document.cookie.match(/(?:^|; )th_cookie_consent=([^;]*)/);if(!m)return false;var c=JSON.parse(decodeURIComponent(m[1]));return !!c&&c.analytics===true&&typeof c.marketing==='boolean';}catch(ignore){return false;}}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "14",
+                "name": "TH Phase 1 - traffic_type",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"traffic_type\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "15",
+                "name": "TH Phase 1 - cta",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"cta\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "16",
+                "name": "TH Phase 1 - link_type",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"link_type\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "17",
+                "name": "TH Phase 1 - partner_id",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"partner_id\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "18",
+                "name": "TH Phase 1 - page_referrer",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page_referrer\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "19",
+                "name": "TH Phase 1 - date_mode",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"date_mode\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "20",
+                "name": "TH Phase 1 - booking_provider",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"booking_provider\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409948",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "21",
+                "name": "TH Phase 1 - debug_mode",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?(e.parameters.debug_mode===true?1:undefined):undefined;}"
+                    }
+                ],
+                "fingerprint": "1792853785990",
+                "parentFolderId": "6",
+                "formatValue": {}
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "22",
+                "name": "TH Phase 1 - destination_mode",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"destination_mode\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "23",
+                "name": "TH Phase 1 - resolved_href",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"resolved_href\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "24",
+                "name": "TH Phase 1 - resolved_target",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"resolved_target\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "25",
+                "name": "TH Phase 1 - date_value",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"date_value\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "26",
+                "name": "TH Phase 1 - page",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"page\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "27",
+                "name": "TH Phase 1 - trip_id",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"trip_id\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "28",
+                "name": "TH Phase 1 - has_utm",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"has_utm\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "29",
+                "name": "TH Phase 1 - context",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"context\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "30",
+                "name": "TH Phase 1 - event name",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.name;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "31",
+                "name": "TH Phase 1 - cta_location",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"cta_location\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "32",
+                "name": "TH Phase 1 - href",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"href\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "33",
+                "name": "TH Phase 1 - pdf_url",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"pdf_url\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "variableId": "34",
+                "name": "TH Phase 1 - action",
+                "type": "jsm",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "javascript",
+                        "value": "function(){var e={{TH Phase 1 - envelope}};return e&&e.parameters?e.parameters[\"action\"]:undefined;}"
+                    }
+                ],
+                "fingerprint": "1792841409949",
+                "parentFolderId": "6"
+            }
+        ],
+        "folder": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "folderId": "6",
+                "name": "TH Phase 1 - measurement",
+                "fingerprint": "1792841409948"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_URL",
+                "name": "Page URL"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_HOSTNAME",
+                "name": "Page Hostname"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_PATH",
+                "name": "Page Path"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "REFERRER",
+                "name": "Referrer"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "EVENT",
+                "name": "Event"
+            }
+        ],
+        "fingerprint": "1792854203365",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6305630418/containers/225870368/versions/0?apiLink=version"
+    }
+}

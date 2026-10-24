@@ -1,0 +1,452 @@
+{
+  "recordedAtUtc": "2026-10-24T19:08:36.446545+00:00",
+  "baseCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
+  "originalBaseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "sourceFilesUnchanged": 35,
+  "scope": "Documentation and allowlisted textual evidence only; screenshots/raw browser outputs retained in local operational archive, not a self-contained visual package. Historical manifests remain historical.",
+  "files": [
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "c36b297736f8a81830046c2c0458cd1b173b4095e60d9e21c1c620876a2c2629"
+    },
+    {
+      "path": "docs/analytics/client-reporting.md",
+      "sha256": "ff64afe2c8f51ea62ab0590b870e23477cebf61610614a33661c9fd9f5959626"
+    },
+    {
+      "path": "docs/analytics/evidence/account-audit-2026-10-24.json",
+      "sha256": "bee856c0f272231ba67a2bef7e2a4aac1fe15cec10674d5055b05f028f99bc1d"
+    },
+    {
+      "path": "docs/analytics/evidence/account-audit-2026-10-24.md",
+      "sha256": "e4858dee8c459e3a0dc15ee604d7a1bac3866459229c9ce6df3c29931b230baa"
+    },
+    {
+      "path": "docs/analytics/evidence/account-audit-final-checks-2026-10-24.json",
+      "sha256": "520680c00f2b55afed136b756542bd7a1287b30e303268ddd5551a0cd195d77c"
+    },
+    {
+      "path": "docs/analytics/evidence/account-audit-review-2026-10-24.md",
+      "sha256": "3e70f09984b4d21b568858e03f543abf16d6ceb0f7a1b856edf3e2eb03f511a4"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure.md",
+      "sha256": "5e45984df87b470855b3293ac69e067446b76605b4e06d4df0dafd1d8c45de8a"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/controlled-contact.json",
+      "sha256": "fa28e68d76dd8020aa5fdab41f6ea9d761a80a198a5d1e37005366b0595e9f01"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/debugview-parameter-observations.json",
+      "sha256": "960a1e2f00b7bdf0fbb0b096fac41aaa9d1b0ec3765b281bcb55a9df0174065b"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/linked-debugview-receipt.json",
+      "sha256": "eceda120291415edefc5c7209e03b0ab4e779083742c7fe4f6f55c25e28820c2"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/local-archive-index.json",
+      "sha256": "d3e60921885d0913dde5403a1e19fb1023b2b7bf770cb5b5fe8c828c4f4a012f"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/processed-report-result.json",
+      "sha256": "1ba18f55156ce6975aa00be290256548800027e919e2de138e2511bb8a1abf4c"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-closure/withdrawal-ui-result.json",
+      "sha256": "fe3dcdfcde72b55ba5447ef86a57eee59459e86317267d3586d5cfd4917ac1ec"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-build-result.json",
+      "sha256": "1f3a973b2d1a2ffa90ec038f15fe23793d1b19c3e902d06557a0d975672c6486"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-build.log",
+      "sha256": "8f3803efcaa14b71f166d2c94e6e6ed81012ee62eadf0642d58644941503a768"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-candidate.json",
+      "sha256": "f0b81a5734f19805d788b52c70f07294f69be675a3a62ceeeeafb7e09596986d"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-deployment.json",
+      "sha256": "923d1db1b3cdfdf07417fbe8b25e9c70e45e21c6343094b70a23d53233b80e4f"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-favicons-result.json",
+      "sha256": "e4e360e1d29b76e36d228fd4d92dcb9159d1384569604163b46ef74a68c5709c"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-favicons.log",
+      "sha256": "ee734cf090a72cd5519e5e2e26bf780d92996c43e4c42183c67f4576e0db6171"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-public-release.json",
+      "sha256": "fdb8d3502fa351ec5562c3a5ac95c55e4854fc29f189c5aa5e981468cd88f309"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-push.json",
+      "sha256": "7bad2ef5878e0593235d965049822177eb6b8ae5d141aa7b3c277981f35ad742"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-remote-access.json",
+      "sha256": "a52125aa7641cabb73d0ed12208298fee5e0467354aa8ca92af6eeb872261fb5"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-review.md",
+      "sha256": "b7e93d0881ab59396bd332ff90adcdea310f522b89ebf8756d4576a882428889"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-source-commit.json",
+      "sha256": "1f36792d9a66aa70d14a7ebd2222790e4733c175b276f8ac8ac0447635521709"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-visibility-result.json",
+      "sha256": "37abd240199354d08cb46f61fe15db59275469904377cc7e6026cb23262deb98"
+    },
+    {
+      "path": "docs/analytics/evidence/phase1-git-visibility.log",
+      "sha256": "1423642d1228b3a0cec57b79e915334843490018fce20c5bfbc282a17456332c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-deployment-verification.json",
+      "sha256": "ab002994a3e40e86bd814a46472dd325b3dc20c4337b69b9f70ee78ccd43ecf0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-evidence-manifest.json",
+      "sha256": "3506b5fa14331f311fe1650e9f74f1e8ad06117179b76025da79fbe50dfae2eb"
+    },
+    {
+      "path": "docs/analytics/evidence/production-favicons-http.json",
+      "sha256": "cadd77aeb6d092e4e80c33f0e91e57bb1d45e5e1af343cc654936405d31c1fb7"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck-manifest.json",
+      "sha256": "2276c0a06e619382de6d26e9ad3898bfeaeab4952822b81099d9babcf1eee1a3"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck-review.md",
+      "sha256": "e5b427f09f130358aa10580f416bdb3e9803f50f7a6c674fa937027ee591b92c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck.md",
+      "sha256": "92a1451994279022078310a7a8acec4d7fa28edf940733888737d541d27e8712"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/booking-fallback-whatsapp.json",
+      "sha256": "4c69c81b16fc9b1bff4330d36dc888b7463ce883ebcc00cebdcd8cdf9d487ce0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/contact-final-attempt.json",
+      "sha256": "f684ca04a928c4e89d962c515c2d80201a4517abdd15f294c7c52cfacfad4073"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/favicons-http.json",
+      "sha256": "eff6a5299e1aeca41bc3985939c435e9b16bce06abd70f7daebc8e6ef820a514"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-after-human-click.json",
+      "sha256": "62de1e5e532bb2dc4e0b5c4934490a8491e6b78986071b0997786f90a7b85379"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-final-contact-read.json",
+      "sha256": "47adc6efee6dc7099e21ae497695b29952782408cbfb237b1bf6e397fa64a79d"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-measurement-version.json",
+      "sha256": "8a3cc65e92d124a4adbf5b7f55bc55ef7577853bfbb7e7af28e54b81cebe524b"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-traffic-type.json",
+      "sha256": "e1004e031a000cb82d2045f12de612dff5536e4bf01681eec7705fa27c72f5ac"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/human-contact-confirmation.json",
+      "sha256": "ff38d6d89af8afd3dc0c690b8bdcbe3e2929f5d0c9c29f82f0dd0ae286a2fc08"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/live-landing-hit-allowlisted.json",
+      "sha256": "a18a523f0fd32209adfe6275394fcc619234f1d0309f334e6dee1b1f91c18442"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mygocu-public-read.json",
+      "sha256": "ecb6780e4d6d3f1aa29db03079ddc8ae1dd57354f27b73bb5612552f52711e40"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/version.json",
+      "sha256": "ea110b70c47211c8af4f8ca7aed824141a78a47bfe66e956f71826d6edd6b89f"
+    },
+    {
+      "path": "docs/analytics/evidence/production-release.json",
+      "sha256": "6930cc83de4540447e711c087180ba5e7b6e34ab39b4eef93f76f1a666f9d4a3"
+    },
+    {
+      "path": "docs/analytics/evidence/production-review.md",
+      "sha256": "d163e74d8ae5969f5d8b21739f5c67632b6f5bb4427c59e4e2f97c1ed2286841"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "45f757a12cb963425fd325ffb1aaf6137f49d3e462f95d095eea31d680054103"
+    },
+    {
+      "path": "docs/analytics/evidence/production-validation.md",
+      "sha256": "6a7aba401bff1537747ffd97e40dfaf63aed6959763a4537881f5991cc73b933"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-doc-check.json",
+      "sha256": "1ab37af2b8b3a02be552aaf33d2489121fa659067c7bc40d0734b729d3789188"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-readiness-review.md",
+      "sha256": "e407ae6b929a3973ed8de1c0656195dabdd76ff4a98633fd3769aedba9a34f94"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-readiness/ga4-custom-definitions.json",
+      "sha256": "7b26440f644f9d1a18502bb7f70f731b2a59bddce9e944289f65209eaafe47cd"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-review-package.json",
+      "sha256": "d3c3462d0b3e13e293b0c38802abe461e9ddfabe8304bf7464ef6428e08f3039"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-reviewed-docs/README.md",
+      "sha256": "6c222a499bb79be33e2bc1f67ef4a93e5309c0f639587b625e5b69114c69b583"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-reviewed-docs/client-reporting.md",
+      "sha256": "caa23bb2be3293ef6cf96db47ee30e581aba1a672a0872c1be3fc55da8c3a51f"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-reviewed-docs/production-status.json",
+      "sha256": "7b1c9601a996303e2303c95f0382701c63b6f00d102920f7979475adfe608f52"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup-manifest.json",
+      "sha256": "5c18fdcccaf2c579bcd22a5a9dd0d0fe8daeb44776236107d2fd94a70619291c"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup-review.md",
+      "sha256": "74b73d019dbcaf9826af5f65ec32b921b42bd991cdac2f224124da3542dcb529"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/README.md",
+      "sha256": "3ed26893bb9011b04d8c9fcc2ef42717f8c714115df0d0683189353d32ec3878"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/consumer-classification.json",
+      "sha256": "f2f7495a63671f3306311426569a8a01c710222489f266c3e2d6e72de56dbb28"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/contact-scope-persisted.json",
+      "sha256": "d9f56c9074d8cc48c0f126e4164fcfe8610c09c8e28cbf3d44aae8d069855967"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/contract-crosscheck.json",
+      "sha256": "814d0ae1b8a0967c980f7d4c815be743951b38b19c661b0628e629145af61b49"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/dimensions-created.json",
+      "sha256": "ecb34e152df43a817860a66d2489fa8ba88a76106ab1e4fd6afcea20796eba2d"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/dimensions-persisted.json",
+      "sha256": "3051afff07f4c7ee781580a9ca19aea89fd5bdddae850fd5cb4ae94ca4be29e0"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segments-persisted-readback.json",
+      "sha256": "2b89cf042dde68201e776b25aa2b7097076951eeb686632a9e78928c9d9aca29"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/session-segments-created.json",
+      "sha256": "f61cfeb589a93f7b042cb5d47fff0ad026064930ee369e9c15a54785e47b85ac"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/setup-result.json",
+      "sha256": "b8ad400ef4266f2b5ee09107e229dda17de298d1f3c1aae12e5300e20b70c535"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/tabs-readback.json",
+      "sha256": "b1b4f46a91a2f87932490c72f630c06b4c7714ad7abbc0c6ed7fe9f3b94a5392"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-browser-results.json",
+      "sha256": "8613152fc97c2d7867d06d7ce5c817ee99d29bccfa4625dd7b0f57164987090f"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-build-default.log",
+      "sha256": "56eed8c3c0e0b8725baac4113628722ef5201aed1cfff63006f3d4d8c0509329"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-build-qa.log",
+      "sha256": "e1a557d110e4ec9f820849af653215d081d36ffb75378b1ea4189a4aabedb284"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-check-analytics-gtm.log",
+      "sha256": "bde8539cfc961747cb06c6f7556662eed18c859091a956ca69a7822603f3d6c8"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-check-analytics-recipe.log",
+      "sha256": "5588457e1e3613b393703fa2563b9e0c7ffeb590a89a9b0f9fff86472de5ae51"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-check-analytics-tools.log",
+      "sha256": "6a5e6e96ae9c13f988aa7635ea0155021500c3cec8e6a1d9129a0d5f4bb5f023"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-check-favicons.log",
+      "sha256": "ee734cf090a72cd5519e5e2e26bf780d92996c43e4c42183c67f4576e0db6171"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-diff-check.log",
+      "sha256": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-manifest.json",
+      "sha256": "a573ca8f933fcb6967ac6b9aae81354ea9be2ab0a2aef68c090105a7724f5da6"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-native-results.json",
+      "sha256": "76d11ad5468077df4de3b4d981f0c5b56d27f1d478b557647bb42369d567589d"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-prepare-gtm.log",
+      "sha256": "495b8f50dd36824dd8f4e6525f34cd95de4a0f2714ba4cbfa45bfddb372573bb"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-review.md",
+      "sha256": "fab047e6acc6d9d28adf71913d2db57a9173b95f5ee1d3f4b34935a34412f16c"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-runtime.log",
+      "sha256": "c22a4350835b9e0c2d364d22f446d821d44352a753956f02632f113aed4aab33"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-analytics-gtm.log",
+      "sha256": "7fc28c3ddc846930093d3555f19ca3aa6c6332f17b6e546f8467015ea54ed2b7"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-booking.log",
+      "sha256": "4f25b320bf602e7c9e9c5b0c109187d73dd25b619c6677dad0e2882af5ccb9d4"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-collaborators.log",
+      "sha256": "100b2ac60a1ab5b4a138d78b4341376cdaf8a6ee205fcfc431ffc2403e24011f"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-public-trip.log",
+      "sha256": "95f3617cbf85a985854e388a38b858c3159735d947a3bf91e8ad19977041f6de"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-search-intent.log",
+      "sha256": "8aff5feeca72e463b6b8a77a40b1cc31e35a8337360f52210abcbc02e06744d6"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-test-search-tracking.log",
+      "sha256": "acef7cdabcf1bd95f00cb5e11bbaa4670fc8d86f87b9a0b35e300f2e6892cc91"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-types.log",
+      "sha256": "719336e51f505b9c22284297ef70ff0a34caafd389afb6e24c23bcbfd008aa12"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-unit.log",
+      "sha256": "4a20a2d1d0faa353ab62c10ea44a03e6c5a31eddc1b838f6c98e53994966d9c9"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-validation.md",
+      "sha256": "99f85e946483e1f6f7d7b84acb78bc2dd92c361906fc806aa3ae760c9ba0d678"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-visibility.log",
+      "sha256": "70f826d4f8f411a8255b5d55c6d205e279d8ee623ae757d5b9fb6402eb864e39"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-workspace-comparison.json",
+      "sha256": "98088c8faddc93d24cd243352db56f2bce5b37eda6f0f1131a889c8e2463dc22"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production-manifest.json",
+      "sha256": "d47e83bb2b8b89dbc47e9ca5c9a5c46b35e87b6fd318e221011304a241a0554c"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production-review.md",
+      "sha256": "e9fd73e14ca90a16ab5c8dc708a680c061c2813e92d6ef128653650143a8953d"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production-validation.md",
+      "sha256": "d0a33305456269fd62e1428f1fbdc2dea8f7163131d9efde433744bfa364b0b0"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/consent-before.json",
+      "sha256": "a8a47b4f18fcf5f42c8d9bab8ca7e473313d56f70bfd0ed64af69339169ec7e7"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/controlled-click.json",
+      "sha256": "a4fb5ef1bff7d323a0eab0780e55d6cdc827dc437d6b2dc243f38e2fcbef6a6e"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/controlled-final-cta.json",
+      "sha256": "94ac05c32332a6857b204f6da883533f1981d5ab737e4a2d7a8b8d0c3e39dc3d"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/cta-after-second-action-first-read.json",
+      "sha256": "989ecb5350669b2ccb4622f420029402bc200b88f7d2917851d6a82a5bdae16a"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-parameters.json",
+      "sha256": "bc65eaa7b487e465890eef6e9214b56683d9bb53043b0c57d313ba1494a55be9"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-two-ctas.json",
+      "sha256": "252ff44f5f83c9e0ad003d9add3ee6cc3d7bd41ee9633b5824cf934b69b198f1"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-two-actions-parameters.json",
+      "sha256": "502ba7255e2d26522fc2fc67bfb8e257d48e51e8ce7fbc3f9c0b4fbf0fdd9fb5"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-after.json",
+      "sha256": "891dd4a1789a508164c1cd67af320f5e3081baac0cbd4283bf1f8f8d18675bde"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-before.json",
+      "sha256": "90a25f6abd3cc9abd9b7aa8df843ae472cec6b8e0c01a84a296e107edab3b1bf"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-visible-pages.json",
+      "sha256": "5f64bd2cfdc6f26e0c41b3c48d18583fdf94a682b7718d6f3c5cd3a10649d511"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-final-opened.json",
+      "sha256": "001bcfd63d48e09e98e8f3fdae5c6f38188d368e1c03f9488c8191f1169b02c6"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-opened.json",
+      "sha256": "e91934330b3fef797365ae02a9df277cf7c742b6cf2d14f5d5955edff2bf26d2"
+    },
+    {
+      "path": "docs/analytics/gtm/published-v5-before-activation.json",
+      "sha256": "4f621fc4a8232cf6ff7fc5b46e044ec224d9590d371c79aa247bd2b27100a99c"
+    },
+    {
+      "path": "docs/analytics/gtm/workspace-final-export-2026-10-24.json",
+      "sha256": "f2515c8568f1a3eecfcbec768e97cf607a719a3366e112b5c72438026030e614"
+    }
+  ],
+  "scan": {
+    "patterns": [
+      "gtm_preview_auth",
+      "bearer",
+      "private_key",
+      "vercel_bypass",
+      "google_api_key"
+    ],
+    "findings": []
+  },
+  "excludedAfterIndependentReview": [
+    "docs/analytics/evidence/production-recheck/booking-link.json",
+    "docs/analytics/evidence/production-recheck/ui-results.json"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "commercial": [
+    "departures_modal_reserve",
+    "bottom_cta_no_dates",
+    "bottom_cta_whatsapp",
+    "sidebar_no_dates",
+    "sidebar_doubts",
+    "mobile_bottom_bar_no_dates",
+    "mobile_bottom_bar_whatsapp",
+    "private_trip_section",
+    "presupuesto_bottom_cta"
+  ],
+  "excludedFromCommercial": [
+    "bottom_cta_community",
+    "sidebar_community",
+    "bottom_cta_waitlist",
+    "departures_modal_waitlist",
+    "departures_modal_community"
+  ],
+  "mixedIntentSeparateTab": [
+    "cuando_viajar_bottom_cta"
+  ],
+  "fallbackUnclassified": [
+    "destination_page"
+  ],
+  "tripDetailLiteralLocations": [
+    "bottom_cta_community",
+    "bottom_cta_no_dates",
+    "bottom_cta_waitlist",
+    "bottom_cta_whatsapp",
+    "departures_modal_reserve",
+    "mobile_bottom_bar_no_dates",
+    "mobile_bottom_bar_whatsapp",
+    "sidebar_community",
+    "sidebar_doubts",
+    "sidebar_no_dates"
+  ],
+  "sourceEmitters": [
+    "src/components/TripDetailPage.tsx",
+    "src/pages/destino/[slug].astro",
+    "src/pages/presupuesto/[slug].astro",
+    "src/pages/cuando-viajar-a/[slug].astro"
+  ],
+  "note": "Current scripts for presupuesto/cuando-viajar share fallback location across anchors. No hero/bottom inference. Classification is click intent, not received inquiry."
+}

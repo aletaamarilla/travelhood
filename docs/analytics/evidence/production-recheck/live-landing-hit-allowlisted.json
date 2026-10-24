@@ -1,0 +1,13 @@
+{
+  "observedAtUtc": "2026-10-24T16:41:03.181Z",
+  "environment": "Tag Assistant Live published web; sent hit is not GA4 report receipt",
+  "target": "G-XQMPJG8B08",
+  "rows": [
+    "Nombre del eventoen private_trip_landing_view ",
+    "Parámetro de eventoep.context private_trip ",
+    "Parámetro de eventoep.measurement_version 1 ",
+    "Parámetro de eventoep.page viajes_privados ",
+    "Ubicación de la páginadl https://travelhood.es/viajes-privados/ ",
+    "Vista de depuración_dbg 1 "
+  ]
+}

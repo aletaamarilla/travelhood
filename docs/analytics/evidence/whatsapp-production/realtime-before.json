@@ -1,0 +1,20 @@
+[
+  {
+    "observedAtUtc": "2026-10-24T17:13:47.003Z",
+    "tables": [
+      " Nombre del evento  Número de eventos  page_view  46  user_engagement  39  destination_view  22  session_start  14  search_started  10  first_visit  7 "
+    ]
+  },
+  {
+    "observedAtUtc": "2026-10-24T17:13:48.283Z",
+    "tables": [
+      " Nombre del evento  Número de eventos  destination_dates_price_interaction  4  destination_specific_selected  3  home_search_submitted  3  private_trip_landing_view  3  search_results_navigation  2  collaborator_click  1 "
+    ]
+  },
+  {
+    "observedAtUtc": "2026-10-24T17:13:49.466Z",
+    "tables": [
+      " Nombre del evento  Número de eventos  destination_any_selected  1  destination_direct_navigation  1  destination_whatsapp_click  1 "
+    ]
+  }
+]

@@ -1,0 +1,1429 @@
+{
+  "method": "Actual Google SDK using GTM Preview workspace 6; fetch/beacon observations only, no complete network capture; DebugView separately verified",
+  "beforeWithdrawal": {
+    "environment": "Local built Astro UI, real GTM/Google SDK; transport attempts do NOT prove GA4 receipt",
+    "documentId": "1792853805668-bz2wg1",
+    "route": "/viajes-privados/",
+    "scenario": "manual",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "phase1Ready": true,
+    "googleDisabled": false,
+    "sharedContainerScripts": 1,
+    "canaryLoads": 0,
+    "consentDefaults": 1,
+    "cookiesPresent": [
+      "th_cookie_consent",
+      "_ga",
+      "_ga_XQMPJG8B08"
+    ],
+    "events": [
+      {
+        "event": "th_page_view",
+        "th_event": {
+          "name": "page_view",
+          "parameters": {
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_landing_view",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "th_event": {
+          "name": "private_trip_landing_view",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "consent",
+        "operation": "default",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied",
+          "functionality_storage": "granted",
+          "security_storage": "granted"
+        }
+      }
+    ],
+    "transportAttempts": [
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.measurement_version",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "page_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          },
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_landing_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      }
+    ]
+  },
+  "denied": {
+    "environment": "Local built Astro UI, real GTM/Google SDK; transport attempts do NOT prove GA4 receipt",
+    "documentId": "1792853805668-bz2wg1",
+    "route": "/viajes-privados/",
+    "scenario": "manual",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "phase1Ready": true,
+    "googleDisabled": true,
+    "sharedContainerScripts": 1,
+    "canaryLoads": 0,
+    "consentDefaults": 1,
+    "cookiesPresent": [
+      "th_cookie_consent"
+    ],
+    "events": [
+      {
+        "event": "th_page_view",
+        "th_event": {
+          "name": "page_view",
+          "parameters": {
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_landing_view",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "th_event": {
+          "name": "private_trip_landing_view",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "consent",
+        "operation": "default",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied",
+          "functionality_storage": "granted",
+          "security_storage": "granted"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "denied",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      }
+    ],
+    "transportAttempts": [
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.measurement_version",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "page_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          },
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_landing_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      }
+    ]
+  },
+  "deniedStable": {
+    "environment": "Local built Astro UI, real GTM/Google SDK; transport attempts do NOT prove GA4 receipt",
+    "documentId": "1792853805668-bz2wg1",
+    "route": "/viajes-privados/",
+    "scenario": "manual",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "phase1Ready": true,
+    "googleDisabled": true,
+    "sharedContainerScripts": 1,
+    "canaryLoads": 0,
+    "consentDefaults": 1,
+    "cookiesPresent": [
+      "th_cookie_consent"
+    ],
+    "events": [
+      {
+        "event": "th_page_view",
+        "th_event": {
+          "name": "page_view",
+          "parameters": {
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_landing_view",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "th_event": {
+          "name": "private_trip_landing_view",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "consent",
+        "operation": "default",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied",
+          "functionality_storage": "granted",
+          "security_storage": "granted"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "denied",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      }
+    ],
+    "transportAttempts": [
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.measurement_version",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "page_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          },
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_landing_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      }
+    ]
+  },
+  "regrant": {
+    "environment": "Local built Astro UI, real GTM/Google SDK; transport attempts do NOT prove GA4 receipt",
+    "documentId": "1792853805668-bz2wg1",
+    "route": "/viajes-privados/",
+    "scenario": "manual",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "phase1Ready": true,
+    "googleDisabled": false,
+    "sharedContainerScripts": 1,
+    "canaryLoads": 0,
+    "consentDefaults": 1,
+    "cookiesPresent": [
+      "th_cookie_consent"
+    ],
+    "events": [
+      {
+        "event": "th_page_view",
+        "th_event": {
+          "name": "page_view",
+          "parameters": {
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_landing_view",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "th_event": {
+          "name": "private_trip_landing_view",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "consent",
+        "operation": "default",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied",
+          "functionality_storage": "granted",
+          "security_storage": "granted"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "denied",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      }
+    ],
+    "transportAttempts": [
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.measurement_version",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "page_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          },
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_landing_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      }
+    ]
+  },
+  "afterRegrantClick": {
+    "environment": "Local built Astro UI, real GTM/Google SDK; transport attempts do NOT prove GA4 receipt",
+    "documentId": "1792853805668-bz2wg1",
+    "route": "/viajes-privados/",
+    "scenario": "manual",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "phase1Ready": true,
+    "googleDisabled": false,
+    "sharedContainerScripts": 1,
+    "canaryLoads": 0,
+    "consentDefaults": 1,
+    "cookiesPresent": [
+      "th_cookie_consent",
+      "_ga_XQMPJG8B08",
+      "_ga"
+    ],
+    "events": [
+      {
+        "event": "th_page_view",
+        "th_event": {
+          "name": "page_view",
+          "parameters": {
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_landing_view",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "th_event": {
+          "name": "private_trip_landing_view",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      },
+      {
+        "event": "private_trip_whatsapp_click",
+        "page": "viajes_privados",
+        "context": "private_trip",
+        "cta": "hero",
+        "has_utm": false,
+        "th_event": {
+          "name": "private_trip_whatsapp_click",
+          "parameters": {
+            "page": "viajes_privados",
+            "context": "private_trip",
+            "cta": "hero",
+            "has_utm": false,
+            "measurement_version": "1",
+            "page_location": "https://travelhood.es/viajes-privados/",
+            "page_referrer": "",
+            "traffic_type": "developer",
+            "debug_mode": true
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "consent",
+        "operation": "default",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied",
+          "functionality_storage": "granted",
+          "security_storage": "granted"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "denied",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      },
+      {
+        "command": "consent",
+        "operation": "update",
+        "value": {
+          "analytics_storage": "granted",
+          "ad_storage": "denied",
+          "ad_user_data": "denied",
+          "ad_personalization": "denied"
+        }
+      }
+    ],
+    "transportAttempts": [
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.measurement_version",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "page_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          },
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_landing_view",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_et",
+              "_eu",
+              "_p",
+              "_s",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      },
+      {
+        "method": "attempt observed before native transport",
+        "events": [
+          {
+            "keys": [
+              "_fv",
+              "_nsi",
+              "_p",
+              "_s",
+              "_ss",
+              "_tu",
+              "cid",
+              "dl",
+              "dma",
+              "dma_cps",
+              "dr",
+              "dt",
+              "en",
+              "ep.context",
+              "ep.cta",
+              "ep.has_utm",
+              "ep.measurement_version",
+              "ep.page",
+              "epn.debug_mode",
+              "frm",
+              "gcd",
+              "gcs",
+              "gtm",
+              "ngs",
+              "npa",
+              "pscdl",
+              "rcb",
+              "sct",
+              "seg",
+              "sid",
+              "sr",
+              "tag_exp",
+              "tfd",
+              "tid",
+              "tt",
+              "uaa",
+              "uab",
+              "uafvl",
+              "uam",
+              "uamb",
+              "uap",
+              "uapv",
+              "uaw",
+              "ul",
+              "v"
+            ],
+            "tid": "G-XQMPJG8B08",
+            "en": "private_trip_whatsapp_click",
+            "dl": "https://travelhood.es/viajes-privados/",
+            "dr": "",
+            "ep.measurement_version": "1",
+            "epn.debug_mode": "1",
+            "tt": "developer"
+          }
+        ]
+      }
+    ]
+  }
+}

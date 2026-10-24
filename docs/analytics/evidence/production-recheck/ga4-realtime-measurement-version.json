@@ -1,0 +1,10 @@
+{
+  "observedAtUtc": "2026-10-24T16:42:27.916Z",
+  "property": "498178258",
+  "event": "search_started",
+  "parameter": "measurement_version",
+  "tables": [
+    " Valor del parámetro de evento  Número de eventos  1  4 "
+  ],
+  "scope": "GA4 Realtime aggregate; not per-document attribution"
+}

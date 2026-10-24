@@ -1,0 +1,56 @@
+{
+  "id": "dpl_Ga8t8AHeEnHxFiajvf22GQiENBbw",
+  "url": "travelhood-jra2vygh6-travelhood.vercel.app",
+  "readyState": "READY",
+  "target": "production",
+  "alias": [
+    "travelhood-travelhood.vercel.app"
+  ],
+  "projectId": "prj_TSXlJpmhHCA0I0cA1MAlKECTuELR",
+  "teamId": null,
+  "analyticsMetadata": {
+    "analyticsCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+    "analyticsBaseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942"
+  },
+  "observedAtUtc": "2026-10-24T15:37:59.903175+00:00",
+  "publicResponses": [
+    {
+      "requestedHost": "travelhood.es",
+      "status": 200,
+      "finalUrl": "https://travelhood.es/viajes-privados/",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02",
+      "gtmIdPresent": true,
+      "gaIdPresent": true,
+      "previewCredentialsAbsent": true,
+      "qaFixtureAbsent": true,
+      "bootstrapPhase1ReadyTrue": true,
+      "bootstrapCount": 1
+    },
+    {
+      "requestedHost": "www.travelhood.es",
+      "status": 200,
+      "finalUrl": "https://travelhood.es/viajes-privados/",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02",
+      "gtmIdPresent": true,
+      "gaIdPresent": true,
+      "previewCredentialsAbsent": true,
+      "qaFixtureAbsent": true,
+      "bootstrapPhase1ReadyTrue": true,
+      "bootstrapCount": 1
+    }
+  ],
+  "checks": [
+    {
+      "check": "production-visibility",
+      "exitCode": 0
+    },
+    {
+      "check": "production-favicons",
+      "exitCode": 0
+    }
+  ],
+  "publishedGtmVersion": "6",
+  "gtmPublishedAtUtc": "2026-10-24T15:36:26Z",
+  "mixedActivationWindowSeconds": 13,
+  "mixedActivationWindowNote": "GTM UI publication time to Vercel promote success; existing open documents and caches can prolong coexistence. Not a reliable measurement interval."
+}

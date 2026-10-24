@@ -1,0 +1,12 @@
+{
+  "recordedAtUtc": "2026-10-24T18:57:24.698730+00:00",
+  "check": "favicons",
+  "exitCode": 0,
+  "command": [
+    "npm",
+    "run",
+    "check:favicons"
+  ],
+  "environment": "Local assets and layout",
+  "evidence": "phase1-git-favicons.log"
+}

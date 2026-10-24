@@ -1,0 +1,32 @@
+{
+  "recordedAtUtc": "2026-10-24T18:57:50.590377+00:00",
+  "sourceCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
+  "deployment": "dpl_EaDzd9bcJ48mJ8oC7DqXF3xtcKoz",
+  "publicResponses": [
+    {
+      "requestedHost": "travelhood.es",
+      "status": 200,
+      "finalUrl": "https://travelhood.es/viajes-privados/",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02",
+      "gtmIdPresent": true,
+      "gaIdPresent": true,
+      "bootstrapCount": 1,
+      "bootstrapPhase1ReadyTrue": true,
+      "previewCredentialsAbsent": true,
+      "qaFixtureAbsent": true
+    },
+    {
+      "requestedHost": "www.travelhood.es",
+      "status": 200,
+      "finalUrl": "https://travelhood.es/viajes-privados/",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02",
+      "gtmIdPresent": true,
+      "gaIdPresent": true,
+      "bootstrapCount": 1,
+      "bootstrapPhase1ReadyTrue": true,
+      "previewCredentialsAbsent": true,
+      "qaFixtureAbsent": true
+    }
+  ],
+  "scope": "HTTP/static release identity only; not browser consent or GA4 receipt"
+}

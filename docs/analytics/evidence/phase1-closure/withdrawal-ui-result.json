@@ -1,0 +1,22 @@
+{
+  "observedAtUtc": "2026-10-24T19:04:08.987Z",
+  "environment": "production travelhood.es",
+  "initial": {
+    "analytics": true,
+    "marketing": false
+  },
+  "steps": [
+    "Open Gestionar cookies",
+    "Uncheck analytics",
+    "Guardar preferencias",
+    "Reopen Gestionar cookies"
+  ],
+  "observedPersisted": {
+    "analytics": false,
+    "marketing": false,
+    "necessary": true
+  },
+  "result": "PASS UI preference withdrawal and persistence in same document",
+  "networkResult": "NOT VERIFIED: Tag Assistant no longer actively connected; no live network capture available",
+  "noReloadDuringPreferenceChange": true
+}

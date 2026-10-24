@@ -1,0 +1,29 @@
+
+> travelhood@0.1.0 test:analytics-gtm
+> npx tsx scripts/prepare-analytics-gtm.test.ts
+
+{
+  "result": "passed",
+  "environment": "Local structural/semantic checks and VM of generated JS; NOT GTM UI import/compiler, native Google SDK, DebugView or reports",
+  "originalUnchanged": true,
+  "tags": 2,
+  "modifiedTags": 1,
+  "metaOutOfScope": true,
+  "importModeRequired": "COMBINE",
+  "newTags": 1,
+  "variables": 27,
+  "eventParameters": 24,
+  "triggers": 1,
+  "eventNames": 19,
+  "checks": [
+    "tenant and IDs preserved",
+    "Meta entirely absent from partial import; original unchanged; COMBINE required",
+    "Google configuration starts first on owned events once/document; no async setup on dynamic event; automatic pageview false",
+    "one native GA4 Event tag, analytics consent required on both",
+    "exact event allowlist and pageview mapping",
+    "consent matrix, SDK opt-out and storage block guard",
+    "no parameter inheritance, no free-text fields mapped",
+    "all references and entity IDs valid",
+    "foreign containers and additional work rejected"
+  ]
+}

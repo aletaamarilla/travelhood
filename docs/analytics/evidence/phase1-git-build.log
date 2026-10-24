@@ -1,0 +1,310 @@
+Vercel CLI 50.0.0
+Fetching deployment "travelhood-nwklifbm0-travelhood.vercel.app" in travelhood
+2026-10-24T18:52:20.822Z  Running build in Washington, D.C., USA (East) – iad1
+2026-10-24T18:52:20.823Z  Build machine configuration: 30 cores, 60 GB (Turbo Build Machine)
+2026-10-24T18:52:20.923Z  Cloning github.com/aletaamarilla/travelhood (Branch: main, Commit: 42e873b)
+2026-10-24T18:52:21.619Z  Cloning completed: 694.000ms
+2026-10-24T18:52:21.677Z  Restored build cache from previous deployment (Ga8t8AHeEnHxFiajvf22GQiENBbw)
+2026-10-24T18:52:21.915Z  Running "vercel build"
+2026-10-24T18:52:21.922Z  Vercel CLI 65.1.0
+2026-10-24T18:52:22.464Z  Installing dependencies...
+2026-10-24T18:52:23.590Z  npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-10-24T18:52:24.198Z  
+2026-10-24T18:52:24.199Z  up to date in 943ms
+2026-10-24T18:52:24.199Z  
+2026-10-24T18:52:24.199Z  194 packages are looking for funding
+2026-10-24T18:52:24.199Z  run `npm fund` for details
+2026-10-24T18:52:24.200Z  npm warn install-scripts 5 packages have install scripts not yet covered by allowScripts:
+2026-10-24T18:52:24.200Z  npm warn install-scripts   esbuild@0.27.3 (postinstall: node install.js)
+2026-10-24T18:52:24.200Z  npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
+2026-10-24T18:52:24.200Z  npm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)
+2026-10-24T18:52:24.200Z  npm warn install-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+2026-10-24T18:52:24.200Z  npm warn install-scripts   esbuild@0.27.3 (postinstall: node install.js)
+2026-10-24T18:52:24.200Z  npm warn install-scripts
+2026-10-24T18:52:24.200Z  npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+2026-10-24T18:52:24.236Z  Running "npm run build"
+2026-10-24T18:52:24.313Z  npm warn Unknown env config "cache-dir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+2026-10-24T18:52:24.328Z  
+2026-10-24T18:52:24.329Z  > travelhood@0.1.0 build
+2026-10-24T18:52:24.329Z  > astro build && node scripts/inject-redirects.mjs
+2026-10-24T18:52:24.329Z  
+2026-10-24T18:52:25.399Z  18:52:25 [content] Syncing content
+2026-10-24T18:52:25.402Z  18:52:25 [content] Synced content
+2026-10-24T18:52:25.402Z  18:52:25 [types] Generated 39ms
+2026-10-24T18:52:25.403Z  18:52:25 [build] output: "static"
+2026-10-24T18:52:25.403Z  18:52:25 [build] mode: "static"
+2026-10-24T18:52:25.403Z  18:52:25 [build] directory: /vercel/path0/dist/
+2026-10-24T18:52:25.403Z  18:52:25 [build] adapter: @astrojs/vercel
+2026-10-24T18:52:25.403Z  18:52:25 [build] Collecting build info...
+2026-10-24T18:52:25.404Z  18:52:25 [build] ✓ Completed in 80ms.
+2026-10-24T18:52:25.405Z  18:52:25 [build] Building static entrypoints...
+2026-10-24T18:52:27.067Z  18:52:27 [WARN] [vite] "Star" is imported from external module "lucide-react" but never used in "src/components/TripDetailPage.tsx".
+2026-10-24T18:52:27.225Z  18:52:27 [vite] ✓ built in 1.78s
+2026-10-24T18:52:27.225Z  18:52:27 [build] ✓ Completed in 1.82s.
+2026-10-24T18:52:27.226Z  
+2026-10-24T18:52:27.226Z  building client (vite)
+2026-10-24T18:52:27.235Z  18:52:27 [vite] transforming...
+2026-10-24T18:52:29.758Z  18:52:29 [vite] ✓ 2605 modules transformed.
+2026-10-24T18:52:29.845Z  18:52:29 [vite] rendering chunks...
+2026-10-24T18:52:29.912Z  18:52:29 [vite] computing gzip size...
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/index.cthNB-FE.js                                                   0.06 kB │ gzip:  0.08 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/ContinentFAQ.-RINTPu_.js                                            0.29 kB │ gzip:  0.20 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/coordinador.astro_astro_type_script_index_0_lang.CG4clTy7.js        0.31 kB │ gzip:  0.23 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.D1qHKLel.js             0.41 kB │ gzip:  0.28 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.B4HP9MX6.js             0.43 kB │ gzip:  0.30 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.DotcsT8q.js             0.44 kB │ gzip:  0.31 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/users.DGWMI12Z.js                                                   0.49 kB │ gzip:  0.33 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/Footer.astro_astro_type_script_index_0_lang.uU_6vR11.js             0.66 kB │ gzip:  0.41 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/ContinentFAQ.wPMZte13.js                                            0.72 kB │ gzip:  0.45 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/jsx-runtime.D_zvdyIk.js                                             0.73 kB │ gzip:  0.46 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/config.CpGcvEhv.js                                                  0.95 kB │ gzip:  0.53 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/viajes-privados.astro_astro_type_script_index_0_lang.DQb7g9vD.js    1.13 kB │ gzip:  0.55 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/consent.DnWISI3l.js                                                 1.18 kB │ gzip:  0.61 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/FAQSection.Dz_UCq6T.js                                              1.36 kB │ gzip:  0.70 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/LegalContent.B87y_jOg.js                                            1.82 kB │ gzip:  0.75 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/page.BT_9kWGp.js                                                    2.25 kB │ gzip:  1.01 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/x.Dj5UZkmN.js                                                       2.25 kB │ gzip:  0.66 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/createLucideIcon.DQQGHQhH.js                                        2.58 kB │ gzip:  0.81 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/Layout.astro_astro_type_script_index_0_lang.D9TiUQ92.js             3.50 kB │ gzip:  1.32 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/index.XeJbqeyU.js                                                   3.89 kB │ gzip:  1.52 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/CookieBanner.C7VtT13s.js                                            4.14 kB │ gzip:  1.33 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/SearchIsland.wVyxpmdS.js                                            4.38 kB │ gzip:  1.69 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/LeadMagnet.XggN-mHq.js                                              4.73 kB │ gzip:  2.04 kB
+2026-10-24T18:52:29.921Z  18:52:29 [vite] dist/_astro/BlogContent.Yfcm47yh.js                                             4.84 kB │ gzip:  1.57 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/SeasonExplorer.BJZfPTpn.js                                          5.46 kB │ gzip:  2.20 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/index.DIfZGIpv.js                                                   8.37 kB │ gzip:  3.28 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/accordion.CMwYez7W.js                                              15.87 kB │ gzip:  5.47 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/search-options.cXx8aPcr.js                                         23.33 kB │ gzip:  7.35 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/SearchPage.DpUhaELP.js                                             25.64 kB │ gzip:  7.66 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/es.DZT1p-oa.js                                                     25.87 kB │ gzip:  7.07 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/utils.C7DmBj9g.js                                                  27.06 kB │ gzip:  8.59 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/TripDetailPage.BPidBL8h.js                                         64.43 kB │ gzip: 15.55 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/leaflet-src.DuBtAOjT.js                                           150.05 kB │ gzip: 43.59 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] dist/_astro/client.Dhq_i1tP.js                                                182.74 kB │ gzip: 57.61 kB
+2026-10-24T18:52:29.922Z  18:52:29 [vite] ✓ built in 2.69s
+2026-10-24T18:52:29.940Z  
+2026-10-24T18:52:29.940Z  generating static routes
+2026-10-24T18:52:29.944Z  18:52:29 λ src/pages/.well-known/agent-skills/index.json.ts
+2026-10-24T18:52:29.957Z  18:52:29   └─ /.well-known/agent-skills/index.json (+12ms)
+2026-10-24T18:52:29.958Z  18:52:29 λ src/pages/.well-known/agent-skills/preparar-contacto-whatsapp.md.ts
+2026-10-24T18:52:29.959Z  18:52:29   └─ /.well-known/agent-skills/preparar-contacto-whatsapp.md (+1ms)
+2026-10-24T18:52:29.960Z  18:52:29 λ src/pages/.well-known/agent-skills/recomendar-viaje.md.ts
+2026-10-24T18:52:29.961Z  18:52:29   └─ /.well-known/agent-skills/recomendar-viaje.md (+1ms)
+2026-10-24T18:52:29.961Z  18:52:29 λ src/pages/.well-known/api-catalog.ts
+2026-10-24T18:52:29.962Z  18:52:29   └─ /.well-known/api-catalog (+1ms)
+2026-10-24T18:52:30.068Z  18:52:30 λ src/pages/.well-known/travelhood-home.md.ts
+2026-10-24T18:52:30.359Z  The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.
+2026-10-24T18:52:30.404Z  18:52:30   └─ /.well-known/travelhood-home.md (+336ms)
+2026-10-24T18:52:30.412Z  18:52:30 ▶ src/pages/404.astro
+2026-10-24T18:52:30.990Z  18:52:30   └─ /404.html (+578ms)
+2026-10-24T18:52:30.993Z  18:52:30 ▶ src/pages/blog/[slug].astro
+2026-10-24T18:52:31.712Z  18:52:31   ├─ /blog/viajar-tailandia-grupo-reducido/index.html (+570ms)
+2026-10-24T18:52:32.300Z  18:52:31   ├─ /blog/top-destinos-tendencia-viaje-grupo/index.html (+588ms)
+2026-10-24T18:52:32.904Z  18:52:32   ├─ /blog/por-que-elegir-viaje-grupo-reducido/index.html (+604ms)
+2026-10-24T18:52:33.517Z  18:52:32   ├─ /blog/maldivas-grupo-reducido-experiencia/index.html (+613ms)
+2026-10-24T18:52:33.991Z  18:52:33   ├─ /blog/templos-tailandia-imprescindibles/index.html (+474ms)
+2026-10-24T18:52:34.588Z  18:52:33   ├─ /blog/seguro-viaje-tailandia-guia/index.html (+597ms)
+2026-10-24T18:52:35.075Z  18:52:34   ├─ /blog/como-cambiar-dinero-tailandia/index.html (+487ms)
+2026-10-24T18:52:35.546Z  18:52:35   ├─ /blog/bangkok-mejores-rooftops/index.html (+471ms)
+2026-10-24T18:52:36.080Z  18:52:35   ├─ /blog/guia-definitiva-tailandia/index.html (+534ms)
+2026-10-24T18:52:36.694Z  18:52:36   ├─ /blog/vacunas-salud-viajar-tailandia/index.html (+613ms)
+2026-10-24T18:52:37.179Z  18:52:36   └─ /blog/tren-sri-lanka-ruta-magica/index.html (+485ms)
+2026-10-24T18:52:37.183Z  18:52:37 ▶ src/pages/blog.astro
+2026-10-24T18:52:37.607Z  18:52:37   └─ /blog/index.html (+423ms)
+2026-10-24T18:52:37.613Z  18:52:37 ▶ src/pages/colaboradores.astro
+2026-10-24T18:52:38.088Z  18:52:37   └─ /colaboradores/index.html (+475ms)
+2026-10-24T18:52:38.229Z  18:52:38 ▶ src/pages/como-funciona.astro
+2026-10-24T18:52:38.646Z  18:52:38   └─ /como-funciona/index.html (+417ms)
+2026-10-24T18:52:38.649Z  18:52:38 ▶ src/pages/comparar/[slug].astro
+2026-10-24T18:52:39.360Z  18:52:38   ├─ /comparar/azores-vs-islandia/index.html (+559ms)
+2026-10-24T18:52:39.895Z  18:52:39   ├─ /comparar/azores-vs-lofoten/index.html (+536ms)
+2026-10-24T18:52:40.481Z  18:52:39   ├─ /comparar/brasil-vs-colombia/index.html (+586ms)
+2026-10-24T18:52:41.031Z  18:52:40   ├─ /comparar/brasil-vs-puerto-rico/index.html (+549ms)
+2026-10-24T18:52:41.587Z  18:52:41   ├─ /comparar/egipto-vs-zanzibar/index.html (+557ms)
+2026-10-24T18:52:42.110Z  18:52:41   ├─ /comparar/sri-lanka-verano-vs-filipinas-verano/index.html (+523ms)
+2026-10-24T18:52:42.622Z  18:52:42   ├─ /comparar/tailandia-verano-vs-filipinas-verano/index.html (+512ms)
+2026-10-24T18:52:43.169Z  18:52:42   ├─ /comparar/indonesia-vs-sri-lanka-verano/index.html (+547ms)
+2026-10-24T18:52:43.652Z  18:52:43   ├─ /comparar/indonesia-vs-tailandia-verano/index.html (+483ms)
+2026-10-24T18:52:44.161Z  18:52:43   ├─ /comparar/islandia-vs-laponia/index.html (+508ms)
+2026-10-24T18:52:44.636Z  18:52:44   ├─ /comparar/laponia-vs-lofoten/index.html (+475ms)
+2026-10-24T18:52:45.116Z  18:52:44   └─ /comparar/maldivas-vs-zanzibar/index.html (+481ms)
+2026-10-24T18:52:45.119Z  18:52:45 ▶ src/pages/coordinador.astro
+2026-10-24T18:52:45.589Z  18:52:45   └─ /coordinador/index.html (+470ms)
+2026-10-24T18:52:45.592Z  18:52:45 ▶ src/pages/cuando-viajar-a/[slug].astro
+2026-10-24T18:52:46.244Z  18:52:45   ├─ /cuando-viajar-a/azores/index.html (+493ms)
+2026-10-24T18:52:46.719Z  18:52:46   ├─ /cuando-viajar-a/brasil/index.html (+475ms)
+2026-10-24T18:52:47.175Z  18:52:46   ├─ /cuando-viajar-a/brasil-carnaval/index.html (+456ms)
+2026-10-24T18:52:47.764Z  18:52:47   ├─ /cuando-viajar-a/camino-de-santiago/index.html (+589ms)
+2026-10-24T18:52:48.274Z  18:52:47   ├─ /cuando-viajar-a/colombia/index.html (+510ms)
+2026-10-24T18:52:48.688Z  18:52:48   ├─ /cuando-viajar-a/costa-rica/index.html (+414ms)
+2026-10-24T18:52:49.113Z  18:52:48   ├─ /cuando-viajar-a/dolomitas/index.html (+424ms)
+2026-10-24T18:52:49.762Z  18:52:49   ├─ /cuando-viajar-a/egipto/index.html (+649ms)
+2026-10-24T18:52:50.173Z  18:52:49   ├─ /cuando-viajar-a/filipinas-navidad/index.html (+411ms)
+2026-10-24T18:52:50.590Z  18:52:50   ├─ /cuando-viajar-a/filipinas-invierno/index.html (+417ms)
+2026-10-24T18:52:51.001Z  18:52:50   ├─ /cuando-viajar-a/filipinas-verano/index.html (+411ms)
+2026-10-24T18:52:51.438Z  18:52:51   ├─ /cuando-viajar-a/guatemala/index.html (+437ms)
+2026-10-24T18:52:51.857Z  18:52:51   ├─ /cuando-viajar-a/indonesia/index.html (+419ms)
+2026-10-24T18:52:52.303Z  18:52:51   ├─ /cuando-viajar-a/islandia/index.html (+446ms)
+2026-10-24T18:52:52.763Z  18:52:52   ├─ /cuando-viajar-a/japon/index.html (+460ms)
+2026-10-24T18:52:53.351Z  18:52:52   ├─ /cuando-viajar-a/kenia/index.html (+588ms)
+2026-10-24T18:52:53.765Z  18:52:53   ├─ /cuando-viajar-a/laponia/index.html (+414ms)
+2026-10-24T18:52:54.259Z  18:52:53   ├─ /cuando-viajar-a/lofoten/index.html (+494ms)
+2026-10-24T18:52:54.699Z  18:52:54   ├─ /cuando-viajar-a/maldivas/index.html (+440ms)
+2026-10-24T18:52:55.183Z  18:52:54   ├─ /cuando-viajar-a/praga/index.html (+484ms)
+2026-10-24T18:52:55.609Z  18:52:55   ├─ /cuando-viajar-a/puerto-rico/index.html (+426ms)
+2026-10-24T18:52:56.053Z  18:52:55   ├─ /cuando-viajar-a/sri-lanka-invierno/index.html (+444ms)
+2026-10-24T18:52:56.564Z  18:52:56   ├─ /cuando-viajar-a/sri-lanka-otono/index.html (+510ms)
+2026-10-24T18:52:56.997Z  18:52:56   ├─ /cuando-viajar-a/sri-lanka-verano/index.html (+432ms)
+2026-10-24T18:52:57.418Z  18:52:56   ├─ /cuando-viajar-a/tailandia-festival-linternas/index.html (+422ms)
+2026-10-24T18:52:57.854Z  18:52:57   ├─ /cuando-viajar-a/tailandia-invierno/index.html (+436ms)
+2026-10-24T18:52:58.310Z  18:52:57   ├─ /cuando-viajar-a/tailandia-verano/index.html (+456ms)
+2026-10-24T18:52:58.709Z  18:52:58   ├─ /cuando-viajar-a/vietnam/index.html (+398ms)
+2026-10-24T18:52:59.170Z  18:52:58   └─ /cuando-viajar-a/zanzibar/index.html (+461ms)
+2026-10-24T18:52:59.175Z  18:52:59 ▶ src/pages/destino/[slug].astro
+2026-10-24T18:53:00.129Z  18:52:59   ├─ /destino/azores/index.html (+787ms)
+2026-10-24T18:53:01.235Z  18:53:00   ├─ /destino/brasil/index.html (+1.11s)
+2026-10-24T18:53:02.039Z  18:53:01   ├─ /destino/brasil-carnaval/index.html (+804ms)
+2026-10-24T18:53:02.792Z  18:53:02   ├─ /destino/camino-de-santiago/index.html (+753ms)
+2026-10-24T18:53:03.544Z  18:53:02   ├─ /destino/colombia/index.html (+752ms)
+2026-10-24T18:53:04.305Z  18:53:03   ├─ /destino/costa-rica/index.html (+761ms)
+2026-10-24T18:53:05.047Z  18:53:04   ├─ /destino/dolomitas/index.html (+742ms)
+2026-10-24T18:53:05.926Z  18:53:05   ├─ /destino/egipto/index.html (+879ms)
+2026-10-24T18:53:06.658Z  18:53:05   ├─ /destino/filipinas-navidad/index.html (+732ms)
+2026-10-24T18:53:07.572Z  18:53:06   ├─ /destino/filipinas-invierno/index.html (+914ms)
+2026-10-24T18:53:08.539Z  18:53:07   ├─ /destino/filipinas-verano/index.html (+967ms)
+2026-10-24T18:53:09.348Z  18:53:08   ├─ /destino/guatemala/index.html (+810ms)
+2026-10-24T18:53:10.263Z  18:53:09   ├─ /destino/indonesia/index.html (+915ms)
+2026-10-24T18:53:11.115Z  18:53:10   ├─ /destino/islandia/index.html (+852ms)
+2026-10-24T18:53:11.896Z  18:53:11   ├─ /destino/japon/index.html (+780ms)
+2026-10-24T18:53:12.643Z  18:53:11   ├─ /destino/kenia/index.html (+748ms)
+2026-10-24T18:53:13.434Z  18:53:12   ├─ /destino/laponia/index.html (+791ms)
+2026-10-24T18:53:14.191Z  18:53:13   ├─ /destino/lofoten/index.html (+756ms)
+2026-10-24T18:53:14.979Z  18:53:14   ├─ /destino/maldivas/index.html (+789ms)
+2026-10-24T18:53:15.815Z  18:53:14   ├─ /destino/praga/index.html (+836ms)
+2026-10-24T18:53:16.637Z  18:53:15   ├─ /destino/puerto-rico/index.html (+821ms)
+2026-10-24T18:53:17.389Z  18:53:16   ├─ /destino/sri-lanka-invierno/index.html (+752ms)
+2026-10-24T18:53:18.156Z  18:53:17   ├─ /destino/sri-lanka-otono/index.html (+767ms)
+2026-10-24T18:53:18.891Z  18:53:18   ├─ /destino/sri-lanka-verano/index.html (+736ms)
+2026-10-24T18:53:19.607Z  18:53:18   ├─ /destino/tailandia-festival-linternas/index.html (+716ms)
+2026-10-24T18:53:20.379Z  18:53:19   ├─ /destino/tailandia-invierno/index.html (+771ms)
+2026-10-24T18:53:21.097Z  18:53:20   ├─ /destino/tailandia-verano/index.html (+718ms)
+2026-10-24T18:53:22.025Z  18:53:21   ├─ /destino/vietnam/index.html (+928ms)
+2026-10-24T18:53:22.785Z  18:53:22   └─ /destino/zanzibar/index.html (+760ms)
+2026-10-24T18:53:24.971Z  18:53:24 ▶ src/pages/destinos/[slug].astro
+2026-10-24T18:53:25.668Z  18:53:25   ├─ /destinos/asia/index.html (+544ms)
+2026-10-24T18:53:26.139Z  18:53:25   ├─ /destinos/centroamerica/index.html (+471ms)
+2026-10-24T18:53:26.775Z  18:53:26   ├─ /destinos/europa/index.html (+636ms)
+2026-10-24T18:53:27.308Z  18:53:26   ├─ /destinos/sudamerica/index.html (+533ms)
+2026-10-24T18:53:27.792Z  18:53:27   └─ /destinos/africa/index.html (+484ms)
+2026-10-24T18:53:27.795Z  18:53:27 ▶ src/pages/legal/[slug].astro
+2026-10-24T18:53:28.461Z  18:53:27   ├─ /legal/aviso-legal/index.html (+543ms)
+2026-10-24T18:53:28.961Z  18:53:28   ├─ /legal/politica-de-cookies/index.html (+500ms)
+2026-10-24T18:53:29.524Z  18:53:28   ├─ /legal/politica-de-privacidad/index.html (+563ms)
+2026-10-24T18:53:30.062Z  18:53:29   └─ /legal/terminos-y-condiciones/index.html (+541ms)
+2026-10-24T18:53:30.070Z  18:53:30 ▶ src/pages/ofertas.astro
+2026-10-24T18:53:30.628Z  18:53:30   └─ /ofertas/index.html (+557ms)
+2026-10-24T18:53:30.631Z  18:53:30 ▶ src/pages/opiniones.astro
+2026-10-24T18:53:31.087Z  18:53:30   └─ /opiniones/index.html (+456ms)
+2026-10-24T18:53:31.097Z  18:53:31 ▶ src/pages/pais/[slug].astro
+2026-10-24T18:53:31.739Z  18:53:31   ├─ /pais/brasil/index.html (+532ms)
+2026-10-24T18:53:32.237Z  18:53:31   ├─ /pais/chequia/index.html (+498ms)
+2026-10-24T18:53:32.813Z  18:53:32   ├─ /pais/colombia/index.html (+576ms)
+2026-10-24T18:53:33.369Z  18:53:32   ├─ /pais/costa-rica/index.html (+556ms)
+2026-10-24T18:53:33.895Z  18:53:33   ├─ /pais/egipto/index.html (+526ms)
+2026-10-24T18:53:34.468Z  18:53:33   ├─ /pais/espana/index.html (+573ms)
+2026-10-24T18:53:34.972Z  18:53:34   ├─ /pais/filipinas/index.html (+504ms)
+2026-10-24T18:53:35.463Z  18:53:34   ├─ /pais/finlandia/index.html (+490ms)
+2026-10-24T18:53:35.930Z  18:53:35   ├─ /pais/guatemala/index.html (+467ms)
+2026-10-24T18:53:36.398Z  18:53:35   ├─ /pais/indonesia/index.html (+468ms)
+2026-10-24T18:53:36.898Z  18:53:36   ├─ /pais/islandia/index.html (+499ms)
+2026-10-24T18:53:37.361Z  18:53:36   ├─ /pais/italia/index.html (+464ms)
+2026-10-24T18:53:37.861Z  18:53:37   ├─ /pais/japon/index.html (+499ms)
+2026-10-24T18:53:38.401Z  18:53:37   ├─ /pais/kenia/index.html (+540ms)
+2026-10-24T18:53:38.870Z  18:53:38   ├─ /pais/maldivas/index.html (+469ms)
+2026-10-24T18:53:39.427Z  18:53:38   ├─ /pais/noruega/index.html (+558ms)
+2026-10-24T18:53:39.995Z  18:53:39   ├─ /pais/portugal/index.html (+568ms)
+2026-10-24T18:53:40.519Z  18:53:39   ├─ /pais/puerto-rico/index.html (+524ms)
+2026-10-24T18:53:41.057Z  18:53:40   ├─ /pais/sri-lanka/index.html (+538ms)
+2026-10-24T18:53:41.767Z  18:53:41   ├─ /pais/tailandia/index.html (+711ms)
+2026-10-24T18:53:42.323Z  18:53:41   ├─ /pais/tanzania/index.html (+556ms)
+2026-10-24T18:53:42.823Z  18:53:42   └─ /pais/vietnam/index.html (+500ms)
+2026-10-24T18:53:42.826Z  18:53:42 ▶ src/pages/preguntas-frecuentes.astro
+2026-10-24T18:53:43.227Z  18:53:42   └─ /preguntas-frecuentes/index.html (+401ms)
+2026-10-24T18:53:43.229Z  18:53:43 ▶ src/pages/presupuesto/[slug].astro
+2026-10-24T18:53:43.850Z  18:53:43   ├─ /presupuesto/azores/index.html (+430ms)
+2026-10-24T18:53:44.318Z  18:53:43   ├─ /presupuesto/brasil/index.html (+468ms)
+2026-10-24T18:53:44.756Z  18:53:44   ├─ /presupuesto/brasil-carnaval/index.html (+438ms)
+2026-10-24T18:53:45.199Z  18:53:44   ├─ /presupuesto/camino-de-santiago/index.html (+444ms)
+2026-10-24T18:53:45.846Z  18:53:45   ├─ /presupuesto/colombia/index.html (+647ms)
+2026-10-24T18:53:46.265Z  18:53:45   ├─ /presupuesto/costa-rica/index.html (+419ms)
+2026-10-24T18:53:46.712Z  18:53:46   ├─ /presupuesto/dolomitas/index.html (+447ms)
+2026-10-24T18:53:47.136Z  18:53:46   ├─ /presupuesto/egipto/index.html (+424ms)
+2026-10-24T18:53:47.590Z  18:53:47   ├─ /presupuesto/filipinas-navidad/index.html (+454ms)
+2026-10-24T18:53:48.002Z  18:53:47   ├─ /presupuesto/filipinas-invierno/index.html (+412ms)
+2026-10-24T18:53:48.463Z  18:53:48   ├─ /presupuesto/filipinas-verano/index.html (+462ms)
+2026-10-24T18:53:49.265Z  18:53:48   ├─ /presupuesto/guatemala/index.html (+802ms)
+2026-10-24T18:53:49.703Z  18:53:49   ├─ /presupuesto/indonesia/index.html (+438ms)
+2026-10-24T18:53:50.148Z  18:53:49   ├─ /presupuesto/islandia/index.html (+445ms)
+2026-10-24T18:53:50.609Z  18:53:50   ├─ /presupuesto/japon/index.html (+461ms)
+2026-10-24T18:53:51.082Z  18:53:50   ├─ /presupuesto/kenia/index.html (+474ms)
+2026-10-24T18:53:51.492Z  18:53:51   ├─ /presupuesto/laponia/index.html (+410ms)
+2026-10-24T18:53:52.079Z  18:53:51   ├─ /presupuesto/lofoten/index.html (+587ms)
+2026-10-24T18:53:52.533Z  18:53:52   ├─ /presupuesto/maldivas/index.html (+454ms)
+2026-10-24T18:53:52.955Z  18:53:52   ├─ /presupuesto/praga/index.html (+422ms)
+2026-10-24T18:53:53.361Z  18:53:52   ├─ /presupuesto/puerto-rico/index.html (+406ms)
+2026-10-24T18:53:53.768Z  18:53:53   ├─ /presupuesto/sri-lanka-invierno/index.html (+407ms)
+2026-10-24T18:53:54.214Z  18:53:53   ├─ /presupuesto/sri-lanka-otono/index.html (+446ms)
+2026-10-24T18:53:54.674Z  18:53:54   ├─ /presupuesto/sri-lanka-verano/index.html (+460ms)
+2026-10-24T18:53:55.112Z  18:53:54   ├─ /presupuesto/tailandia-festival-linternas/index.html (+438ms)
+2026-10-24T18:53:55.545Z  18:53:55   ├─ /presupuesto/tailandia-invierno/index.html (+432ms)
+2026-10-24T18:53:56.020Z  18:53:55   ├─ /presupuesto/tailandia-verano/index.html (+475ms)
+2026-10-24T18:53:56.458Z  18:53:56   ├─ /presupuesto/vietnam/index.html (+438ms)
+2026-10-24T18:53:56.905Z  18:53:56   └─ /presupuesto/zanzibar/index.html (+447ms)
+2026-10-24T18:53:56.907Z  18:53:56 ▶ src/pages/redireccion-whatsapp.astro
+2026-10-24T18:53:57.308Z  18:53:56   └─ /redireccion-whatsapp/index.html (+401ms)
+2026-10-24T18:53:57.310Z  18:53:57 λ src/pages/robots.txt.ts
+2026-10-24T18:53:57.311Z  18:53:57   └─ /robots.txt (+1ms)
+2026-10-24T18:53:57.414Z  18:53:57 λ src/pages/rss.xml.ts
+2026-10-24T18:53:57.422Z  18:53:57   └─ /rss.xml (+8ms)
+2026-10-24T18:53:57.433Z  18:53:57 ▶ src/pages/temporada/[slug].astro
+2026-10-24T18:53:58.053Z  18:53:57   ├─ /temporada/fin-de-anio/index.html (+517ms)
+2026-10-24T18:53:58.510Z  18:53:58   ├─ /temporada/navidad/index.html (+457ms)
+2026-10-24T18:53:59.010Z  18:53:58   ├─ /temporada/puentes/index.html (+500ms)
+2026-10-24T18:53:59.514Z  18:53:59   ├─ /temporada/semana-santa/index.html (+504ms)
+2026-10-24T18:53:59.992Z  18:53:59   ├─ /temporada/septiembre/index.html (+478ms)
+2026-10-24T18:54:00.538Z  18:53:59   └─ /temporada/verano/index.html (+546ms)
+2026-10-24T18:54:00.548Z  18:54:00 ▶ src/pages/tipos/[slug].astro
+2026-10-24T18:54:01.213Z  18:54:00   ├─ /tipos/aventura/index.html (+566ms)
+2026-10-24T18:54:01.801Z  18:54:01   ├─ /tipos/cultural/index.html (+588ms)
+2026-10-24T18:54:02.286Z  18:54:01   ├─ /tipos/naturaleza/index.html (+485ms)
+2026-10-24T18:54:02.770Z  18:54:02   ├─ /tipos/nieve/index.html (+484ms)
+2026-10-24T18:54:03.328Z  18:54:02   └─ /tipos/playa/index.html (+558ms)
+2026-10-24T18:54:03.330Z  18:54:03 ▶ src/pages/travelhood.astro
+2026-10-24T18:54:03.782Z  18:54:03   └─ /travelhood/index.html (+451ms)
+2026-10-24T18:54:03.784Z  18:54:03 ▶ src/pages/viajar-sola.astro
+2026-10-24T18:54:04.686Z  18:54:03   └─ /viajar-sola/index.html (+902ms)
+2026-10-24T18:54:04.701Z  18:54:04 ▶ src/pages/viajes.astro
+2026-10-24T18:54:05.314Z  18:54:04   └─ /viajes/index.html (+614ms)
+2026-10-24T18:54:05.317Z  18:54:05 ▶ src/pages/viajes-para-mujeres.astro
+2026-10-24T18:54:05.872Z  18:54:05   └─ /viajes-para-mujeres/index.html (+555ms)
+2026-10-24T18:54:05.874Z  18:54:05 ▶ src/pages/viajes-privados.astro
+2026-10-24T18:54:06.432Z  18:54:05   └─ /viajes-privados/index.html (+558ms)
+2026-10-24T18:54:06.434Z  18:54:06 λ src/pages/webmcp-data.json.ts
+2026-10-24T18:54:06.655Z  18:54:06   └─ /webmcp-data.json (+221ms)
+2026-10-24T18:54:06.667Z  18:54:06 ▶ src/pages/index.astro
+2026-10-24T18:54:07.307Z  18:54:06   └─ /index.html (+639ms)
+2026-10-24T18:54:07.307Z  18:54:07 ✓ Completed in 97.38s.
+2026-10-24T18:54:07.307Z  
+2026-10-24T18:54:07.343Z  18:54:07 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+2026-10-24T18:54:07.343Z  18:54:07 [@astrojs/vercel] Copying static files to .vercel/output/static
+2026-10-24T18:54:07.373Z  18:54:07 [build] 167 page(s) built in 102.05s
+2026-10-24T18:54:07.374Z  18:54:07 [build] Complete!
+2026-10-24T18:54:07.465Z  Injected 245 redirects, 10 header rules and 2 rewrites into config.json
+2026-10-24T18:54:07.672Z  Build Completed in /vercel/output [2m]
+2026-10-24T18:54:07.697Z  Deploying outputs...
+2026-10-24T18:54:08.854Z  Deployment completed
+2026-10-24T18:54:08.857Z  Creating build cache...
+2026-10-24T18:54:17.714Z  Created build cache: 9s
+2026-10-24T18:54:17.715Z  Uploading build cache [84.79 MB]
+2026-10-24T18:54:19.407Z  Build cache uploaded: 1.692s
+status	● Ready

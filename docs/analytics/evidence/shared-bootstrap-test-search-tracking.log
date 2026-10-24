@@ -1,0 +1,4 @@
+
+> travelhood@0.1.0 test:search-tracking
+> npx tsx src/lib/search-tracking.test.ts
+

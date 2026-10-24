@@ -1,0 +1,20 @@
+{
+  "id": "dpl_Ga8t8AHeEnHxFiajvf22GQiENBbw",
+  "url": "travelhood-jra2vygh6-travelhood.vercel.app",
+  "readyState": "READY",
+  "projectId": "prj_TSXlJpmhHCA0I0cA1MAlKECTuELR",
+  "meta": {
+    "analyticsCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+    "analyticsBaseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942"
+  },
+  "checkedAtUtc": "2026-10-24T16:30:04.683809+00:00",
+  "sourceManifestHashesUnchanged": 35,
+  "http": {
+    "status": 200,
+    "url": "https://travelhood.es/viajes-privados/",
+    "gateTrue": true,
+    "gtm": true,
+    "ga": true,
+    "qaFixtureAbsent": true
+  }
+}

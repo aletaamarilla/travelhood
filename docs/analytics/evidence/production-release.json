@@ -1,0 +1,16 @@
+{
+  "authorized": true,
+  "method": "Git archive of verified active production base plus exact 35-file reviewed overlay; no unrelated untracked work uploaded",
+  "releasePath": "/tmp/travelhood-analytics-release-012f5295",
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "candidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "previousDeployment": "dpl_DVsZXFwuSz1D9QnSjDmUcqFfydEf",
+  "previousUrl": "travelhood-a88ir2jwm-travelhood.vercel.app",
+  "projectId": "prj_TSXlJpmhHCA0I0cA1MAlKECTuELR",
+  "teamId": "team_FjgGOaFlHTI2BEObaZZZQN9F",
+  "publicEnvironmentAdded": {
+    "PUBLIC_GTM_PHASE1_READY": "true",
+    "PUBLIC_ANALYTICS_ENV": "production"
+  },
+  "startedAtUtc": "2026-10-24T15:24:52.648043+00:00"
+}

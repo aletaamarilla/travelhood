@@ -1,0 +1,29 @@
+
+> travelhood@0.1.0 test:analytics-runtime
+> node scripts/check-analytics-runtime.mjs
+
+{
+  "environment": "Isolated browser-like harness, bundled actual source; no external service executed",
+  "result": "passed",
+  "scenarios": [
+    "absent",
+    "rejected",
+    "marketing_only",
+    "analytics_only",
+    "all",
+    "gate_disabled",
+    "tracker_exception_during_import",
+    "withdraw_storage_throw",
+    "withdraw_storage_ignore",
+    "withdraw_both_storages_blocked_current_document",
+    "analytics_withdrawal_preserves_meta_cookies",
+    "cross_tab_withdrawal",
+    "production_internal_isolation",
+    "shared_container_once_no_reload_or_duplicate_default",
+    "marketing_withdrawal_keeps_analytics",
+    "blocked_or_invalid_preference_before_container",
+    "withdrawal_without_events_module",
+    "early_owner_failed_withdrawal_stays_denied",
+    "cross_tab_storage_clear"
+  ]
+}

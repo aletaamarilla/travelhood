@@ -1,0 +1,37 @@
+{
+  "observedAtUtc": "2026-10-24T15:41:14.101705+00:00",
+  "assets": [
+    {
+      "path": "/favicon.ico",
+      "status": 200,
+      "contentType": "image/vnd.microsoft.icon",
+      "bytes": 3069,
+      "sha256": "0808486b5138f3ba0623339fa80677f0ec6c313abf8a0885a7595d7711d2f54b",
+      "matchesRepositoryAsset": true
+    },
+    {
+      "path": "/favicon-48x48.png",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 1565,
+      "sha256": "0d1f479a0b1171e17ef05209f5ca251805d6734ae47e7e084643bcab40ad245b",
+      "matchesRepositoryAsset": true
+    },
+    {
+      "path": "/icon.svg",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "bytes": 4450,
+      "sha256": "09fd01d8d300d1a14ebcb89d15813cc58c755ef912e33a1657e78738162433a6",
+      "matchesRepositoryAsset": true
+    },
+    {
+      "path": "/apple-icon.png",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 5671,
+      "sha256": "7904c348be0b0f56bf40f1ae7e344493709fd12b0ef7eb7a7f740a994063bc66",
+      "matchesRepositoryAsset": true
+    }
+  ]
+}

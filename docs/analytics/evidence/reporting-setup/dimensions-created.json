@@ -1,0 +1,71 @@
+[
+  {
+    "name": "TH Destino",
+    "parameter": "destination_slug",
+    "scope": "event",
+    "observedPersistedAtUtc": "2026-10-24T17:52:26.661Z"
+  },
+  {
+    "name": "TH Ubicación del botón",
+    "parameter": "cta_location",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:29.558Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Botón de privados",
+    "parameter": "cta",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:31.873Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Proveedor de reserva",
+    "parameter": "booking_provider",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:34.256Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Versión de medición",
+    "parameter": "measurement_version",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:36.490Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Tipo de tráfico",
+    "parameter": "traffic_type",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:38.974Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Origen de interacción",
+    "parameter": "source",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:41.075Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Modo de destino",
+    "parameter": "destination_mode",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:43.591Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Modo de fecha",
+    "parameter": "date_mode",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:46.758Z",
+    "persistence": "pending reload verification"
+  },
+  {
+    "name": "TH Fecha de interés",
+    "parameter": "date_value",
+    "scope": "event",
+    "submittedAtUtc": "2026-10-24T17:52:50.706Z",
+    "persistence": "pending reload verification"
+  }
+]

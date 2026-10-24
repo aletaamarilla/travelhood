@@ -1,0 +1,191 @@
+{
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "supersedesCandidateSha256": "92f841642032b564285467f7806f8d7e094952898684e5e6a78d82292eeb960d",
+  "candidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "status": "Implementation candidate; local checks pass; representative real SDK and DebugView pass; no publication; processed reports pending",
+  "userScope": "Meta managed separately; QA/internal exclusion deliberately deferred by user 2026-10-24",
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "150fb5afbea1c8e96b42aa560b5a43d840d3c28f6c74c526cb08823b71571e16"
+    },
+    {
+      "path": "docs/analytics/gtm-recipe.json",
+      "sha256": "f5fe4b30f3482be5c33f99e80989920e31a10c41214a3d654ab51a0f42fe28ac"
+    },
+    {
+      "path": "docs/analytics/gtm-setup.md",
+      "sha256": "edac56d9fd4b96c9435fef1aaefc1b55daa5b464c82ccee610cd52c7d2e4cc1b"
+    },
+    {
+      "path": "docs/analytics/gtm/IMPORTAR.md",
+      "sha256": "ba2761dfa321a327e49c27a8dffdfe741885f91fd9f2aff33f6b47fc7b5ddca9"
+    },
+    {
+      "path": "docs/analytics/gtm/source-export.json",
+      "sha256": "87fb03024341cb68ecf7d27a63989a2be26b439fd84d113cbb93b006810814bd"
+    },
+    {
+      "path": "docs/analytics/gtm/travelhood-phase-1.import.json",
+      "sha256": "33a908fee7b15a91c89d1f0b0b814df55f19610f947f3f4165ca49fa58bc5b4c"
+    },
+    {
+      "path": "docs/analytics/mygocu-request.md",
+      "sha256": "a57e75e341482bc05e1b18cbd60c90885748810932a505fbd5989fbcbfa27e51"
+    },
+    {
+      "path": "docs/analytics/phase-1.md",
+      "sha256": "9a4d2ae68a8fbc823012eebac3ae635b673197478de5cebcfa37612ef838acfa"
+    },
+    {
+      "path": "docs/gtm-destination-conversion-events.md",
+      "sha256": "475ccc53f54d4f0f9ddbdf7a6043e5a3deeda96e47a780e464851370b85070ef"
+    },
+    {
+      "path": "package.json",
+      "sha256": "e568f24c69974d0257ffd39754eaaeb80ec35f2c0a2e7460deee14a63ce1c3b4"
+    },
+    {
+      "path": "scripts/analytics-recipe.ts",
+      "sha256": "91cac0d0f6ffcd87d6b587470787b42d5b81ea9057bedf794d590d2ab6ee3a8e"
+    },
+    {
+      "path": "scripts/check-analytics-browser.mjs",
+      "sha256": "b8396d9f4c9f446be26bba66440c31c4665895e942bf282b6fe4d4421933bdd8"
+    },
+    {
+      "path": "scripts/check-analytics-runtime.mjs",
+      "sha256": "9d2e8bbefb5d5ba6de57866abab1afadbef0d6596609da3575ee55b0d00a8100"
+    },
+    {
+      "path": "scripts/prepare-analytics-gtm.test.ts",
+      "sha256": "78c9b61cea653e1e259b79f62a22d8205975c4dac6738def4e76d312c989ad26"
+    },
+    {
+      "path": "scripts/prepare-analytics-gtm.ts",
+      "sha256": "a57752e3912720ece279b389b58869fb5f9bc81efd013137af047591f6369246"
+    },
+    {
+      "path": "src/components/CookieBanner.tsx",
+      "sha256": "1f86432a9a123d7abfd67e521b282860ffd36d11fe60f6bf93382d10bc3adb1d"
+    },
+    {
+      "path": "src/components/TripDetailPage.tsx",
+      "sha256": "cd42a78968abb56edaeb31fc274a18cc03668bfc7edf55abeab2fa746836668c"
+    },
+    {
+      "path": "src/layouts/Layout.astro",
+      "sha256": "636913457a4f9c422f985a4de18faf4f3a4b16e4b6d5486242ed99e4d0a18e5a"
+    },
+    {
+      "path": "src/lib/analytics.test.ts",
+      "sha256": "d9471514c6cf0573328559149053118a5d5d83e81f6fae1e5c49feb423d99506"
+    },
+    {
+      "path": "src/lib/analytics.ts",
+      "sha256": "93695f5b4b1be5b98d5db9b5712ba3574eb8459732096cbde17655253b0a9dc2"
+    },
+    {
+      "path": "src/lib/collaborator-tracking.ts",
+      "sha256": "81e5ae71fa81b33f6e966c70bae4f2d620a2bc1b547c8705cd9f983ec2731a05"
+    },
+    {
+      "path": "src/lib/collaborators.test.ts",
+      "sha256": "3150c5f6aabae4e5b1fb5fe75abd42c8a6f00d6030f042e552a874486137ce90"
+    },
+    {
+      "path": "src/lib/consent.ts",
+      "sha256": "0a095ba7439319bbf5820c803d8fe4ad0959de7d7ca7c6c67595f4ce6b1f1d88"
+    },
+    {
+      "path": "src/lib/search-tracking.ts",
+      "sha256": "63616a6adb20e0334e533b62120fb32506cbe5f74e68404e659a8256e9ce410e"
+    },
+    {
+      "path": "src/pages/coordinador.astro",
+      "sha256": "30c5bd3e9b936c5d23dcb6a16815a1ff19705944e448d00a9bbc936912c29217"
+    },
+    {
+      "path": "src/pages/cuando-viajar-a/[slug].astro",
+      "sha256": "7c50f9f0c5bac2fa3e87be6dd85f330f510144ed844471d20d71ad336bfbfc5e"
+    },
+    {
+      "path": "src/pages/destino/[slug].astro",
+      "sha256": "6472b3ff29dfc2c3cf58c7f403248a5ed4d4f137b85063657feede444f699640"
+    },
+    {
+      "path": "src/pages/presupuesto/[slug].astro",
+      "sha256": "f217d4111234cf665e4e212dbbaf4e70204d4329c431444e15f2c60910c792f8"
+    },
+    {
+      "path": "src/pages/viajes-privados.astro",
+      "sha256": "9fa6be93cb88ad8ab7d92a88499edaf1c139727af33a5b1965a2b4c7e0eea2b3"
+    },
+    {
+      "path": "tsconfig.analytics-tools.json",
+      "sha256": "0ebbdf25e33349a6973025cb607350c1cb5e248c3a1c50b1a1456739af118540"
+    },
+    {
+      "path": "tsconfig.web.json",
+      "sha256": "e29d11308588a8372f4005b8f8a56ddad98f8325330f4587aaa1835fc255d5be"
+    },
+    {
+      "path": "src/lib/analytics-bootstrap.ts",
+      "sha256": "5425b732cf45af984c185e8ab419f0cfcf3e708b3c1e78cfee613339a5fa4403"
+    },
+    {
+      "path": "scripts/serve-analytics-qa.mjs",
+      "sha256": "5e17013ccc5c0aac773ca382e7a79b76cd89ecdde6fb1c73b8fd667dd83485f3"
+    },
+    {
+      "path": "docs/analytics/validation.md",
+      "sha256": "dddae92637dee074ff782d35d7234eb4bbbf0c99f25c9269b42753350feaf243"
+    },
+    {
+      "path": "docs/analytics/gtm/VALIDACION.md",
+      "sha256": "6ceb7ee8beac88d45ca0ca1be3a10f76e3a35dcf08e5a91ae19ef62e2aea7247"
+    }
+  ],
+  "recordedAtUtc": "2026-10-24T15:10:57.380933+00:00",
+  "identityScope": "Implementation and canonical documentation; evidence/report hashes separately below, no recursive identity",
+  "nativeExportSha256": "f2515c8568f1a3eecfcbec768e97cf607a719a3366e112b5c72438026030e614",
+  "gtmCandidateSha256": "33a908fee7b15a91c89d1f0b0b814df55f19610f947f3f4165ca49fa58bc5b4c",
+  "reliableFrom": null,
+  "evidence": [
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-validation.md",
+      "sha256": "79e13da87a7969cdcbb5675036339caf9e9c0e55da5fb522df96df2d7aaf5169"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-workspace-comparison.json",
+      "sha256": "98088c8faddc93d24cd243352db56f2bce5b37eda6f0f1131a889c8e2463dc22"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-browser-results.json",
+      "sha256": "8613152fc97c2d7867d06d7ce5c817ee99d29bccfa4625dd7b0f57164987090f"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-native-results.json",
+      "sha256": "76d11ad5468077df4de3b4d981f0c5b56d27f1d478b557647bb42369d567589d"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-enhanced-measurement-off.png",
+      "sha256": "f422b50cf599fb506fc0030d54663f8f96aa54bccbaa970c36072ea8c201c378"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-final-debugview.png",
+      "sha256": "bde8fc2ac65133db35c25351775b37a1414aa56bb0eaf637616a787c0bbc23e1"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-final-contact-cta.png",
+      "sha256": "329fe059d704d6630d861af30fbcc600ac92c6e7db226fbfa18306283b5a5688"
+    }
+  ],
+  "review": {
+    "agent": "browser_restart_review",
+    "candidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+    "result": "No actionable blocking defects found within reviewed scope",
+    "report": "docs/analytics/evidence/shared-bootstrap-review.md",
+    "sha256": "fab047e6acc6d9d28adf71913d2db57a9173b95f5ee1d3f4b34935a34412f16c"
+  }
+}

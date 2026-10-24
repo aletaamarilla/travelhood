@@ -1,0 +1,27 @@
+{
+  "recordedAtUtc": "2026-10-24T19:08:36.592158+00:00",
+  "baseCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
+  "candidateIndexTree": "f0342edfcf9410dca811d960a7f8587f7eaabf57",
+  "packetSha256": "79057ffa5c61e455e00d6372b9a99b0449a6b6563506f3a0dd3faf50df1ed43c",
+  "stagedFiles": 108,
+  "explicitAllowlistMatches": true,
+  "hashesMatch": true,
+  "jsonParse": "PASS",
+  "nonLogWhitespaceExit": 0,
+  "nonLogWhitespaceOutput": "",
+  "rawLogsFullWhitespaceExit": 2,
+  "rawLogPathsWithOutputWhitespace": [
+    "docs/analytics/evidence/phase1-git-build.log",
+    "docs/analytics/evidence/shared-bootstrap-build-default.log",
+    "docs/analytics/evidence/shared-bootstrap-build-qa.log",
+    "docs/analytics/evidence/shared-bootstrap-check-analytics-tools.log",
+    "docs/analytics/evidence/shared-bootstrap-prepare-gtm.log",
+    "docs/analytics/evidence/shared-bootstrap-test-search-tracking.log",
+    "docs/analytics/evidence/shared-bootstrap-types.log"
+  ],
+  "explanation": "Native CLI log trailing spaces/blank lines retained byte-for-byte as evidence; full diff formatting check is not PASS. All authored documentation/JSON and other non-log files pass. No change to log content or Git whitespace config.",
+  "notCovered": "This check report and independent review are supplemental to the frozen packet/tree; no source changes.",
+  "whatsappMessageUrlsInPacket": 0,
+  "nonLogWhitespaceCommand": "git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check -- . ':(glob,exclude)**/*.log'",
+  "whitespaceScope": "Original raw logs and native CRLF in preserved reviews/exports are not normalized. Per-command cr-at-eol treats native CRLF equivalently, without changing Git config. Full check retains exit2 for CLI output whitespace."
+}

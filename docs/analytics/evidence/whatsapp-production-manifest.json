@@ -1,0 +1,119 @@
+{
+  "recordedAtUtc": "2026-10-24T17:25:25.670836+00:00",
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "sourceFilesUnchanged": 35,
+  "sourceMismatches": [],
+  "scope": "WhatsApp production receipt verification: no functional/source/account/publication changes; README/status supersede earlier historical evidence manifests. No commit or push.",
+  "gitDiffCheckExitCode": 0,
+  "phaseValidated": false,
+  "reliable_from": null,
+  "whatsappReceipt": "confirmed in official GA4 Realtime with representative parameters and observed hero1/final1 counts; general per-document deduplication remains unverified",
+  "independentReview": "docs/analytics/evidence/whatsapp-production-review.md",
+  "files": [
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "7d0ba4d7bf9be5dd03ef4e993ea416fd91e17204a2dffb2991b50e8bc01bad2c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "df87dae831fd037641e9bd67cc15be36c8a9fc0338b594e75131d69d7a7b4baa"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production-validation.md",
+      "sha256": "d0a33305456269fd62e1428f1fbdc2dea8f7163131d9efde433744bfa364b0b0"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production-review.md",
+      "sha256": "e9fd73e14ca90a16ab5c8dc708a680c061c2813e92d6ef128653650143a8953d"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/consent-before.json",
+      "sha256": "a8a47b4f18fcf5f42c8d9bab8ca7e473313d56f70bfd0ed64af69339169ec7e7"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/consent-before.png",
+      "sha256": "3afd4e9cd6e0d1a205f65640c0bf1fc5d98c406497cc0437eeb1220d1c49c3fa"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/controlled-click.json",
+      "sha256": "a4fb5ef1bff7d323a0eab0780e55d6cdc827dc437d6b2dc243f38e2fcbef6a6e"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/controlled-final-cta.json",
+      "sha256": "94ac05c32332a6857b204f6da883533f1981d5ab737e4a2d7a8b8d0c3e39dc3d"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/cta-after-second-action-first-read.json",
+      "sha256": "989ecb5350669b2ccb4622f420029402bc200b88f7d2917851d6a82a5bdae16a"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-cta.png",
+      "sha256": "0966b1c9db2ee38bba622e79cacd6a8340b0546c0eb8fbf4c7545a636cb8592d"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-measurement_version.png",
+      "sha256": "b519face2b641245eacc403e0e49ba23e782ed3e813cc6e6f90cf1a46a644338"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-page_location.png",
+      "sha256": "c544e7f321e31b4f3eae4b62a24c54e5a03a4558d97d7a257ea3703fd6c5681e"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-parameters.json",
+      "sha256": "bc65eaa7b487e465890eef6e9214b56683d9bb53043b0c57d313ba1494a55be9"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-received-two.png",
+      "sha256": "2c7e8ec87450530cfcfd1ab80269fd3854860ded18a0cfdfd592a1847bec09a9"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-received.png",
+      "sha256": "69d316d81f3a7fb2f199e3c43b607e9fa717e5829bb000bb31819c64ad554ac6"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-traffic_type.png",
+      "sha256": "5e627448f487d4a7e1134618373714447c3b7b65f8df06773eab6c99fba2f644"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-two-ctas.json",
+      "sha256": "252ff44f5f83c9e0ad003d9add3ee6cc3d7bd41ee9633b5824cf934b69b198f1"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-contact-two-ctas.png",
+      "sha256": "b42c177671e98280d22bba513bbfc02c3b107d9f7208ecd726ff7a60b48db285"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/ga4-two-actions-parameters.json",
+      "sha256": "502ba7255e2d26522fc2fc67bfb8e257d48e51e8ce7fbc3f9c0b4fbf0fdd9fb5"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-after.json",
+      "sha256": "891dd4a1789a508164c1cd67af320f5e3081baac0cbd4283bf1f8f8d18675bde"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-before.json",
+      "sha256": "90a25f6abd3cc9abd9b7aa8df843ae472cec6b8e0c01a84a296e107edab3b1bf"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/realtime-visible-pages.json",
+      "sha256": "5f64bd2cfdc6f26e0c41b3c48d18583fdf94a682b7718d6f3c5cd3a10649d511"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-final-opened.json",
+      "sha256": "001bcfd63d48e09e98e8f3fdae5c6f38188d368e1c03f9488c8191f1169b02c6"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-final-opened.png",
+      "sha256": "2bcf726d0510a6fb946c826186ccb7f499643e07b40cb3b7e4876024619efc11"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-opened.json",
+      "sha256": "e91934330b3fef797365ae02a9df277cf7c742b6cf2d14f5d5955edff2bf26d2"
+    },
+    {
+      "path": "docs/analytics/evidence/whatsapp-production/whatsapp-opened.png",
+      "sha256": "2bcf726d0510a6fb946c826186ccb7f499643e07b40cb3b7e4876024619efc11"
+    }
+  ]
+}

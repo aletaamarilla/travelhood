@@ -1,0 +1,90 @@
+{
+  "observedAtUtc": "2026-10-24T17:53:06.108Z",
+  "property": "498178258",
+  "expected": [
+    {
+      "name": "TH Destino",
+      "parameter": "destination_slug",
+      "scope": "event",
+      "observedPersistedAtUtc": "2026-10-24T17:52:26.661Z"
+    },
+    {
+      "name": "TH Ubicación del botón",
+      "parameter": "cta_location",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:29.558Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Botón de privados",
+      "parameter": "cta",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:31.873Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Proveedor de reserva",
+      "parameter": "booking_provider",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:34.256Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Versión de medición",
+      "parameter": "measurement_version",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:36.490Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Tipo de tráfico",
+      "parameter": "traffic_type",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:38.974Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Origen de interacción",
+      "parameter": "source",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:41.075Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Modo de destino",
+      "parameter": "destination_mode",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:43.591Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Modo de fecha",
+      "parameter": "date_mode",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:46.758Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Fecha de interés",
+      "parameter": "date_value",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:50.706Z",
+      "persistence": "pending reload verification"
+    }
+  ],
+  "missing": [],
+  "rows": [
+    " Nombre de dimensión  Descripción  Ámbito  Propiedad de usuario o parámetro  Último cambio  Opciones ",
+    "TH Botón de privadosBotón de viajes privados: hero, final o sticky_mobile. Recuento de clics, no consultas recibidas.Botón de viajes privados: hero, final o sticky_mobile. Recuento de clics, no consultas recibidas.Eventocta24 oct 2026",
+    "TH DestinoDestino del catálogo de Travelhood asociado a la acción. No identifica personas ni una reserva confirmada.Destino del catálogo de Travelhood asociado a la acción. No identifica personas ni una reserva confirmada.Eventodestination_slug24 oct 2026",
+    "TH Fecha de interésMes o temporada estructurada del buscador cuando el evento lo incluye.Mes o temporada estructurada del buscador cuando el evento lo incluye.Eventodate_value24 oct 2026",
+    "TH Modo de destinoModo estructurado de destino seleccionado en el buscador.Modo estructurado de destino seleccionado en el buscador.Eventodestination_mode24 oct 2026",
+    "TH Modo de fechaModo estructurado de fecha seleccionado en el buscador.Modo estructurado de fecha seleccionado en el buscador.Eventodate_mode24 oct 2026",
+    "TH Origen de interacciónUbicación funcional del buscador o enlace en la web. No es la fuente publicitaria de la sesión.Ubicación funcional del buscador o enlace en la web. No es la fuente publicitaria de la sesión.Eventosource24 oct 2026",
+    "TH Proveedor de reservaProveedor al que se dirige el clic de reserva. No confirma una reserva ni un pago.Proveedor al que se dirige el clic de reserva. No confirma una reserva ni un pago.Eventobooking_provider24 oct 2026",
+    "TH Tipo de tráficoClasificación external, developer o internal. No activa ni modifica filtros de exclusión.Clasificación external, developer o internal. No activa ni modifica filtros de exclusión.Eventotraffic_type24 oct 2026",
+    "TH Ubicación del botónUbicación del CTA en fichas. Permite separar contacto de viaje, comunidad y lista de espera.Ubicación del CTA en fichas. Permite separar contacto de viaje, comunidad y lista de espera.Eventocta_location24 oct 2026",
+    "TH Versión de mediciónVersión del contrato de eventos de Travelhood.Versión del contrato de eventos de Travelhood.Eventomeasurement_version24 oct 2026"
+  ],
+  "scope": "Verified after full reload; no report data availability claimed"
+}

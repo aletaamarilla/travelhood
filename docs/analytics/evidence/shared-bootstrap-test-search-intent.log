@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 test:search-intent
+> npx tsx src/lib/search-intent.test.ts
+
+search-intent.test.ts: all assertions passed

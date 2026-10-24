@@ -1,0 +1,141 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2026-10-24 15:26:03",
+    "containerVersion": {
+        "path": "accounts/6305630418/containers/225870368/versions/5",
+        "accountId": "6305630418",
+        "containerId": "225870368",
+        "containerVersionId": "5",
+        "container": {
+            "path": "accounts/6305630418/containers/225870368",
+            "accountId": "6305630418",
+            "containerId": "225870368",
+            "name": "www.travelhood.es",
+            "publicId": "GTM-TB7F773D",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1753545199896",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6305630418/containers/225870368/workspaces?apiLink=container",
+            "features": {
+                "supportUserPermissions": true,
+                "supportEnvironments": true,
+                "supportWorkspaces": true,
+                "supportGtagConfigs": false,
+                "supportBuiltInVariables": true,
+                "supportClients": false,
+                "supportFolders": true,
+                "supportTags": true,
+                "supportTemplates": true,
+                "supportTriggers": true,
+                "supportVariables": true,
+                "supportVersions": true,
+                "supportZones": true,
+                "supportTransformations": false
+            },
+            "tagIds": [
+                "GTM-TB7F773D"
+            ]
+        },
+        "tag": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "tagId": "3",
+                "name": "Pixel meta",
+                "type": "html",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "html",
+                        "value": "<!-- Meta Pixel Code -->\n<script>\n!function(f,b,e,v,n,t,s)\n{if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\nn.queue=[];t=b.createElement(e);t.async=!0;\nt.src=v;s=b.getElementsByTagName(e)[0];\ns.parentNode.insertBefore(t,s)}\n(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');\n\nfbq('init', '2395026450933296');\nfbq('track', 'PageView');\n</script>\n<noscript>\n  <img height=\"1\" width=\"1\" style=\"display:none\"\n  src=\"https://www.facebook.com/tr?id=2395026450933296&ev=PageView&noscript=1\"/>\n</noscript>\n<!-- End Meta Pixel Code -->"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "supportDocumentWrite",
+                        "value": "false"
+                    }
+                ],
+                "fingerprint": "1775897947413",
+                "firingTriggerId": [
+                    "2147479553"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "tagId": "5",
+                "name": "GA4- Configuracion",
+                "type": "googtag",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "tagId",
+                        "value": "G-XQMPJG8B08"
+                    }
+                ],
+                "fingerprint": "1775916272697",
+                "firingTriggerId": [
+                    "2147479573"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "monitoringMetadata": {
+                    "type": "MAP"
+                },
+                "consentSettings": {
+                    "consentStatus": "NEEDED",
+                    "consentType": {
+                        "type": "LIST",
+                        "list": [
+                            {
+                                "type": "TEMPLATE",
+                                "value": "analytics_storage"
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_URL",
+                "name": "Page URL"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_HOSTNAME",
+                "name": "Page Hostname"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "PAGE_PATH",
+                "name": "Page Path"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "REFERRER",
+                "name": "Referrer"
+            },
+            {
+                "accountId": "6305630418",
+                "containerId": "225870368",
+                "type": "EVENT",
+                "name": "Event"
+            }
+        ],
+        "fingerprint": "1775916279749",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6305630418/containers/225870368/versions/5?apiLink=version"
+    }
+}

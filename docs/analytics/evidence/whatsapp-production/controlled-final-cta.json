@@ -1,0 +1,13 @@
+{
+  "startUtc": "2026-10-24T17:20:42.406Z",
+  "endUtc": "2026-10-24T17:20:42.528Z",
+  "page": "https://travelhood.es/viajes-privados/",
+  "action": "One Enter activation of rendered Escribirnos por WhatsApp link",
+  "expectedEvent": "private_trip_whatsapp_click",
+  "expectedCta": "final",
+  "baselineCta": "hero=1, no final value observed at 17:19:27Z",
+  "analyticsConsent": true,
+  "marketingConsent": false,
+  "messageSent": false,
+  "scope": "Second intentional action, distinct CTA; must not be counted as a duplicate of the earlier hero action"
+}

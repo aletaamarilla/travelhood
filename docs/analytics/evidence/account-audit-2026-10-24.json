@@ -1,0 +1,135 @@
+{
+  "observedDate": "2026-10-24",
+  "recordedAtUtc": "2026-10-24T13:37:45.483877+00:00",
+  "method": "Authenticated Google Analytics and GTM UI read using cua_repl; observations transcribed without account emails or preview authorization URLs",
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "candidateSha256": "92f841642032b564285467f7806f8d7e094952898684e5e6a78d82292eeb960d",
+  "candidateFilesUnchanged": 31,
+  "browserRepair": {
+    "result": "PASS functional browser access",
+    "readAnalytics": true,
+    "readGtm": true,
+    "accountSettingsChanged": false
+  },
+  "ga4": {
+    "accountId": "266541621",
+    "propertyName": "Travel Hood",
+    "propertyId": "498178258",
+    "streamName": "Travel Hood",
+    "streamId": "11539767268",
+    "streamUrl": "https://travelhood.es",
+    "measurementId": "G-XQMPJG8B08",
+    "googleTagId": "GT-5TJM442J",
+    "currency": "EUR",
+    "reportingTimezone": "Spain; UI GMT+02:00 on observation date",
+    "filters": [
+      {
+        "name": "Internal Traffic",
+        "type": "Internal traffic",
+        "operation": "Exclude",
+        "state": "Testing"
+      },
+      {
+        "name": "Travel hood pruebas",
+        "type": "Developer traffic",
+        "operation": "Exclude",
+        "state": "Testing"
+      }
+    ],
+    "effectiveCommercialExclusionVerified": false,
+    "enhancedMeasurement": {
+      "enabled": true,
+      "pageviews": true,
+      "historyPageviews": true,
+      "scroll": true,
+      "outboundClicks": true,
+      "siteSearch": true,
+      "formInteractions": true,
+      "video": true,
+      "fileDownloads": true,
+      "searchQueryKeys": [
+        "q",
+        "s",
+        "search",
+        "query",
+        "keyword"
+      ],
+      "additionalSearchQueryKeys": []
+    },
+    "eventModifications": [],
+    "customCreatedEvents": [],
+    "existingKeyEvents": [
+      "close_convert_lead",
+      "purchase",
+      "qualify_lead"
+    ],
+    "recentReceivedEventsUiLast28Days": [
+      "click",
+      "file_download",
+      "first_visit",
+      "form_start",
+      "page_view",
+      "scroll",
+      "session_start",
+      "user_engagement"
+    ],
+    "googleSignalsEnabled": false,
+    "userProvidedDataCollectionEnabled": false,
+    "emailRedactionEnabled": true,
+    "urlQueryKeyRedactionEnabled": false,
+    "googleAdsLinkCount": 0,
+    "crossDomain": {
+      "configuredConditions": [],
+      "suggestedDomain": "travelhood.es",
+      "suggestionAccepted": false,
+      "mygocuContinuityVerified": false
+    }
+  },
+  "gtm": {
+    "accountName": "Travel Hood",
+    "accountId": "6305630418",
+    "containerName": "www.travelhood.es",
+    "containerId": "225870368",
+    "publicId": "GTM-TB7F773D",
+    "workspaceId": "6",
+    "changes": {
+      "total": 31,
+      "modified": 1,
+      "added": 30,
+      "deleted": 0
+    },
+    "publishedVersion": "5",
+    "publishedAtUi": "2026-04-11 16:04:39",
+    "nativeEventTagId": "35",
+    "nativeEventTagName": "TH Phase 1 - GA4 events",
+    "nativeEventTagParameterCount": 24,
+    "measurementId": "G-XQMPJG8B08",
+    "additionalConsentRequired": "analytics_storage",
+    "previewOpened": true,
+    "previewDomainConnected": false,
+    "nativeExecutionVerified": false,
+    "publishedByAgent": false
+  },
+  "actions": {
+    "persistentAccountChanges": false,
+    "newQaEventsSentByAgent": false,
+    "metaTagsOrCampaignsModified": false,
+    "websiteDeployed": false
+  },
+  "remainingActivationDependencies": [
+    "Shared GTM bootstrap compatibility with separately managed Meta, or scoped isolation reviewed and tested",
+    "Verify internal traffic rules and developer/internal exclusions, then coordinate activation before QA",
+    "Coordinate enhanced measurement and automatic capture with single explicit pageview and privacy contract",
+    "Test final web candidate and GTM preview with actual Google SDK; consent matrix and network inspection",
+    "Verify GA4 DebugView and later processed reports with no duplicates or PII",
+    "Publication and deployment authorization for concrete verified versions",
+    "Mygocu tenant capabilities, sandbox, consent, isolation and linker response"
+  ],
+  "reliableFrom": null,
+  "independentReview": {
+    "status": "report consistency reviewed; no actionable report defects detected",
+    "agent": "browser_restart_review",
+    "scope": "read-only local documentation, source manifest and diff check; authenticated UI observations not independently reproduced",
+    "evidence": "account-audit-review-2026-10-24.md"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "observedAtUtc": "2026-10-24T19:08:00.384Z",
+  "environment": "real GA4 processed exploration",
+  "property": "498178258",
+  "exploration": "slaZLoktRh-iWrXm_1w-LQ",
+  "tab": "01 Resumen",
+  "savedTabs": 9,
+  "segmentsObserved": [
+    "TH Sesiones medidas v1",
+    "TH Sesiones con contacto de viaje",
+    "TH Sesiones con salida a reserva"
+  ],
+  "metric": "Sesiones",
+  "visibleResult": "No hay datos disponibles",
+  "interpretation": "Pending processed data reconciliation; not zero business and not evidence of missing DebugView receipt.",
+  "configurationUnchanged": true
+}

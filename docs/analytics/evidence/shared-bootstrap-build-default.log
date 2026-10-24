@@ -1,0 +1,276 @@
+
+> travelhood@0.1.0 build
+> astro build && node scripts/inject-redirects.mjs
+
+16:27:24 [content] Syncing content
+16:27:24 [content] Synced content
+16:27:24 [types] Generated 113ms
+16:27:24 [build] output: "static"
+16:27:24 [build] mode: "static"
+16:27:24 [build] directory: /home/amfernandez/personalProjects/travelhoodsystem/dist/
+16:27:24 [build] adapter: @astrojs/vercel
+16:27:24 [build] Collecting build info...
+16:27:24 [build] ✓ Completed in 304ms.
+16:27:24 [build] Building static entrypoints...
+16:27:28 [WARN] [vite] "Star" is imported from external module "lucide-react" but never used in "src/components/TripDetailPage.tsx".
+16:27:28 [vite] ✓ built in 3.87s
+16:27:28 [build] ✓ Completed in 3.98s.
+
+ building client (vite) 
+16:27:28 [vite] transforming...
+16:27:59 [vite] ✓ 2605 modules transformed.
+16:28:01 [vite] rendering chunks...
+16:28:02 [vite] computing gzip size...
+16:28:02 [vite] dist/_astro/index.cthNB-FE.js                                                   0.06 kB │ gzip:  0.08 kB
+16:28:02 [vite] dist/_astro/ContinentFAQ.-RINTPu_.js                                            0.29 kB │ gzip:  0.20 kB
+16:28:02 [vite] dist/_astro/coordinador.astro_astro_type_script_index_0_lang.BU3GI4D8.js        0.31 kB │ gzip:  0.23 kB
+16:28:02 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.B141HBxC.js             0.41 kB │ gzip:  0.28 kB
+16:28:02 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.7jQrdAxR.js             0.43 kB │ gzip:  0.31 kB
+16:28:02 [vite] dist/_astro/_slug_.astro_astro_type_script_index_0_lang.MHjVi45r.js             0.44 kB │ gzip:  0.31 kB
+16:28:02 [vite] dist/_astro/users.DGWMI12Z.js                                                   0.49 kB │ gzip:  0.33 kB
+16:28:02 [vite] dist/_astro/Footer.astro_astro_type_script_index_0_lang.TjInbPvZ.js             0.66 kB │ gzip:  0.42 kB
+16:28:02 [vite] dist/_astro/ContinentFAQ.wPMZte13.js                                            0.72 kB │ gzip:  0.45 kB
+16:28:02 [vite] dist/_astro/jsx-runtime.D_zvdyIk.js                                             0.73 kB │ gzip:  0.46 kB
+16:28:02 [vite] dist/_astro/config.CpGcvEhv.js                                                  0.95 kB │ gzip:  0.53 kB
+16:28:02 [vite] dist/_astro/viajes-privados.astro_astro_type_script_index_0_lang.D6Fir1cd.js    1.13 kB │ gzip:  0.55 kB
+16:28:02 [vite] dist/_astro/consent.DnWISI3l.js                                                 1.18 kB │ gzip:  0.61 kB
+16:28:02 [vite] dist/_astro/FAQSection.Dz_UCq6T.js                                              1.36 kB │ gzip:  0.70 kB
+16:28:02 [vite] dist/_astro/LegalContent.B87y_jOg.js                                            1.82 kB │ gzip:  0.75 kB
+16:28:02 [vite] dist/_astro/page.BT_9kWGp.js                                                    2.25 kB │ gzip:  1.01 kB
+16:28:02 [vite] dist/_astro/x.Dj5UZkmN.js                                                       2.25 kB │ gzip:  0.66 kB
+16:28:02 [vite] dist/_astro/createLucideIcon.DQQGHQhH.js                                        2.58 kB │ gzip:  0.81 kB
+16:28:02 [vite] dist/_astro/Layout.astro_astro_type_script_index_0_lang.KOAA6wq4.js             3.55 kB │ gzip:  1.36 kB
+16:28:02 [vite] dist/_astro/index.XeJbqeyU.js                                                   3.89 kB │ gzip:  1.52 kB
+16:28:02 [vite] dist/_astro/CookieBanner.C7VtT13s.js                                            4.14 kB │ gzip:  1.33 kB
+16:28:02 [vite] dist/_astro/SearchIsland.C6GzDdwZ.js                                            4.38 kB │ gzip:  1.69 kB
+16:28:02 [vite] dist/_astro/LeadMagnet.XggN-mHq.js                                              4.73 kB │ gzip:  2.04 kB
+16:28:02 [vite] dist/_astro/BlogContent.Yfcm47yh.js                                             4.84 kB │ gzip:  1.57 kB
+16:28:02 [vite] dist/_astro/SeasonExplorer.BJZfPTpn.js                                          5.46 kB │ gzip:  2.20 kB
+16:28:02 [vite] dist/_astro/index.DIfZGIpv.js                                                   8.37 kB │ gzip:  3.28 kB
+16:28:02 [vite] dist/_astro/accordion.CMwYez7W.js                                              15.87 kB │ gzip:  5.47 kB
+16:28:02 [vite] dist/_astro/search-options.CLOCexh8.js                                         23.33 kB │ gzip:  7.35 kB
+16:28:02 [vite] dist/_astro/SearchPage.j9hDRER3.js                                             25.64 kB │ gzip:  7.67 kB
+16:28:02 [vite] dist/_astro/es.DZT1p-oa.js                                                     25.87 kB │ gzip:  7.07 kB
+16:28:02 [vite] dist/_astro/utils.C7DmBj9g.js                                                  27.06 kB │ gzip:  8.59 kB
+16:28:02 [vite] dist/_astro/TripDetailPage.C7neuf9U.js                                         64.43 kB │ gzip: 15.55 kB
+16:28:02 [vite] dist/_astro/leaflet-src.DuBtAOjT.js                                           150.05 kB │ gzip: 43.59 kB
+16:28:02 [vite] dist/_astro/client.Dhq_i1tP.js                                                182.74 kB │ gzip: 57.61 kB
+16:28:02 [vite] ✓ built in 33.42s
+
+ generating static routes 
+16:28:03 λ src/pages/.well-known/agent-skills/index.json.ts
+16:28:03   └─ /.well-known/agent-skills/index.json (+44ms) 
+16:28:03 λ src/pages/.well-known/agent-skills/preparar-contacto-whatsapp.md.ts
+16:28:03   └─ /.well-known/agent-skills/preparar-contacto-whatsapp.md (+4ms) 
+16:28:03 λ src/pages/.well-known/agent-skills/recomendar-viaje.md.ts
+16:28:03   └─ /.well-known/agent-skills/recomendar-viaje.md (+3ms) 
+16:28:03 λ src/pages/.well-known/api-catalog.ts
+16:28:03   └─ /.well-known/api-catalog (+14ms) 
+16:28:08 λ src/pages/.well-known/travelhood-home.md.ts
+16:28:08   └─ /.well-known/travelhood-home.md (+2.07s) 
+16:28:10 ▶ src/pages/404.astro
+16:28:10   └─ /404.html (+1.35s) 
+16:28:11 ▶ src/pages/blog/[slug].astro
+16:28:11   ├─ /blog/viajar-tailandia-grupo-reducido/index.html (+871ms) 
+16:28:12   ├─ /blog/top-destinos-tendencia-viaje-grupo/index.html (+1.23s) 
+16:28:14   ├─ /blog/por-que-elegir-viaje-grupo-reducido/index.html (+771ms) 
+16:28:14   ├─ /blog/maldivas-grupo-reducido-experiencia/index.html (+1.32s) 
+16:28:16   ├─ /blog/templos-tailandia-imprescindibles/index.html (+961ms) 
+16:28:17   ├─ /blog/seguro-viaje-tailandia-guia/index.html (+2.52s) 
+16:28:19   ├─ /blog/como-cambiar-dinero-tailandia/index.html (+2.49s) 
+16:28:22   ├─ /blog/bangkok-mejores-rooftops/index.html (+4.37s) 
+16:28:26   ├─ /blog/guia-definitiva-tailandia/index.html (+3.18s) 
+16:28:30   ├─ /blog/vacunas-salud-viajar-tailandia/index.html (+2.69s) 
+16:28:32   └─ /blog/tren-sri-lanka-ruta-magica/index.html (+3.45s) 
+16:28:36 ▶ src/pages/blog.astro
+16:28:36   └─ /blog/index.html (+2.68s) 
+16:28:39 ▶ src/pages/colaboradores.astro
+16:28:39   └─ /colaboradores/index.html (+2.08s) 
+16:28:46 ▶ src/pages/como-funciona.astro
+16:28:46   └─ /como-funciona/index.html (+2.58s) 
+16:28:49 ▶ src/pages/comparar/[slug].astro
+16:28:50   ├─ /comparar/azores-vs-islandia/index.html (+1.98s) 
+16:28:52   ├─ /comparar/azores-vs-lofoten/index.html (+3.44s) 
+16:28:55   ├─ /comparar/brasil-vs-colombia/index.html (+2.40s) 
+16:28:58   ├─ /comparar/brasil-vs-puerto-rico/index.html (+2.04s) 
+16:29:00   ├─ /comparar/egipto-vs-zanzibar/index.html (+1.77s) 
+16:29:02   ├─ /comparar/sri-lanka-verano-vs-filipinas-verano/index.html (+1.35s) 
+16:29:03   ├─ /comparar/tailandia-verano-vs-filipinas-verano/index.html (+2.03s) 
+16:29:05   ├─ /comparar/indonesia-vs-sri-lanka-verano/index.html (+2.61s) 
+16:29:08   ├─ /comparar/indonesia-vs-tailandia-verano/index.html (+2.20s) 
+16:29:10   ├─ /comparar/islandia-vs-laponia/index.html (+1.22s) 
+16:29:11   ├─ /comparar/laponia-vs-lofoten/index.html (+911ms) 
+16:29:12   └─ /comparar/maldivas-vs-zanzibar/index.html (+1.77s) 
+16:29:14 ▶ src/pages/coordinador.astro
+16:29:14   └─ /coordinador/index.html (+685ms) 
+16:29:15 ▶ src/pages/cuando-viajar-a/[slug].astro
+16:29:15   ├─ /cuando-viajar-a/azores/index.html (+497ms) 
+16:29:16   ├─ /cuando-viajar-a/brasil/index.html (+340ms) 
+16:29:16   ├─ /cuando-viajar-a/brasil-carnaval/index.html (+307ms) 
+16:29:16   ├─ /cuando-viajar-a/camino-de-santiago/index.html (+318ms) 
+16:29:17   ├─ /cuando-viajar-a/colombia/index.html (+299ms) 
+16:29:17   ├─ /cuando-viajar-a/costa-rica/index.html (+306ms) 
+16:29:17   ├─ /cuando-viajar-a/dolomitas/index.html (+288ms) 
+16:29:17   ├─ /cuando-viajar-a/egipto/index.html (+293ms) 
+16:29:18   ├─ /cuando-viajar-a/filipinas-navidad/index.html (+315ms) 
+16:29:18   ├─ /cuando-viajar-a/filipinas-invierno/index.html (+295ms) 
+16:29:18   ├─ /cuando-viajar-a/filipinas-verano/index.html (+298ms) 
+16:29:19   ├─ /cuando-viajar-a/guatemala/index.html (+314ms) 
+16:29:19   ├─ /cuando-viajar-a/indonesia/index.html (+323ms) 
+16:29:19   ├─ /cuando-viajar-a/islandia/index.html (+297ms) 
+16:29:20   ├─ /cuando-viajar-a/japon/index.html (+294ms) 
+16:29:20   ├─ /cuando-viajar-a/kenia/index.html (+295ms) 
+16:29:20   ├─ /cuando-viajar-a/laponia/index.html (+368ms) 
+16:29:21   ├─ /cuando-viajar-a/lofoten/index.html (+324ms) 
+16:29:21   ├─ /cuando-viajar-a/maldivas/index.html (+307ms) 
+16:29:21   ├─ /cuando-viajar-a/praga/index.html (+302ms) 
+16:29:21   ├─ /cuando-viajar-a/puerto-rico/index.html (+301ms) 
+16:29:22   ├─ /cuando-viajar-a/sri-lanka-invierno/index.html (+307ms) 
+16:29:22   ├─ /cuando-viajar-a/sri-lanka-otono/index.html (+297ms) 
+16:29:22   ├─ /cuando-viajar-a/sri-lanka-verano/index.html (+299ms) 
+16:29:23   ├─ /cuando-viajar-a/tailandia-festival-linternas/index.html (+276ms) 
+16:29:23   ├─ /cuando-viajar-a/tailandia-invierno/index.html (+283ms) 
+16:29:23   ├─ /cuando-viajar-a/tailandia-verano/index.html (+289ms) 
+16:29:24   ├─ /cuando-viajar-a/vietnam/index.html (+307ms) 
+16:29:24   └─ /cuando-viajar-a/zanzibar/index.html (+332ms) 
+16:29:24 ▶ src/pages/destino/[slug].astro
+16:29:24   ├─ /destino/azores/index.html (+535ms) 
+16:29:25   ├─ /destino/brasil/index.html (+509ms) 
+16:29:25   ├─ /destino/brasil-carnaval/index.html (+512ms) 
+16:29:26   ├─ /destino/camino-de-santiago/index.html (+559ms) 
+16:29:26   ├─ /destino/colombia/index.html (+524ms) 
+16:29:27   ├─ /destino/costa-rica/index.html (+555ms) 
+16:29:28   ├─ /destino/dolomitas/index.html (+537ms) 
+16:29:28   ├─ /destino/egipto/index.html (+511ms) 
+16:29:29   ├─ /destino/filipinas-navidad/index.html (+504ms) 
+16:29:29   ├─ /destino/filipinas-invierno/index.html (+524ms) 
+16:29:30   ├─ /destino/filipinas-verano/index.html (+521ms) 
+16:29:31   ├─ /destino/guatemala/index.html (+502ms) 
+16:29:31   ├─ /destino/indonesia/index.html (+545ms) 
+16:29:32   ├─ /destino/islandia/index.html (+509ms) 
+16:29:32   ├─ /destino/japon/index.html (+518ms) 
+16:29:33   ├─ /destino/kenia/index.html (+507ms) 
+16:29:33   ├─ /destino/laponia/index.html (+524ms) 
+16:29:34   ├─ /destino/lofoten/index.html (+483ms) 
+16:29:34   ├─ /destino/maldivas/index.html (+528ms) 
+16:29:35   ├─ /destino/praga/index.html (+545ms) 
+16:29:35   ├─ /destino/puerto-rico/index.html (+679ms) 
+16:29:36   ├─ /destino/sri-lanka-invierno/index.html (+725ms) 
+16:29:37   ├─ /destino/sri-lanka-otono/index.html (+1.39s) 
+16:29:38   ├─ /destino/sri-lanka-verano/index.html (+1.37s) 
+16:29:39   ├─ /destino/tailandia-festival-linternas/index.html (+2.08s) 
+16:29:41   ├─ /destino/tailandia-invierno/index.html (+2.19s) 
+16:29:44   ├─ /destino/tailandia-verano/index.html (+2.94s) 
+16:29:47   ├─ /destino/vietnam/index.html (+3.09s) 
+16:29:50   └─ /destino/zanzibar/index.html (+2.50s) 
+16:30:41 ▶ src/pages/destinos/[slug].astro
+16:30:42   ├─ /destinos/asia/index.html (+679ms) 
+16:30:42   ├─ /destinos/centroamerica/index.html (+824ms) 
+16:30:43   ├─ /destinos/europa/index.html (+890ms) 
+16:30:44   ├─ /destinos/sudamerica/index.html (+1.42s) 
+16:30:45   └─ /destinos/africa/index.html (+1.38s) 
+16:30:47 ▶ src/pages/legal/[slug].astro
+16:30:47   ├─ /legal/aviso-legal/index.html (+2.42s) 
+16:30:49   ├─ /legal/politica-de-cookies/index.html (+1.91s) 
+16:30:51   ├─ /legal/politica-de-privacidad/index.html (+2.48s) 
+16:30:54   └─ /legal/terminos-y-condiciones/index.html (+1.36s) 
+16:30:55 ▶ src/pages/ofertas.astro
+16:30:55   └─ /ofertas/index.html (+1.79s) 
+16:30:57 ▶ src/pages/opiniones.astro
+16:30:57   └─ /opiniones/index.html (+2.56s) 
+16:31:00 ▶ src/pages/pais/[slug].astro
+16:31:00   ├─ /pais/brasil/index.html (+922ms) 
+16:31:01   ├─ /pais/chequia/index.html (+2.23s) 
+16:31:03   ├─ /pais/colombia/index.html (+2.34s) 
+16:31:06   ├─ /pais/costa-rica/index.html (+850ms) 
+16:31:07   ├─ /pais/egipto/index.html (+935ms) 
+16:31:08   ├─ /pais/espana/index.html (+3.23s) 
+16:31:11   ├─ /pais/filipinas/index.html (+1.05s) 
+16:31:12   ├─ /pais/finlandia/index.html (+648ms) 
+16:31:13   ├─ /pais/guatemala/index.html (+514ms) 
+16:31:13   ├─ /pais/indonesia/index.html (+399ms) 
+16:31:14   ├─ /pais/islandia/index.html (+378ms) 
+16:31:14   ├─ /pais/italia/index.html (+356ms) 
+16:31:14   ├─ /pais/japon/index.html (+358ms) 
+16:31:15   ├─ /pais/kenia/index.html (+338ms) 
+16:31:15   ├─ /pais/maldivas/index.html (+356ms) 
+16:31:15   ├─ /pais/noruega/index.html (+385ms) 
+16:31:16   ├─ /pais/portugal/index.html (+357ms) 
+16:31:16   ├─ /pais/puerto-rico/index.html (+355ms) 
+16:31:16   ├─ /pais/sri-lanka/index.html (+359ms) 
+16:31:17   ├─ /pais/tailandia/index.html (+402ms) 
+16:31:17   ├─ /pais/tanzania/index.html (+382ms) 
+16:31:18   └─ /pais/vietnam/index.html (+357ms) 
+16:31:18 ▶ src/pages/preguntas-frecuentes.astro
+16:31:18   └─ /preguntas-frecuentes/index.html (+278ms) 
+16:31:18 ▶ src/pages/presupuesto/[slug].astro
+16:31:18   ├─ /presupuesto/azores/index.html (+298ms) 
+16:31:19   ├─ /presupuesto/brasil/index.html (+320ms) 
+16:31:19   ├─ /presupuesto/brasil-carnaval/index.html (+286ms) 
+16:31:19   ├─ /presupuesto/camino-de-santiago/index.html (+313ms) 
+16:31:20   ├─ /presupuesto/colombia/index.html (+305ms) 
+16:31:20   ├─ /presupuesto/costa-rica/index.html (+296ms) 
+16:31:20   ├─ /presupuesto/dolomitas/index.html (+287ms) 
+16:31:21   ├─ /presupuesto/egipto/index.html (+286ms) 
+16:31:21   ├─ /presupuesto/filipinas-navidad/index.html (+289ms) 
+16:31:21   ├─ /presupuesto/filipinas-invierno/index.html (+294ms) 
+16:31:21   ├─ /presupuesto/filipinas-verano/index.html (+298ms) 
+16:31:22   ├─ /presupuesto/guatemala/index.html (+294ms) 
+16:31:22   ├─ /presupuesto/indonesia/index.html (+325ms) 
+16:31:22   ├─ /presupuesto/islandia/index.html (+308ms) 
+16:31:23   ├─ /presupuesto/japon/index.html (+319ms) 
+16:31:23   ├─ /presupuesto/kenia/index.html (+300ms) 
+16:31:23   ├─ /presupuesto/laponia/index.html (+292ms) 
+16:31:24   ├─ /presupuesto/lofoten/index.html (+285ms) 
+16:31:24   ├─ /presupuesto/maldivas/index.html (+280ms) 
+16:31:24   ├─ /presupuesto/praga/index.html (+280ms) 
+16:31:24   ├─ /presupuesto/puerto-rico/index.html (+311ms) 
+16:31:25   ├─ /presupuesto/sri-lanka-invierno/index.html (+292ms) 
+16:31:25   ├─ /presupuesto/sri-lanka-otono/index.html (+312ms) 
+16:31:25   ├─ /presupuesto/sri-lanka-verano/index.html (+307ms) 
+16:31:26   ├─ /presupuesto/tailandia-festival-linternas/index.html (+287ms) 
+16:31:26   ├─ /presupuesto/tailandia-invierno/index.html (+305ms) 
+16:31:26   ├─ /presupuesto/tailandia-verano/index.html (+272ms) 
+16:31:26   ├─ /presupuesto/vietnam/index.html (+298ms) 
+16:31:27   └─ /presupuesto/zanzibar/index.html (+327ms) 
+16:31:27 ▶ src/pages/redireccion-whatsapp.astro
+16:31:27   └─ /redireccion-whatsapp/index.html (+255ms) 
+16:31:27 λ src/pages/robots.txt.ts
+16:31:27   └─ /robots.txt (+1ms) 
+16:31:27 λ src/pages/rss.xml.ts
+16:31:27   └─ /rss.xml (+6ms) 
+16:31:27 ▶ src/pages/temporada/[slug].astro
+16:31:28   ├─ /temporada/fin-de-anio/index.html (+358ms) 
+16:31:28   ├─ /temporada/navidad/index.html (+333ms) 
+16:31:28   ├─ /temporada/puentes/index.html (+340ms) 
+16:31:29   ├─ /temporada/semana-santa/index.html (+377ms) 
+16:31:29   ├─ /temporada/septiembre/index.html (+354ms) 
+16:31:29   └─ /temporada/verano/index.html (+332ms) 
+16:31:30 ▶ src/pages/tipos/[slug].astro
+16:31:30   ├─ /tipos/aventura/index.html (+364ms) 
+16:31:30   ├─ /tipos/cultural/index.html (+419ms) 
+16:31:30   ├─ /tipos/naturaleza/index.html (+395ms) 
+16:31:31   ├─ /tipos/nieve/index.html (+362ms) 
+16:31:31   └─ /tipos/playa/index.html (+419ms) 
+16:31:32 ▶ src/pages/travelhood.astro
+16:31:32   └─ /travelhood/index.html (+355ms) 
+16:31:32 ▶ src/pages/viajar-sola.astro
+16:31:32   └─ /viajar-sola/index.html (+402ms) 
+16:31:32 ▶ src/pages/viajes.astro
+16:31:32   └─ /viajes/index.html (+425ms) 
+16:31:33 ▶ src/pages/viajes-para-mujeres.astro
+16:31:33   └─ /viajes-para-mujeres/index.html (+348ms) 
+16:31:33 ▶ src/pages/viajes-privados.astro
+16:31:33   └─ /viajes-privados/index.html (+378ms) 
+16:31:34 λ src/pages/webmcp-data.json.ts
+16:31:34   └─ /webmcp-data.json (+194ms) 
+16:31:34 ▶ src/pages/index.astro
+16:31:34   └─ /index.html (+781ms) 
+16:31:35 ✓ Completed in 209.90s.
+
+16:31:35 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+16:31:35 [@astrojs/vercel] Copying static files to .vercel/output/static
+16:31:35 [build] 167 page(s) built in 247.45s
+16:31:35 [build] Complete!
+Injected 245 redirects, 10 header rules and 2 rewrites into config.json
+The default export of @sanity/image-url has been deprecated. Use the named export `createImageUrlBuilder` instead.

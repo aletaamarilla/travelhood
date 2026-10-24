@@ -1,0 +1,16 @@
+[
+  {
+    "observedAtUtc": "2026-10-24T17:18:51.766Z",
+    "page": "7-12",
+    "tables": [
+      " Nombre del evento  Número de eventos  first_visit  7  private_trip_landing_view  4  destination_specific_selected  3  home_search_submitted  2  search_results_navigation  2  destination_any_selected  1 "
+    ]
+  },
+  {
+    "observedAtUtc": "2026-10-24T17:18:54.702Z",
+    "page": "13-last",
+    "tables": [
+      " Nombre del evento  Número de eventos  destination_whatsapp_click  1  private_trip_whatsapp_click  1 "
+    ]
+  }
+]

@@ -1,0 +1,4 @@
+
+> travelhood@0.1.0 prepare:analytics-gtm
+> npx tsx scripts/prepare-analytics-gtm.ts
+

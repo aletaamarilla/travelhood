@@ -1,0 +1,10 @@
+
+> travelhood@0.1.0 check:types
+> astro check --tsconfig tsconfig.web.json --minimumSeverity error
+
+15:52:26 [content] Syncing content
+15:52:26 [content] Synced content
+15:52:26 [types] Generated 40ms
+15:52:26 [check] Getting diagnostics for Astro files in /home/amfernandez/personalProjects/travelhoodsystem...
+Result (98 files): 
+- 0 errors

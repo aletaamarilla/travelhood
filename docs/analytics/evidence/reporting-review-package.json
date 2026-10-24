@@ -1,0 +1,19 @@
+{
+  "reviewedManifest": {
+    "path": "docs/analytics/evidence/reporting-setup-manifest.json",
+    "sha256": "5c18fdcccaf2c579bcd22a5a9dd0d0fe8daeb44776236107d2fd94a70619291c"
+  },
+  "reviewedConfigurationEvidenceSha256": "0be35e3ef21047cac0f20720cb529ca372adee89af0208e192843df97f817591",
+  "reviewArtifacts": [
+    {
+      "path": "docs/analytics/evidence/reporting-setup-review.md",
+      "sha256": "74b73d019dbcaf9826af5f65ec32b921b42bd991cdac2f224124da3542dcb529"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-doc-check.json",
+      "sha256": "1ab37af2b8b3a02be552aaf33d2489121fa659067c7bc40d0734b729d3789188"
+    }
+  ],
+  "newPackageFile": "docs/analytics/evidence/reporting-review-package.json",
+  "scope": "Packaging index only. Reviewed 30-file candidate and configuration unchanged. Review report and diff-check evidence listed separately to avoid self-referential manifest hashes."
+}

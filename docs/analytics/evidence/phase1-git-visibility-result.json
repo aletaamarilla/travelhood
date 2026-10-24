@@ -1,0 +1,16 @@
+{
+  "recordedAtUtc": "2026-10-24T18:57:26.143413+00:00",
+  "check": "visibility",
+  "exitCode": 0,
+  "command": [
+    "npm",
+    "run",
+    "check:visibility",
+    "--",
+    "https://travelhood.es",
+    "--negotiation",
+    "required"
+  ],
+  "environment": "Production HTTPS",
+  "evidence": "phase1-git-visibility.log"
+}

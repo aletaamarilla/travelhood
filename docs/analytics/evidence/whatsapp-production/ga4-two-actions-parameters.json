@@ -1,0 +1,27 @@
+{
+  "event": "private_trip_whatsapp_click",
+  "scope": "Realtime aggregate after two distinct CTA actions; not a processed report",
+  "parameters": [
+    {
+      "parameter": "measurement_version",
+      "observedAtUtc": "2026-10-24T17:21:47.874Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  1  2 "
+      ]
+    },
+    {
+      "parameter": "page_location",
+      "observedAtUtc": "2026-10-24T17:21:52.176Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  https://travelhood.es/viajes-privados/  2 "
+      ]
+    },
+    {
+      "parameter": "traffic_type",
+      "observedAtUtc": "2026-10-24T17:21:57.502Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  external  2 "
+      ]
+    }
+  ]
+}

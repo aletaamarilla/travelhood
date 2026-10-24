@@ -1,0 +1,185 @@
+{
+  "recordedAtUtc": "2026-10-24T17:05:38.105977+00:00",
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "sourceManifest35Unchanged": true,
+  "scope": "Supplemental production evidence and documentation only; source unmodified. Previous production-evidence-manifest is a historical publication snapshot; this manifest records the newer README/status and added recheck artifacts. No commit/push.",
+  "gitDiffCheckExitCode": 0,
+  "independentReview": "docs/analytics/evidence/production-recheck-review.md",
+  "phaseValidated": false,
+  "reliable_from": null,
+  "files": [
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "43e33e91efd3dfab61b52468d363f567b42419e2e460d34c52872f2f719f9abe"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "867a5a31b6af4b0cc4215738b542167d90ae6414ede7da2dc1c5f28d1c7ce7d3"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck.md",
+      "sha256": "92a1451994279022078310a7a8acec4d7fa28edf940733888737d541d27e8712"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck-review.md",
+      "sha256": "e5b427f09f130358aa10580f416bdb3e9803f50f7a6c674fa937027ee591b92c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/booking-fallback-whatsapp.json",
+      "sha256": "4c69c81b16fc9b1bff4330d36dc888b7463ce883ebcc00cebdcd8cdf9d487ce0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/booking-fallback-whatsapp.png",
+      "sha256": "62b9320895203af5c49e51f116bff6aeccdd01181e47547c1d2dbddde3b95754"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/booking-link.json",
+      "sha256": "e3daf4ef3ab9f0cf0cce8b92901d27290b22915da59e8ed9adbef47d0283c9e5"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/contact-attempt-unconfirmed.png",
+      "sha256": "eb2540ca99c5a06dabe6d342a6d92685f3b1b635e121839ce1d02969e697b582"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/contact-attempt-unconfirmed.txt",
+      "sha256": "b9eff97c420bc0ffe5f41f6a8b2c5aa528624a327ae8584be8dbf471360c8560"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/contact-final-attempt.json",
+      "sha256": "f684ca04a928c4e89d962c515c2d80201a4517abdd15f294c7c52cfacfad4073"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/desktop-all-persisted.png",
+      "sha256": "41201a7e046bee1c79e2f388c612db98dc9317884492ee369b2c9e6531eefeb6"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/desktop-analytics-only-persisted.png",
+      "sha256": "3afd4e9cd6e0d1a205f65640c0bf1fc5d98c406497cc0437eeb1220d1c49c3fa"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/desktop-booking-modal.png",
+      "sha256": "4455ae395b7dfd625706432f97e7411ce35bebdd030f24b68a34153476af7ee6"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/desktop-marketing-only-persisted.png",
+      "sha256": "203e13d7165af88f887e4dddef2e3ad1e7039cc2daa0b4336ba0ed58069ea14b"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/desktop-rejected-persisted.png",
+      "sha256": "99cd55b2349e5a8b16c2f6fddc2b7f9485ed6ae2df8893783a2c596f3e56e715"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/favicons-http.json",
+      "sha256": "eff6a5299e1aeca41bc3985939c435e9b16bce06abd70f7daebc8e6ef820a514"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/favicons.log",
+      "sha256": "ee734cf090a72cd5519e5e2e26bf780d92996c43e4c42183c67f4576e0db6171"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-processed-today.txt",
+      "sha256": "182f793bcec8cff46c475d19fd39872fefbc596a18213468364de26980905b73"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-after-human-click.json",
+      "sha256": "62de1e5e532bb2dc4e0b5c4934490a8491e6b78986071b0997786f90a7b85379"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-after-human-click.png",
+      "sha256": "0e674eec62caa647d6aca8e605a50b9b9892566ca212179bf40a5d101ddeb811"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-final-contact-read.json",
+      "sha256": "47adc6efee6dc7099e21ae497695b29952782408cbfb237b1bf6e397fa64a79d"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-measurement-version.json",
+      "sha256": "8a3cc65e92d124a4adbf5b7f55bc55ef7577853bfbb7e7af28e54b81cebe524b"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-measurement-version.png",
+      "sha256": "f7581d5ad52d99a4a2c109eeea106a82796f3f920e4a013afcda8985377eef24"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-measurement-version.txt",
+      "sha256": "fce973db045c3733272cf34116d8f3ee023f2af406899af344392524fc222908"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-traffic-type.json",
+      "sha256": "e1004e031a000cb82d2045f12de612dff5536e4bf01681eec7705fa27c72f5ac"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ga4-realtime-traffic-type.png",
+      "sha256": "74806c8e6db2a40399380f085819f4e720c0490c66bd3a980e0135b42e560d34"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/human-contact-confirmation.json",
+      "sha256": "ff38d6d89af8afd3dc0c690b8bdcbe3e2929f5d0c9c29f82f0dd0ae286a2fc08"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/live-landing-hit-allowlisted.json",
+      "sha256": "a18a523f0fd32209adfe6275394fcc619234f1d0309f334e6dee1b1f91c18442"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-all-persisted.png",
+      "sha256": "03126ea70a8be0725fae58efb09973f3295f0e2e56486edeeec51d74aacefa1f"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-departures-rejected.png",
+      "sha256": "2eb258e0dfcbfda94d84dc8a3789d90045109af8d66c3ec8fa208155e66ed715"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-regrant-analytics-only.png",
+      "sha256": "9693c186622a7bad964a07c26dd2e237a7b0d15e6965c26bd34b2c74a5cb3066"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-rejected-persisted.png",
+      "sha256": "564416fb98c0a6392201e4b44ac94bc8982dcc7f481751ec078e9d23a72d181f"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-search-rejected-destination.png",
+      "sha256": "9ab71f6d6319273f0767860482cc158e1c1993c8b9b5be6627678314d5daf214"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mobile-withdraw-analytics-marketing-only.png",
+      "sha256": "872c611287c44991e5e2836aa87735f62486857a1c1b73e130bb38dcce4c7529"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mygocu-public-product.png",
+      "sha256": "0604f7667300e152a1b201db07662177593820d8f90911ab04950a3aaf8dbc61"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/mygocu-public-read.json",
+      "sha256": "ecb6780e4d6d3f1aa29db03079ddc8ae1dd57354f27b73bb5612552f52711e40"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/tag-assistant-live-document-before.png",
+      "sha256": "eb2540ca99c5a06dabe6d342a6d92685f3b1b635e121839ce1d02969e697b582"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/tag-assistant-live-document-before.txt",
+      "sha256": "31803f9aeabd4547f21d637d5d877ec593b5d8baffc5359a229ff34ecd1f8bc6"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/tag-assistant-published.png",
+      "sha256": "1f2dbadec3734b6b31195bb3a8e1a0575a8299969a495f06a1440f1c84200840"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/tag-assistant-published.txt",
+      "sha256": "1f244417ac160c9a029ec5371d81928eaac698aa17d27932cc4b9f809a956952"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/ui-results.json",
+      "sha256": "5dfc3146d3af49f6cf2087a59e9483a7737d1ac552ad232a11831c0673555ff0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/version.json",
+      "sha256": "ea110b70c47211c8af4f8ca7aed824141a78a47bfe66e956f71826d6edd6b89f"
+    },
+    {
+      "path": "docs/analytics/evidence/production-recheck/visibility.log",
+      "sha256": "1423642d1228b3a0cec57b79e915334843490018fce20c5bfbc282a17456332c"
+    }
+  ]
+}

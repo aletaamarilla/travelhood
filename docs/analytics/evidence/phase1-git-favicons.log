@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 check:favicons
+> node scripts/check-favicons.mjs
+
+Favicon check passed: assets and Layout.astro references are valid.

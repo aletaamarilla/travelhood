@@ -1,0 +1,172 @@
+{
+  "baseCommit": "000c264bf6278ba84f2ded9e0803938ab07a7942",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "sourceFilesUnchanged": 35,
+  "recordedAtUtc": "2026-10-24T18:30:50.232451+00:00",
+  "accountCandidate": {
+    "property": "498178258",
+    "measurementId": "G-XQMPJG8B08",
+    "explorationId": "slaZLoktRh-iWrXm_1w-LQ",
+    "customDimensions": 10,
+    "sessionSegments": 5,
+    "tabs": 9,
+    "commercialCtaLocations": 9
+  },
+  "modifiedExistingThisTurn": [
+    "docs/analytics/client-reporting.md",
+    "docs/analytics/README.md",
+    "docs/analytics/evidence/production-status.json"
+  ],
+  "newFiles": [
+    "docs/analytics/evidence/reporting-setup/README.md",
+    "docs/analytics/evidence/reporting-setup/TH_Sesiones_con_contacto_privado-v1.txt",
+    "docs/analytics/evidence/reporting-setup/TH_Sesiones_con_salida_a_reserva-v1.txt",
+    "docs/analytics/evidence/reporting-setup/TH_Sesiones_que_ven_privados-v1.txt",
+    "docs/analytics/evidence/reporting-setup/consumer-classification.json",
+    "docs/analytics/evidence/reporting-setup/contact-scope-persisted.json",
+    "docs/analytics/evidence/reporting-setup/contract-crosscheck.json",
+    "docs/analytics/evidence/reporting-setup/destinations-filter-corrected.png",
+    "docs/analytics/evidence/reporting-setup/dimensions-created.json",
+    "docs/analytics/evidence/reporting-setup/dimensions-persisted.json",
+    "docs/analytics/evidence/reporting-setup/dimensions-persisted.png",
+    "docs/analytics/evidence/reporting-setup/exploration-saved-home.png",
+    "docs/analytics/evidence/reporting-setup/exploration-saved-home.txt",
+    "docs/analytics/evidence/reporting-setup/export-options.txt",
+    "docs/analytics/evidence/reporting-setup/monthly-report-final.png",
+    "docs/analytics/evidence/reporting-setup/search-console-access.png",
+    "docs/analytics/evidence/reporting-setup/search-console-access.txt",
+    "docs/analytics/evidence/reporting-setup/segment-contact-before-save.png",
+    "docs/analytics/evidence/reporting-setup/segment-contact-definition.txt",
+    "docs/analytics/evidence/reporting-setup/segment-contact-final-reopened.png",
+    "docs/analytics/evidence/reporting-setup/segment-contact-v1-definition.txt",
+    "docs/analytics/evidence/reporting-setup/segment-contact-v1.png",
+    "docs/analytics/evidence/reporting-setup/segment-v1-before-save.png",
+    "docs/analytics/evidence/reporting-setup/segments-persisted-readback.json",
+    "docs/analytics/evidence/reporting-setup/session-segments-created.json",
+    "docs/analytics/evidence/reporting-setup/setup-result.json",
+    "docs/analytics/evidence/reporting-setup/tabs-readback.json"
+  ],
+  "files": [
+    {
+      "path": "docs/analytics/client-reporting.md",
+      "sha256": "caa23bb2be3293ef6cf96db47ee30e581aba1a672a0872c1be3fc55da8c3a51f"
+    },
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "6c222a499bb79be33e2bc1f67ef4a93e5309c0f639587b625e5b69114c69b583"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "7b1c9601a996303e2303c95f0382701c63b6f00d102920f7979475adfe608f52"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/README.md",
+      "sha256": "3ed26893bb9011b04d8c9fcc2ef42717f8c714115df0d0683189353d32ec3878"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/TH_Sesiones_con_contacto_privado-v1.txt",
+      "sha256": "4bea5f87d543ff1c86bf0604d953677eb209381b0271b4528c405ad479916ee2"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/TH_Sesiones_con_salida_a_reserva-v1.txt",
+      "sha256": "088f442d9d8afac4733cae4faf1d821699197d0712bf5c8bef6b3fccbbeea324"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/TH_Sesiones_que_ven_privados-v1.txt",
+      "sha256": "9a907b50b65083e369b8a9e9e2880fed4fc6ca0589882670fa271bc4b17c048c"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/consumer-classification.json",
+      "sha256": "f2f7495a63671f3306311426569a8a01c710222489f266c3e2d6e72de56dbb28"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/contact-scope-persisted.json",
+      "sha256": "d9f56c9074d8cc48c0f126e4164fcfe8610c09c8e28cbf3d44aae8d069855967"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/contract-crosscheck.json",
+      "sha256": "814d0ae1b8a0967c980f7d4c815be743951b38b19c661b0628e629145af61b49"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/destinations-filter-corrected.png",
+      "sha256": "75ff7a932e770099decb0936a2a43b9876e035a85b93fc63a4cb361738fc263e"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/dimensions-created.json",
+      "sha256": "ecb34e152df43a817860a66d2489fa8ba88a76106ab1e4fd6afcea20796eba2d"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/dimensions-persisted.json",
+      "sha256": "3051afff07f4c7ee781580a9ca19aea89fd5bdddae850fd5cb4ae94ca4be29e0"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/dimensions-persisted.png",
+      "sha256": "7e6eec99fe804a97ebc43851bd441b55a321ecbea7e20e6a0fdcc22c9a06a63a"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/exploration-saved-home.png",
+      "sha256": "65d2d9fabb5429bf4160b4798a2242473f74139aac78713fdde971ebcfb92fb2"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/exploration-saved-home.txt",
+      "sha256": "7f2ea4c42ab9f057951bd0a6995aab43569cc910d15325da7d227e6fa7b3b08f"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/export-options.txt",
+      "sha256": "c32c49f88aaa0d1510117083e37571b70c9abaa5e0df0b619d2bb482e12d65d0"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/monthly-report-final.png",
+      "sha256": "eeb6ab8feab6e20145a3a481c77a020cae51f60615b3702e331e8bb3d27e5fb1"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/search-console-access.png",
+      "sha256": "e01d2299d6b9daa8a9dc3a71749efaa28f1b5ee343ac20c77e736ad19def1605"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/search-console-access.txt",
+      "sha256": "d8167eb893594ebb14a22451712abd549dd5aeb0e1476635e419bb48e9a52296"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-contact-before-save.png",
+      "sha256": "35fb23ece9ff2e639e6a529c941ca41bb6c86756789d391ad3dc0ce191534af3"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-contact-definition.txt",
+      "sha256": "08631cbe52b72da90e2b8ebe6cb3c6270843ae623e38a2fa72e31f1ba508af42"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-contact-final-reopened.png",
+      "sha256": "6a5b140deb00635c9acbd4ea4e49fd15008c068b6e960bb95c5c4aeb4d3d65ad"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-contact-v1-definition.txt",
+      "sha256": "68c8351a91c0d9524eab3d946b3889e633e0802a9e05829a71bc09d613e40cf2"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-contact-v1.png",
+      "sha256": "645dd14e74d83026a8fb4b3b84a3a3d1ef8a89e2ed61ae52039c4b9be868de1c"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segment-v1-before-save.png",
+      "sha256": "8f531985c74ce8f0c9f971ca5be2402479b7ded5606e7d8bc95aaa16eaf7780e"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/segments-persisted-readback.json",
+      "sha256": "2b89cf042dde68201e776b25aa2b7097076951eeb686632a9e78928c9d9aca29"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/session-segments-created.json",
+      "sha256": "f61cfeb589a93f7b042cb5d47fff0ad026064930ee369e9c15a54785e47b85ac"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/setup-result.json",
+      "sha256": "b8ad400ef4266f2b5ee09107e229dda17de298d1f3c1aae12e5300e20b70c535"
+    },
+    {
+      "path": "docs/analytics/evidence/reporting-setup/tabs-readback.json",
+      "sha256": "b1b4f46a91a2f87932490c72f630c06b4c7714ad7abbc0c6ed7fe9f3b94a5392"
+    }
+  ],
+  "reportConfigurationEvidenceSha256": "0be35e3ef21047cac0f20720cb529ca372adee89af0208e192843df97f817591"
+}

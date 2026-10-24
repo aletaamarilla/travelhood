@@ -1,0 +1,129 @@
+{
+  "recordedAtUtc": "2026-10-24T19:08:36.445861+00:00",
+  "archiveWindows": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure",
+  "scope": "Raw browser screenshots/text and original outbound-target JSON retained locally; only allowlisted structured observations prepared for Git. Not a self-contained visual evidence package.",
+  "files": [
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/consent-before-withdrawal.txt",
+      "sha256": "ccda1f4736ee12b0ea54452e635804b7b01ef9142dd753a19d151db71a74c406",
+      "bytes": 2412,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/controlled-contact.json",
+      "sha256": "fa28e68d76dd8020aa5fdab41f6ea9d761a80a198a5d1e37005366b0595e9f01",
+      "bytes": 564,
+      "includedInGitPacket": true
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/debugview-cta-final.png",
+      "sha256": "01055c51f9610299d2cbd7938894d1d84ba63f8f8c242c8c6359a21118333b2c",
+      "bytes": 60706,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/debugview-cta-final.txt",
+      "sha256": "b8c85ecc26a42642fd3ee42c98b5860b746a0f0fea5f1f61a740c450af459138",
+      "bytes": 7154,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/debugview-parameter-observations.json",
+      "sha256": "960a1e2f00b7bdf0fbb0b096fac41aaa9d1b0ec3765b281bcb55a9df0174065b",
+      "bytes": 3510,
+      "includedInGitPacket": true
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/debugview-recheck.txt",
+      "sha256": "b74a523ff9d92ec00c4998bc9d183c3c365f97c67c1a35e29fd37a01588cfed3",
+      "bytes": 7403,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/linked-contact-event.txt",
+      "sha256": "8ebfbadfe23d1bfee17bdf7dc67ce8e765088ddb5778e9763f35e3a87fd22756",
+      "bytes": 7065,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/linked-debugview-receipt.json",
+      "sha256": "eceda120291415edefc5c7209e03b0ab4e779083742c7fe4f6f55c25e28820c2",
+      "bytes": 1728,
+      "includedInGitPacket": true
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/linked-live-baseline.png",
+      "sha256": "132abcdfe838e8ac7a7afd55001c91f1b3b6333be1442d0b2107dc2bf77cefc4",
+      "bytes": 76228,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/linked-live-baseline.txt",
+      "sha256": "72d0a82585e60b4dd68b457a1a0dbf7e71c979fdb74016cd308b95c69b62847f",
+      "bytes": 6956,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/processed-report-result.json",
+      "sha256": "1ba18f55156ce6975aa00be290256548800027e919e2de138e2511bb8a1abf4c",
+      "bytes": 582,
+      "includedInGitPacket": true
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/processed-summary-final.png",
+      "sha256": "499c202e0e323ff5239f4f59f81515823cfed459afa85b77fc5d396cd918fbfd",
+      "bytes": 88738,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/processed-summary-final.txt",
+      "sha256": "681c20862cc89ae403dd1017f88055a71c986c43cc855cb5d2ff6d975a719a4d",
+      "bytes": 15264,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/processed-summary-recheck.png",
+      "sha256": "499c202e0e323ff5239f4f59f81515823cfed459afa85b77fc5d396cd918fbfd",
+      "bytes": 88738,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/processed-summary-recheck.txt",
+      "sha256": "33774288d72caea909a2d0577b5216c0553ea202699bb20308d41c67be5a025b",
+      "bytes": 15260,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/withdrawal-preferences-persisted.png",
+      "sha256": "daadaaae06ac4309b6e9eda7f91dfc6a7fb8123ba49f525d8f0269dc101d8d2c",
+      "bytes": 385118,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/withdrawal-preferences-persisted.txt",
+      "sha256": "8fec8275dcce7705a03c1d5949e8980e8680842af70eee2ed6c4191b0a4a96bb",
+      "bytes": 2412,
+      "includedInGitPacket": false
+    },
+    {
+      "path": "C:/Users/Antonio Fernandez/.codex/visualizations/2026/10/23/01a169ba-df7c-7491-95a2-f8f1dc06e524/phase1-closure/withdrawal-ui-result.json",
+      "sha256": "fe3dcdfcde72b55ba5447ef86a57eee59459e86317267d3586d5cfd4917ac1ec",
+      "bytes": 626,
+      "includedInGitPacket": true
+    },
+    {
+      "path": "/home/amfernandez/personalProjects/travelhoodsystem/docs/analytics/evidence/production-recheck/booking-link.json",
+      "sha256": "e3daf4ef3ab9f0cf0cce8b92901d27290b22915da59e8ed9adbef47d0283c9e5",
+      "bytes": 351,
+      "includedInGitPacket": false,
+      "reason": "Raw public WhatsApp target contains preset message query; retained local, excluded after independent review."
+    },
+    {
+      "path": "/home/amfernandez/personalProjects/travelhoodsystem/docs/analytics/evidence/production-recheck/ui-results.json",
+      "sha256": "5dfc3146d3af49f6cf2087a59e9483a7737d1ac552ad232a11831c0673555ff0",
+      "bytes": 12039,
+      "includedInGitPacket": false,
+      "reason": "Raw public WhatsApp target contains preset message query; retained local, excluded after independent review."
+    }
+  ]
+}

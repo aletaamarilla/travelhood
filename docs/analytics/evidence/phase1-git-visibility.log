@@ -1,0 +1,14 @@
+
+> travelhood@0.1.0 check:visibility
+> node scripts/check-agent-visibility.mjs https://travelhood.es --negotiation required
+
+Checking agent visibility at https://travelhood.es
+OK home Link header
+OK robots Content-Signal
+OK api catalog JSON linkset
+OK unsupported standard discovery routes absent
+OK agent skills index
+OK direct home Markdown
+OK home Markdown negotiation
+
+7 visibility checks passed.

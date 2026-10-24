@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 check:analytics-gtm
+> npx tsx scripts/prepare-analytics-gtm.ts --check
+
+GTM candidate reproducible from original export and event contract. GTM UI import/compile and GA4 receipt remain unverified.

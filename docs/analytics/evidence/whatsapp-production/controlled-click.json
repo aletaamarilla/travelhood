@@ -1,0 +1,12 @@
+{
+  "startUtc": "2026-10-24T17:13:54.739Z",
+  "endUtc": "2026-10-24T17:13:55.283Z",
+  "page": "https://travelhood.es/viajes-privados/",
+  "action": "One Enter activation of rendered Pedir propuesta por WhatsApp link",
+  "expectedEvent": "private_trip_whatsapp_click",
+  "expectedCta": "hero",
+  "expectedMeasurementVersion": "1",
+  "expectedTrafficType": "external",
+  "messageSent": false,
+  "reservationOrPayment": false
+}

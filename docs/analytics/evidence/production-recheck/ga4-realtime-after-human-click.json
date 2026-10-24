@@ -1,0 +1,24 @@
+{
+  "confirmationUtc": "2026-10-24T16:55:21Z",
+  "correlation": "User reported one private-trip WhatsApp click; no event identifier or precise browser event timestamp was captured. Aggregate report cannot identify an originating user.",
+  "pages": [
+    {
+      "observedAtUtc": "2026-10-24T17:00:15.110Z",
+      "tables": [
+        " Nombre del evento  Número de eventos  page_view  39  user_engagement  28  destination_view  16  session_start  10  first_visit  5  search_started  5 "
+      ]
+    },
+    {
+      "observedAtUtc": "2026-10-24T17:00:17.845Z",
+      "tables": [
+        " Nombre del evento  Número de eventos  collaborator_click  4  destination_dates_price_interaction  4  destination_direct_navigation  3  destination_specific_selected  3  home_search_submitted  3  private_trip_landing_view  3 "
+      ]
+    },
+    {
+      "observedAtUtc": "2026-10-24T17:00:20.519Z",
+      "tables": [
+        " Nombre del evento  Número de eventos  destination_booking_click  1  destination_pdf_download  1  destination_whatsapp_click  1 "
+      ]
+    }
+  ]
+}

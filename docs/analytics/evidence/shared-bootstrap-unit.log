@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 test:analytics
+> npx tsx src/lib/analytics.test.ts
+
+Analytics: consent matrix, withdrawal, contract, PII minimization, isolation and fail-open navigation passed.

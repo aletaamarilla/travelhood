@@ -1,0 +1,16 @@
+{
+  "page": "https://travelhood.es/viajes-privados/",
+  "tab": "20",
+  "tagAssistantTab": "31",
+  "start": "2026-10-24T18:47:23.751Z",
+  "end": "2026-10-24T18:47:23.838Z",
+  "cta": "final",
+  "activation": "One Enter on native final anchor; no message sent",
+  "consentObserved": {
+    "analytics": true,
+    "marketing": false
+  },
+  "liveContainer": "GTM-TB7F773D",
+  "before": "1 controlled connected document, config1/eventTag2 (page_view + landing)",
+  "priorHeroAttempt": "No activation: anchor hidden in current responsive layout and locator had no match"
+}

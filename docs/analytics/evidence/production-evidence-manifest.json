@@ -1,0 +1,123 @@
+{
+  "recordedAtUtc": "2026-10-24T15:50:41.010145+00:00",
+  "sourceCandidateSha256": "012f52954928ce195beff1a007e3621a69c5ea316d7059c2a13f6baf048ddfb4",
+  "scope": "post-publication documentation/evidence only; source35 unchanged",
+  "files": [
+    {
+      "path": "docs/analytics/README.md",
+      "sha256": "2c4be76874309097c864597788d39313adc2f60c7ce2488545c6a3b0b2b29492"
+    },
+    {
+      "path": "docs/analytics/evidence/shared-bootstrap-validation.md",
+      "sha256": "99f85e946483e1f6f7d7b84acb78bc2dd92c361906fc806aa3ae760c9ba0d678"
+    },
+    {
+      "path": "docs/analytics/evidence/production-before-publication-api.json",
+      "sha256": "d994b9a1070bfa5a1405c53864bd84de0265056bf0e5c9c402be8c7fe2df20f4"
+    },
+    {
+      "path": "docs/analytics/evidence/production-before-publication.json",
+      "sha256": "16522968a882d9fc5473d8f384b49292cfe62fc045c95957c4e8a88d453be692"
+    },
+    {
+      "path": "docs/analytics/evidence/production-context-excerpt.txt",
+      "sha256": "e7d6ab89f3d8eef2e6e0ad60895b7797f11c6dd4d008404724886a36cebe916d"
+    },
+    {
+      "path": "docs/analytics/evidence/production-deployment-verification.json",
+      "sha256": "ab002994a3e40e86bd814a46472dd325b3dc20c4337b69b9f70ee78ccd43ecf0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-env-PUBLIC_ANALYTICS_ENV.log",
+      "sha256": "6898f586cb7b62ed9822e0b2869e014b9105f882ddeb44ca20771af4f5c7b825"
+    },
+    {
+      "path": "docs/analytics/evidence/production-env-PUBLIC_GTM_PHASE1_READY.log",
+      "sha256": "3103b065a1a88e5cff0e8c5bc74bee8d20072a12fbd6c6d0452fefabb998c698"
+    },
+    {
+      "path": "docs/analytics/evidence/production-favicons-http.json",
+      "sha256": "cadd77aeb6d092e4e80c33f0e91e57bb1d45e5e1af343cc654936405d31c1fb7"
+    },
+    {
+      "path": "docs/analytics/evidence/production-favicons.log",
+      "sha256": "ee734cf090a72cd5519e5e2e26bf780d92996c43e4c42183c67f4576e0db6171"
+    },
+    {
+      "path": "docs/analytics/evidence/production-final-diff-check.log",
+      "sha256": "21d4d13904089f057947e3235cc4d191bed333f2637d8914ef64ee5bdac656ff"
+    },
+    {
+      "path": "docs/analytics/evidence/production-final-git-status.txt",
+      "sha256": "c8f36ca88a1f1624a932966837e0b310be14cf23f6353c09570ce8b1ba52edac"
+    },
+    {
+      "path": "docs/analytics/evidence/production-gtm-prepublication-check.json",
+      "sha256": "7dfd20ce71715f3f12d54152890daaa30c67b51e40bde06d1e684733138f41a0"
+    },
+    {
+      "path": "docs/analytics/evidence/production-promotion.json",
+      "sha256": "d4d675b24c00b543bdd917ed8e5cc88b603f5e031390e6c9ab2188cffa88af8e"
+    },
+    {
+      "path": "docs/analytics/evidence/production-promotion.log",
+      "sha256": "3b4b1388491422ace9737a639264c92358d846cec87ee76a3b296321cad4f73e"
+    },
+    {
+      "path": "docs/analytics/evidence/production-release.json",
+      "sha256": "6930cc83de4540447e711c087180ba5e7b6e34ab39b4eef93f76f1a666f9d4a3"
+    },
+    {
+      "path": "docs/analytics/evidence/production-review.md",
+      "sha256": "d163e74d8ae5969f5d8b21739f5c67632b6f5bb4427c59e4e2f97c1ed2286841"
+    },
+    {
+      "path": "docs/analytics/evidence/production-staged-deploy.log",
+      "sha256": "9d0a1a5ad7304e8bab9c7f42e276b5bea5184dac40fdcb83067ea667d7bc53ec"
+    },
+    {
+      "path": "docs/analytics/evidence/production-staged-verification.json",
+      "sha256": "5f8503c5b9ed80eb8c0aa77f17612444e6ef56ac543cb5e7325a433e03863ae9"
+    },
+    {
+      "path": "docs/analytics/evidence/production-status.json",
+      "sha256": "28d215f2a42f15091560d7ac7cdba1e64cb8b40d06f97779fdacd4de3aa77f2c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-travelhood.es-private.html",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02"
+    },
+    {
+      "path": "docs/analytics/evidence/production-validation.md",
+      "sha256": "6a7aba401bff1537747ffd97e40dfaf63aed6959763a4537881f5991cc73b933"
+    },
+    {
+      "path": "docs/analytics/evidence/production-visibility.log",
+      "sha256": "1423642d1228b3a0cec57b79e915334843490018fce20c5bfbc282a17456332c"
+    },
+    {
+      "path": "docs/analytics/evidence/production-www.travelhood.es-private.html",
+      "sha256": "9d8fbf7c0ffa48db6ee73cbe63ecc4052b79ae8e2dbf1de22c8bd1625bcffe02"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-processed-after-publication.png",
+      "sha256": "6da07d655ba3dad51f616b46be43421df7f07e8ef186ab8c71ffcaad07ce1d31"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-processed-after-publication.txt",
+      "sha256": "0383e1466e697350d3e2899a827fbb6c3c872dc11f88a20cf43d67beee18f73c"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-production-realtime.png",
+      "sha256": "c99c8b14426d2daf5fe952b7b7b6739aaa836b74086b52bd1a49a12a4c59f16f"
+    },
+    {
+      "path": "docs/analytics/evidence/ga4-production-realtime.txt",
+      "sha256": "f8a458bd50dfb2acc4cd1df4f7531fee07f87098e00b79a6ea8c8a29cc7be05c"
+    },
+    {
+      "path": "docs/analytics/evidence/gtm-v6-published.png",
+      "sha256": "eb95914b192b01cbc066eb83f061cca30e50ab4c4a6cdf7cd9145ed50d1c0337"
+    }
+  ]
+}

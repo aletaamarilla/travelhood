@@ -1,0 +1,16 @@
+{
+  "recordedAtUtc": "2026-10-24T18:57:26.074998+00:00",
+  "check": "build",
+  "exitCode": 0,
+  "command": [
+    "vercel",
+    "inspect",
+    "https://travelhood-nwklifbm0-travelhood.vercel.app",
+    "--scope",
+    "travelhood",
+    "--logs",
+    "--no-color"
+  ],
+  "environment": "Vercel real Git build",
+  "evidence": "phase1-git-build.log"
+}

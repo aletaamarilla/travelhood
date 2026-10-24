@@ -1,0 +1,4 @@
+
+> travelhood@0.1.0 check:analytics-tools
+> tsc --noEmit --project tsconfig.analytics-tools.json
+

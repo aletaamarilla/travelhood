@@ -1,0 +1,29 @@
+{
+  "observedAtUtc": "2026-10-24T16:57:02.276244+00:00",
+  "assets": [
+    {
+      "path": "/favicon.ico",
+      "status": 200,
+      "matchesRepository": true,
+      "sha256": "0808486b5138f3ba0623339fa80677f0ec6c313abf8a0885a7595d7711d2f54b"
+    },
+    {
+      "path": "/favicon-48x48.png",
+      "status": 200,
+      "matchesRepository": true,
+      "sha256": "0d1f479a0b1171e17ef05209f5ca251805d6734ae47e7e084643bcab40ad245b"
+    },
+    {
+      "path": "/icon.svg",
+      "status": 200,
+      "matchesRepository": true,
+      "sha256": "09fd01d8d300d1a14ebcb89d15813cc58c755ef912e33a1657e78738162433a6"
+    },
+    {
+      "path": "/apple-icon.png",
+      "status": 200,
+      "matchesRepository": true,
+      "sha256": "7904c348be0b0f56bf40f1ae7e344493709fd12b0ef7eb7a7f740a994063bc66"
+    }
+  ]
+}

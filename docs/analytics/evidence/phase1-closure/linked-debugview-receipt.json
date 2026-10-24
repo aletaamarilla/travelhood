@@ -1,0 +1,50 @@
+{
+  "observedAtUtc": "2026-10-24T19:02:35.764Z",
+  "environment": "real production website + published GTM + real GA4 DebugView",
+  "gtm": "GTM-TB7F773D",
+  "gaMeasurementId": "G-XQMPJG8B08",
+  "gaProperty": "498178258",
+  "controlledClickUtc": {
+    "start": "2026-10-24T18:47:23.751Z",
+    "end": "2026-10-24T18:47:23.838Z"
+  },
+  "ga4EventTimeMadrid": "2026-10-24 20:47:24",
+  "event": "private_trip_whatsapp_click",
+  "observedContactCount": 1,
+  "parameters": {
+    "cta": "final",
+    "context": "private_trip",
+    "measurement_version": "1",
+    "page": "viajes_privados",
+    "page_location": "https://travelhood.es/viajes-privados/",
+    "traffic_type": "external",
+    "has_utm": "false",
+    "debug_mode": "1"
+  },
+  "consentBeforeClick": {
+    "analytics": true,
+    "marketing": false,
+    "source": "website preferences UI"
+  },
+  "tagAssistant": {
+    "environment": "Publicada",
+    "controlledDocumentCount": 1,
+    "googleConfigCount": 1,
+    "eventTagCountBefore": 2,
+    "eventTagCountAfter": 3,
+    "contactRowCount": 1
+  },
+  "ga4Stream": {
+    "page_view": 3,
+    "private_trip_landing_view": 3,
+    "private_trip_whatsapp_click": 1,
+    "explanation": "Three known document loads in the complete debug session; the linked controlled document has one page view and one landing event."
+  },
+  "limitations": [
+    "Temporal and linked-document correlation; no personal identity was collected.",
+    "DebugView reception is confirmed. Processed report inclusion and attribution remain pending.",
+    "No initial clean-session network trace or completed production withdrawal trace in this run.",
+    "No WhatsApp message sent.",
+    "Testing traffic is not excluded under the existing user decision."
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "recordedAt": "2026-10-24T18:29:06.752Z",
+  "property": "498178258",
+  "measurementId": "G-XQMPJG8B08",
+  "explorationId": "slaZLoktRh-iWrXm_1w-LQ",
+  "name": "Travelhood | Informe mensual web",
+  "url": "https://analytics.google.com/analytics/web/#/analysis/a266541621p498178258/edit/slaZLoktRh-iWrXm_1w-LQ",
+  "tabs": [
+    "01 Resumen",
+    "02 Canales",
+    "03 Fuentes y campañas",
+    "04 Interés por destino",
+    "05 Contactos por destino",
+    "06 Privados - sesiones",
+    "07 Privados - botones",
+    "08 Entradas y dispositivos",
+    "09 Otros WhatsApp de destino"
+  ],
+  "eventCustomDimensions": [
+    {
+      "name": "TH Destino",
+      "parameter": "destination_slug",
+      "scope": "event",
+      "observedPersistedAtUtc": "2026-10-24T17:52:26.661Z"
+    },
+    {
+      "name": "TH Ubicación del botón",
+      "parameter": "cta_location",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:29.558Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Botón de privados",
+      "parameter": "cta",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:31.873Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Proveedor de reserva",
+      "parameter": "booking_provider",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:34.256Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Versión de medición",
+      "parameter": "measurement_version",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:36.490Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Tipo de tráfico",
+      "parameter": "traffic_type",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:38.974Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Origen de interacción",
+      "parameter": "source",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:41.075Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Modo de destino",
+      "parameter": "destination_mode",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:43.591Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Modo de fecha",
+      "parameter": "date_mode",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:46.758Z",
+      "persistence": "pending reload verification"
+    },
+    {
+      "name": "TH Fecha de interés",
+      "parameter": "date_value",
+      "scope": "event",
+      "submittedAtUtc": "2026-10-24T17:52:50.706Z",
+      "persistence": "pending reload verification"
+    }
+  ],
+  "segments": [
+    {
+      "name": "TH Sesiones medidas v1",
+      "sameEvent": true,
+      "version1": true
+    },
+    {
+      "name": "TH Sesiones con contacto de viaje",
+      "sameEvent": true,
+      "version1": true
+    },
+    {
+      "name": "TH Sesiones con salida a reserva",
+      "sameEvent": true,
+      "version1": true
+    },
+    {
+      "name": "TH Sesiones que ven privados",
+      "sameEvent": true,
+      "version1": true
+    },
+    {
+      "name": "TH Sesiones con contacto privado",
+      "sameEvent": true,
+      "version1": true
+    }
+  ],
+  "period": "Este mes",
+  "sharing": "Private exploration in currently authenticated user; not public, not shared this turn",
+  "processedReconciliation": "pending; final v1 tables currently show no data",
+  "export": {
+    "allTabsPdfOptionObserved": true,
+    "downloadVerified": false,
+    "note": "Browser download wait timed out; no confirmed local artifact. Not evidence of GA4 export service failure."
+  },
+  "searchConsole": {
+    "status": "Welcome page; no verified Travelhood property visible in current signed-in account",
+    "propertyCreated": false
+  },
+  "codeChanges": false,
+  "reliableFrom": null,
+  "phaseValidated": false,
+  "commercialCtaRegex": "^(departures_modal_reserve|bottom_cta_no_dates|bottom_cta_whatsapp|sidebar_no_dates|sidebar_doubts|mobile_bottom_bar_no_dates|mobile_bottom_bar_whatsapp|private_trip_section|presupuesto_bottom_cta)$",
+  "otherDestinationWhatsappTab": "Community, waitlist, mixed dates/notification and unclassified CTA locations; not commercial-contact numerator"
+}

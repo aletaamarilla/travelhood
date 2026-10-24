@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 test:collaborators
+> npx tsx src/lib/collaborators.test.ts
+
+Collaborators: content, affiliate links and consent checks passed.

@@ -1,0 +1,9 @@
+{
+  "observedAtUtc": "2026-10-24T17:21:19.108Z",
+  "event": "private_trip_whatsapp_click",
+  "parameter": "cta",
+  "tables": [
+    " Valor del parámetro de evento  Número de eventos  final  1  hero  1 "
+  ],
+  "scope": "Official GA4 Realtime aggregate after two intentional activations of distinct CTAs; final=1 and hero=1, total2; does not retain identifiers or prove general per-document deduplication"
+}

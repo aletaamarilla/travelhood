@@ -1,0 +1,39 @@
+[
+  {
+    "name": "TH Sesiones medidas v1",
+    "rule": "measurement_version exactly1",
+    "scope": "same event within session"
+  },
+  {
+    "name": "TH Sesiones con contacto de viaje",
+    "rule": "(destination OR private) AND (commercial_cta OR private)",
+    "scope": "same event within session",
+    "commercialCtas": [
+      "departures_modal_reserve",
+      "bottom_cta_no_dates",
+      "bottom_cta_whatsapp",
+      "sidebar_no_dates",
+      "sidebar_doubts",
+      "mobile_bottom_bar_no_dates",
+      "mobile_bottom_bar_whatsapp"
+    ]
+  },
+  {
+    "name": "TH Sesiones con salida a reserva",
+    "event": "destination_booking_click",
+    "scope": "same event within session",
+    "savedAtUtc": "2026-10-24T18:02:39.356Z"
+  },
+  {
+    "name": "TH Sesiones que ven privados",
+    "event": "private_trip_landing_view",
+    "scope": "same event within session",
+    "savedAtUtc": "2026-10-24T18:02:43.327Z"
+  },
+  {
+    "name": "TH Sesiones con contacto privado",
+    "event": "private_trip_whatsapp_click",
+    "scope": "same event within session",
+    "savedAtUtc": "2026-10-24T18:02:47.058Z"
+  }
+]

@@ -1,0 +1,76 @@
+{
+  "method": "Actual CUA UI checks, not legacy browser suite",
+  "qaChecks": [
+    {
+      "scenario": "desktop_absent_reject_marketing_only",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "desktop_analytics_only_unique_click",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "desktop_full_repeat_save",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "desktop_withdraw_no_reload_preserve_meta_cookies",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "desktop_regrant_no_replay",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "desktop_tracker_failure_contact_usable",
+      "result": "PASS",
+      "documentId": "1792850263132-gdz7z4"
+    },
+    {
+      "scenario": "mobile_absent",
+      "result": "PASS",
+      "documentId": "1792850531055-lvx2wl"
+    },
+    {
+      "scenario": "mobile_absent_rejected_375x640",
+      "result": "PASS",
+      "documentId": "1792850699789-ayklf1"
+    },
+    {
+      "scenario": "mobile_marketing_only",
+      "result": "PASS",
+      "documentId": "1792850699789-ayklf1"
+    },
+    {
+      "scenario": "mobile_analytics_only_unique_click",
+      "result": "PASS",
+      "documentId": "1792850699789-ayklf1"
+    },
+    {
+      "scenario": "mobile_full_withdraw_no_reload",
+      "result": "PASS",
+      "documentId": "1792850699789-ayklf1"
+    },
+    {
+      "scenario": "mobile_regrant_no_replay",
+      "result": "PASS",
+      "documentId": "1792850699789-ayklf1"
+    },
+    {
+      "scenario": "desktop_home_search_navigation",
+      "result": "PASS",
+      "documentId": "1792850847938-h8pziu",
+      "previousDocumentId": "1792850842628-lvzv70"
+    },
+    {
+      "scenario": "desktop_destination_dates_and_booking_link",
+      "result": "PASS",
+      "documentId": "1792850856970-463vzb"
+    }
+  ]
+}

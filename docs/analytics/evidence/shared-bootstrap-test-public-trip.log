@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 test:public-trip
+> npx tsx src/lib/public-trip.test.ts
+
+Public trip availability: passed

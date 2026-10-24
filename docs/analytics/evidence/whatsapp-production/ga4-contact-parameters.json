@@ -1,0 +1,61 @@
+{
+  "scope": "Official GA4 Realtime event aggregate; no client/session identifiers retained; does not identify originating document or attempt",
+  "parameters": [
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "cta",
+      "observedAtUtc": "2026-10-24T17:19:27.328Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  hero  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "context",
+      "observedAtUtc": "2026-10-24T17:19:36.899Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  private_trip  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "measurement_version",
+      "observedAtUtc": "2026-10-24T17:19:50.877Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  1  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "page",
+      "observedAtUtc": "2026-10-24T17:19:54.786Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  viajes_privados  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "page_location",
+      "observedAtUtc": "2026-10-24T17:19:59.430Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  https://travelhood.es/viajes-privados/  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "traffic_type",
+      "observedAtUtc": "2026-10-24T17:20:05.893Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  external  1 "
+      ]
+    },
+    {
+      "event": "private_trip_whatsapp_click",
+      "parameter": "has_utm",
+      "observedAtUtc": "2026-10-24T17:20:10.004Z",
+      "tables": [
+        " Valor del parámetro de evento  Número de eventos  false  1 "
+      ]
+    }
+  ]
+}

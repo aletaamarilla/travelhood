@@ -1,0 +1,16 @@
+{
+  "recordedAtUtc": "2026-10-24T18:54:44.528957+00:00",
+  "sourceCommit": "42e873b83947ac52abe34ac1aab578d46e3928bd",
+  "inspections": [
+    {
+      "target": "https://travelhood-nwklifbm0-travelhood.vercel.app",
+      "exitCode": 0,
+      "output": "Vercel CLI 50.0.0\nFetching deployment \"travelhood-nwklifbm0-travelhood.vercel.app\" in travelhood\n> Fetched deployment \"travelhood-nwklifbm0-travelhood.vercel.app\" in travelhood [439ms]\nGeneral\n\nid\t\tdpl_EaDzd9bcJ48mJ8oC7DqXF3xtcKoz\nname\ttravelhood\ntarget\tproduction\nstatus\t● Ready\nurl\t\thttps://travelhood-nwklifbm0-travelhood.vercel.app\ncreated\tSat Oct 24 2026 20:52:20 GMT+0200 (Central European Summer Time) [2m ago]\nAliases\n\n╶ https://travelhood.es\n    ╶ https://www.travelhood.es\n    ╶ https://travelhood-travelhood.vercel.app\n    ╶ https://travelhood-git-main-travelhood.vercel.app\n    Builds\n\n╶ .        [0ms]\n    "
+    },
+    {
+      "target": "travelhood.es",
+      "exitCode": 0,
+      "output": "Vercel CLI 50.0.0\nFetching deployment \"travelhood.es\" in travelhood\n> Fetched deployment \"travelhood-nwklifbm0-travelhood.vercel.app\" in travelhood [480ms]\nGeneral\n\nid\t\tdpl_EaDzd9bcJ48mJ8oC7DqXF3xtcKoz\nname\ttravelhood\ntarget\tproduction\nstatus\t● Ready\nurl\t\thttps://travelhood-nwklifbm0-travelhood.vercel.app\ncreated\tSat Oct 24 2026 20:52:20 GMT+0200 (Central European Summer Time) [2m ago]\nAliases\n\n╶ https://travelhood.es\n    ╶ https://www.travelhood.es\n    ╶ https://travelhood-travelhood.vercel.app\n    ╶ https://travelhood-git-main-travelhood.vercel.app\n    Builds\n\n╶ .        [0ms]\n    "
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+
+> travelhood@0.1.0 check:analytics-recipe
+> npx tsx scripts/analytics-recipe.ts --check
+
+GTM recipe matches the executable event contract. No external activation is implied.

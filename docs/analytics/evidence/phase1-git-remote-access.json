@@ -1,0 +1,8 @@
+{
+  "recordedAtUtc": "2026-10-24T18:48:02.050872+00:00",
+  "operation": "read-only git ls-remote origin refs/heads/main",
+  "exitCode": 0,
+  "stdout": "000c264bf6278ba84f2ded9e0803938ab07a7942\trefs/heads/main",
+  "stderr": "",
+  "pushAttempted": false
+}

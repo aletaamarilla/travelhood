@@ -1,0 +1,29 @@
+{
+  "officialExport": "workspace-final-export-2026-10-24.json",
+  "exportTime": "2026-10-24 15:03:23",
+  "candidateSha256": "33a908fee7b15a91c89d1f0b0b814df55f19610f947f3f4165ca49fa58bc5b4c",
+  "nativeExportSha256": "f2515c8568f1a3eecfcbec768e97cf607a719a3366e112b5c72438026030e614",
+  "metaUnchanged": true,
+  "changesSincePriorImport": [
+    {
+      "kind": "tag",
+      "name": "GA4- Configuracion"
+    },
+    {
+      "kind": "tag",
+      "name": "TH Phase 1 - GA4 events"
+    },
+    {
+      "kind": "variable",
+      "name": "TH Phase 1 - debug_mode"
+    }
+  ],
+  "candidateComparisonIssues": [],
+  "normalizations": [
+    "server metadata and IDs ignored, references mapped to names",
+    "parameter/map key order ignored",
+    "migratedToV2 omitted by native GTM as in prior export",
+    "native empty formatValue object has no conversion or default"
+  ],
+  "candidateMatchesNativeAfterNormalizations": true
+}

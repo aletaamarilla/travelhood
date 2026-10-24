@@ -1,0 +1,23 @@
+{
+  "recordedAtUtc": "2026-10-24T18:30:13.550247+00:00",
+  "sourceFilesCompared": 35,
+  "sourceFilesChanged": [],
+  "configuredEventNames": [
+    "destination_booking_click",
+    "destination_dates_price_interaction",
+    "destination_pdf_download",
+    "destination_view",
+    "destination_whatsapp_click",
+    "private_trip_landing_view",
+    "private_trip_whatsapp_click"
+  ],
+  "unknownEventNames": [],
+  "savedTabs": 9,
+  "sessionSegments": 5,
+  "sameEventAndVersion1InAllSegments": true,
+  "runtimeBuildRepeatedThisTurn": false,
+  "reason": "Only GA4 reporting configuration, documentation and evidence changed. Prior build/types/visibility/favicons/behavior evidence applies to identical 35-file candidate.",
+  "commercialLocationCount": 9,
+  "allCurrentConsumerLocationsClassified": true,
+  "tripDetailLocationAssertionsPassed": true
+}
